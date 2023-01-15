@@ -4,7 +4,7 @@ import Login from './Login';
 const auth = () => {
   return (
     <>
-      <div>auth!</div>
+      <div>auth pages!</div>
       <Login />
     </>
   );

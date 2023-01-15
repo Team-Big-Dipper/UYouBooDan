@@ -4,8 +4,8 @@ import * as S from './style';
 const Footer = () => {
   return (
     <S.FooterDiv>
-      <div>우유부단</div>
-      <div>Copyright 2023 우유부단 All Rights Reserved.</div>
+      <S.FooterLogo>우유부단</S.FooterLogo>
+      <S.CopyRight>Copyright 2023 우유부단 All Rights Reserved.</S.CopyRight>
     </S.FooterDiv>
   );
 };
