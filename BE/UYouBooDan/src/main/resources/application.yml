@@ -21,3 +21,8 @@ spring:
     web:
       pageable:
         one-indexed-parameters: true
+
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
