@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link';
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -8,11 +9,14 @@ export const HeaderContainer = styled.div`
   border-bottom: 1px solid #e2e6ee;
 `;
 
-export const Logo = styled.h2`
+export const Logo = styled(Link)`
+  /* font-family: 'yg-jalnan' !important; */ // 잘난체 쓰는법
   font-weight: 600;
   font-size: 2.4rem;
   display: flex;
   align-items: center;
+  text-decoration: none;
+  color: black;
 `;
 
 export const Right = styled.div`
@@ -26,21 +30,76 @@ export const Vote = styled.div`
   align-items: center;
 `;
 
-export const Mypage = styled.h4`
+export const Mypage = styled(Link)`
   display: flex;
   justify-content: flex-end;
   align-items: center;
   font-size: 0.85rem;
   margin-bottom: 10px;
+  text-decoration: none;
+  color: black;
+`;
+export const LoginSignUpDiv = styled.div`
+  display: flex;
+  /* border: 1px solid red; */
+  justify-content: end;
+  padding-right: 1vw;
+  gap: 2vw;
+`;
+export const Login = styled(Link)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: #4285f4;
+  }
+  &:focus {
+    color: #4285f4;
+  }
+`;
+export const SignUp = styled(Link)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: #4285f4;
+  }
+  &:focus {
+    color: #4285f4;
+  }
 `;
 
-export const AllVote = styled.h3`
+export const AllVote = styled(Link)`
   font-size: 1.25rem;
+  text-decoration: none;
+  color: black;
+  &:focus {
+    color: #4285f4;
+  }
+  &:hover {
+    color: #4285f4;
+  }
 `;
 
-export const MakeVote = styled.h3`
+export const MakeVote = styled(Link)`
   font-size: 1.25rem;
   padding: 0 20px;
+  text-decoration: none;
+  color: black;
+  &:focus {
+    color: #4285f4;
+  }
+  &:hover {
+    color: #4285f4;
+  }
 `;
 
 export const SearchDiv = styled.div`
