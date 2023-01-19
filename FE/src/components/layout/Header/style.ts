@@ -29,6 +29,7 @@ export const Vote = styled.div`
 export const Mypage = styled.h4`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   font-size: 0.85rem;
   margin-bottom: 10px;
 `;
@@ -43,6 +44,9 @@ export const MakeVote = styled.h3`
 `;
 
 export const SearchDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border: solid 1px #d6d9dc;
   border-radius: 30px;
   width: 17vw;
