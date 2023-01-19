@@ -5,7 +5,6 @@ import Auth from '../../../components/Auth';
 const Login = () => {
   return (
     <>
-      {/* <Layout children={<Auth />} /> */}
       <Auth />
     </>
   );
