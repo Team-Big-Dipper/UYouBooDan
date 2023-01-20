@@ -1,6 +1,6 @@
 package TeamBigDipper.UYouBooDan.testDomain.dto;
 
-import TeamBigDipper.UYouBooDan.global.dto.PageInfo;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
