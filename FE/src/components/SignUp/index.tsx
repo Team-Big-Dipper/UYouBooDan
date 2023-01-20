@@ -1,10 +1,14 @@
 import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX } from '../../constants/regex';
+import useOverLapCheck from '../../hooks/signup/useOverLap';
+import { useEffect } from 'react';
+import axios from 'axios';
 // import axios, { AxiosError, AxiosResponse } from 'axios';
 // import { useEffect } from 'react';
 
 const SignUp = () => {
+  const { emailCheck } = useOverLapCheck();
   // useEffect(() => {
   //   axios
   //     .get('https://13a5-222-233-138-154.jp.ngrok.io/test/all?size=10&page=5', {
@@ -20,6 +24,16 @@ const SignUp = () => {
   //       console.log('요청 실패!', err.message);
   //     });
   // }, []);
+  useEffect(() => {
+    axios
+      .get('/api/members/verify')
+      .then((res) => {
+        console.log('요청성공!', res);
+      })
+      .catch((err) => {
+        console.log('요청실패!', err.message);
+      });
+  }, []);
 
   const {
     register,
@@ -62,7 +76,14 @@ const SignUp = () => {
               />
               {/* <S.EmailInputDelete>x</S.EmailInputDelete> */}
             </S.EmailInputDiv>
-            <button type="button">중복체크</button>
+            <button
+              type="button"
+              onClick={() => {
+                emailCheck(watch('email'));
+              }}
+            >
+              중복체크
+            </button>
           </S.EmailInputBtnDiv>
 
           {console.log(watch('email'))}
