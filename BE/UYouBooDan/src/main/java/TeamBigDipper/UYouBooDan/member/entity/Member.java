@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class Member {
 
     @Id
-    private Long memberId;
+    private Long member_id;
 //    @Embedded
     private String email;
 
@@ -24,6 +24,9 @@ public class Member {
     private String nickname;
 
     private String profile;
+
+    private Enum member_status;
+
 
     /**
      * 타입별 이너 클래스들
@@ -39,6 +42,21 @@ public class Member {
 //    class Name { private String name; }
 //    @Embeddable
 //    class Photo { private String photo; }
+
+
+    public enum MemberStatus {
+        MEMBER_ACTIVE("활동중"),
+        MEMBER_SLEEP("휴면계정"),
+        MEMBER_REMOVED("삭제된 계정");
+
+        @Getter
+        private String status;
+
+        MemberStatus(String status) {
+            this.status = status;
+        }
+
+    }
 
     public void defaultProfile() {
         if(this.profile==null)
