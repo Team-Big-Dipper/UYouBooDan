@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
-import { RadioButton } from '../../components/ReadVote/radioButton';
+import { RadioButton } from '../../components/VoteList/radioButton';
 import { conditions } from '../../constants/conditions';
-import CardItem from '../../components/ReadVote/CardItem';
+import CardItem from '../../components/VoteList/CardItem';
 import Link from 'next/link';
 import type { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
@@ -11,13 +11,7 @@ import { useSelector } from 'react-redux';
 const ListPage = () => {
   const conditionKey = Object.keys(conditions);
   const [data, setData] = useState([1, 2, 3, 4, 5, 6]);
-  const sortedVoteList = useSelector(
-    (state: RootState) => state.sortedVote.sortedVoteState,
-  );
-  const searched = useSelector(
-    (state: RootState) => state.searchVote.searchState,
-  );
-  console.log(sortedVoteList, searched);
+
   return (
     <S.VoteList>
       <S.PageHeader>
@@ -38,7 +32,7 @@ const ListPage = () => {
       {data.map((el, idx) => {
         return <CardItem key={idx} />;
       })}
-      <p>{data[1]}</p>
+      <p>{data[0]} page</p>
     </S.VoteList>
   );
 };
