@@ -1,7 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
+import sortVoteListReducer from './slices/sortVoteList';
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    sortedVote: sortVoteListReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

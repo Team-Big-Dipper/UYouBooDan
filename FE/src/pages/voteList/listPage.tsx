@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
-import { RadioButton } from '../../components/VoteList/radioButton';
+import { RadioButton } from '../../components/VoteList/RadioButton';
 import { conditions } from '../../constants/conditions';
 import CardItem from '../../components/VoteList/CardItem';
 import Link from 'next/link';
+//redux
 import type { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
 
 const ListPage = () => {
   const conditionKey = Object.keys(conditions);
   const [data, setData] = useState([1, 2, 3, 4, 5, 6]);
+  const sortedVoteList = useSelector(
+    (state: RootState) => state.sortedVote.sortedVoteState,
+  );
+
+  console.log(sortedVoteList);
 
   return (
     <S.VoteList>
