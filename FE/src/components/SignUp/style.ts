@@ -1,3 +1,4 @@
+import { style } from '@mui/system';
 import exp from 'constants';
 import styled from 'styled-components';
 
@@ -30,7 +31,8 @@ export const EmailContainer = styled.div`
   margin-bottom: 3.5vh;
 `;
 export const EmailTitle = styled.div`
-  font-weight: 500;
+  /* font-weight: 500; */
+  font-weight: bold;
   font-size: 1rem;
   margin-bottom: 1vh;
 `;
@@ -68,21 +70,19 @@ export const EmailInputDiv = styled.div`
     outline: none;
   }
 `;
-// export const EmailInputDelete = styled.div`
-//   padding: 7% 3%;
-//   padding: 0.1vh 0 0 0.65vh;
-//   margin-top: 1.5vh;
-//   /* border: 1px solid black; */
-//   height: 2.3vh;
-//   width: 2.3vh;
-//   border-radius: 50%;
-//   color: #667085;
-//   background-color: #e2e6ee;
-//   cursor: pointer;
-// `;
-export const EmailValidMsg = styled.div`
+export const EmailDeleteDiv = styled.div`
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+export const EmailSuccessMsg = styled.div`
   font-size: 0.86rem;
-  color: #02c988;
+  color: #00c988;
+`;
+export const EmailFailureMsg = styled.div`
+  font-size: 0.86rem;
+  color: #ff2f2f;
 `;
 
 // password
@@ -91,7 +91,8 @@ export const PwContainer = styled.div`
   margin-bottom: 3.5vh;
 `;
 export const PwTitle = styled.div`
-  font-weight: 500;
+  /* font-weight: 500; */
+  font-weight: bold;
   font-size: 1rem;
   margin-bottom: 1vh;
 `;
@@ -110,8 +111,16 @@ export const PwInput = styled.div`
     outline: none;
   }
 `;
-export const PwDelete = styled.div``;
-export const PwInputImg = styled.div``;
+export const PwDeleteDiv = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+export const PwVectorDiv = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
 export const PwCheckInput = styled.div`
   border: 1px solid #d6d9dc;
   display: flex;
@@ -127,16 +136,32 @@ export const PwCheckInput = styled.div`
     outline: none;
   }
 `;
-export const PwCheckDelete = styled.div``;
-export const PwCheckImg = styled.div``;
+export const PwCheckDeleteDiv = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+export const PwCheckVectorDiv = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
 export const PwNotice = styled.div`
   font-size: 0.8rem;
-  color: gray;
+  color: #667085;
   margin-bottom: 1vh;
 `;
-export const PwValidMsg = styled.div`
+// export const PwValidMsg = styled.div`
+//   font-size: 0.86rem;
+//   color: #00c988;
+// `;
+export const PwSuccessMsg = styled.div`
   font-size: 0.86rem;
-  color: #02c988;
+  color: #00c988;
+`;
+export const PwFailureMsg = styled.div`
+  font-size: 0.86rem;
+  color: #ff2f2f;
 `;
 
 // NickName
@@ -145,7 +170,8 @@ export const NickContainer = styled.div`
   margin-bottom: 3.5vh;
 `;
 export const NickTitle = styled.div`
-  font-weight: 500;
+  /* font-weight: 500; */
+  font-weight: bold;
   font-size: 1rem;
   margin-bottom: 1vh;
 `;
@@ -183,9 +209,17 @@ export const NickInputDiv = styled.div`
     outline: none;
   }
 `;
-export const NickValidMsg = styled.div`
+// export const NickValidMsg = styled.div`
+//   font-size: 0.86rem;
+//   color: #00c988;
+// `;
+export const NickSuccessMsg = styled.div`
   font-size: 0.86rem;
-  color: #02c988;
+  color: #00c988;
+`;
+export const NickFailureMsg = styled.div`
+  font-size: 0.86rem;
+  color: #ff2f2f;
 `;
 
 // terms 약관동의
@@ -196,9 +230,42 @@ export const TermsContainer = styled.div`
   padding-top: 3.5vh;
 `;
 export const TermsTitle = styled.div`
-  font-weight: 500;
+  /* font-weight: 500; */
+  font-weight: bold;
   font-size: 1rem;
   margin-bottom: 2.5vh;
+`;
+export const TermsContentOne = styled.div`
+  display: flex;
+  border: 1px solid red;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.5vh;
+`;
+export const TermsOneRadioAndText = styled.div`
+  display: flex;
+  font-size: 1rem;
+  gap: 0.4vw;
+`;
+export const TermsOneInfo = styled.div`
+  font-size: 0.9rem;
+  color: #667085;
+`;
+export const TermsContentTwo = styled.div`
+  display: flex;
+  border: 1px solid red;
+  align-items: center;
+  justify-content: space-between;
+  height: 5.5vh;
+`;
+export const TermsTwoRadioAndText = styled.div`
+  display: flex;
+  font-size: 1rem;
+  gap: 0.4vw;
+`;
+export const TermsTwoInfo = styled.div`
+  font-size: 0.9rem;
+  color: #667085;
 `;
 
 // signup Btn
