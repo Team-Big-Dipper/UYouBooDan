@@ -1,20 +1,41 @@
 import React from 'react';
 import { ProfileImage } from '../../assets/profileImage';
-import * as S from '../../pages/voteList/style';
+import * as S from '../../pages/votelist/style';
+import { useRouter } from 'next/router';
 
-const CardItem = () => {
+interface propTypes {
+  data: {
+    id: number;
+    category: string;
+    content: string;
+    createdAt: number;
+    username: string;
+    endDate: number;
+  };
+}
+
+const CardItem = ({ data }: propTypes) => {
+  const router = useRouter();
+
+  const handleLink = () => {
+    router.push({
+      pathname: '/readvote',
+      query: { pid: data.id },
+    });
+  };
   return (
-    <S.CardItem>
+    <S.CardItem onClick={handleLink}>
       <div>
-        <S.CardCategory>#카테고리</S.CardCategory>
+        <S.CardCategory>#{data.category}</S.CardCategory>
         <S.CardContents>
-          <S.Content>문장입니다 문장입니다</S.Content>
-          <S.CardDDay>D-15</S.CardDDay>
+          <S.Content>{data.content}</S.Content>
+          <S.CardDDay>D-{data.endDate - data.createdAt}</S.CardDDay>
         </S.CardContents>
       </div>
       <S.ProfileContainer>
         <ProfileImage />
-        <S.UserName>DASONG</S.UserName>|<S.Date>2023.01.02</S.Date>
+        <S.UserName>{data.username}</S.UserName>|
+        <S.Date>{data.createdAt}</S.Date>
       </S.ProfileContainer>
     </S.CardItem>
   );

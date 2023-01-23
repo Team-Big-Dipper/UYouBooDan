@@ -1,8 +1,8 @@
 import React from 'react';
 import * as S from './style';
 type propTypes = {
-  content: string;
-  image: string;
+  content: string | undefined;
+  image: string | undefined;
 };
 //질문: 줄바꿈이 왜 안될까?
 const VoteContent = ({ content, image }: propTypes) => {

@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
-import { RadioButton } from '../../components/VoteList/radioButton';
+import { RadioButton } from '../../components/VoteList/RadioButton';
 import { conditions } from '../../constants/conditions';
 import CardItem from '../../components/VoteList/CardItem';
 import Link from 'next/link';
-import type { RootState } from '../../redux/store';
-import { useSelector } from 'react-redux';
 
-const ListPage = () => {
+interface props {
+  id: number;
+  category: string;
+  content: string;
+  createdAt: number;
+  username: string;
+  endDate: number;
+}
+interface propsArray {
+  data: props[];
+  setCondition: Function;
+  setPage: Function;
+  totalPage: number;
+}
+
+const ListPage = ({ data, totalPage, setCondition, setPage }: propsArray) => {
   const conditionKey = Object.keys(conditions);
-  const [data, setData] = useState([1, 2, 3, 4, 5, 6]);
+  const page = Array.from({ length: totalPage }, (_, i) => i + 1);
+  const handlePage = (e: any) => {
+    setPage(e.target.textContent);
+  };
 
   return (
     <S.VoteList>
@@ -24,15 +40,22 @@ const ListPage = () => {
         </Link>
       </S.PageHeader>
       <S.ButtonWrapper>
-        {/* <RadioButton 컴포넌트에서 dispatch가 실행되게 할 것 */}
         {conditionKey.map((el) => {
-          return <RadioButton key={el} condition={el} />;
+          return (
+            <RadioButton key={el} condition={el} setCondition={setCondition} />
+          );
         })}
       </S.ButtonWrapper>
       {data.map((el, idx) => {
-        return <CardItem key={idx} />;
+        return <CardItem key={idx} data={el} />;
       })}
-      <p>{data[0]} page</p>
+      <S.pageNum>
+        {page.map((el) => (
+          <S.pageNumFont onClick={handlePage} key={el}>
+            {el}
+          </S.pageNumFont>
+        ))}
+      </S.pageNum>
     </S.VoteList>
   );
 };

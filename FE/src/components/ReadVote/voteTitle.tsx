@@ -5,14 +5,13 @@ import { LikeSvg } from '../../assets/likeSvg';
 import { ShareLinkSvg } from '../../assets/shareLinkSvg';
 
 type propTypes = {
-  category: string;
-  title: string;
-  createdAt: number;
-  author: string;
-  image: string;
-  closedAt: number;
-  views: number;
-  likes: number;
+  category: string | undefined;
+  title: string | undefined;
+  createdAt: number | undefined;
+  author: string | undefined;
+  dday: number | undefined;
+  views: number | undefined;
+  likes: number | undefined;
 };
 
 const VoteTitle = ({
@@ -20,8 +19,7 @@ const VoteTitle = ({
   title,
   createdAt,
   author,
-  image,
-  closedAt,
+  dday,
   views,
   likes,
 }: propTypes) => {
@@ -41,7 +39,7 @@ const VoteTitle = ({
         <S.devideDiv>
           <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
           <S.CategoryIcon color={'#89b7cb'}>중복투표</S.CategoryIcon>
-          <S.DdayIcon>D-{closedAt - createdAt}</S.DdayIcon>
+          <S.DdayIcon>D-{dday}</S.DdayIcon>
         </S.devideDiv>
       </S.ContentContainer>
     </S.VoteTitleOutLine>
