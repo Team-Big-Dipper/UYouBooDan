@@ -1,27 +1,17 @@
 import React, { useMemo } from 'react';
 import { conditions } from '../../constants/conditions';
-import type { RootState } from '../../redux/store';
-import { useSelector, useDispatch } from 'react-redux';
-import { getnewdata } from '../../redux/slices/sortVoteList';
 
 type ConditionProps = {
   condition: string;
+  setCondition: Function;
 };
 
-export const RadioButton = ({ condition }: ConditionProps) => {
+export const RadioButton = ({ condition, setCondition }: ConditionProps) => {
   const container = useMemo(() => {
     return { marginRight: '5px', marginTop: '30px' };
   }, []);
-
-  const sortedVoteList = useSelector(
-    (state: RootState) => state.sortedVote.sortedVoteState,
-  );
-  const dispatch = useDispatch();
-
-  const clickRadioBtn = () => {
-    let data: string[] = [condition];
-    dispatch(getnewdata(data));
-    console.log('버튼 클릭', sortedVoteList, data);
+  const handleCondition = () => {
+    setCondition(condition);
   };
 
   return (
@@ -30,7 +20,7 @@ export const RadioButton = ({ condition }: ConditionProps) => {
         type="radio"
         name="condition"
         style={container}
-        onClick={clickRadioBtn}
+        onChange={handleCondition}
       />
       <label htmlFor={condition}>{conditions[condition]}</label>
     </div>

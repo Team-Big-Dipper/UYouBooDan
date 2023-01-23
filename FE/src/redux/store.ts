@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import sortVoteListReducer from './slices/sortVoteList';
+import pageIdReducer from './slices/pageIdSlice';
 
 export const store = configureStore({
   reducer: {
-    sortedVote: sortVoteListReducer,
+    pageId: pageIdReducer,
   },
 });
 

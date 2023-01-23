@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+export const pageNum = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const pageNumFont = styled.p`
+  font-size: 1.3rem;
+  margin-right: 1rem;
+`;
 export const VoteList = styled.div`
   /* border: 1px solid red; */
   display: flex;
