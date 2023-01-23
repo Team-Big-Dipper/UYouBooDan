@@ -36,7 +36,7 @@ const SignUp = () => {
   );
   useEffect(() => {
     console.log('useEffect들어옴');
-    if (watch('passwordCheck')) {
+    if (watch('passwordCheck').length) {
       // password,passwordCheck 가 변한다고해서 실행되는게 아니라 비밀번호재확인이 존재할때도 조건에 추가!
       checkPw();
     }
@@ -133,7 +133,7 @@ const SignUp = () => {
         </S.EmailContainer>
         <S.PwContainer>
           <S.PwTitle>비밀번호</S.PwTitle>
-          <S.PwInput>
+          <S.PwInput valid={pwMsg} exist={watch('passwordCheck')}>
             <input
               type="password"
               placeholder="비밀번호를 입력해주세요."
@@ -145,14 +145,18 @@ const SignUp = () => {
                 },
               })}
             />
-            <S.PwDeleteDiv>
+            <S.PwDeleteDiv
+              onClick={() => {
+                setValue('password', '');
+              }}
+            >
               <DeleteSvg />
             </S.PwDeleteDiv>
             <S.PwVectorDiv>
               <VectorSvg />
             </S.PwVectorDiv>
           </S.PwInput>
-          <S.PwCheckInput>
+          <S.PwCheckInput valid={pwMsg} exist={watch('passwordCheck')}>
             <input
               type="password"
               placeholder="비밀번호를 확인해주세요."
@@ -164,7 +168,11 @@ const SignUp = () => {
                 },
               })}
             />
-            <S.PwCheckDeleteDiv>
+            <S.PwCheckDeleteDiv
+              onClick={() => {
+                setValue('passwordCheck', '');
+              }}
+            >
               <DeleteSvg />
             </S.PwCheckDeleteDiv>
             <S.PwCheckVectorDiv>
@@ -187,10 +195,12 @@ const SignUp = () => {
               <FailureSvg />
               {pwMsg}
             </S.PwFailureMsg>
-          ) : (
+          ) : errors.password?.message && watch('password') ? (
             <S.PwFailureMsg>
-              <FailureSvg /> 비밀번호 형식을 확인해주세요.
+              <FailureSvg /> <>{errors.password?.message}</>
             </S.PwFailureMsg>
+          ) : (
+            <></>
           )}
           {/* <S.PwSuccessMsg>
             <SuccessSvg />

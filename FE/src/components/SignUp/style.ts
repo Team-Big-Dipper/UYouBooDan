@@ -1,19 +1,15 @@
 import { style } from '@mui/system';
-import exp from 'constants';
 import styled from 'styled-components';
 
 export const SignUpContainer = styled.div`
-  /* text-align: center; */
   padding: 10% 7%;
   border: 1px solid #d6d9dc;
   border-radius: 10px;
-  /* height: 60vh; */
 `;
 export const SignUpLogo = styled.div`
   font-weight: 800;
   font-size: 2.4rem;
   color: #4285f4;
-  /* border: 1px solid black; */
   display: inline-block;
   padding: 0.5vh 0.5vh 0.2vh 0.5vh;
   background-color: #f3f3f3;
@@ -27,18 +23,15 @@ export const SignUpTitle = styled.div`
 
 // email
 export const EmailContainer = styled.div`
-  /* border: 1px solid black; */
   margin-bottom: 3.5vh;
 `;
 export const EmailTitle = styled.div`
-  /* font-weight: 500; */
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 1vh;
 `;
 export const EmailInputBtnDiv = styled.div`
   display: flex;
-  /* border: 1px solid red; */
   justify-content: space-between;
   height: 5.5vh;
   margin-bottom: 1vh;
@@ -71,7 +64,6 @@ export const EmailInputDiv = styled.div`
   }
 `;
 export const EmailDeleteDiv = styled.div`
-  /* border: 1px solid red; */
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -86,18 +78,23 @@ export const EmailFailureMsg = styled.div`
 `;
 
 // password
-
+interface ValidAndExist {
+  valid: string;
+  exist: string;
+}
 export const PwContainer = styled.div`
   margin-bottom: 3.5vh;
 `;
 export const PwTitle = styled.div`
-  /* font-weight: 500; */
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 1vh;
 `;
-export const PwInput = styled.div`
-  border: 1px solid #d6d9dc;
+export const PwInput = styled.div<ValidAndExist>`
+  border: ${(props) =>
+    props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+      ? '1px solid red'
+      : '1px solid #d6d9dc'};
   display: flex;
   justify-content: space-between;
   height: 5.5vh;
@@ -121,8 +118,12 @@ export const PwVectorDiv = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-export const PwCheckInput = styled.div`
-  border: 1px solid #d6d9dc;
+
+export const PwCheckInput = styled.div<ValidAndExist>`
+  border: ${(props) =>
+    props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+      ? '1px solid red'
+      : '1px solid #d6d9dc'};
   display: flex;
   justify-content: space-between;
   height: 5.5vh;
@@ -151,10 +152,6 @@ export const PwNotice = styled.div`
   color: #667085;
   margin-bottom: 1vh;
 `;
-// export const PwValidMsg = styled.div`
-//   font-size: 0.86rem;
-//   color: #00c988;
-// `;
 export const PwSuccessMsg = styled.div`
   font-size: 0.86rem;
   color: #00c988;
@@ -170,14 +167,12 @@ export const NickContainer = styled.div`
   margin-bottom: 3.5vh;
 `;
 export const NickTitle = styled.div`
-  /* font-weight: 500; */
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 1vh;
 `;
 export const NickInputAndBtn = styled.div`
   display: flex;
-  /* border: 1px solid red; */
   justify-content: space-between;
   height: 5.5vh;
   margin-bottom: 1vh;
@@ -209,10 +204,6 @@ export const NickInputDiv = styled.div`
     outline: none;
   }
 `;
-// export const NickValidMsg = styled.div`
-//   font-size: 0.86rem;
-//   color: #00c988;
-// `;
 export const NickSuccessMsg = styled.div`
   font-size: 0.86rem;
   color: #00c988;
@@ -230,14 +221,12 @@ export const TermsContainer = styled.div`
   padding-top: 3.5vh;
 `;
 export const TermsTitle = styled.div`
-  /* font-weight: 500; */
   font-weight: bold;
   font-size: 1rem;
   margin-bottom: 2.5vh;
 `;
 export const TermsContentOne = styled.div`
   display: flex;
-  border: 1px solid red;
   align-items: center;
   justify-content: space-between;
   height: 5.5vh;
@@ -250,10 +239,10 @@ export const TermsOneRadioAndText = styled.div`
 export const TermsOneInfo = styled.div`
   font-size: 0.9rem;
   color: #667085;
+  cursor: pointer;
 `;
 export const TermsContentTwo = styled.div`
   display: flex;
-  border: 1px solid red;
   align-items: center;
   justify-content: space-between;
   height: 5.5vh;
@@ -266,6 +255,7 @@ export const TermsTwoRadioAndText = styled.div`
 export const TermsTwoInfo = styled.div`
   font-size: 0.9rem;
   color: #667085;
+  cursor: pointer;
 `;
 
 // signup Btn
