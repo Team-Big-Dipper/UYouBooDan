@@ -5,6 +5,10 @@ import Head from 'next/head';
 import '../fonts/style.css';
 // import initMockAPI from '../mocks';
 
+//redux
+import { store } from '../redux/store';
+import { Provider } from 'react-redux';
+
 export default function App({ Component, pageProps }: AppProps) {
   // next.js 내장 -> 'pages' 폴더내부 파일들 불러옴
 
@@ -18,10 +22,12 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <title>우유부단</title>
       </Head>
-      <Layout>
-        <GlobalStyles />
-        <Component {...pageProps} />
-      </Layout>
+      <Provider store={store}>
+        <Layout>
+          <GlobalStyles />
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
     </>
   );
 }

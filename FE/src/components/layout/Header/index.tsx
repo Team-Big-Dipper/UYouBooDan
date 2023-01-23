@@ -18,7 +18,7 @@ const Header = () => {
           <S.SignUp href="/signup">회원가입</S.SignUp>
         </S.LoginSignUpDiv>
         <S.Vote>
-          <S.AllVote href="/readvote">전체 투표</S.AllVote>
+          <S.AllVote href="/voteList">전체 투표</S.AllVote>
           <S.MakeVote href="/createvote">나만의 투표 만들기</S.MakeVote>
           <S.SearchDiv>
             <S.Search placeholder="검색어를 입력해주세요"></S.Search>
