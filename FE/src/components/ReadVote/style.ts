@@ -1,4 +1,3 @@
-import { color } from '@mui/system';
 import styled from 'styled-components';
 
 export const VoteTitleOutLine = styled.div`
@@ -56,7 +55,11 @@ export const AddedImage = styled.div`
   margin: 2rem 0;
 `;
 
-export const SelectTextBtn = styled.button<{ clicked: boolean }>`
+interface Clicked {
+  clicked: boolean;
+}
+
+export const SelectTextDuple = styled.div<Clicked>`
   border-style: solid;
   border-width: 1px;
   font-size: 1rem;
@@ -67,6 +70,22 @@ export const SelectTextBtn = styled.button<{ clicked: boolean }>`
   background-color: ${(props) => (props.clicked ? '#4285f4' : 'white')};
   color: ${(props) => (props.clicked ? 'white' : 'black')};
   border-color: ${(props) => (props.clicked ? '#4285f4' : 'black')};
+`;
+
+export const SelectTextSingle = styled.button`
+  border-style: solid;
+  border-width: 1px;
+  font-size: 1rem;
+  border-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  background-color: white;
+  color: black;
+  &:focus {
+    background-color: #4285f4;
+    color: white;
+  }
 `;
 
 export const buttonContainer = styled.div`
@@ -84,4 +103,26 @@ export const button = styled.div`
   background-color: ${(props) => props.color};
   padding: 1rem 1.5rem;
   margin: 0.3rem;
+  cursor: default;
+`;
+
+export const ImgItem = styled.img<Clicked>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(50, 50);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 10px;
+  border-radius: 10px;
+  filter: ${(props) => (props.clicked ? 'brightness(60%)' : null)};
+`;
+
+export const ImageContainer = styled.div`
+  width: 18vw;
+  height: 30vh;
+  min-width: 250px;
+  min-height: 200px;
+  position: relative;
 `;

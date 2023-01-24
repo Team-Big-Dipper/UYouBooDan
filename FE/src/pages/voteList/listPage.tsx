@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
 import { RadioButton } from '../../components/VoteList/RadioButton';
