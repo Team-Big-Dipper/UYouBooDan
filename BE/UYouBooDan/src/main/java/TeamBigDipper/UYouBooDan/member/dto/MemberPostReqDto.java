@@ -19,7 +19,7 @@ public class MemberPostReqDto {
 
     private String profile;
 
-    public Member toMember() {
+    public Member toEntity() {
         Member member = new Member().builder()
                 .email(new Email(this.email))
                 .password(new Password(this.password))

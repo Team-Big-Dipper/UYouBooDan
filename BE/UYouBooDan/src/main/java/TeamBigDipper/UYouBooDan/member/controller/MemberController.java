@@ -33,7 +33,7 @@ public class MemberController {
         /**
          * 추후 시큐리티 구현 후 member password 암호화 예정
          */
-        Member savedMember = memberService.createMember(memberPostReqDto.toMember());
+        Member savedMember = memberService.createMember(memberPostReqDto.toEntity());
 
         return new ResponseEntity<>(new SingleResDto<>(savedMember.getMemberId()), HttpStatus.CREATED);
     }
@@ -49,7 +49,7 @@ public class MemberController {
     @PatchMapping("/edit/{member_id}")
     public ResponseEntity<SingleResDto<String>> patchMember (@RequestBody MemberPatchReqDto memberPatchReqDto,
                                                              @PathVariable("member_id") Long memberId) {
-        memberService.modifyMember(memberPatchReqDto.toMember(), memberId);
+        memberService.modifyMember(memberPatchReqDto.toEntity(), memberId);
         return new ResponseEntity<>(new SingleResDto<>("Success Patch"), HttpStatus.OK);
     }
 
