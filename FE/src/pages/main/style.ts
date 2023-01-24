@@ -146,6 +146,7 @@ export const HotContainer = styled.div`
   background-size: 100% 100%;
   padding: 0 20%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -153,6 +154,7 @@ export const HotTitle = styled.div`
   color: #242424;
   font-family: 'yg-jalnan' !important;
   font-size: 1.2rem;
+  margin-bottom: 20px;
   span{
     color: #4285F4;
     font-family: 'yg-jalnan' !important;

@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import * as S from './style';
 import { Fingerprint } from '../../assets/fingerprint';
+import { HotVote } from '../../components/Main/HotVote';
 
 function Main() {
   
@@ -98,6 +99,7 @@ function Main() {
     </S.ContinueVoteContainer>
     <S.HotContainer>
       <S.HotTitle><span>핫한</span>&nbsp;투표를 만나보세요!</S.HotTitle>
+      <HotVote />
     </S.HotContainer>
     <S.ImageDeadLineContainer>
       <S.ImageContainer></S.ImageContainer>
