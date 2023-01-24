@@ -1,53 +1,58 @@
 package TeamBigDipper.UYouBooDan.member.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
+import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
+import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
+import TeamBigDipper.UYouBooDan.member.value.Email;
+import TeamBigDipper.UYouBooDan.member.value.Name;
+import TeamBigDipper.UYouBooDan.member.value.Password;
+import TeamBigDipper.UYouBooDan.member.value.Photo;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.Optional;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Entity
-public class Member {
+public class Member {  // extends BaseTimeEntity문제가 발생하여 추후 수정후 적용할 예정
 
     @Id
-    private Long member_id;
-//    @Embedded
-    private String email;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "memberId")
+    private Long memberId;
 
-    private String password; // 컨트롤러에서 암호화 할 예정
+    @Embedded
+    private Email email;
 
-    private String nickname;
+    @Embedded @Setter
+    private Password password; // 컨트롤러에서 암호화 할 예정
 
-    private String profile;
+    @Embedded
+    private Name nickname;
 
-    private Enum member_status;
+    @Embedded
+    private Photo profile;
+
+    /**
+     * Unable to instantiate custom type: org.hibernate.type.EnumType 에러발생
+     * 에러 수정 후 활성화 할 예정입니다.
+     */
+//    @Enumerated(EnumType.STRING)
+//    @Builder.Default
+//    private Enum memberStatus = MemberStatus.MEMBER_ACTIVE;
 
 
     /**
-     * 타입별 이너 클래스들
-     * : 추후 재사용성을 위해 공통 클래스로 뺄 수도 있음
-     * : Hibernate가 온전히 인식을 못하는 문제가 있음
-     * : 밸류에 @Embedded, 밸류 클래스에 @Embeddable로 매핑을 해줘야 한다고 하지만 안되고 있음
+     * 회원상태 Enum관리 : default값은 MEMBER_ACTIVE로 필드에서 지정
      */
-//    @Embeddable
-//    class Email { private String email; }
-//    @Embeddable
-//    class Password { private String password; }
-//    @Embeddable
-//    class Name { private String name; }
-//    @Embeddable
-//    class Photo { private String photo; }
-
-
+    @NoArgsConstructor
     public enum MemberStatus {
         MEMBER_ACTIVE("활동중"),
         MEMBER_SLEEP("휴면계정"),
-        MEMBER_REMOVED("삭제된 계정");
+        MEMBER_QUIT("탈퇴 계정");
 
         @Getter
         private String status;
@@ -55,12 +60,31 @@ public class Member {
         MemberStatus(String status) {
             this.status = status;
         }
-
     }
 
+
+    /**
+     * 기본 프로필 지정
+     */
     public void defaultProfile() {
-        if(this.profile==null)
-        this.profile = "https://scontent-gmp1-1.xx.fbcdn.net/v/t1.18169-9/527016_499021583525593_732357164_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=CdbnqyyFWXkAX_obHCp&_nc_ht=scontent-gmp1-1.xx&oh=00_AfDBQSsLnCXMKoAPnGFrOeSBgvMp__vgjXLEqmtS6etfcw&oe=63F1DB6A";
+        if(this.profile.getPhoto()==null)
+        this.profile = new Photo("https://scontent-gmp1-1.xx.fbcdn.net/v/t1.18169-9/527016_499021583525593_732357164_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=CdbnqyyFWXkAX_obHCp&_nc_ht=scontent-gmp1-1.xx&oh=00_AfDBQSsLnCXMKoAPnGFrOeSBgvMp__vgjXLEqmtS6etfcw&oe=63F1DB6A");
+    }
+
+
+    /**
+     * 비즈니스 로직 숨기기용도 (feat.DDD)
+     */
+    public Member verifyMember(Optional<Member> optMember) {
+        return optMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+    }
+
+    public void modifyPassword(Password password){ this.password = password; }
+    public void modifyNickname(Name nickname){
+        this.nickname = nickname;
+    }
+    public void modifyProfile(Photo profile){
+        this.profile = profile;
     }
 
 }
