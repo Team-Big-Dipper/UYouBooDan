@@ -31,5 +31,6 @@ public class BaseTimeEntity {
     private LocalDateTime createdAt;
 
     @LastModifiedDate  // 애너테이션으로 자동 적용
+    @Column(name="last_modified_at")
     private LocalDateTime modifiedAt;
 }
