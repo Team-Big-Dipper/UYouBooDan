@@ -19,6 +19,11 @@ export const Tab = styled.div`
     background-color: #4285F4;
     border: 1px solid #4285F4;
   }
+  &.clicked{
+    color: white;
+    background-color: #4285F4;
+    border: 1px solid #4285F4;
+  }
 `;
 
 export const HotVoteArrContainer = styled.div``;
