@@ -2,7 +2,7 @@ import React from 'react';
 import * as S from './style';
 
 interface propTypes {
-  setOpenModal: Function;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ButtonModal = ({ setOpenModal }: propTypes) => {
   const handleModal = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProfileImage } from '../../assets/profileImage';
-import * as S from '../../pages/votelist/style';
+import * as S from '../../pages/voteList/style';
 import { useRouter } from 'next/router';
 
 interface propTypes {

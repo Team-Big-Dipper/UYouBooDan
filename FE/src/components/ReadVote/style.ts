@@ -126,3 +126,97 @@ export const ImageContainer = styled.div`
   min-height: 200px;
   position: relative;
 `;
+
+export const ImageVoteCount = styled.div`
+  position: absolute;
+  top: 10%;
+  left: 80%;
+  font-size: 1rem;
+  color: white;
+  padding: 0.5rem 0.8rem;
+  background-color: #4285f4;
+  opacity: 90%;
+  border-radius: 10px;
+`;
+
+export const AnswerCard = styled.div`
+  border-bottom: 1px solid #667085;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+`;
+export const AnswerInputContainer = styled.form`
+  border-top: 1px solid lightgray;
+  //border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  margin: 2px 0;
+  background-color: #f6f9fe;
+`;
+export const AnswerInput = styled.input`
+  flex: 1;
+  height: 6.5vh;
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  margin: 0 1% 0 0;
+  padding: 0.3rem;
+  font-size: 1rem;
+  &:focus {
+    outline: none;
+  }
+`;
+export const AnswerCardTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+export const AnswerUserName = styled.div`
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 11%;
+`;
+export const AnswerLike = styled.div`
+  color: #667085;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+`;
+export const AnswerContent = styled.div`
+  padding: 1rem 0;
+  font-size: 1rem;
+  line-height: 150%;
+`;
+export const AnswerCardBottom = styled.div`
+  display: flex;
+  justify-content: end;
+  color: #667085;
+  cursor: default;
+`;
+export const AnswerCreatedAt = styled.div`
+  font-size: 0.9rem;
+  margin: 0 0.5rem;
+`;
+export const AnswerButtons = styled.div`
+  font-size: 0.9rem;
+  margin: 0 0.5rem;
+  cursor: default;
+`;
+export const AddAnswerButton = styled.div`
+  font-size: 1rem;
+  text-decoration: underline;
+  cursor: default;
+`;
+
+export const AnswerPageBtns = styled.div`
+  margin: 3rem 1rem;
+  font-size: 1rem;
+  display: flex;
+  justify-content: center;
+`;
+
+export const AnswerPage = styled.div`
+  margin: 0 1rem;
+  cursor: default;
+`;

@@ -6,7 +6,7 @@ type propTypes = {
   content: string;
   count: number;
   selectedBtn: number[];
-  handleSelectedBtn: Function;
+  handleSelectedBtn: React.Dispatch<React.SetStateAction<number[]>>;
   duplicate: boolean | undefined;
   voteType: string | undefined;
   id: number;
@@ -33,7 +33,7 @@ export const DupleVoteContainer = ({
 
   const onVote = () => {
     if (clicked) {
-      let result: Number[] = [];
+      let result: number[] = [];
       if (duplicate) {
         handleFocus();
         result = selectedBtn.filter((el) => el !== id);

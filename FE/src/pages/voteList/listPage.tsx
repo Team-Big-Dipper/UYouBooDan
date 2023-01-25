@@ -16,7 +16,7 @@ interface props {
 }
 interface propsArray {
   data: props[];
-  setCondition: Function;
+  setCondition: React.Dispatch<React.SetStateAction<string>>;
   setPage: Function;
   totalPage: number;
 }
