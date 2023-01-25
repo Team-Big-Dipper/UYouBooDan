@@ -5,18 +5,18 @@ import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberPatchReqDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberPostReqDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberResDto;
+import TeamBigDipper.UYouBooDan.member.dto.PasswordReqDto;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -100,13 +100,54 @@ public class MemberController {
      * @return "data" : "String"
      */
     @GetMapping("/find-all")
-    public ResponseEntity<MultiResDto<String>> getMembers (Pageable pageable) {
-        List<String> list = new ArrayList<>();
-        int count = 0;
-        while(count++<30) list.add("Member " + count);
-        Page<String> page = new PageImpl<>(list, pageable, list.size());
+    public ResponseEntity<MultiResDto<MemberResDto>> getMembers (Pageable pageable) {
+        Page<Member> page = memberService.findMembers(pageable);
+        Page<MemberResDto> response = page.map(MemberResDto::new);
+        List<MemberResDto> list = response.stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(new MultiResDto<>(list, page), HttpStatus.OK);
+    }
+
+
+    /**
+     * password 확인 : 성공시 String 메세지, 실패시 BusinessLoginException 발생
+     * 추후 Password 인코더 구현 시 추가 작업 예정
+     */
+    @GetMapping("/verify/{member_id}")
+    public ResponseEntity<SingleResDto<String>> checkPassword(@PathVariable("member_id") Long memberId,
+                                                              @RequestBody(required = false) PasswordReqDto passwordDto) {
+        memberService.verifyPassword(passwordDto.getPassword(), memberId);
+
+        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+    }
+
+
+/**
+ * email확인 및 nickname 확인 API 다음작업시 구현예정 (현재는 Handler메소드만 구현)
+ */
+
+    /**
+     * email 중복확인
+     * @param email
+     * @return
+     */
+    @GetMapping("/verify_email")
+    public ResponseEntity<SingleResDto<String>> checkEmail(@RequestParam(required = false) String email) {
+        memberService.verifyEmail(email);
+
+        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+    }
+
+    /**
+     * 닉네임 중복확인
+     * @param nickname
+     * @return
+     */
+    @GetMapping("/verify_nickname")
+    public ResponseEntity<SingleResDto<String>> checkNickname(@RequestParam(required = false) String nickname) {
+        memberService.verifyNickname(nickname);
+
+        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
     }
 
 }

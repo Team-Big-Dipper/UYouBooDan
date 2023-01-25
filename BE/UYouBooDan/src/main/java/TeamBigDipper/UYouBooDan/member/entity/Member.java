@@ -81,11 +81,14 @@ public class Member extends BaseTimeEntity {
     public void modifyProfile(Photo profile){
         this.profile = profile;
     }
-
     public void modifyMemberStatus(MemberStatus status){
         this.memberStatus = status;
     }
-
     public void withdrawMember(){ this.memberStatus = MemberStatus.MEMBER_QUIT; }
+    public void checkPassword(String password) {
+        System.out.println(this.password.getPassword());
+        System.out.println(password);
+        if(!this.password.getPassword().equals(password)) throw new BusinessLogicException(ExceptionCode.NON_ACCESS_MODIFY);
+    }
 
 }

@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter @Setter
 public class MemberResDto {
 
+    private Long memberId;
+
     private String email;
 
     private String nickname;
@@ -17,6 +19,7 @@ public class MemberResDto {
 
 
     public MemberResDto(Member member) {
+        this.memberId = member.getMemberId();
         this.email = member.getEmail().getEmail();
         this.nickname = member.getNickname().getName();
         this.profile = member.getProfile().getPhoto();

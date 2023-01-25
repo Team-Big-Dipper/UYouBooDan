@@ -2,9 +2,12 @@ package TeamBigDipper.UYouBooDan.member.service;
 
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
+import TeamBigDipper.UYouBooDan.member.dto.PasswordReqDto;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,12 +56,6 @@ public class MemberService {
 
 
     /**
-     * 추후 구현할 기본 메서드
-     * 1. removeMember => 상태 ENUM 문제 해결 후 구현 예정
-     * 2. findMembers => DB 구성 완료 후 구현 예정 (현재는 Controller 내 더미데이터 반환)
-     */
-
-    /**
      * Member 완전 삭제시 사용
      */
     @Transactional
@@ -88,4 +85,36 @@ public class MemberService {
         return member;
     }
 
+
+    /**
+     * 전체 회원 조회용 (Default는 10계정)
+     * @param pageable : page, size, sort 등 사용 가능
+     * @return Page 구조
+     */
+    public Page<Member> findMembers (Pageable pageable) {
+        return memberRepository.findAll(pageable);
+    }
+
+    /**
+     * password 일치 여부 조회 메소드
+     * @param passwordDto
+     * @param memberId
+     */
+    public void verifyPassword (String password, Long memberId) {
+        Member member = new Member().verifyMember(memberRepository.findById(memberId));
+        member.checkPassword(password);
+    }
+
+
+    public void verifyEmail (String email) {
+        /**
+         * 중복확인 쿼리 메서드 구현하기
+          */
+    }
+
+    public void verifyNickname (String nickname) {
+        /**
+         * 중복확인 쿼리 메서드 구현하기
+         */
+    }
 }

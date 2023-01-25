@@ -9,4 +9,5 @@ import javax.persistence.Embeddable;
 @Embeddable
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 public class Password { private String password; }
