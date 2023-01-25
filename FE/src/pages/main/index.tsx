@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import * as S from './style';
 import { Fingerprint } from '../../assets/fingerprint';
+import { HotVote } from '../../components/Main/HotVote';
 
 function Main() {
   
@@ -98,67 +99,76 @@ function Main() {
     </S.ContinueVoteContainer>
     <S.HotContainer>
       <S.HotTitle><span>핫한</span>&nbsp;투표를 만나보세요!</S.HotTitle>
+      <HotVote />
     </S.HotContainer>
     <S.ImageDeadLineContainer>
       <S.ImageContainer></S.ImageContainer>
-      {/* <S.DeadLineContainer>
+      <S.DeadLineContainer>
         <S.DeadLineTitle>
           <div className='title'>마감임박 투표</div>
           <div className='more'>더보기 &gt;</div>
         </S.DeadLineTitle>
         <S.DeadLineTable>
           <S.DeadLineCards>
-            <S.DeadLineCard>
-              <div>
-                <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                <S.CardContent>
-                  Lorem ipsum dolor sit amet
-                </S.CardContent>
-              </div>
-              <S.AuthorDay>
-                작성자
-                <span>2023.01.16</span>
-              </S.AuthorDay>
-            </S.DeadLineCard>
-            <S.DeadLineCard>
-              <div>
-                <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                <S.CardContent>
-                  Lorem ipsum dolor sit amet
-                </S.CardContent>
-              </div>
-              <S.AuthorDay>
-                작성자
-                <span>2023.01.16</span>
-              </S.AuthorDay>
-            </S.DeadLineCard>
-            <S.DeadLineCard>
-              <div>
-                <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                <S.CardContent>
-                  Lorem ipsum dolor sit amet
-                </S.CardContent>
-              </div>
-              <S.AuthorDay>
-                작성자
-                <span>2023.01.16</span>
-              </S.AuthorDay>
-            </S.DeadLineCard>
-            <S.DeadLineCard>
-              <div>
-                <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                <S.CardContent>
-                  Lorem ipsum dolor sit amet
-                </S.CardContent>
-              </div>
-              <S.AuthorDay>
-                작성자
-                <span>2023.01.16</span>
-              </S.AuthorDay>
-            </S.DeadLineCard>
+            <tr>
+              <S.DeadLineCard className='top'>
+                <div>
+                  <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                  <S.CardContent>
+                    Lorem ipsum dolor sit amet
+                  </S.CardContent>
+                </div>
+                <S.AuthorDay>
+                  작성자
+                  <span>2023.01.16</span>
+                </S.AuthorDay>
+              </S.DeadLineCard>
+            </tr>
+            <tr>
+              <S.DeadLineCard className='second'>
+                <div>
+                  <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                  <S.CardContent>
+                    Lorem ipsum dolor sit amet
+                  </S.CardContent>
+                </div>
+                <S.AuthorDay>
+                  작성자
+                  <span>2023.01.16</span>
+                </S.AuthorDay>
+              </S.DeadLineCard>
+            </tr>
+            <tr>
+              <S.DeadLineCard>
+                <div>
+                  <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                  <S.CardContent>
+                    Lorem ipsum dolor sit amet
+                  </S.CardContent>
+                </div>
+                <S.AuthorDay>
+                  작성자
+                  <span>2023.01.16</span>
+                </S.AuthorDay>
+              </S.DeadLineCard>
+            </tr>
+            <tr>
+              <S.DeadLineCard className='bottom'>
+                <div>
+                  <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                  <S.CardContent>
+                    Lorem ipsum dolor sit amet
+                  </S.CardContent>
+                </div>
+                <S.AuthorDay>
+                  작성자
+                  <span>2023.01.16</span>
+                </S.AuthorDay>
+              </S.DeadLineCard>
+            </tr>
           </S.DeadLineCards>
         </S.DeadLineTable>
-      </S.DeadLineContainer> */}
+      </S.DeadLineContainer>
     </S.ImageDeadLineContainer>
   </S.MainContainer>
   );
