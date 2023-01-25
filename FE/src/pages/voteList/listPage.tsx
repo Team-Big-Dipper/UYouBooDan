@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
 import { RadioButton } from '../../components/VoteList/RadioButton';
@@ -16,7 +16,7 @@ interface props {
 }
 interface propsArray {
   data: props[];
-  setCondition: Function;
+  setCondition: React.Dispatch<React.SetStateAction<string>>;
   setPage: Function;
   totalPage: number;
 }

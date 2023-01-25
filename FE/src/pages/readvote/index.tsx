@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
 import VoteTitle from '../../components/ReadVote/voteTitle';
 import VoteContent from '../../components/ReadVote/voteContent';
 import AnswerList from '../../components/ReadVote/answerList';
-import { VoteContainer } from '../../components/ReadVote/VoteContainer';
+import { DupleVoteContainer } from '../../components/ReadVote/dupleVoteContainer';
 import { useRouter } from 'next/router';
 import VoteBtn from '../../components/ReadVote/voteBtn';
 
@@ -19,20 +19,30 @@ interface stateType {
   closedAt: any;
   views: number;
   likes: number;
+  duplicate: boolean | undefined;
+  voteType: string;
 }
 
 interface voteType {
   content: string;
   count: number;
+  id: number;
 }
 const ReadVote = () => {
   const router = useRouter();
   const { pid } = router.query;
   const [data, setData] = useState<stateType>();
   const [voteBtns, setVoteBtns] = useState<voteType[]>();
-  const [selectedBtn, setSelectedBtn] = useState<string[]>([]);
+  const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
+  const displayStyle = useMemo((): any => {
+    if (data?.voteType === 'image') {
+      return { display: 'flex', flexWrap: 'wrap', justifyContent: 'center' };
+    } else {
+      return;
+    }
+  }, [data?.voteType]);
 
-  const handleSelectedBtn = useCallback((array: string[]) => {
+  const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
   //api요청하는 곳
@@ -49,14 +59,55 @@ const ReadVote = () => {
       image:
         'https://cdn.pixabay.com/photo/2023/01/01/23/37/woman-7691013_640.jpg',
       vote: [
-        { content: '카페인', count: 3 },
-        { content: '디카페인', count: 4 },
-        { content: '아무거나', count: 4 },
-        { content: '둘다', count: 4 },
+        { id: 1, content: '카페인', count: 3 },
+        { id: 2, content: '디카페인', count: 4 },
+        { id: 3, content: '아무거나', count: 4 },
+        { id: 4, content: '둘다', count: 4 },
       ],
+      // vote: [
+      //   {
+      //     id: 1,
+      //     content:
+      //       'https://cdn.pixabay.com/photo/2014/11/05/15/57/salmon-518032__480.jpg',
+      //     count: 3,
+      //   },
+      //   {
+      //     id: 2,
+      //     content:
+      //     'https://cdn.pixabay.com/photo/2017/03/23/19/57/asparagus-2169305__480.jpg',
+      //   count: 4,
+      // },
+      // {
+      //   id: 3,
+      //   content:
+      //     'https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552__480.jpg',
+      //   count: 4,
+      // },
+      // {
+      //   id: 4,
+      //   content:
+      //     'https://cdn.pixabay.com/photo/2014/04/22/02/56/pizza-329523__480.jpg',
+      //   count: 4,
+      // },
+      //   {
+      //     id: 5,
+      //     content:
+      //       'https://cdn.pixabay.com/photo/2018/10/14/18/29/meatloaf-3747129__480.jpg',
+      //     count: 4,
+      //   },
+      //   {
+      //     id: 6,
+      //     content:
+      //       'https://cdn.pixabay.com/photo/2018/05/01/18/21/eclair-3366430__480.jpg',
+      //     count: 4,
+      //   },
+      // ],
       closedAt: 20220111,
       views: 10,
       likes: 5,
+      duplicate: true,
+      voteType: 'text',
+      closed: false,
     };
     setData({ ...data2 });
     setVoteBtns([...data2.vote]);
@@ -77,17 +128,21 @@ const ReadVote = () => {
         likes={data?.likes}
       />
       <VoteContent content={data?.content} image={data?.image} />
-      <>
+      <div style={displayStyle}>
         {voteBtns?.map((el, idx) => (
-          <VoteContainer
+          <DupleVoteContainer
             key={idx}
+            id={el.id}
             content={el.content}
             count={el.count}
             selectedBtn={selectedBtn}
+            duplicate={data?.duplicate}
             handleSelectedBtn={handleSelectedBtn}
+            voteType={data?.voteType}
           />
         ))}
-      </>
+      </div>
+      <S.TotalVoteCount>총투표수: 2222222표</S.TotalVoteCount>
       <VoteBtn />
       <AnswerList />
     </S.PageContainer>
