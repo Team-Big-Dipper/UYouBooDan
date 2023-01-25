@@ -113,9 +113,9 @@ public class MemberController {
      * password 확인 : 성공시 String 메세지, 실패시 BusinessLoginException 발생
      * 추후 Password 인코더 구현 시 추가 작업 예정
      */
-    @GetMapping("/verify/{member_id}")
+    @PostMapping("/verify/{member_id}")
     public ResponseEntity<SingleResDto<String>> checkPassword(@PathVariable("member_id") Long memberId,
-                                                              @RequestBody(required = false) PasswordReqDto passwordDto) {
+                                                              @RequestBody PasswordReqDto passwordDto) {
         memberService.verifyPassword(passwordDto.getPassword(), memberId);
 
         return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
