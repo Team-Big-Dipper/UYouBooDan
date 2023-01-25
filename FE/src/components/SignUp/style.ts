@@ -78,6 +78,7 @@ export const EmailFailureMsg = styled.div`
 `;
 
 // password
+// extend -> 상속 개념!
 interface ValidAndExist {
   valid: string;
   exist: string;
@@ -95,6 +96,10 @@ export const PwInput = styled.div<ValidAndExist>`
     props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
       ? '1px solid red'
       : '1px solid #d6d9dc'};
+  background-color: ${(props) =>
+    props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+      ? '#FFF7F7'
+      : 'white'};
   display: flex;
   justify-content: space-between;
   height: 5.5vh;
@@ -103,6 +108,14 @@ export const PwInput = styled.div<ValidAndExist>`
   margin-bottom: 1vh;
   input {
     font-size: 1rem;
+    color: ${(props) =>
+      props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+        ? '#FF2F2F'
+        : 'black'};
+    background-color: ${(props) =>
+      props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+        ? '#FFF7F7'
+        : 'white'};
     width: 80%;
     border: none;
     outline: none;
@@ -118,12 +131,16 @@ export const PwVectorDiv = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-
+// #FFF7F7 -> 약간 핑크빛
 export const PwCheckInput = styled.div<ValidAndExist>`
   border: ${(props) =>
     props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
       ? '1px solid red'
       : '1px solid #d6d9dc'};
+  background-color: ${(props) =>
+    props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+      ? '#FFF7F7'
+      : 'white'};
   display: flex;
   justify-content: space-between;
   height: 5.5vh;
@@ -132,6 +149,14 @@ export const PwCheckInput = styled.div<ValidAndExist>`
   margin-bottom: 1vh;
   input {
     font-size: 1rem;
+    color: ${(props) =>
+      props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+        ? '#FF2F2F'
+        : 'black'};
+    background-color: ${(props) =>
+      props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
+        ? '#FFF7F7'
+        : 'white'};
     width: 80%;
     border: none;
     outline: none;

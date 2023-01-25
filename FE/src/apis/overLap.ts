@@ -1,20 +1,55 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
-// export interface UserEmail {
-//   email: string;
-// }
+const overLapAxios = axios.create({ baseURL: 'api' });
 
-const emailCheckApi = async (email: string) => {
-  console.log('emailCheckApi내부 axios직전 매개변수 : ', email);
-  await axios
-    .get<any, { email: string }>('/api/members/verify')
-    // .get('/api/members/verify',  {email: email})
-    .then((res) => {
-      console.log('apis->emailCheckApi-> res', res);
+// const overLapApi = (email?: string, nickname?: string): void => {
+//   overLapAxios
+//     .get('/members/verify', {
+//       params: {
+//         email,
+//         nickname,
+//       },
+//     })
+//     .then((res: AxiosResponse) => {
+//       console.log('Hooks -> overLapApi res : ', res);
+//     })
+//     .catch((err: AxiosError) => {
+//       console.log(err.message);
+//     });
+// };
+const overLapEmailApi = (
+  email: string,
+  callback: (str: string) => void,
+): void => {
+  overLapAxios
+    .get('/members/verify_email', {
+      params: {
+        email,
+      },
     })
-    .catch((err) => {
+    .then((res: AxiosResponse) => {
+      console.log('Hooks -> overLapApi res : ', res);
+      callback('사용가능한 이메일 입니다.');
+    })
+    .catch((err: AxiosError) => {
+      console.log(err.message);
+      callback('중복된 이메일 입니다.');
+    });
+};
+const overLapNickApi = (nickname?: string): void => {
+  overLapAxios
+    .get('/members/verify_nick', {
+      params: {
+        nickname,
+      },
+    })
+    .then((res: AxiosResponse) => {
+      console.log('Hooks -> overLapApi res : ', res);
+    })
+    .catch((err: AxiosError) => {
       console.log(err.message);
     });
 };
 
-export { emailCheckApi };
+// export { overLapApi };
+export { overLapEmailApi, overLapNickApi };
