@@ -7,6 +7,8 @@ server:
       force: true
 
 spring:
+  profiles:
+    active: local   # 로컬 프로파일 사용을 위한 설정
   jpa:
     hibernate:
       ddl-auto: create

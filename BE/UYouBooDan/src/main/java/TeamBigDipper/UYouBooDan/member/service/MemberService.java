@@ -2,7 +2,6 @@ package TeamBigDipper.UYouBooDan.member.service;
 
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
-import TeamBigDipper.UYouBooDan.member.dto.PasswordReqDto;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +58,7 @@ public class MemberService {
      * Member 완전 삭제시 사용
      */
     @Transactional
-    public void removeMembers (Long memberId) {
+    public void removeMember(Long memberId) {
         Member verifyMember = new Member().verifyMember(memberRepository.findById(memberId));
         memberRepository.delete(verifyMember);
     }
@@ -97,7 +96,6 @@ public class MemberService {
 
     /**
      * password 일치 여부 조회 메소드
-     * @param passwordDto
      * @param memberId
      */
     public void verifyPassword (String password, Long memberId) {

@@ -86,8 +86,6 @@ public class Member extends BaseTimeEntity {
     }
     public void withdrawMember(){ this.memberStatus = MemberStatus.MEMBER_QUIT; }
     public void checkPassword(String password) {
-        System.out.println(this.password.getPassword());
-        System.out.println(password);
         if(!this.password.getPassword().equals(password)) throw new BusinessLogicException(ExceptionCode.NON_ACCESS_MODIFY);
     }
 
