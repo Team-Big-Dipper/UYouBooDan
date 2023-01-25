@@ -57,9 +57,8 @@ public class CommentController {
     }
 
     /**
-     * 댓글 삭제
+     * 댓글 삭제 (Repository에서 실제 삭제가 아닌 상태값만 변경하므로 Patch 요청 메소드를 사용하였습니다.)
      * @param commentId
-     * @param commentPatchReqDto
      * @return
      */
     @PatchMapping("/comments/{commentId}/remove")
