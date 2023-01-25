@@ -25,6 +25,7 @@ public class MemberPostReqDto {
                 .password(new Password(this.password))
                 .nickname(new Name(this.nickname))
                 .profile(new Photo(this.profile))
+                .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                 .build();
         return member;
     }

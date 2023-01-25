@@ -17,11 +17,10 @@ import java.util.Optional;
 @Builder
 @Getter
 @Entity
-public class Member {  // extends BaseTimeEntity문제가 발생하여 추후 수정후 적용할 예정
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
     private Long memberId;
 
     @Embedded
@@ -36,13 +35,9 @@ public class Member {  // extends BaseTimeEntity문제가 발생하여 추후 �
     @Embedded
     private Photo profile;
 
-    /**
-     * Unable to instantiate custom type: org.hibernate.type.EnumType 에러발생
-     * 에러 수정 후 활성화 할 예정입니다.
-     */
-//    @Enumerated(EnumType.STRING)
-//    @Builder.Default
-//    private Enum memberStatus = MemberStatus.MEMBER_ACTIVE;
+    @Enumerated(value = EnumType.STRING)
+    @Column(length = 20, nullable = false)  // 컬럼설정 지정 안할시 오류 발생 => Unable to instantiate custom type: org.hibernate.type.EnumType 에러발생
+    private MemberStatus memberStatus;
 
 
     /**
@@ -86,5 +81,11 @@ public class Member {  // extends BaseTimeEntity문제가 발생하여 추후 �
     public void modifyProfile(Photo profile){
         this.profile = profile;
     }
+
+    public void modifyMemberStatus(MemberStatus status){
+        this.memberStatus = status;
+    }
+
+    public void withdrawMember(){ this.memberStatus = MemberStatus.MEMBER_QUIT; }
 
 }

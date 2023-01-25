@@ -4,6 +4,7 @@ import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberPatchReqDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberPostReqDto;
+import TeamBigDipper.UYouBooDan.member.dto.MemberResDto;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -58,25 +59,39 @@ public class MemberController {
      * Delete 요청
      * 애너테이션은 delete 요청을 받을 것이므로, DeleteMapping으로 받음
      * 상태변환을 할 예정이므로, HttpStatus는 NO_CONTENT가 아닌 OK로 함
-     * @return "data" : "String"
+     * 회원탈퇴(withdraw) 후 성공 메세지 반환
+     * @return "data" : "성공 메세지"
      */
-    @DeleteMapping("/remove")
-    public ResponseEntity<SingleResDto<String>> deleteMember () {
-        /**
-         * 로그인한 사용자 Id값을 받아 상태 변환 예정
-         */
+    @DeleteMapping("/remove/{member_id}")
+    public ResponseEntity<SingleResDto<String>> withdrawMember (@PathVariable("member_id") Long memberId) {
+        memberService.withdrawMember(memberId);
+
+        return new ResponseEntity<>(new SingleResDto<>("Success Withdraw"), HttpStatus.OK);
+    }
+
+
+    /**
+     * 회원 삭제 메소드
+     * @return 삭제 성공 메세지
+     */
+    @DeleteMapping("/delete/{member_id}")
+    public ResponseEntity<SingleResDto<String>> deleteMember (@PathVariable("member_id") Long memberId) {
+        memberService.removeMembers(memberId);
+
         return new ResponseEntity<>(new SingleResDto<>("Success Delete"), HttpStatus.OK);
     }
 
 
     /**
      * 단일 Get 요청
-     * @return "data" : "String"
+     * @return "data" : "단일 객체에 대한 응답정보"
      */
-    @GetMapping("/find")
-    public ResponseEntity<SingleResDto<String>> getMember () {
+    @GetMapping("/find/{member_id}")
+    public ResponseEntity<SingleResDto<MemberResDto>> getMember (@PathVariable("member_id") Long memberId) {
+        Member member = memberService.findMember(memberId);
+        MemberResDto response = new MemberResDto(member);
 
-        return new ResponseEntity<>(new SingleResDto<>("Success Get"), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
     }
 
 
