@@ -1,9 +1,11 @@
 package TeamBigDipper.UYouBooDan.comment.controller;
 
+import TeamBigDipper.UYouBooDan.comment.dto.CommentLikeResDto;
 import TeamBigDipper.UYouBooDan.comment.dto.CommentPatchReqDto;
 import TeamBigDipper.UYouBooDan.comment.dto.CommentPostReqDto;
 import TeamBigDipper.UYouBooDan.comment.dto.CommentResDto;
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
+import TeamBigDipper.UYouBooDan.comment.entity.CommentLike;
 import TeamBigDipper.UYouBooDan.comment.service.CommentService;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import lombok.RequiredArgsConstructor;
@@ -97,4 +99,13 @@ public class CommentController {
         return new ResponseEntity<>(new MultiResDto<>(commentList, dtoPage), HttpStatus.OK);
     }
 
+    @PostMapping("/comments/{commentId}/{memberId}/like")
+    public ResponseEntity<CommentLikeResDto> postCommentLike(@PathVariable(value = "commentId") Long commentId,
+                                                             @PathVariable(value = "memberId") Long memberId){
+        CommentLike commentLike = commentService.likeComment(commentId, memberId);
+        CommentLikeResDto response = new CommentLikeResDto(commentLike);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
 }
