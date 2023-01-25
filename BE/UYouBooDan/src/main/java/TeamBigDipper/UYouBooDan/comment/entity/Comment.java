@@ -20,4 +20,18 @@ public class Comment extends BaseTimeEntity {
 
     private CommentStatus commentStatus;
 
+    public enum CommentStatus {
+        ACTIVE(0, "활성화"),
+        REMOVED(1, "삭제된 댓글");
+
+        @Getter
+        private int code;
+        @Getter
+        private String message;
+
+        CommentStatus(int code, String message) {
+            this.code = code;
+            this.message = message;
+        }
+    }
 }
