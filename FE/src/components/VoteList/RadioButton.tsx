@@ -3,7 +3,7 @@ import { conditions } from '../../constants/conditions';
 
 type ConditionProps = {
   condition: string;
-  setCondition: Function;
+  setCondition: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const RadioButton = ({ condition, setCondition }: ConditionProps) => {
