@@ -146,6 +146,7 @@ export const HotContainer = styled.div`
   background-size: 100% 100%;
   padding: 0 20%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -153,6 +154,7 @@ export const HotTitle = styled.div`
   color: #242424;
   font-family: 'yg-jalnan' !important;
   font-size: 1.2rem;
+  margin-bottom: 20px;
   span{
     color: #4285F4;
     font-family: 'yg-jalnan' !important;
@@ -191,15 +193,20 @@ export const DeadLineTitle = styled.div`
     font-size: 0.9rem;
   }
 `;
-export const DeadLineTable = styled.table`
+export const DeadLineTable = styled.div`
   width: 100%;
 `;
-export const DeadLineCards = styled.tbody`
-  display: flex;
-  flex-direction: column;
+export const DeadLineCards = styled.table`
+  /* display: flex;
+  flex-direction: column; */
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+  border-radius: 12px;
 `;
-export const DeadLineCard = styled.tr`
+export const DeadLineCard = styled.td`
   display: flex;
+  display: table-cell;
   flex-direction: column;
   justify-content: space-between;
   height: 130px;
@@ -211,5 +218,13 @@ export const DeadLineCard = styled.tr`
   cursor: pointer;
   &:hover {
     border: 1px solid #4285F4;
+  }
+  &.top{
+   border-top-left-radius : 12px;
+   border-top-right-radius: 12px;
+  }
+  &.bottom{
+    border-end-start-radius: 12px;
+    border-end-end-radius: 12px;
   }
 `;
