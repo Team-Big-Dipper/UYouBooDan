@@ -79,8 +79,7 @@ public class MemberService {
      * @return : 1명의 member 정보를 반환 => 맞춰서 ResponseDto 제작 예정
      */
     public Member findMember(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        Member member = new Member().verifyMember(memberRepository.findById(memberId));
         return member;
     }
 
