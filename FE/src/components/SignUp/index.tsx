@@ -1,17 +1,14 @@
 import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
-import useOverLapCheck from '../../hooks/signup/useOverLap';
 import useCheckPw from '../../hooks/signup/useCheckPw';
+// import useCheck from '../../hooks/signup/useCheck';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import { emailCheckApi } from '../../apis/overLap';
 import { DeleteSvg } from '../../assets/delete';
 import { VectorSvg } from '../../assets/vector';
 import { SuccessSvg } from '../../assets/success';
 import { FailureSvg } from '../../assets/failure';
-// import axios, { AxiosError, AxiosResponse } from 'axios';
-// import { useEffect } from 'react';
+import { overLapEmailApi, overLapNickApi } from '../../apis/overLap';
 
 const SignUp = () => {
   const {
@@ -23,17 +20,31 @@ const SignUp = () => {
   } = useForm({
     mode: 'onChange', // mode: onChange 를 써줘야 아래 errors도 확인(출력) 가능!
   });
-  const { emailCheck } = useOverLapCheck();
   const [checkedOne, setCheckedOne] = useState(false);
   const [checkedTwo, setCheckedTwo] = useState(false);
   const [emailMsg, setEmailMsg] = useState('사용 가능한 아이디입니다.');
+  // const [isClickEmailBtn, setIsClickEmailBtn] = useState(false);
   const [pwMsg, setPwMsg] = useState('');
   const [nickMsg, setNickMsg] = useState('사용가능한 닉네임입니다.');
+  // const { checkEmail, checkNick } = useCheck();
   const { checkPw } = useCheckPw(
     watch('password'),
     watch('passwordCheck'),
     setPwMsg,
   );
+  useEffect(() => {
+    if (watch('email') && errors.email?.message) {
+      setEmailMsg('이메일형식이 올바르지 않습니다.');
+    } else if (watch('email') && !errors.email?.message) {
+      setEmailMsg('');
+    } else if (!watch('email')) {
+      setEmailMsg('');
+    }
+    // else if (watch('email') && !errors.email?.message && isClickEmailBtn) {
+    //   checkEmail(setEmailMsg);
+    // }
+  }, [watch('email')]);
+  // password 유효성 메세지 UI 나오게 하는 코드
   useEffect(() => {
     console.log('useEffect들어옴');
     if (watch('passwordCheck').length) {
@@ -41,8 +52,6 @@ const SignUp = () => {
       checkPw();
     }
   }, [watch('passwordCheck'), watch('password')]);
-  // -> 비밀번호 1234 입력 후 재확인 비밀번호 12344 입력하면 불일치
-  // -> 다시 비밀번호 1234에 4추가해주면 일치하다고 안나오던거 위 코드로 일치한다고 나옴!
 
   // checkPw(watch('password'), 'watch('passwordCheck')', setPwMsg);
   // useEffect(() => {
@@ -60,17 +69,37 @@ const SignUp = () => {
   //       console.log('요청 실패!', err.message);
   //     });
   // }, []);
-  const [a, setA] = useState(false);
-  // useEffect(() => {
-  //   axios
-  //     .get('/api/members/verify')
-  //     .then((res) => {
-  //       console.log('요청성공!', res);
+
+  // interface CustomInstance extends AxiosInstance {
+  //   interceptors: {
+  //     request: AxiosInterceptorManager<AxiosRequestConfig>;
+  //     response: AxiosInterceptorManager<AxiosResponse>;
+  //   };
+  //   // get<T>(
+  //   //   url: string,
+  //   //   params?: any,
+  //   //   headers?: any,
+  //   //   data?: any,
+  //   //   config?: AxiosRequestConfig<any> | undefined,
+  //   // ): Promise<T>;
+  //   post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
+  // }
+
+  // const client = axios.create({ baseURL: 'api' });
+
+  // const onClickBtn = (): void => {
+  //   client
+  //     .post('/members/verify', {
+  //       email: 'test@test.com',
+  //       password: '비밀번호야!',
   //     })
-  //     .catch((err) => {
-  //       console.log('요청실패!', err.message);
+  //     .then((res: AxiosResponse) => {
+  //       console.log('onClickBtn -> res : ', res);
+  //     })
+  //     .catch((err: AxiosError) => {
+  //       console.log(err.message);
   //     });
-  // }, [a]);
+  // };
 
   const onValid = () => {
     return;
@@ -78,9 +107,7 @@ const SignUp = () => {
   const onInValid = () => {
     return;
   };
-  // 왜 div태그에서 에러가 나는걸까??
-  // 이 JSX 태그의 'children' 속성에는 'ReactNode'
-  // 형식의 자식 하나가 필요하지만, 여러 자식이 제공되었습니다. ???
+
   return (
     <S.SignUpContainer>
       <form onSubmit={handleSubmit(onValid, onInValid)}>
@@ -101,7 +128,6 @@ const SignUp = () => {
                   },
                 })}
               />
-              {/* <S.EmailInputDelete>x</S.EmailInputDelete> */}
               <S.EmailDeleteDiv>
                 <DeleteSvg />
               </S.EmailDeleteDiv>
@@ -109,27 +135,39 @@ const SignUp = () => {
             <button
               type="button"
               onClick={() => {
-                setA(!a);
-                emailCheckApi(watch('email'));
-                emailCheck(watch('email'));
+                if (watch('email') && !errors.email?.message) {
+                  overLapEmailApi(watch('email'), setEmailMsg);
+                }
               }}
             >
               중복체크
             </button>
           </S.EmailInputBtnDiv>
-
-          {/* <>
-            {console.log('watch(email) : ', watch('email'))}
-            {console.log('errors.email?.message : ', errors.email?.message)}
-          </> */}
-          <S.EmailSuccessMsg>
+          {(watch('email') && errors.email?.message && emailMsg) ||
+          emailMsg === '이메일형식이 올바르지 않습니다.' ||
+          emailMsg === '중복된 이메일 입니다.' ? (
+            <S.EmailFailureMsg>
+              <FailureSvg />
+              {emailMsg}
+            </S.EmailFailureMsg>
+          ) : watch('email') &&
+            !errors.email?.message &&
+            emailMsg === '사용가능한 이메일 입니다.' ? (
+            <S.EmailSuccessMsg>
+              <SuccessSvg />
+              {emailMsg}
+            </S.EmailSuccessMsg>
+          ) : (
+            <></>
+          )}
+          {/* <S.EmailSuccessMsg>
             <SuccessSvg />
             {emailMsg}
           </S.EmailSuccessMsg>
           <S.EmailFailureMsg>
             <FailureSvg />
             {emailMsg}
-          </S.EmailFailureMsg>
+          </S.EmailFailureMsg> */}
         </S.EmailContainer>
         <S.PwContainer>
           <S.PwTitle>비밀번호</S.PwTitle>
@@ -182,8 +220,6 @@ const SignUp = () => {
           <S.PwNotice>
             *대소문자,숫자,특수문자 포함하여 8~15자로 작성해주세요.
           </S.PwNotice>
-          {/* <S.PwValidMsg>비밀번호가 일치 || 일치하지 않습니다.</S.PwValidMsg> */}
-          {/* { 1,2 아무것도 없을때 -> msg 없음, 1 에러 x &&} */}
           {!errors.password?.message && pwMsg === '비밀번호가 일치합니다.' ? (
             <S.PwSuccessMsg>
               <SuccessSvg />
@@ -202,14 +238,6 @@ const SignUp = () => {
           ) : (
             <></>
           )}
-          {/* <S.PwSuccessMsg>
-            <SuccessSvg />
-            {pwMsg}
-          </S.PwSuccessMsg>
-          <S.PwFailureMsg>
-            <FailureSvg />
-            {pwMsg}
-          </S.PwFailureMsg> */}
         </S.PwContainer>
         <S.NickContainer>
           <S.NickTitle>닉네임</S.NickTitle>
@@ -221,9 +249,17 @@ const SignUp = () => {
                 {...register('nickname', {})}
               />
             </S.NickInputDiv>
-            <button type="button">중복체크</button>
+            <button
+              type="button"
+              onClick={() => {
+                if (watch('nickname') && !errors.nickname?.message) {
+                  overLapNickApi(watch('nickname'));
+                }
+              }}
+            >
+              중복체크
+            </button>
           </S.NickInputAndBtn>
-          {/* <S.NickValidMsg>사용가능한 || 중인 닉네임입니다.</S.NickValidMsg> */}
           <S.NickSuccessMsg>
             <SuccessSvg />
             {nickMsg}
@@ -238,26 +274,24 @@ const SignUp = () => {
           <S.TermsContentOne>
             <S.TermsOneRadioAndText>
               <input
-                type="radio"
+                type="checkbox"
                 checked={checkedOne}
-                onClick={() => {
-                  setCheckedOne(!checkedOne);
-                }}
+                onChange={() => setCheckedOne(!checkedOne)}
               />
               <div>개인정보 수집 및 이용 동의(필수)</div>
+              <>{console.log('첫번째체크여부', checkedOne)}</>
             </S.TermsOneRadioAndText>
             <S.TermsOneInfo>보기</S.TermsOneInfo>
           </S.TermsContentOne>
           <S.TermsContentTwo>
             <S.TermsTwoRadioAndText>
               <input
-                type="radio"
+                type="checkbox"
                 checked={checkedTwo}
-                onClick={() => {
-                  setCheckedTwo(!checkedTwo);
-                }}
+                onChange={() => setCheckedTwo(!checkedTwo)}
               />
               <div>이용약관동의(필수)</div>
+              <>{console.log('두번째체크여부', checkedTwo)}</>
             </S.TermsTwoRadioAndText>
             <S.TermsTwoInfo>보기</S.TermsTwoInfo>
           </S.TermsContentTwo>
