@@ -1,3 +1,3 @@
 import mockUsers from './users';
-
-export { mockUsers };
+import mockVote from './vote';
+export { mockUsers, mockVote };
