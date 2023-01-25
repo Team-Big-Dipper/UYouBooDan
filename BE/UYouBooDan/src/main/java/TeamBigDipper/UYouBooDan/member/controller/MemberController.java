@@ -47,9 +47,9 @@ public class MemberController {
      * @param memberId : 시큐리티 구성 전 임시 Variable
      * @return void
      */
-    @PatchMapping("/edit/{member_id}")
+    @PatchMapping("/edit/{member-id}")
     public ResponseEntity<SingleResDto<String>> patchMember (@RequestBody MemberPatchReqDto memberPatchReqDto,
-                                                             @PathVariable("member_id") Long memberId) {
+                                                             @PathVariable("member-id") Long memberId) {
         memberService.modifyMember(memberPatchReqDto.toEntity(), memberId);
         return new ResponseEntity<>(new SingleResDto<>("Success Patch"), HttpStatus.OK);
     }
@@ -62,8 +62,8 @@ public class MemberController {
      * 회원탈퇴(withdraw) 후 성공 메세지 반환
      * @return "data" : "성공 메세지"
      */
-    @DeleteMapping("/remove/{member_id}")
-    public ResponseEntity<SingleResDto<String>> withdrawMember (@PathVariable("member_id") Long memberId) {
+    @DeleteMapping("/remove/{member-id}")
+    public ResponseEntity<SingleResDto<String>> withdrawMember (@PathVariable("member-id") Long memberId) {
         memberService.withdrawMember(memberId);
 
         return new ResponseEntity<>(new SingleResDto<>("Success Withdraw"), HttpStatus.OK);
@@ -74,8 +74,8 @@ public class MemberController {
      * 회원 삭제 메소드
      * @return 삭제 성공 메세지
      */
-    @DeleteMapping("/delete/{member_id}")
-    public ResponseEntity<SingleResDto<String>> deleteMember (@PathVariable("member_id") Long memberId) {
+    @DeleteMapping("/delete/{member-id}")
+    public ResponseEntity<SingleResDto<String>> deleteMember (@PathVariable("member-id") Long memberId) {
         memberService.removeMember(memberId);
 
         return new ResponseEntity<>(new SingleResDto<>("Success Delete"), HttpStatus.OK);
@@ -86,8 +86,8 @@ public class MemberController {
      * 단일 Get 요청
      * @return "data" : "단일 객체에 대한 응답정보"
      */
-    @GetMapping("/find/{member_id}")
-    public ResponseEntity<SingleResDto<MemberResDto>> getMember (@PathVariable("member_id") Long memberId) {
+    @GetMapping("/find/{member-id}")
+    public ResponseEntity<SingleResDto<MemberResDto>> getMember (@PathVariable("member-id") Long memberId) {
         Member member = memberService.findMember(memberId);
         MemberResDto response = new MemberResDto(member);
 
@@ -113,8 +113,8 @@ public class MemberController {
      * password 확인 : 성공시 String 메세지, 실패시 BusinessLoginException 발생
      * 추후 Password 인코더 구현 시 추가 작업 예정
      */
-    @PostMapping("/verify/{member_id}")
-    public ResponseEntity<SingleResDto<String>> checkPassword(@PathVariable("member_id") Long memberId,
+    @PostMapping("/verify/{member-id}")
+    public ResponseEntity<SingleResDto<String>> checkPassword(@PathVariable("member-id") Long memberId,
                                                               @RequestBody PasswordReqDto passwordDto) {
         memberService.verifyPassword(passwordDto.getPassword(), memberId);
 
@@ -131,7 +131,7 @@ public class MemberController {
      * @param email
      * @return
      */
-    @GetMapping("/verify_email")
+    @GetMapping("/verify-email")
     public ResponseEntity<SingleResDto<String>> checkEmail(@RequestParam(required = false) String email) {
         memberService.verifyEmail(email);
 
@@ -143,7 +143,7 @@ public class MemberController {
      * @param nickname
      * @return
      */
-    @GetMapping("/verify_nickname")
+    @GetMapping("/verify-nickname")
     public ResponseEntity<SingleResDto<String>> checkNickname(@RequestParam(required = false) String nickname) {
         memberService.verifyNickname(nickname);
 
