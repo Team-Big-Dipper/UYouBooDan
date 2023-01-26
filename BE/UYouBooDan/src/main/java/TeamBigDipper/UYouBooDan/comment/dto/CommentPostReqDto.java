@@ -1,7 +1,6 @@
 package TeamBigDipper.UYouBooDan.comment.dto;
 
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
-import TeamBigDipper.UYouBooDan.comment.entity.CommentStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +17,7 @@ public class CommentPostReqDto {
                 .memberId(this.memberId)
                 .topicId(topicId)
                 .commentContent(this.commentContent)
-                .commentStatus(CommentStatus.ACTIVE)
+                .commentStatus(Comment.CommentStatus.ACTIVE)
                 .build();
         comment.setCreatedAt(LocalDateTime.now());
         comment.setModifiedAt(LocalDateTime.now());

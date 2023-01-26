@@ -1,7 +1,8 @@
 package TeamBigDipper.UYouBooDan.comment.service;
 
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
-import TeamBigDipper.UYouBooDan.comment.entity.CommentStatus;
+import TeamBigDipper.UYouBooDan.comment.entity.CommentLike;
+import TeamBigDipper.UYouBooDan.comment.repository.CommentLikeRepository;
 import TeamBigDipper.UYouBooDan.comment.repository.CommentRepository;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
@@ -18,13 +19,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
+    /**
+     * 댓글 생성
+     * @param comment
+     * @return
+     */
     @Transactional
     public Comment createComment(Comment comment){
 
         return commentRepository.save(comment);
     }
 
+    /**
+     * 댓글 수정 (현재 댓글 내용만 수정할 수 있습니다.)
+     * @param comment
+     * @return
+     */
     @Transactional
     public Comment updateComment(Comment comment){
         Comment savedComment = commentRepository.findById(comment.getCommendId())
@@ -36,24 +48,72 @@ public class CommentService {
         return commentRepository.save(savedComment);
     }
 
+    /**
+     * 댓글 삭제 (댓글의 CommentStatus 상태를 REMOVED로 변경합니다.)
+     * @param commentId
+     * @return
+     */
     @Transactional
     public Comment deleteComment(Long commentId){
         Comment savedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
-        savedComment.setCommentStatus(CommentStatus.REMOVED);
+        savedComment.setCommentStatus(Comment.CommentStatus.REMOVED);
         savedComment.setModifiedAt(LocalDateTime.now());
 
         return commentRepository.save(savedComment);
     }
 
+    /**
+     * 댓글 조회
+     * @param commentId
+     * @return
+     */
     public Comment getComment(Long commentId){
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
     }
 
+    /**
+     * 댓글 리스트 조회
+     * @param pageable
+     * @param topicId
+     * @return
+     */
     public Page<Comment> getComments(Pageable pageable, Long topicId){
         Page<Comment> page = commentRepository.findAllByTopicIdOrderByCreatedAtDesc(pageable, topicId);
 
         return page;
+    }
+
+    /**
+     * 댓글 좋아요
+     * @param commentId
+     * @param memberId
+     * @return
+     */
+    public CommentLike likeComment(Long commentId, Long memberId){// commentLike 엔티티 내 메서드로 옮겨서 만들어서 쓰자 & 레포지토리 접근은 냅두고
+        Comment savedComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+
+        if(commentLikeRepository.existsByCommentIdAndMemberId(commentId, memberId)){// commentLike 존재할 경우
+            CommentLike savedCommentLike = commentLikeRepository.findByCommentIdAndMemberId(commentId, memberId);
+            if(savedCommentLike.getCommentLikeStatus()){//좋아요로 되어있다면
+                savedCommentLike.setCommentLikeStatus(false);// 좋아요 취소
+                savedCommentLike.setModifiedAt(LocalDateTime.now());
+            }else{
+                savedCommentLike.setCommentLikeStatus(true);// 좋아요가 안되어있으면 좋아요
+                savedCommentLike.setModifiedAt(LocalDateTime.now());
+            }
+            return commentLikeRepository.save(savedCommentLike);
+
+        }else{// commentLike 없을 경우: 새로 생성
+            CommentLike commentLike = new CommentLike();
+            commentLike.setCommentId(commentId);
+            commentLike.setMemberId(memberId);
+            commentLike.setCommentLikeStatus(true);
+            commentLike.setCreatedAt(LocalDateTime.now());
+            commentLike.setModifiedAt(LocalDateTime.now());
+            return commentLikeRepository.save(commentLike);
+        }
     }
 }
