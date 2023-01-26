@@ -10,7 +10,11 @@ public enum ExceptionCode {
 
     NOT_FOUND(404,"찾으신 내역이 일단 없습니다."),
 
-    MEMBER_NOT_FOUND(400, "존재하지 않는 계정입니다.");
+    MEMBER_NOT_FOUND(400, "존재하지 않는 계정입니다."),
+
+
+
+    LOGIN_REQUIRED(401, "로그인이 필요한 서비스 입니다.");
 
 
     @Getter
