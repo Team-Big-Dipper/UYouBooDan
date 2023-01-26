@@ -1,7 +1,6 @@
 package TeamBigDipper.UYouBooDan.comment.dto;
 
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
-import TeamBigDipper.UYouBooDan.comment.entity.CommentStatus;
 import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +11,7 @@ public class CommentResDto extends BaseTimeEntity {
     private Long memberId;
     private Long topicId;
     private String commentContent;
-    private CommentStatus commentStatus;
+    private Comment.CommentStatus commentStatus;
 
     public CommentResDto(Comment comment){
         this.commentId = comment.getCommendId();
