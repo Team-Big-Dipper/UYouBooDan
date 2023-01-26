@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
 import { PathParams, rest, RestRequest } from 'msw';
-import { mockUsers } from './data';
+import { mockUsers, mockVote } from './data';
 
 let MockUsers = [...mockUsers];
 let MockVote = [...mockVote];

@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
 import { TabPanel, useTabs } from 'react-headless-tabs';
 import { TabSelector } from '../../components/CreateVote/TabSelector';
+import { AddInput } from '../../components/CreateVote/AddInput';
 
 //datepicker
 import dayjs, { Dayjs } from 'dayjs';
@@ -22,13 +23,14 @@ enum VoteRuleEnum {
   단일투표 = '단일 투표',
   중복투표 = '중복 투표',
 }
+type topicVoteItems = String[]
 interface Inputs {
   category: CategoryEnum;
-  questionTitle: String;
-  questionContent: String;
+  title: String;
+  content: String;
   voteRule: VoteRuleEnum;
-  answerInput1: String;
-  answerInput2: String;
+  topicVoteItems: topicVoteItems;
+  closedAt: String;
 }
 
 function createvote() {
@@ -86,9 +88,11 @@ function createvote() {
 
   //tab select
   const [selectedTab, setSelectedTab] = useTabs(['글투표', '이미지투표']);
+  const [topicVoteItems, setTopicVoteItems] = useState<topicVoteItems>([]);
   const [answerValue1, setAnswerValue1] = useState('');
-  const handleAnswer1Change = (e: any) => {
-    setAnswerValue1(e.target.value);
+  const handleAnswer1Change = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target;
+    setTopicVoteItems([value]);
   };
   const [answerValue2, setAnswerValue2] = useState('');
   const handleAnswer2Change = (e: any) => {
@@ -97,6 +101,8 @@ function createvote() {
   // if(typeof window === 'undefined'){
   //   return null
   // }
+
+
   // let container: HTMLElement = document.getElementById('inputContainer')!
   // let inputCount: number = 2;
   // const handleAddInput = () => {
@@ -132,7 +138,7 @@ function createvote() {
         </S.CategoryTitle>
         <S.InputWrapper>
           <S.Input
-            {...register('questionTitle', { required: true, maxLength: 20 })}
+            {...register('title', { required: true, maxLength: 20 })}
             type="text"
             placeholder="질문을 입력해주세요."
             value={qTitlevalue}
@@ -146,7 +152,7 @@ function createvote() {
         <S.SubQuestion>
           <S.SubTitle>추가설명이 필요하다면 적어주세요.</S.SubTitle>
           <S.ContentInput
-            {...register('questionContent', {
+            {...register('content', {
               required: false,
               maxLength: 200,
             })}
@@ -211,35 +217,32 @@ function createvote() {
         <S.TabHr />
         <div className="p-4">
           <TabPanel hidden={selectedTab !== '글투표'}>
-            <S.TabWarning>
-              질문에 대한 답을 글로 작성해주세요. &nbsp;<span>*</span>&nbsp;최대
-              6개까지 가능합니다.
-            </S.TabWarning>
-            <S.InputWrapper>
+            <AddInput />
+            {/* <S.InputWrapper>
               <S.Input
-                {...register('answerInput1', { required: true, maxLength: 20 })}
+                {...register('topicVoteItems', { required: true, maxLength: 20 })}
                 type="text"
                 placeholder="답을 입력해주세요."
-                value={answerValue1}
+                value={topicVoteItems}
                 onChange={handleAnswer1Change}
               />
               <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
             </S.InputWrapper>
             <S.InputWrapper>
               <S.Input
-                {...register('answerInput2', { required: true, maxLength: 20 })}
+                {...register('topicVoteItems', { required: true, maxLength: 20 })}
                 type="text"
                 placeholder="답을 입력해주세요."
                 value={answerValue2}
                 onChange={handleAnswer2Change}
               />
               <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
-            </S.InputWrapper>
+            </S.InputWrapper> */}
             {/* <S.InputWrapper>
               <S.Input id="inputContainer" />
               <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
-            </S.InputWrapper>
-            <S.PlusInput>
+            </S.InputWrapper> */}
+            {/* <S.PlusInput>
               <div onClick={handleAddInput}>+</div>
             </S.PlusInput> */}
           </TabPanel>
@@ -267,19 +270,20 @@ function createvote() {
         <S.CategoryTitle>
           투표종료 날짜, 시간을 선택해주세요.<span>*</span>
         </S.CategoryTitle>
-        {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
          <MobileDateTimePicker
-          value={dateWithInitialValue}
-          onChange={(newValue: any) => {
-            setDateWithInitialValue(newValue);
-          }}
-          onError={console.log}
-          minDate={dayjs(new Date())}
-          inputFormat="YYYY/MM/DD hh:mm a"
-          mask="____/__/__ __:__ _M"
-          renderInput={(params: any) => <TextField {...params} />}
-          />
-          </LocalizationProvider> */}
+            {...register('closedAt')}
+            value={dateWithInitialValue}
+            onChange={(newValue: any) => {
+              setDateWithInitialValue(newValue);
+            }}
+            onError={console.log}
+            minDate={dayjs(new Date())}
+            inputFormat="YYYY-MM-DD hh:mm:ss"
+            mask="____/__/__ __:__:__"
+            renderInput={(params: any) => <TextField {...params} />}
+            />
+          </LocalizationProvider>
         <S.Warning>
           <div>
             <span>*</span>
