@@ -71,14 +71,18 @@ export const EmailDeleteDiv = styled.div`
 export const EmailSuccessMsg = styled.div`
   font-size: 0.86rem;
   color: #00c988;
+  display: flex;
+  align-items: center;
 `;
 export const EmailFailureMsg = styled.div`
   font-size: 0.86rem;
   color: #ff2f2f;
+  display: flex;
+  align-items: center;
 `;
 
 // password
-// extend -> 상속 개념!
+// extends -> 상속 개념!
 interface ValidAndExist {
   valid: string;
   exist: string;
@@ -172,7 +176,7 @@ export const PwCheckVectorDiv = styled.div`
   align-items: center;
   cursor: pointer;
 `;
-export const PwNotice = styled.div`
+export const Notice = styled.div`
   font-size: 0.8rem;
   color: #667085;
   margin-bottom: 1vh;
@@ -180,10 +184,14 @@ export const PwNotice = styled.div`
 export const PwSuccessMsg = styled.div`
   font-size: 0.86rem;
   color: #00c988;
+  display: flex;
+  align-items: center;
 `;
 export const PwFailureMsg = styled.div`
   font-size: 0.86rem;
   color: #ff2f2f;
+  display: flex;
+  align-items: center;
 `;
 
 // NickName
@@ -232,10 +240,14 @@ export const NickInputDiv = styled.div`
 export const NickSuccessMsg = styled.div`
   font-size: 0.86rem;
   color: #00c988;
+  display: flex;
+  align-items: center;
 `;
 export const NickFailureMsg = styled.div`
   font-size: 0.86rem;
   color: #ff2f2f;
+  display: flex;
+  align-items: center;
 `;
 
 // terms 약관동의
@@ -284,20 +296,24 @@ export const TermsTwoInfo = styled.div`
 `;
 
 // signup Btn
+interface Ok {
+  isOk: boolean;
+}
 
-export const SignUpBtnContainer = styled.div`
+export const SignUpBtnContainer = styled.div<Ok>`
   button {
     width: 100%;
     height: 7vh;
     border: none;
     border-radius: 9px;
-    background-color: #4285f4;
+    background-color: ${(props) => (props.isOk ? '#4285f4' : '#7b8c9f')};
     font-size: 1.2rem;
     color: white;
     cursor: pointer;
     transition-duration: 0.3s;
     :active {
-      background-color: #d6d9dc;
+      /* background-color: #d6d9dc; */
+      background-color: ${(props) => (props.isOk ? '#d6d9dc' : '#7b8c9f')};
     }
   }
 `;
