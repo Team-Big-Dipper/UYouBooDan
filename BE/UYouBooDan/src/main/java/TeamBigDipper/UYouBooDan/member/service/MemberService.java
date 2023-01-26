@@ -1,7 +1,5 @@
 package TeamBigDipper.UYouBooDan.member.service;
 
-import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
-import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
