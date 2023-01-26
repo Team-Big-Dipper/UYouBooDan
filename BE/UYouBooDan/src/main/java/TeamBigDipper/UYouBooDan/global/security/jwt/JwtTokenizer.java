@@ -128,8 +128,8 @@ public class JwtTokenizer {
      */
     public String delegateAccessToken (Member member) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", member.getEmail().getEmail());
-//        claims.put("role", member.getRoles());   // 역할 부여 이후 활성화
+        claims.put("username", member.getEmail());
+        claims.put("role", member.getRoles());
         claims.put("id", member.getMemberId());
         String subject = String.valueOf(member.getMemberId()); // 토큰 제목
         Date expAt = getTokenExpiration(getAccessTokenExpirationMinutes());
