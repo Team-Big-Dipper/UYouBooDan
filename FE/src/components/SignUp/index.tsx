@@ -1,14 +1,19 @@
 import * as S from './style';
 import { useForm } from 'react-hook-form';
-import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
+import {
+  EMAIL_REGEX,
+  PASSWORD_REGEX,
+  NICKNAME_REGEX,
+} from '../../constants/regex';
 import useCheckPw from '../../hooks/signup/useCheckPw';
-// import useCheck from '../../hooks/signup/useCheck';
 import { useEffect, useState } from 'react';
 import { DeleteSvg } from '../../assets/delete';
 import { VectorSvg } from '../../assets/vector';
 import { SuccessSvg } from '../../assets/success';
 import { FailureSvg } from '../../assets/failure';
 import { overLapEmailApi, overLapNickApi } from '../../apis/overLap';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import { useRouter } from 'next/router';
 
 const SignUp = () => {
   const {
@@ -20,18 +25,21 @@ const SignUp = () => {
   } = useForm({
     mode: 'onChange', // mode: onChange 를 써줘야 아래 errors도 확인(출력) 가능!
   });
-  const [checkedOne, setCheckedOne] = useState(false);
-  const [checkedTwo, setCheckedTwo] = useState(false);
-  const [emailMsg, setEmailMsg] = useState('사용 가능한 아이디입니다.');
-  // const [isClickEmailBtn, setIsClickEmailBtn] = useState(false);
-  const [pwMsg, setPwMsg] = useState('');
-  const [nickMsg, setNickMsg] = useState('사용가능한 닉네임입니다.');
-  // const { checkEmail, checkNick } = useCheck();
+  const router = useRouter();
+  console.log('router : ', router);
+  const [checkedOne, setCheckedOne] = useState<boolean>(false);
+  const [checkedTwo, setCheckedTwo] = useState<boolean>(false);
+  const [emailMsg, setEmailMsg] = useState<string>('');
+  const [pwMsg, setPwMsg] = useState<string>('');
+  const [nickMsg, setNickMsg] = useState<string>('');
+  const [isOk, setIsOk] = useState<boolean>(false);
   const { checkPw } = useCheckPw(
     watch('password'),
     watch('passwordCheck'),
     setPwMsg,
   );
+
+  // email 유효성 메세지 UI 나오게 하는 코드
   useEffect(() => {
     if (watch('email') && errors.email?.message) {
       setEmailMsg('이메일형식이 올바르지 않습니다.');
@@ -40,16 +48,27 @@ const SignUp = () => {
     } else if (!watch('email')) {
       setEmailMsg('');
     }
-    // else if (watch('email') && !errors.email?.message && isClickEmailBtn) {
-    //   checkEmail(setEmailMsg);
-    // }
   }, [watch('email')]);
+
+  // nickname 유효성 메세지 UI 나오게 하는 코드
+  useEffect(() => {
+    if (watch('nickname') && errors.nickname?.message) {
+      setNickMsg('닉네임형식이 올바르지 않습니다.');
+    } else if (watch('nickname') && !errors.nickname?.message) {
+      setNickMsg('');
+    } else if (!watch('nickname')) {
+      setNickMsg('');
+    }
+  }, [watch('nickname')]);
+
   // password 유효성 메세지 UI 나오게 하는 코드
   useEffect(() => {
     console.log('useEffect들어옴');
-    if (watch('passwordCheck').length) {
+    if (watch('passwordCheck')) {
       // password,passwordCheck 가 변한다고해서 실행되는게 아니라 비밀번호재확인이 존재할때도 조건에 추가!
       checkPw();
+    } else if (!watch('password') && !watch('passwordCheck')) {
+      setPwMsg('');
     }
   }, [watch('passwordCheck'), watch('password')]);
 
@@ -70,47 +89,51 @@ const SignUp = () => {
   //     });
   // }, []);
 
-  // interface CustomInstance extends AxiosInstance {
-  //   interceptors: {
-  //     request: AxiosInterceptorManager<AxiosRequestConfig>;
-  //     response: AxiosInterceptorManager<AxiosResponse>;
-  //   };
-  //   // get<T>(
-  //   //   url: string,
-  //   //   params?: any,
-  //   //   headers?: any,
-  //   //   data?: any,
-  //   //   config?: AxiosRequestConfig<any> | undefined,
-  //   // ): Promise<T>;
-  //   post<T>(url: string, data?: any, config?: AxiosRequestConfig): Promise<T>;
-  // }
+  // 전체 유효성, 중복 검사, 약관동의 체크 통과시 isOk상태 true로 해줄 코드
+  useEffect(() => {
+    if (
+      watch('email') &&
+      watch('password') &&
+      watch('passwordCheck') &&
+      watch('nickname') &&
+      emailMsg === '사용가능한 이메일 입니다.' &&
+      pwMsg === '비밀번호가 일치합니다.' &&
+      nickMsg === '사용가능한 닉네임 입니다.' &&
+      !errors.password?.message &&
+      checkedOne &&
+      checkedTwo
+    ) {
+      setIsOk(true);
+    } else {
+      setIsOk(false);
+    }
+  }, [watch(), checkedOne, checkedTwo]);
 
-  // const client = axios.create({ baseURL: 'api' });
+  console.log('isOk : ', isOk);
 
-  // const onClickBtn = (): void => {
-  //   client
-  //     .post('/members/verify', {
-  //       email: 'test@test.com',
-  //       password: '비밀번호야!',
-  //     })
-  //     .then((res: AxiosResponse) => {
-  //       console.log('onClickBtn -> res : ', res);
-  //     })
-  //     .catch((err: AxiosError) => {
-  //       console.log(err.message);
-  //     });
+  console.log('watch() : ', watch());
+  // submit 버튼 눌렀을때 실행되는 함수
+  const onValid = (data: any) => {
+    delete data.passwordCheck;
+    axios
+      .post('/api/members', data)
+      .then((res: AxiosResponse) => {
+        console.log('res: ', res);
+        console.log('회원가입성공!');
+        router.push('/auth/login', '/auth/login');
+      })
+      .catch((err: AxiosError) => {
+        console.log('err: ', err.message);
+      });
+  };
+  // const onInValid = (data: any): void => {
+  //   alert(data);
   // };
 
-  const onValid = () => {
-    return;
-  };
-  const onInValid = () => {
-    return;
-  };
-
+  console.log('watch() : ', watch());
   return (
     <S.SignUpContainer>
-      <form onSubmit={handleSubmit(onValid, onInValid)}>
+      <form onSubmit={handleSubmit(onValid)}>
         <S.SignUpLogo>우</S.SignUpLogo>
         <S.SignUpTitle>회원가입</S.SignUpTitle>
         <S.EmailContainer>
@@ -128,7 +151,11 @@ const SignUp = () => {
                   },
                 })}
               />
-              <S.EmailDeleteDiv>
+              <S.EmailDeleteDiv
+                onClick={() => {
+                  setValue('email', '');
+                }}
+              >
                 <DeleteSvg />
               </S.EmailDeleteDiv>
             </S.EmailInputDiv>
@@ -160,14 +187,6 @@ const SignUp = () => {
           ) : (
             <></>
           )}
-          {/* <S.EmailSuccessMsg>
-            <SuccessSvg />
-            {emailMsg}
-          </S.EmailSuccessMsg>
-          <S.EmailFailureMsg>
-            <FailureSvg />
-            {emailMsg}
-          </S.EmailFailureMsg> */}
         </S.EmailContainer>
         <S.PwContainer>
           <S.PwTitle>비밀번호</S.PwTitle>
@@ -179,7 +198,7 @@ const SignUp = () => {
                 required: '비밀번호 필수입력.',
                 pattern: {
                   value: PASSWORD_REGEX,
-                  message: '비밀번호 형식에 맞지 않습니다.',
+                  message: '비밀번호형식이 올바르지 않습니다.',
                 },
               })}
             />
@@ -202,7 +221,7 @@ const SignUp = () => {
                 required: '비밀번호 재확인 필수.',
                 pattern: {
                   value: PASSWORD_REGEX,
-                  message: '비밀번호 형식에 맞지 않습니다.',
+                  message: '비밀번호형식이 올바르지 않습니다.',
                 },
               })}
             />
@@ -217,9 +236,9 @@ const SignUp = () => {
               <VectorSvg />
             </S.PwCheckVectorDiv>
           </S.PwCheckInput>
-          <S.PwNotice>
+          <S.Notice>
             *대소문자,숫자,특수문자 포함하여 8~15자로 작성해주세요.
-          </S.PwNotice>
+          </S.Notice>
           {!errors.password?.message && pwMsg === '비밀번호가 일치합니다.' ? (
             <S.PwSuccessMsg>
               <SuccessSvg />
@@ -229,11 +248,12 @@ const SignUp = () => {
             pwMsg === '비밀번호가 일치하지 않습니다.' ? (
             <S.PwFailureMsg>
               <FailureSvg />
-              {pwMsg}
+              <>{pwMsg}</>
             </S.PwFailureMsg>
           ) : errors.password?.message && watch('password') ? (
             <S.PwFailureMsg>
-              <FailureSvg /> <>{errors.password?.message}</>
+              <FailureSvg />
+              <>{errors.password?.message}</>
             </S.PwFailureMsg>
           ) : (
             <></>
@@ -246,28 +266,46 @@ const SignUp = () => {
               <input
                 type="text"
                 placeholder="닉네임을 입력해주세요."
-                {...register('nickname', {})}
+                {...register('nickname', {
+                  required: '닉네임 필수입력',
+                  pattern: {
+                    value: NICKNAME_REGEX,
+                    message: '닉네임형식이 올바르지 않습니다.',
+                  },
+                })}
               />
             </S.NickInputDiv>
             <button
               type="button"
               onClick={() => {
                 if (watch('nickname') && !errors.nickname?.message) {
-                  overLapNickApi(watch('nickname'));
+                  overLapNickApi(watch('nickname'), setNickMsg);
                 }
               }}
             >
               중복체크
             </button>
           </S.NickInputAndBtn>
-          <S.NickSuccessMsg>
-            <SuccessSvg />
-            {nickMsg}
-          </S.NickSuccessMsg>
-          <S.NickFailureMsg>
-            <FailureSvg />
-            {nickMsg}
-          </S.NickFailureMsg>
+          <S.Notice>
+            *닉네임은 한글, 영문, 숫자만 가능하며 2-10자리로 작성해주세요.
+          </S.Notice>
+          {(watch('nickname') && errors.nick?.message && nickMsg) ||
+          nickMsg === '닉네임형식이 올바르지 않습니다.' ||
+          nickMsg === '중복된 닉네임 입니다.' ? (
+            <S.NickFailureMsg>
+              <FailureSvg />
+              {nickMsg}
+            </S.NickFailureMsg>
+          ) : watch('nickname') &&
+            !errors.Nick?.message &&
+            nickMsg === '사용가능한 닉네임 입니다.' ? (
+            <S.NickSuccessMsg>
+              <SuccessSvg />
+              {nickMsg}
+            </S.NickSuccessMsg>
+          ) : (
+            <></>
+          )}
         </S.NickContainer>
         <S.TermsContainer>
           <S.TermsTitle>약관동의</S.TermsTitle>
@@ -275,6 +313,7 @@ const SignUp = () => {
             <S.TermsOneRadioAndText>
               <input
                 type="checkbox"
+                name="checkbox1"
                 checked={checkedOne}
                 onChange={() => setCheckedOne(!checkedOne)}
               />
@@ -287,6 +326,7 @@ const SignUp = () => {
             <S.TermsTwoRadioAndText>
               <input
                 type="checkbox"
+                name="checkbox2"
                 checked={checkedTwo}
                 onChange={() => setCheckedTwo(!checkedTwo)}
               />
@@ -296,10 +336,16 @@ const SignUp = () => {
             <S.TermsTwoInfo>보기</S.TermsTwoInfo>
           </S.TermsContentTwo>
         </S.TermsContainer>
-        <S.SignUpBtnContainer>
-          <button type="button" disabled={isSubmitting}>
-            회원가입
-          </button>
+        <S.SignUpBtnContainer isOk={isOk}>
+          {isOk ? (
+            <button type="submit" disabled={isSubmitting}>
+              회원가입
+            </button>
+          ) : (
+            <button type="submit" disabled>
+              회원가입
+            </button>
+          )}
         </S.SignUpBtnContainer>
       </form>
     </S.SignUpContainer>

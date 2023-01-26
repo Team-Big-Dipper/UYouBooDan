@@ -1,6 +1,6 @@
 import { AxiosRequestConfig } from 'axios';
-import { PathParams, rest, RestRequest } from 'msw';
-import { mockUsers } from './data';
+import { DefaultBodyType, PathParams, rest, RestRequest } from 'msw';
+import { mockUsers, mockVote } from './data';
 
 let MockUsers = [...mockUsers];
 let MockVote = [...mockVote];
@@ -55,12 +55,12 @@ export const handlers = [
     const searchParam = new URLSearchParams(req.url.searchParams);
     const nick = searchParam.get('nickname');
     const existNick = MockUsers.find((el) => {
-      return nick === el.nickName;
+      return nick === el.nickname;
     });
     if (nick && existNick) {
       return res(
         ctx.delay(),
-        ctx.status(200),
+        ctx.status(400),
         ctx.json('중복된 닉네임 입니다.'),
       );
     } else if (nick && !existNick) {
@@ -70,6 +70,19 @@ export const handlers = [
         ctx.json('사용가능한 닉네임 입니다.'),
       );
     }
+  }),
+  // 회원가입 등록!
+  rest.post('/api/members', (req, res, ctx) => {
+    let id = MockUsers.length + 1;
+    const newUser: any = req.body;
+    console.log('MSW 회원등록 post -> req.body : ', req.body);
+    console.log('MSW ->회원가입등록  post -> req ', req);
+    const result = { id, ...newUser };
+    console.log('result : ', result);
+    MockUsers.push(result);
+    console.log('MockUsers : ', MockUsers);
+
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockUsers));
   }),
   // Vote 투표 작성 보내기
   rest.post('/api/topics', (req, res, ctx) => {
