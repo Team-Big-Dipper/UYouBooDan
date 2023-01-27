@@ -172,6 +172,7 @@ export const SnsLoginTitleDiv = styled.div`
   display: flex;
   justify-content: space-between;
   height: 3.5vh;
+  margin-bottom: 4vh;
 `;
 export const FirstDeco = styled.div`
   border-bottom: 1px solid #d6d9dc;
@@ -191,7 +192,11 @@ export const SecondDeco = styled.div`
 `;
 
 // 소셜 로그인 Div
-export const SnsLoginContainer = styled.div``;
+export const SnsLoginContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 2vw;
+`;
 export const KaKaoLoginDiv = styled.div``;
 export const NaverLoginDiv = styled.div``;
 export const GoogleLoginDiv = styled.div``;

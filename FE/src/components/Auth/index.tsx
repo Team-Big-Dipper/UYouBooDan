@@ -4,6 +4,9 @@ import { useForm } from 'react-hook-form';
 import { DeleteSvg } from '../../assets/delete';
 import { VectorSvg } from '../../assets/vector';
 import { FailureSvg } from '../../assets/failure';
+import { KakaoSvg } from '../../assets/kakaoSvg';
+import { NaverSvg } from '../../assets/naverSvg';
+import { GoogleSvg } from '../../assets/googleSvg';
 
 const Auth = () => {
   const {
@@ -90,9 +93,15 @@ const Auth = () => {
         <S.SecondDeco></S.SecondDeco>
       </S.SnsLoginTitleDiv>
       <S.SnsLoginContainer>
-        <S.KaKaoLoginDiv></S.KaKaoLoginDiv>
-        <S.NaverLoginDiv></S.NaverLoginDiv>
-        <S.GoogleLoginDiv></S.GoogleLoginDiv>
+        <S.KaKaoLoginDiv>
+          <KakaoSvg />
+        </S.KaKaoLoginDiv>
+        <S.NaverLoginDiv>
+          <NaverSvg />
+        </S.NaverLoginDiv>
+        <S.GoogleLoginDiv>
+          <GoogleSvg />
+        </S.GoogleLoginDiv>
       </S.SnsLoginContainer>
     </S.AuthContainer>
   );
