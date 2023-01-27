@@ -1,13 +1,16 @@
 package TeamBigDipper.UYouBooDan.member.service;
 
+import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -20,16 +23,26 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final CustomAuthorityUtils customAuthorityUtils;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 예시 코드
      * memberId는 DB 연동 후 조회가 가능합니다.
+     *
      * @param member : 객체명
      * @return : 객체명 (식별자 반환을 위함)
      */
     @Transactional
     public Member createMember(Member member) {
         member.defaultProfile();
+
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+
+        List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
         return memberRepository.save(member);
     }
 
@@ -38,6 +51,7 @@ public class MemberService {
      * 1. 회원 정보 변경 가능
      * 2. 회원 상태 변경 가능
      * 비즈니스 로직은 Member Entity 내에서 처리
+     *
      * @param memberId 추후 JWT에서 추출 예정
      */
     @Transactional
@@ -65,7 +79,7 @@ public class MemberService {
      * Member Entity클래스 내 구현한 회원탈퇴 메소드(withdrawMember 호출)
      */
     @Transactional
-    public void withdrawMember (Long memberId) {
+    public void withdrawMember(Long memberId) {
         Member verifyMember = new Member().verifyMember(memberRepository.findById(memberId));
         verifyMember.withdrawMember();
         memberRepository.save(verifyMember);
@@ -73,7 +87,8 @@ public class MemberService {
 
     /**
      * 현재는 Controller에서 String 반환중
-     * @param memberId  : 추후 시큐리티 구현 후 적용될 예정
+     *
+     * @param memberId : 추후 시큐리티 구현 후 적용될 예정
      * @return : 1명의 member 정보를 반환 => 맞춰서 ResponseDto 제작 예정
      */
     public Member findMember(Long memberId) {
@@ -84,30 +99,32 @@ public class MemberService {
 
     /**
      * 전체 회원 조회용 (Default는 10계정)
+     *
      * @param pageable : page, size, sort 등 사용 가능
      * @return Page 구조
      */
-    public Page<Member> findMembers (Pageable pageable) {
+    public Page<Member> findMembers(Pageable pageable) {
         return memberRepository.findAll(pageable);
     }
 
     /**
      * password 일치 여부 조회 메소드
+     *
      * @param memberId
      */
-    public void verifyPassword (String password, Long memberId) {
+    public void verifyPassword(String password, Long memberId) {
         Member member = new Member().verifyMember(memberRepository.findById(memberId));
         member.checkPassword(password);
     }
 
 
-    public void verifyEmail (String email) {
+    public void verifyEmail(String email) {
         /**
          * 중복확인 쿼리 메서드 구현하기
-          */
+         */
     }
 
-    public void verifyNickname (String nickname) {
+    public void verifyNickname(String nickname) {
         /**
          * 중복확인 쿼리 메서드 구현하기
          */

@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final JwtTokenizer jwtTokenizer;
 
     @Override
-    @SneakyThrows  // throws를 이용한 예외 처리를 대신해주는 애너테이션
+    @SneakyThrows
     public Authentication attemptAuthentication (HttpServletRequest request, HttpServletResponse response) {
 
         ObjectMapper objectMapper = new ObjectMapper();

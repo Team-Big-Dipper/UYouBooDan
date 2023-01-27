@@ -25,19 +25,22 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     private final CustomAuthorityUtils customAuthorityUtils;
 //    private final RedisTemplame redisTemplame; // 레디스 적용 시 활성화 예정
 
+
     @Override
     @SneakyThrows
-    protected void doFilterInternal (HttpServletRequest request, HttpServletResponse response,
-                                     FilterChain filterChain) {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
+                                    FilterChain filterChain) {
         try {
-
-            String header = request.getHeader("Authorization");
-            String jws = header.replace("bearer ", "");
-
             Map<String, Object> claims = verifyJwt(request); // 토큰 검증
             setSecurityContext(claims);
-            //            verifyLoinToken(jws); // 레디스 사용사 활성화 예정
             filterChain.doFilter(request, response);
+
+            /**
+             * 레디스 사용사 활성화 예정
+             */
+//            String header = request.getHeader("Authorization");
+//            String jws = header.replace("bearer ", "");
+//                        verifyLoinToken(jws);
 
         } catch (ExpiredJwtException ee) {
             request.setAttribute("Exception", ee);
@@ -53,7 +56,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     @Override
     @SneakyThrows
-    protected boolean shouldNotFilter (HttpServletRequest request) {
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
 
         return authorization == null || authorization.startsWith("Bearer");
@@ -65,7 +68,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * @param request
      * @return
      */
-    private Map<String, Object> verifyJwt (HttpServletRequest request) {
+    private Map<String, Object> verifyJwt(HttpServletRequest request) {
         String jws = request.getHeader("Authorization").replace("Bearer ", ""); // JWT의 헤더를 떼냄
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());  // 파싱을 위한 secretKey생성
 
@@ -77,9 +80,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * 인증된 유저와 역할을 SecurituContextHolder에 넣어주는 메소드
      * @param claims
      */
-    private void setSecurityContext (Map<String, Object> claims) {
+    private void setSecurityContext(Map<String, Object> claims) {
         String username = claims.get("username").toString();
-        List<GrantedAuthority> authorityList = customAuthorityUtils.createAuthorities((List)claims.get("roles")); // ema
+        List<GrantedAuthority> authorityList = customAuthorityUtils.createAuthorities((List) claims.get("roles")); // ema
 
         /**
          * 레디스 사용시 활성화 될 코드
@@ -97,8 +100,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     }
 
 
-
-
     /**
      * 레디스 사용시 활성화 예정
      */
@@ -107,7 +108,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 //        String key = "logout_" + jws;
 //        String username = (String) valueOperations.get(key);
 //
-//        if(!username.equals(null)) throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
+//        if (!username.equals(null)) throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
 //    }
 
 }

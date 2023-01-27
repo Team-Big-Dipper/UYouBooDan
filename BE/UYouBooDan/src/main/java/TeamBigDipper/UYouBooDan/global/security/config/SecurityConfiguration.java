@@ -36,7 +36,7 @@ public class SecurityConfiguration {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-//                .formLogin().disable()
+                .formLogin().disable()
                 .httpBasic().disable()
                 .exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
