@@ -24,6 +24,11 @@ export const devideDiv = styled.div`
 `;
 export const ContentInfo = styled.div`
   color: #667085;
+  display: flex;
+`;
+export const LikeButton = styled.div`
+  display: flex;
+  align-items: flex-start;
 `;
 export const CategoryIcon = styled.div`
   border-radius: 10px;
@@ -72,7 +77,11 @@ export const SelectTextDuple = styled.div<Clicked>`
   border-color: ${(props) => (props.clicked ? '#4285f4' : 'black')};
 `;
 
-export const SelectTextSingle = styled.button`
+interface isVoted {
+  isTopicVoteItemVoted: boolean;
+}
+export const SelectTextSingle = styled.button<isVoted>`
+  width: 100%;
   border-style: solid;
   border-width: 1px;
   font-size: 1rem;
@@ -80,12 +89,9 @@ export const SelectTextSingle = styled.button`
   padding: 1rem;
   text-align: center;
   margin-bottom: 0.5rem;
-  background-color: white;
-  color: black;
-  &:focus {
-    background-color: #4285f4;
-    color: white;
-  }
+  background-color: ${(props) =>
+    props.isTopicVoteItemVoted ? '#4285f4' : 'white'};
+  color: ${(props) => (props.isTopicVoteItemVoted ? 'white' : 'black')};
 `;
 
 export const buttonContainer = styled.div`
@@ -106,7 +112,7 @@ export const button = styled.div`
   cursor: default;
 `;
 
-export const ImgItem = styled.img<Clicked>`
+export const DupleImgItem = styled.img<Clicked>`
   position: absolute;
   top: 0;
   left: 0;
@@ -118,13 +124,38 @@ export const ImgItem = styled.img<Clicked>`
   border-radius: 10px;
   filter: ${(props) => (props.clicked ? 'brightness(60%)' : null)};
 `;
-
-export const ImageContainer = styled.div`
+export const DupleImageContainer = styled.button`
   width: 18vw;
   height: 30vh;
   min-width: 250px;
   min-height: 200px;
   position: relative;
+  background: none;
+  border: none;
+`;
+export const SingleImgItem = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(50, 50);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 10px;
+  border-radius: 10px;
+  z-index: 1;
+`;
+
+export const SingleImageContainer = styled.button<isVoted>`
+  width: 18vw;
+  height: 30vh;
+  min-width: 250px;
+  min-height: 200px;
+  position: relative;
+  background: none;
+  border: none;
+  z-index: 1;
+  filter: ${(props) => (props.isTopicVoteItemVoted ? 'brightness(60%)' : null)};
 `;
 
 export const ImageVoteCount = styled.div`
@@ -137,6 +168,7 @@ export const ImageVoteCount = styled.div`
   background-color: #4285f4;
   opacity: 90%;
   border-radius: 10px;
+  z-index: 1;
 `;
 
 export const AnswerCard = styled.div`
@@ -147,7 +179,6 @@ export const AnswerCard = styled.div`
 `;
 export const AnswerInputContainer = styled.form`
   border-top: 1px solid lightgray;
-  //border-radius: 8px;
   padding: 18px;
   display: flex;
   align-items: center;

@@ -10,6 +10,7 @@ interface propTypes {
   index: number;
   like: number;
   createdAt: string;
+  status: string;
 }
 const AnswerCard = ({
   index,
@@ -18,29 +19,38 @@ const AnswerCard = ({
   content,
   like,
   createdAt,
+  status,
 }: propTypes) => {
   return (
-    <S.AnswerCard>
-      <S.AnswerCardTop>
-        <S.AnswerUserName>
-          <ProfileImage />
-          {username}
-        </S.AnswerUserName>
-        <S.AnswerLike>
-          <LikeSvg />
-          {like}
-        </S.AnswerLike>
-      </S.AnswerCardTop>
-      <S.AnswerContent>{content}</S.AnswerContent>
-      <S.AnswerCardBottom>
-        <S.AnswerCreatedAt>{createdAt}</S.AnswerCreatedAt>
-        <p>|</p>
-        <S.AnswerButtons>수정</S.AnswerButtons>
-        <p>|</p>
-        <S.AnswerButtons>삭제</S.AnswerButtons>
-        <S.AddAnswerButton>댓글작성</S.AddAnswerButton>
-      </S.AnswerCardBottom>
-    </S.AnswerCard>
+    <>
+      <S.AnswerCard>
+        {status === 'DELETE' ? (
+          <p>삭제된 댓글입니다</p>
+        ) : (
+          <>
+            <S.AnswerCardTop>
+              <S.AnswerUserName>
+                <ProfileImage />
+                {username}
+              </S.AnswerUserName>
+              <S.AnswerLike>
+                <LikeSvg />
+                {like}
+              </S.AnswerLike>
+            </S.AnswerCardTop>
+            <S.AnswerContent>{content}</S.AnswerContent>
+            <S.AnswerCardBottom>
+              <S.AnswerCreatedAt>{createdAt}</S.AnswerCreatedAt>
+              <p>|</p>
+              <S.AnswerButtons>수정</S.AnswerButtons>
+              <p>|</p>
+              <S.AnswerButtons>삭제</S.AnswerButtons>
+              <S.AddAnswerButton>댓글작성</S.AddAnswerButton>
+            </S.AnswerCardBottom>
+          </>
+        )}
+      </S.AnswerCard>
+    </>
   );
 };
 export default AnswerCard;

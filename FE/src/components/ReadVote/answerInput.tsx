@@ -23,7 +23,7 @@ const AnswerInput = () => {
     alert('댓글이 작성되었습니다!');
   };
 
-  console.log(errors);
+  // console.log(errors);
   //console.log(watch('answer'));
   return (
     <>

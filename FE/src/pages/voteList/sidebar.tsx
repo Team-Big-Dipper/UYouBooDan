@@ -5,7 +5,7 @@ const Sidebar = () => {
   return (
     <div>
       <S.Sidebar>
-        <p>홈 {'>'} 전체투표</p>
+        <p>홈 {' > '} 전체투표</p>
         <S.Pagename>전체투표</S.Pagename>
         <S.SidebarCategory>투표현황</S.SidebarCategory>
         <S.CategoryTitle>전체 투표</S.CategoryTitle>

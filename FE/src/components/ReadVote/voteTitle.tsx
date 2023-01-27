@@ -23,6 +23,10 @@ const VoteTitle = ({
   views,
   likes,
 }: propTypes) => {
+  const onClickLike = () => {
+    console.log('api call');
+    alert('좋아요+1');
+  };
   return (
     <S.VoteTitleOutLine>
       <S.TitleContainer>
@@ -32,13 +36,17 @@ const VoteTitle = ({
       <S.ContentContainer>
         <S.devideDiv>
           <S.ContentInfo>
-            {createdAt} | {author} | 조회수{views} | <LikeSvg />
-            {likes} | <ShareLinkSvg />
+            {createdAt} | {author} | 조회수{views} |{' '}
+            <S.LikeButton onClick={onClickLike}>
+              <LikeSvg />
+              {likes}
+            </S.LikeButton>{' '}
+            | <ShareLinkSvg />
           </S.ContentInfo>
         </S.devideDiv>
         <S.devideDiv>
           <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
-          <S.CategoryIcon color={'#89b7cb'}>중복투표</S.CategoryIcon>
+          <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
           <S.DdayIcon>D-{dday}</S.DdayIcon>
         </S.devideDiv>
       </S.ContentContainer>
