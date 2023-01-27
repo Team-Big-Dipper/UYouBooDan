@@ -12,7 +12,6 @@ const VoteBtn = () => {
   const { isAuthor, isVoted, isClosed } = useSelector(
     (state: any) => state.currentVote,
   );
-  console.log('isAuthor', isAuthor);
 
   const [openModal, setOpenModal] = useState(false);
   const onClickBtn = (e: any) => {

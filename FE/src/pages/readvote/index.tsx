@@ -58,8 +58,9 @@ const ReadVote = () => {
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
-  //api요청하는 곳
+  //api요청
   useEffect(() => {
+    if (!pid) return;
     console.log(pid, 'api call');
     const data2 = {
       id: 1,

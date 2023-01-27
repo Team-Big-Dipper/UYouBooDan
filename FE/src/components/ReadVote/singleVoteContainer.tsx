@@ -51,7 +51,6 @@ export const SingleVoteContainer = ({
   const [calculated, setCalculated] = useState<number>(1);
   useEffect(() => {
     setCalculated(CalcPercentage(count, totalCount));
-    console.log('test');
   }, [totalCount]);
 
   return (

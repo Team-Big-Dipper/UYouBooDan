@@ -17,8 +17,6 @@ const VoteList = () => {
   const [condition, setCondition] = useState('all');
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  console.log(condition, 'api call');
-  console.log(page, 'api call');
 
   useEffect(() => {
     const initialdata = {
