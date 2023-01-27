@@ -16,7 +16,7 @@ import java.util.Collection;
 
 
 /**
- * UserDetailsService를 확장받았기 때문에, 메소드를 전부 Overrides해줘야 함.
+ * UserDetailsService를 확장받았기 때문에, 메소드를 전부 Override해줘야 함.
  */
 @RequiredArgsConstructor
 @Component

@@ -23,6 +23,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
 
+
+    /**
+     * 로그인 시 이메일과 패스워드를 받아서 LoginDto로 변환하고, memberRepository를 조회해서 Authentication 확인해주는 메소드
+     * @param request from which to extract parameters and perform the authentication
+     * @param response the response, which may be needed if the implementation has to do a redirect as part of a multi-stage authentication process (such as OpenID).
+     * @return
+     */
     @Override
     @SneakyThrows
     public Authentication attemptAuthentication (HttpServletRequest request, HttpServletResponse response) {
@@ -47,7 +54,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     /**
      * 인증된 유저에게 HttpServlerResponse를 통해 AccessToken과 RefreshToken 전달해주기 위해 토큰 생성 후 담아주는 부분
-     * @param authResult the object returned from the <tt>attemptAuthentication</tt>
+     * @param authResult
      */
     @Override
     @SneakyThrows

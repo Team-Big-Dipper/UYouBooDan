@@ -26,26 +26,18 @@ public class CustomFilterConfig extends AbstractHttpConfigurer<CustomFilterConfi
 
         AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-        /**
-         * 인증 처리 필터
-         */
+        // 인증 처리 필터
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
 
-        /**
-         * 로그인을 위한 URL Path 설정하는 위치
-         */
+        // 로그인을 위한 URL Path 설정하는 위치
         jwtAuthenticationFilter.setFilterProcessesUrl("/auth/login");
 
-        /**
-         * 구현한 AuthenticationFilter 추가하는 위치
-         */
+        //구현한 AuthenticationFilter 추가하는 위치
         jwtAuthenticationFilter.setAuthenticationSuccessHandler(new CustomAuthenticationSuccessHandler());
         jwtAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
         JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils); // ,redisTemplate); // 레디스 적용시 활성화 예정
 
-        /**
-         * 생성한 필터 객체 세팅 후, builder를 이용해 필터 병합
-         */
+        // 생성한 필터 객체 세팅 후, builder를 이용해 필터 병합
         builder.addFilter(jwtAuthenticationFilter).addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
 
     }
