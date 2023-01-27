@@ -3,13 +3,13 @@ package TeamBigDipper.UYouBooDan.member.entity;
 import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
-import TeamBigDipper.UYouBooDan.member.value.Email;
 import TeamBigDipper.UYouBooDan.member.value.Name;
-import TeamBigDipper.UYouBooDan.member.value.Password;
 import TeamBigDipper.UYouBooDan.member.value.Photo;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -20,14 +20,15 @@ import java.util.Optional;
 public class Member extends BaseTimeEntity {
 
     @Id
+    @Setter // 시큐리티 MemberDetailsService 내 MemberDetails생성을 위해 적용 (추후 변경 검토)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Embedded
-    private Email email;
+    @Setter // 시큐리티 MemberDetailsService 내 MemberDetails생성을 위해 적용 (추후 변경 검토)
+    private String email;
 
-    @Embedded @Setter
-    private Password password; // 컨트롤러에서 암호화 할 예정
+    @Setter
+    private String password; // 컨트롤러에서 암호화 할 예정
 
     @Embedded
     private Name nickname;
@@ -38,6 +39,13 @@ public class Member extends BaseTimeEntity {
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)  // 컬럼설정 지정 안할시 오류 발생 => Unable to instantiate custom type: org.hibernate.type.EnumType 에러발생
     private MemberStatus memberStatus;
+
+    /**
+     * Member 객체에 대한 역할 테이블을 자동 생생 후 역할을 부여 (시큐리티를 통해 작동)
+     */
+    @Setter // 시큐리티 MemberDetailsService 내 MemberDetails생성을 위해 적용 (추후 변경 검토)
+    @ElementCollection(fetch = FetchType.EAGER)
+    List<String> roles = new ArrayList<>();
 
 
     /**
@@ -74,7 +82,7 @@ public class Member extends BaseTimeEntity {
         return optMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
-    public void modifyPassword(Password password){ this.password = password; }
+    public void modifyPassword(String password){ this.password = password; }
     public void modifyNickname(Name nickname){
         this.nickname = nickname;
     }
@@ -86,7 +94,7 @@ public class Member extends BaseTimeEntity {
     }
     public void withdrawMember(){ this.memberStatus = MemberStatus.MEMBER_QUIT; }
     public void checkPassword(String password) {
-        if(!this.password.getPassword().equals(password)) throw new BusinessLogicException(ExceptionCode.NON_ACCESS_MODIFY);
+        if(!this.password.equals(password)) throw new BusinessLogicException(ExceptionCode.NAT_EXACT_PASSWORD);
     }
 
 }

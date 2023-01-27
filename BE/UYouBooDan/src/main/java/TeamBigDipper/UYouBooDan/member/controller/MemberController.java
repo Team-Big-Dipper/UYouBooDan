@@ -133,7 +133,7 @@ public class MemberController {
      */
     @GetMapping("/verify-email")
     public ResponseEntity<SingleResDto<String>> checkEmail(@RequestParam(required = false) String email) {
-        memberService.verifyEmail(email);
+        memberService.verifyNotExistEmail(email);
 
         return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
     }
@@ -145,7 +145,7 @@ public class MemberController {
      */
     @GetMapping("/verify-nickname")
     public ResponseEntity<SingleResDto<String>> checkNickname(@RequestParam(required = false) String nickname) {
-        memberService.verifyNickname(nickname);
+        memberService.verifyNotExistNickname(nickname);
 
         return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
     }
