@@ -25,6 +25,9 @@ export const ModalContainer = styled.div`
   z-index: 2;
 `;
 
+export const ModalButtonContainer = styled.div`
+  display: flex;
+`;
 export const ModalLeftButton = styled.span`
   font-size: 1.2rem;
   justify-content: space-between;
@@ -63,4 +66,26 @@ export const ModalRightButton = styled.span`
 export const ModalText = styled.div`
   font-size: 1.2rem;
   z-index: 2;
+`;
+
+export const LinkContainer = styled.div`
+  width: 25vw;
+  height: 40vh;
+  background-color: white;
+  color: black;
+  position: relative;
+  margin: 25vh auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  z-index: 2;
+`;
+
+export const LinkCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 35%;
 `;

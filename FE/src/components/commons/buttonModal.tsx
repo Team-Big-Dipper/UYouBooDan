@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import * as S from './style';
 
 interface propTypes {
@@ -7,6 +7,9 @@ interface propTypes {
   confirmFunc: Function;
 }
 const ButtonModal = ({ setOpenModal, text, confirmFunc }: propTypes) => {
+  const textContainer = useMemo(() => {
+    return { display: 'flex', margin: 'auto' };
+  }, []);
   const handleModal = () => {
     setOpenModal((prev: any) => !prev);
   };
@@ -24,17 +27,17 @@ const ButtonModal = ({ setOpenModal, text, confirmFunc }: propTypes) => {
   return (
     <S.ModalBackground onClick={handleModal}>
       <S.ModalContainer onClick={handleEvent}>
-        <div style={{ display: 'flex', margin: 'auto' }}>
+        <div style={textContainer}>
           <S.ModalText>{text}</S.ModalText>
         </div>
-        <div style={{ display: 'flex' }}>
+        <S.ModalButtonContainer>
           <S.ModalLeftButton id="cancel" onClick={onClickButton}>
             취소
           </S.ModalLeftButton>
           <S.ModalRightButton id="confirm" onClick={onClickButton}>
             확인
           </S.ModalRightButton>
-        </div>
+        </S.ModalButtonContainer>
       </S.ModalContainer>
     </S.ModalBackground>
   );
