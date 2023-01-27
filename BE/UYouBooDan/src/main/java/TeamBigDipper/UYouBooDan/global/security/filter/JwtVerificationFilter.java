@@ -66,7 +66,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      * @return
      */
     private Map<String, Object> verifyJwt (HttpServletRequest request) {
-        String jws = request.getHeader("Authortization").replace("Bearer ", ""); // JWT의 헤더를 떼냄
+        String jws = request.getHeader("Authorization").replace("Bearer ", ""); // JWT의 헤더를 떼냄
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());  // 파싱을 위한 secretKey생성
 
         return jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();  // Claims의 바디 부분을 파싱해서 받아옴. Map<String, Object> claims 형태
