@@ -21,6 +21,10 @@ const AnswerCard = ({
   createdAt,
   status,
 }: propTypes) => {
+  const onClickLike = () => {
+    alert('좋아요+1');
+  };
+
   return (
     <>
       <S.AnswerCard>
@@ -33,7 +37,7 @@ const AnswerCard = ({
                 <ProfileImage />
                 {username}
               </S.AnswerUserName>
-              <S.AnswerLike>
+              <S.AnswerLike onClick={onClickLike}>
                 <LikeSvg />
                 {like}
               </S.AnswerLike>
