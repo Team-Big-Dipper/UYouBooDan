@@ -46,11 +46,6 @@ const VoteBtn = () => {
         <>
           {!isAuthor ? (
             <>
-              {isClosed ? null : (
-                <S.button id="vote" onClick={handlePost}>
-                  투표하기
-                </S.button>
-              )}
               <S.button id="votelist" onClick={handleLink} color={'#4285f4'}>
                 목록가기
               </S.button>
@@ -77,7 +72,6 @@ const VoteBtn = () => {
                     </S.button>
                   )}
                 </>
-
                 <S.button id="votelist" onClick={handleLink} color={'#4285f4'}>
                   목록가기
                 </S.button>
