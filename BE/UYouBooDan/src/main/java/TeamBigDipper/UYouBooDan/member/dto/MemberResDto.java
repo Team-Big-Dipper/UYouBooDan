@@ -20,7 +20,7 @@ public class MemberResDto {
 
     public MemberResDto(Member member) {
         this.memberId = member.getMemberId();
-        this.email = member.getEmail().getEmail();
+        this.email = member.getEmail();
         this.nickname = member.getNickname().getName();
         this.profile = member.getProfile().getPhoto();
         this.memberStatus = member.getMemberStatus().getStatus();

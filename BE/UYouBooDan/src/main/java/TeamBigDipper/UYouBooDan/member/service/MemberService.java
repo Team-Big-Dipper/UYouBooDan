@@ -2,14 +2,17 @@ package TeamBigDipper.UYouBooDan.member.service;
 
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
+import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -22,16 +25,28 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final CustomAuthorityUtils customAuthorityUtils;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * 예시 코드
      * memberId는 DB 연동 후 조회가 가능합니다.
+     *
      * @param member : 객체명
      * @return : 객체명 (식별자 반환을 위함)
      */
     @Transactional
     public Member createMember(Member member) {
+        verifyNotExistEmail(member.getEmail());
+
         member.defaultProfile();
+
+        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+        member.setPassword(encryptedPassword);
+
+        List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+
         return memberRepository.save(member);
     }
 
@@ -67,7 +82,7 @@ public class MemberService {
      * Member Entity클래스 내 구현한 회원탈퇴 메소드(withdrawMember 호출)
      */
     @Transactional
-    public void withdrawMember (Long memberId) {
+    public void withdrawMember(Long memberId) {
         Member verifyMember = new Member().verifyMember(memberRepository.findById(memberId));
         verifyMember.withdrawMember();
         memberRepository.save(verifyMember);
@@ -75,7 +90,8 @@ public class MemberService {
 
     /**
      * 현재는 Controller에서 String 반환중
-     * @param memberId  : 추후 시큐리티 구현 후 적용될 예정
+     *
+     * @param memberId : 추후 시큐리티 구현 후 적용될 예정
      * @return : 1명의 member 정보를 반환 => 맞춰서 ResponseDto 제작 예정
      */
     public Member findMember(Long memberId) {
@@ -86,32 +102,46 @@ public class MemberService {
 
     /**
      * 전체 회원 조회용 (Default는 10계정)
+     *
      * @param pageable : page, size, sort 등 사용 가능
      * @return Page 구조
      */
-    public Page<Member> findMembers (Pageable pageable) {
+    public Page<Member> findMembers(Pageable pageable) {
         return memberRepository.findAll(pageable);
     }
 
+
+    // 패스워드 인코딩 관련 수정이 필요한 메소드 입니다.
     /**
      * password 일치 여부 조회 메소드
      * @param memberId
      */
-    public void verifyPassword (String password, Long memberId) {
+    public void verifyPassword(String password, Long memberId) {
         Member member = new Member().verifyMember(memberRepository.findById(memberId));
-        member.checkPassword(password);
+        String encryptedPassword = passwordEncoder.encode(password);
+        member.checkPassword(encryptedPassword);
     }
 
 
-    public void verifyEmail (String email) {
-        /**
-         * 중복확인 쿼리 메서드 구현하기
-          */
+    /**
+     * 이메일 중복 확인 메소드. 이메일 존재시 예외 발생
+     *
+     * @param email
+     */
+    public void verifyNotExistEmail(String email) {
+        Optional<Member> optionalEmail = memberRepository.findByEmail(email);
+        if (optionalEmail.isPresent()) throw new BusinessLogicException(ExceptionCode.EMAIL_EXIST);
     }
 
-    public void verifyNickname (String nickname) {
-        /**
-         * 중복확인 쿼리 메서드 구현하기
-         */
+
+    // 수정이 필요한 메소드 입니다.
+    /**
+     * 닉네임 중복확인 메소드. 닉네임 존재시 예외 발생
+     *
+     * @param nickname
+     */
+    public void verifyNotExistNickname(String nickname) {
+        Optional<Member> optionalEmail = memberRepository.findByNickname(nickname);
+        if (optionalEmail.isPresent()) throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
     }
 }
