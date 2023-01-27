@@ -73,13 +73,13 @@ const ReadVote = () => {
         'https://cdn.pixabay.com/photo/2023/01/01/23/37/woman-7691013_640.jpg',
       vote: {
         isAuthor: false,
-        isVoted: false,
+        isVoted: true,
         topicVoteItems: [
           {
             id: 1,
             content: '카페인',
             totalVote: 3,
-            isTopicVoteItemVoted: false,
+            isTopicVoteItemVoted: true,
           },
           {
             id: 2,
@@ -93,7 +93,12 @@ const ReadVote = () => {
             totalVote: 7,
             isTopicVoteItemVoted: false,
           },
-          { id: 4, content: '둘다', totalVote: 12, isTopicVoteItemVoted: true },
+          {
+            id: 4,
+            content: '둘다',
+            totalVote: 12,
+            isTopicVoteItemVoted: false,
+          },
         ],
       },
       // vote: [

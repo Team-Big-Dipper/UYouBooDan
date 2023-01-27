@@ -31,6 +31,13 @@ export const SingleVoteContainer = ({
   const [openModal, setOpenModal] = useState(false);
   const handleModal = () => {
     if (!isAuthor) setOpenModal((prev) => !prev);
+    if (!!isTopicVoteItemVoted && isVoted) {
+      setText('투표를 취소할까요?');
+    } else if (!isTopicVoteItemVoted && isVoted) {
+      setText('투표를 변경할까요?');
+    } else {
+      setText('투표할까요?');
+    }
   };
 
   const onVote = () => {
@@ -56,7 +63,6 @@ export const SingleVoteContainer = ({
           confirmFunc={onVote}
         />
       )}
-
       <>
         {voteType === 'text' ? (
           <div onClick={handleModal}>
