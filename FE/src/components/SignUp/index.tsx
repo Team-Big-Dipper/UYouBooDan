@@ -120,7 +120,7 @@ const SignUp = () => {
       .then((res: AxiosResponse) => {
         console.log('res: ', res);
         console.log('회원가입성공!');
-        router.push('/auth/login', '/auth/login');
+        router.push('/auth', '/auth');
       })
       .catch((err: AxiosError) => {
         console.log('err: ', err.message);

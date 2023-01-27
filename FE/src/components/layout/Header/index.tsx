@@ -14,7 +14,7 @@ const Header = () => {
           마이페이지
         </S.Mypage> */}
         <S.LoginSignUpDiv>
-          <S.Login href="/auth/login">로그인</S.Login>
+          <S.Login href="/auth">로그인</S.Login>
           <S.SignUp href="/signup">회원가입</S.SignUp>
         </S.LoginSignUpDiv>
         <S.Vote>
