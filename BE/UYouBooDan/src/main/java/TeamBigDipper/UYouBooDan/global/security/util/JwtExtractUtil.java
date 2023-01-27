@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RequiredArgsConstructor @Component
-public class JwtExtractUtils {
+public class JwtExtractUtil {
 
     private final JwtTokenizer jwtTokenizer;
 
