@@ -24,7 +24,7 @@ export const SingleVoteContainer = ({
   totalCount,
   isTopicVoteItemVoted,
 }: propTypes) => {
-  const [text, setText] = useState('투표하시겠습니까?');
+  const [text, setText] = useState('투표할까요?');
   const { isAuthor, isVoted, isClosed } = useSelector(
     (state: any) => state.currentVote,
   );

@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 
 const VoteBtn = () => {
   const [login, setIsLogin] = useState(true);
-  const [ended, setEnded] = useState(false);
   const [askText, setAskText] = useState('');
   const [apiMethod, setApiMethod] = useState('');
   const router = useRouter();
@@ -18,9 +17,7 @@ const VoteBtn = () => {
   const [openModal, setOpenModal] = useState(false);
   const onClickBtn = (e: any) => {
     setOpenModal((prev) => !prev);
-    if (e.target.id === 'vote') {
-      setAskText('투표할까요?');
-    } else if (e.target.id === 'delete') {
+    if (e.target.id === 'delete') {
       setApiMethod('delete');
       setAskText('삭제할까요?');
     } else if (e.target.id === 'patch') {
@@ -62,12 +59,12 @@ const VoteBtn = () => {
           ) : (
             <>
               <>
-                <S.button id="delete" onClick={handleDelete}>
+                <S.button id="delete" onClick={onClickBtn}>
                   삭제하기
                 </S.button>
                 <>
                   {isClosed ? null : (
-                    <S.button id="patch" onClick={handlePatch} color={'gray'}>
+                    <S.button id="patch" onClick={onClickBtn} color={'gray'}>
                       수정하기
                     </S.button>
                   )}
