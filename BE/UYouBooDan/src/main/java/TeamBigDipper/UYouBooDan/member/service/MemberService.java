@@ -1,5 +1,7 @@
 package TeamBigDipper.UYouBooDan.member.service;
 
+import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
+import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
@@ -35,6 +37,8 @@ public class MemberService {
      */
     @Transactional
     public Member createMember(Member member) {
+        verifyNotExistEmail(member.getEmail());
+
         member.defaultProfile();
 
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
@@ -51,7 +55,6 @@ public class MemberService {
      * 1. 회원 정보 변경 가능
      * 2. 회원 상태 변경 가능
      * 비즈니스 로직은 Member Entity 내에서 처리
-     *
      * @param memberId 추후 JWT에서 추출 예정
      */
     @Transactional
@@ -107,26 +110,38 @@ public class MemberService {
         return memberRepository.findAll(pageable);
     }
 
+
+    // 패스워드 인코딩 관련 수정이 필요한 메소드 입니다.
     /**
      * password 일치 여부 조회 메소드
-     *
      * @param memberId
      */
     public void verifyPassword(String password, Long memberId) {
         Member member = new Member().verifyMember(memberRepository.findById(memberId));
-        member.checkPassword(password);
+        String encryptedPassword = passwordEncoder.encode(password);
+        member.checkPassword(encryptedPassword);
     }
 
 
-    public void verifyEmail(String email) {
-        /**
-         * 중복확인 쿼리 메서드 구현하기
-         */
+    /**
+     * 이메일 중복 확인 메소드. 이메일 존재시 예외 발생
+     *
+     * @param email
+     */
+    public void verifyNotExistEmail(String email) {
+        Optional<Member> optionalEmail = memberRepository.findByEmail(email);
+        if (optionalEmail.isPresent()) throw new BusinessLogicException(ExceptionCode.EMAIL_EXIST);
     }
 
-    public void verifyNickname(String nickname) {
-        /**
-         * 중복확인 쿼리 메서드 구현하기
-         */
+
+    // 수정이 필요한 메소드 입니다.
+    /**
+     * 닉네임 중복확인 메소드. 닉네임 존재시 예외 발생
+     *
+     * @param nickname
+     */
+    public void verifyNotExistNickname(String nickname) {
+        Optional<Member> optionalEmail = memberRepository.findByNickname(nickname);
+        if (optionalEmail.isPresent()) throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
     }
 }
