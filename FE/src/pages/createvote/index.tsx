@@ -1,41 +1,45 @@
 import React, { useEffect, useState } from 'react';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useDispatch, useSelector } from "react-redux";
+import { Controller, useForm, SubmitHandler, useFieldArray } from 'react-hook-form';
 import * as S from './style';
 import { TabPanel, useTabs } from 'react-headless-tabs';
 import { TabSelector } from '../../components/CreateVote/TabSelector';
-import { AddInput } from '../../components/CreateVote/AddInput';
+import { createData } from '../../redux/slices/createVoteSlice';
 
 //datepicker
-import dayjs, { Dayjs } from 'dayjs';
-import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
-import TextField from '@mui/material/TextField';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { isPrefixUnaryExpression } from 'typescript';
-import { containerClasses } from '@mui/material';
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
 
-enum CategoryEnum {
-  a = 'a',
-  b = 'b',
-  c = 'c',
-}
-enum VoteRuleEnum {
-  단일투표 = '단일 투표',
-  중복투표 = '중복 투표',
-}
-type topicVoteItems = String[]
-interface Inputs {
-  category: CategoryEnum;
-  title: String;
-  content: String;
-  voteRule: VoteRuleEnum;
-  topicVoteItems: topicVoteItems;
-  closedAt: String;
+export interface Inputs {
+    category: String;
+    title: String;
+    content?: String;
+    voteRule: String;
+    topicVoteItems: any[];
+    closedAt: String;
 }
 
 function createvote() {
-  const { register, handleSubmit } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+	const dispatch = useDispatch();
+  const { register, handleSubmit, watch, control, formState: {isSubmitting, errors} } = useForm<Inputs>({
+    mode: 'onChange',
+    defaultValues: {
+      topicVoteItems: [{topicVoteItemName:''}]
+    }
+  });
+  //submit
+  const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log('data : ', data)
+    useEffect(()=>{
+      if((data.topicVoteItems.length === 1 && data.topicVoteItems[0].topicVoteItemName === '')){
+        alert('답을 입력해주세요!')
+      }else if(data.closedAt === undefined){
+        alert('마감날짜를 입력해주세요!')
+      }else{
+        dispatch(createData(data))
+      }
+    },[])
+  }
 
   //questionTitle value
   const [qTitlevalue, setQTitleValue] = useState('');
@@ -88,48 +92,52 @@ function createvote() {
 
   //tab select
   const [selectedTab, setSelectedTab] = useTabs(['글투표', '이미지투표']);
-  const [topicVoteItems, setTopicVoteItems] = useState<topicVoteItems>([]);
-  const [answerValue1, setAnswerValue1] = useState('');
-  const handleAnswer1Change = (e:React.ChangeEvent<HTMLInputElement>) => {
-    const {name, value} = e.target;
-    setTopicVoteItems([value]);
-  };
-  const [answerValue2, setAnswerValue2] = useState('');
-  const handleAnswer2Change = (e: any) => {
-    setAnswerValue2(e.target.value);
-  };
-  // if(typeof window === 'undefined'){
-  //   return null
-  // }
+  const {fields, append, remove} = useFieldArray({
+    control,
+    name: `topicVoteItems`,
+  })
 
-
-  // let container: HTMLElement = document.getElementById('inputContainer')!
-  // let inputCount: number = 2;
-  // const handleAddInput = () => {
-  //   inputCount++;
-  //   let input = document.createElement('input');
-  //   input.placeholder = '답을 입력해주세요.';
-  //   container.appendChild(input);
-  // }
+  const addInput = (e:any) => {
+    e.preventDefault();
+    if(fields.length < 6){
+      append({topicVoteItemName: ''});
+    }else{
+      alert('최대 6개까지 가능합니다!')
+    }
+  }
+  const deleteInput = (idx:number,e:any) => {
+    if(fields.length < 2){
+      alert('최소 1개이상의 답이 필요합니다!')
+    }else{
+      remove(idx);
+    }
+  }
 
   //datepicker
-  const [dateWithInitialValue, setDateWithInitialValue] =
-    React.useState<Dayjs | null>(dayjs(new Date()));
-
+  const [startDate, setStartDate] = useState(null);
+  // const day = new Date(+startDate+ 3240*10000).toISOString().replace("T", " ").replace(/\..*/, '');
+  // console.log(day)
   return (
     <S.CreateContainer>
       <S.Path>홈 &gt; 나만의 투표 만들기</S.Path>
       <S.Title>#나만의 투표 만들기</S.Title>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onHandleSubmit)}>
         {/* 카테고리 */}
         <S.CategoryTitle>
           카테고리<span>*</span>
         </S.CategoryTitle>
-        <S.Select {...register('category')}>
-          <option value="a">a</option>
-          <option value="b">b</option>
-          <option value="c">c</option>
+        <S.Select {...register(`category`, {
+          required: '카테고리를 선택해주세요.'
+        })}>
+          <option value='' selected disabled hidden>==선택==</option>
+          <option value="음식">음식</option>
+          <option value="패션뷰티">패션/뷰티</option>
+          <option value="쇼핑">쇼핑</option>
+          <option value="반려동물">반려동물</option>
+          <option value="취미운동">취미/운동</option>
+          <option value="일반">일반</option>
         </S.Select>
+        {}
         <S.Hr />
 
         {/* 질문 */}
@@ -140,12 +148,14 @@ function createvote() {
           <S.Input
             {...register('title', { required: true, maxLength: 20 })}
             type="text"
+            name="title"
             placeholder="질문을 입력해주세요."
             value={qTitlevalue}
             onChange={handleTitleChange}
           />
-          <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
+          <S.BtnClear onClick={clearQuestionTitle}> x</S.BtnClear>
         </S.InputWrapper>
+        {qTitlevalue === '' ? <S.ErrorMessage>질문을 입력해주세요!</S.ErrorMessage> : ''}
         <S.QuestionTitleLength>
           {qTitlevalue.length}&nbsp;/&nbsp;<span>200</span>
         </S.QuestionTitleLength>
@@ -217,34 +227,23 @@ function createvote() {
         <S.TabHr />
         <div className="p-4">
           <TabPanel hidden={selectedTab !== '글투표'}>
-            <AddInput />
-            {/* <S.InputWrapper>
-              <S.Input
-                {...register('topicVoteItems', { required: true, maxLength: 20 })}
-                type="text"
-                placeholder="답을 입력해주세요."
-                value={topicVoteItems}
-                onChange={handleAnswer1Change}
-              />
-              <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
-            </S.InputWrapper>
-            <S.InputWrapper>
-              <S.Input
-                {...register('topicVoteItems', { required: true, maxLength: 20 })}
-                type="text"
-                placeholder="답을 입력해주세요."
-                value={answerValue2}
-                onChange={handleAnswer2Change}
-              />
-              <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
-            </S.InputWrapper> */}
-            {/* <S.InputWrapper>
-              <S.Input id="inputContainer" />
-              <S.BtnClear onClick={clearQuestionTitle}>x</S.BtnClear>
-            </S.InputWrapper> */}
-            {/* <S.PlusInput>
-              <div onClick={handleAddInput}>+</div>
-            </S.PlusInput> */}
+            <S.TabWarning>
+              질문에 대한 답을 글로 작성해주세요. &nbsp;<span>*</span>&nbsp;최대
+              6개까지 가능합니다.
+            </S.TabWarning>
+            {fields.map((field,idx)=>(
+                <S.InputWrapper key={field.id}>
+                  <S.AnswerInput
+                    key={field.id} 
+                    placeholder="답을 입력해주세요."
+                    {...register(`topicVoteItems.${idx}.topicVoteItemName`,{
+                      required: true
+                    })}
+                    />
+                  {/* <S.DeleteInput onClick={()=>deleteInput}>x</S.DeleteInput> */}
+                </S.InputWrapper>
+            ))}
+            <S.PlusInput onClick={addInput}><div>+</div></S.PlusInput>
           </TabPanel>
           <TabPanel hidden={selectedTab !== '이미지투표'}>
             이미지투표란입니다.
@@ -257,7 +256,7 @@ function createvote() {
         </S.CategoryTitle>
         <S.Radio>
           <div>
-            <input type="radio" value="단일 투표" {...register('voteRule')} />
+            <input type="radio" value="단일 투표" {...register('voteRule')} defaultChecked />
             단일 투표
           </div>
           <div>
@@ -270,20 +269,24 @@ function createvote() {
         <S.CategoryTitle>
           투표종료 날짜, 시간을 선택해주세요.<span>*</span>
         </S.CategoryTitle>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-         <MobileDateTimePicker
-            {...register('closedAt')}
-            value={dateWithInitialValue}
-            onChange={(newValue: any) => {
-              setDateWithInitialValue(newValue);
-            }}
-            onError={console.log}
-            minDate={dayjs(new Date())}
-            inputFormat="YYYY-MM-DD hh:mm:ss"
-            mask="____/__/__ __:__:__"
-            renderInput={(params: any) => <TextField {...params} />}
+        <Controller 
+          control={control}
+          name="closedAt"
+          render={({field}) => (
+            <DatePicker
+              {...register('closedAt', {
+                required: true
+              })}
+              selected={startDate}  
+              onChange={(date: Date) => field.onChange(date)}
+              timeInputLabel="Time:"
+              dateFormat="yyyy-MM-dd hh:mm aa"
+              showTimeInput
+              minDate={startDate}
+              placeholderText="종료 날짜 및 시간을 선택해주세요."
             />
-          </LocalizationProvider>
+          )}
+        />
         <S.Warning>
           <div>
             <span>*</span>
@@ -295,8 +298,8 @@ function createvote() {
           </div>
         </S.Warning>
         <S.Btns>
-          <S.Cancle>취소하기</S.Cancle>
-          <S.Submit>등록하기</S.Submit>
+          <S.Cancle href="/">취소하기</S.Cancle>
+          <S.Submit type='submit' disabled={isSubmitting}>등록하기</S.Submit>
         </S.Btns>
       </form>
     </S.CreateContainer>
