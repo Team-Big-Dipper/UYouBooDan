@@ -2,12 +2,13 @@ import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
 import { AnswerSubmit } from '../../assets/answerSubmit';
+import axios from 'axios';
 
 interface Inputs {
   answer: string;
 }
 
-const AnswerInput = () => {
+const AnswerInput = ({ id, setData }: any) => {
   const {
     register,
     handleSubmit,
@@ -20,6 +21,17 @@ const AnswerInput = () => {
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log(data.answer);
+    let request = {
+      id: 5,
+      like: 11,
+      created_at: '20230112',
+      username: 'DAMONG',
+      status: 'ACTIVE',
+      content: data.answer,
+    };
+    axios.post(`/api/topic/${String(id)}/comments`, request).then(() => {
+      setData((prev: any) => [...prev, request]);
+    });
     alert('댓글이 작성되었습니다!');
   };
 

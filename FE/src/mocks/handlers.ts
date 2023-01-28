@@ -134,10 +134,25 @@ export const handlers = [
       return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText));
     }
   }),
-  rest.get('/api/topic/:id/comment', (req, res, ctx) => {
+  rest.get('/api/topic/:id/comments', (req, res, ctx) => {
     const request = req.params;
     console.log('msw 내부 요청 받았음!');
     console.log('request: ', request);
+    console.log('req', req);
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
+  }),
+  rest.post('/api/topic/:id/comments', (req, res, ctx) => {
+    const request: any = req.body;
+    console.log('msw 내부 요청 받았음!');
+    console.log('request: ', request);
+    console.log('req', req);
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
+  }),
+  rest.patch('/api/topic/:id/comments/:commentId', (req, res, ctx) => {
+    const request: any = req.body;
+    const params = req.params;
+    console.log('msw 내부 요청 받았음!');
+    console.log('request: ', request, params);
     console.log('req', req);
     return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
   }),

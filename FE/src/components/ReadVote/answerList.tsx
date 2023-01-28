@@ -28,7 +28,7 @@ const AnswerList = ({ id }: any) => {
     };
   }, []);
   useEffect(() => {
-    axios.get(`/api/topic/${String(id)}/comment`).then((res) => {
+    axios.get(`/api/topic/${String(id)}/comments`).then((res) => {
       try {
         setData(res.data);
       } catch (e) {
@@ -40,7 +40,7 @@ const AnswerList = ({ id }: any) => {
   return (
     <div>
       <p style={textMargin}>댓글({answercount})</p>
-      <AnswerInput />
+      <AnswerInput id={id} setData={setData} />
       <>
         {data?.map((el, idx) => (
           <AnswerCard
