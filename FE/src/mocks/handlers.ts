@@ -84,21 +84,30 @@ export const handlers = [
 
     return res(ctx.delay(), ctx.status(200), ctx.json(MockUsers));
   }),
-  // 로그인
+  // 로그인 // ctx.set('key', value) -> 응답헤더에 넣어서 보내주는 메서드
   rest.post<UserInfo>('/api/auth/login', (req, res, ctx) => {
     const { email, password } = req.body;
     const findUser = MockUsers.find((user) => {
       return user.email === email;
     });
     if (findUser && findUser.password === password) {
-      return res(ctx.delay(), ctx.status(200), ctx.json('로그인 성공!'));
+      const accesstoken: any = 'I am Bearer accesstoken.';
+      const refreshtoken: any = 'I am refreshtoken';
+      const Authorization: any = { accesstoken, refreshtoken };
+      console.log('MSW Login post 요청 Authorization : ', Authorization);
+      return res(
+        ctx.delay(),
+        ctx.status(200),
+        ctx.json('로그인 성공'),
+        ctx.set('Authorization', Authorization),
+      );
     } else if (findUser && findUser.password !== password) {
-      return res(ctx.delay(), ctx.status(400), ctx.json('비밀번호 불일치!'));
+      return res(ctx.delay(), ctx.status(400), ctx.json('비밀번호 불일치.'));
     } else if (!findUser) {
       return res(
         ctx.delay(),
         ctx.status(400),
-        ctx.json('존재하지 않는 이메일!'),
+        ctx.json('존재하지 않는 이메일.'),
       );
     }
   }),

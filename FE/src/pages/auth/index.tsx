@@ -1,11 +1,11 @@
 import React from 'react';
-import Login from './login';
+import Auth from '../../components/Auth';
 import * as S from './style';
 
 const auth = () => {
   return (
     <S.AuthPageContainer>
-      <Login />
+      <Auth />
     </S.AuthPageContainer>
   );
 };
