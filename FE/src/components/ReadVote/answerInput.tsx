@@ -32,8 +32,8 @@ const AnswerInput = () => {
           {...register('answer', {
             required: '글자를 입력하세요',
             maxLength: {
-              value: 4,
-              message: '4자 이하의 댓글만 작성이 가능합니다',
+              value: 400,
+              message: '400자 이하의 댓글만 작성이 가능합니다',
             },
           })}
           placeholder="댓글"

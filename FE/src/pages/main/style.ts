@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Frame from '../../../public/Mainimage.png'
-import HotFrame from '../../../public/HotFrame.png'
-import MainImageVote from '../../../public/MainImageVote.png'
+import Frame from '../../../public/Mainimage.png';
+import HotFrame from '../../../public/HotFrame.png';
+import MainImageVote from '../../../public/MainImageVote.png';
 import Link from 'next/link';
 
 export const MainContainer = styled.div`
@@ -21,7 +21,7 @@ export const MakeVoteContainer = styled.div`
 
 export const MakeVoteContent = styled.div`
   width: fit-content;
-  div{
+  div {
     font-size: 1.5rem;
     font-family: 'yg-jalnan' !important;
     margin-bottom: 5px;
@@ -31,7 +31,7 @@ export const MakeVoteContent = styled.div`
 
 export const CreateVoteBtn = styled(Link)`
   color: white;
-  background-color: #4285F4;
+  background-color: #4285f4;
   font-family: 'yg-jalnan' !important;
   border: none;
   height: 50px;
@@ -52,19 +52,19 @@ export const ContinueVoteContainer = styled.div`
   display: flex;
   align-items: center;
 `;
-export const ContinueTitle = styled.div`  
+export const ContinueTitle = styled.div`
   width: 150px;
- h2{
-  font-family: 'yg-jalnan' !important;
-  font-size: 1.2rem;
-  color: #242424;
-  line-height: 1.5rem;
- }
- div{
-  color: #667085;
-  margin-top: 10px;
-  font-size: 0.9rem;
- }
+  h2 {
+    font-family: 'yg-jalnan' !important;
+    font-size: 1.2rem;
+    color: #242424;
+    line-height: 1.5rem;
+  }
+  div {
+    color: #667085;
+    margin-top: 10px;
+    font-size: 0.9rem;
+  }
 `;
 
 export const CarouselContainer = styled.div`
@@ -87,12 +87,12 @@ export const Crads = styled.ul`
   &::-webkit-scrollbar-thumb {
     border-radius: 92px;
   }
-  &::-webkit-scrollbar-track{
+  &::-webkit-scrollbar-track {
     border-radius: 92px;
   }
   &::-webkit-scrollbar-thumb {
-    background: #4285F4;
-  } 
+    background: #4285f4;
+  }
   &::-webkit-scrollbar-track {
     background: #d6d9dc;
   }
@@ -113,15 +113,15 @@ export const Card = styled.li`
   transition: all 0.2s;
   cursor: pointer;
   &:hover {
-    border: 2px solid #4285F4;
+    border: 2px solid #4285f4;
   }
 `;
 export const CardTitle = styled.h3`
   font-size: 0.9rem;
   color: #667085;
-  span{
+  span {
     color: white;
-    background-color: #4285F4;
+    background-color: #4285f4;
     padding: 2px 10px;
     border-radius: 50px;
     margin-left: 10px;
@@ -155,8 +155,8 @@ export const HotTitle = styled.div`
   font-family: 'yg-jalnan' !important;
   font-size: 1.2rem;
   margin-bottom: 20px;
-  span{
-    color: #4285F4;
+  span {
+    color: #4285f4;
     font-family: 'yg-jalnan' !important;
   }
 `;
@@ -183,12 +183,12 @@ export const DeadLineTitle = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-  .title{
+  .title {
     color: #242424;
     font-family: 'yg-jalnan' !important;
     font-size: 1.2rem;
   }
-  .more{
+  .more {
     color: #667085;
     font-size: 0.9rem;
   }
@@ -217,13 +217,13 @@ export const DeadLineCard = styled.td`
   transition: all 0.2s;
   cursor: pointer;
   &:hover {
-    border: 1px solid #4285F4;
+    border: 1px solid #4285f4;
   }
-  &.top{
-   border-top-left-radius : 12px;
-   border-top-right-radius: 12px;
+  &.top {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
   }
-  &.bottom{
+  &.bottom {
     border-end-start-radius: 12px;
     border-end-end-radius: 12px;
   }

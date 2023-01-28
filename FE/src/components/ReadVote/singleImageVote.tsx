@@ -19,7 +19,7 @@ export const SingleImageVote = ({
   return (
     <S.SingleImageContainer isTopicVoteItemVoted={isTopicVoteItemVoted}>
       <S.SingleImgItem src={content} />
-      <S.ImageVoteCount>{isClosed ? count + '%' : null}</S.ImageVoteCount>
+      {isClosed ? <S.ImageVoteCount>{count + '%'}</S.ImageVoteCount> : null}
     </S.SingleImageContainer>
   );
 };

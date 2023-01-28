@@ -10,9 +10,9 @@ interface props {
   id: number;
   category: string;
   content: string;
-  createdAt: number;
+  createdAt: string;
   username: string;
-  endDate: number;
+  endDate: string;
 }
 interface propsArray {
   data: props[];
@@ -46,7 +46,7 @@ const ListPage = ({ data, totalPage, setCondition, setPage }: propsArray) => {
           );
         })}
       </S.ButtonWrapper>
-      {data.map((el, idx) => {
+      {data?.map((el, idx) => {
         return <CardItem key={idx} data={el} />;
       })}
       <S.pageNum>

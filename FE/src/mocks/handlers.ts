@@ -1,9 +1,22 @@
 import { AxiosRequestConfig } from 'axios';
 import { DefaultBodyType, PathParams, rest, RestRequest } from 'msw';
-import { mockUsers, mockVote } from './data';
+import {
+  mockUsers,
+  mockVote,
+  mockVoteList,
+  mockSortedList,
+  mockReadVoteText,
+  mockReadVoteImage,
+  mockAnswer,
+} from './data';
 
 let MockUsers = [...mockUsers];
 let MockVote = [...mockVote];
+let MockVoteList = [...mockVoteList];
+let MockSortedList = [...mockSortedList];
+let MockReadVoteText = [...mockReadVoteText];
+let MockReadVoteImage = [...mockReadVoteImage];
+let MockAnswer = [...mockAnswer];
 
 console.log(MockUsers);
 console.log(MockVote);
@@ -11,6 +24,12 @@ interface UserInfo {
   email?: string;
   password?: string;
   nickname?: string;
+}
+
+interface VoteList {
+  totalPage?: number;
+  currentPage?: number;
+  data?: Object[];
 }
 
 export const handlers = [
@@ -92,5 +111,34 @@ export const handlers = [
     console.log('req', req);
 
     return res(ctx.delay(), ctx.status(200), ctx.json(MockVote));
+  }),
+  rest.get<VoteList>('/api/topics/:condition', (req, res, ctx) => {
+    const request = req.params;
+    console.log('msw 내부 요청 받았음!');
+    console.log('request: ', request.condition);
+    console.log('req', req);
+    if (request.condition === 'all') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockVoteList));
+    } else {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockSortedList));
+    }
+  }),
+  rest.get('/api/topic/:id', (req, res, ctx) => {
+    const request = req.params;
+    console.log('msw 내부 요청 받았음!');
+    console.log('request: ', request.condition);
+    console.log('req', req);
+    if (request.id === '5') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteImage));
+    } else {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText));
+    }
+  }),
+  rest.get('/api/topic/:id/comment', (req, res, ctx) => {
+    const request = req.params;
+    console.log('msw 내부 요청 받았음!');
+    console.log('request: ', request);
+    console.log('req', req);
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
   }),
 ];
