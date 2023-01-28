@@ -21,7 +21,6 @@ export const currentVoteSlice = createSlice({
       state.isAuthor = action.payload.isAuthor;
       state.isVoted = action.payload.isVoted;
       state.isClosed = action.payload.isClosed;
-      console.log(action.payload);
     },
   },
 });

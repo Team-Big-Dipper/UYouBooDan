@@ -20,7 +20,6 @@ const VoteList = () => {
   const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
     axios.get(`/api/topics/${condition}`).then((res) => {
-      console.log('votelist', res);
       try {
         setData(res?.data[0].data);
         setTotalPage(res?.data[0].totalPage);
