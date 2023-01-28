@@ -132,6 +132,7 @@ export const SearchId = styled.div`
   display: flex;
   align-items: center;
   height: 2vh;
+  cursor: pointer;
 `;
 export const SearchDecoDiv = styled.div`
   border-right: 1px solid #667085;
@@ -141,6 +142,7 @@ export const SearchPw = styled.div`
   display: flex;
   align-items: center;
   height: 2vh;
+  cursor: pointer;
 `;
 export const SignUpBtnDiv = styled(Link)`
   display: flex;
@@ -197,6 +199,12 @@ export const SnsLoginContainer = styled.div`
   justify-content: center;
   gap: 2vw;
 `;
-export const KaKaoLoginDiv = styled.div``;
-export const NaverLoginDiv = styled.div``;
-export const GoogleLoginDiv = styled.div``;
+export const KaKaoLoginDiv = styled.div`
+  cursor: pointer;
+`;
+export const NaverLoginDiv = styled.div`
+  cursor: pointer;
+`;
+export const GoogleLoginDiv = styled.div`
+  cursor: pointer;
+`;

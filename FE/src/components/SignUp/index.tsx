@@ -156,7 +156,7 @@ const SignUp = () => {
                   setValue('email', '');
                 }}
               >
-                <DeleteSvg />
+                {watch('email') ? <DeleteSvg /> : <></>}
               </S.EmailDeleteDiv>
             </S.EmailInputDiv>
             <button
@@ -207,7 +207,7 @@ const SignUp = () => {
                 setValue('password', '');
               }}
             >
-              <DeleteSvg />
+              {watch('password') ? <DeleteSvg /> : <></>}
             </S.PwDeleteDiv>
             <S.PwVectorDiv>
               <VectorSvg />
@@ -230,7 +230,7 @@ const SignUp = () => {
                 setValue('passwordCheck', '');
               }}
             >
-              <DeleteSvg />
+              {watch('passwordCheck') ? <DeleteSvg /> : <></>}
             </S.PwCheckDeleteDiv>
             <S.PwCheckVectorDiv>
               <VectorSvg />

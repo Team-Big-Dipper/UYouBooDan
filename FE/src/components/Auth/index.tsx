@@ -98,8 +98,12 @@ const Auth = () => {
                 },
               })}
             />
-            <S.LoginEmailDeleteDiv>
-              <DeleteSvg />
+            <S.LoginEmailDeleteDiv
+              onClick={() => {
+                setValue('email', '');
+              }}
+            >
+              {watch('email') ? <DeleteSvg /> : <></>}
             </S.LoginEmailDeleteDiv>
           </S.LoginEmailInputDiv>
         </S.LoginEmailContainer>
@@ -117,8 +121,12 @@ const Auth = () => {
                 },
               })}
             />
-            <S.PwDeleteDiv>
-              <DeleteSvg />
+            <S.PwDeleteDiv
+              onClick={() => {
+                setValue('password', '');
+              }}
+            >
+              {watch('password') ? <DeleteSvg /> : <></>}
             </S.PwDeleteDiv>
             <S.PwVectorDiv>
               <VectorSvg />
