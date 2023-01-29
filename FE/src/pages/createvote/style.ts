@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import Link from 'next/link';
+import DatePicker from 'react-datepicker'
 
 export const CreateContainer = styled.div`
   flex: 1;
@@ -27,13 +29,14 @@ export const CategoryTitle = styled.div`
 `;
 
 export const Select = styled.select`
-  width: 10vw;
+  width: fit-content;
   padding: 5px 7px;
   border: 1px solid #d6d9dc;
   border-radius: 6px;
   cursor: pointer;
   outline: none;
   color: #667085;
+  margin-bottom: 10px;
 `;
 
 export const InputWrapper = styled.div`
@@ -66,11 +69,16 @@ export const BtnClear = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 0.6rem;
 `;
 
+export const ErrorLength = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 export const QuestionTitleLength = styled.div`
   font-size: 0.85rem;
-  margin-top: 1vh;
+  /* margin-top: 1vh; */
   display: flex;
   justify-content: flex-end;
   span{
@@ -109,8 +117,8 @@ export const SumContainer = styled.div`
 export const ContentImg = styled.img`
   margin: 10px 20px 10px 0;
   border-radius: 5px;
-  width: 100%;
-  height: 150px;
+  width: 20%;
+  height: 20%;
 `;
 export const UploadDelete = styled.div`
   display: flex;
@@ -156,6 +164,57 @@ export const TabHr = styled.hr`
   margin-top: -2px;
 `;
 
+//글투표
+// export const InputWrapper = styled.div`
+//   display: flex;
+//   align-items: center;
+//   width: 100%;
+//   border: 1px solid #d6d9dc;
+//   border-radius: 6px;
+//   padding-right: 10px;
+//   margin: 1vh 0;
+// `;
+export const AnswerInput = styled.input`
+  padding: 5px 30px 5px 7px;
+  color: #667085;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+`;
+export const DeleteInput = styled.div`
+  outline: none;
+  cursor: pointer;
+  border: none;
+  color: #667085;
+  background-color: #d6d9dc;
+  border-radius: 50%;
+  padding: 5px;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.6rem;
+`;
+export const PlusInput = styled.div`
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 800;
+    background-color: #d6d9dc;
+    color: #667085;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+  }
+`;
+
 export const Hr = styled.hr`
   height: 10px;
   background-color: #FAFAFA;
@@ -169,23 +228,6 @@ export const TabWarning = styled.div`
   display: flex;
   span{
     color: red;
-  }
-`;
-
-export const PlusInput = styled.div`
-  display: flex;
-  justify-content: center;
-  div{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    font-weight: 800;
-    background-color: #d6d9dc;
-    color: #667085;
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
   }
 `;
 
@@ -220,6 +262,14 @@ export const Warning = styled.div`
     color: red;
   }
 `;
+//datepicker
+export const StyledDatePicker = styled(DatePicker)`
+  border: 1px solid #d6d9dc;
+  width: 200px;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+`;
 
 
 export const Btns = styled.div`
@@ -227,7 +277,7 @@ export const Btns = styled.div`
   margin: 2vh 0;
   justify-content: center;
 `;
-export const Cancle = styled.button`
+export const Cancle = styled(Link)`
   width: 10vw;
   border: 1px solid #4285F4;
   color: #4285F4;
@@ -237,6 +287,10 @@ export const Cancle = styled.button`
   margin-right: 1vw;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  font-size: 0.9rem;
 `;
 export const Submit = styled.button`
   width: 10vw;
@@ -247,4 +301,15 @@ export const Submit = styled.button`
   padding: 1.3vh 1.4vw;
   cursor: pointer;
   white-space: nowrap;
+  font-size: 0.9rem;
+`;
+
+export const ErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
+  margin-left: 10px;
+`;
+export const CategoryErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
 `;

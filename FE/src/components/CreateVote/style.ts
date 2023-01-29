@@ -44,3 +44,38 @@ export const Input = styled.input`
   border-radius: 6px;
   outline: none;
 `;
+
+export const InputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid #d6d9dc;
+  border-radius: 6px;
+  padding-right: 10px;
+  margin: 1vh 0;
+`;
+export const AnswerInput = styled.input`
+  padding: 5px 30px 5px 7px;
+  color: #667085;
+  width: 100%;
+  border: none;
+  border-radius: 6px;
+  outline: none;
+`;
+
+export const PlusInput = styled.div`
+  display: flex;
+  justify-content: center;
+  div{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: 800;
+    background-color: #d6d9dc;
+    color: #667085;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+  }
+`;
