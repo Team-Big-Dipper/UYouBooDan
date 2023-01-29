@@ -21,6 +21,7 @@ export interface Inputs {
 
 function createvote() {
 	const dispatch = useDispatch();
+  const [sumbmitData, setSubmitData] = useState<Inputs>()
   const { register, handleSubmit, watch, control, formState: {isSubmitting, errors} } = useForm<Inputs>({
     mode: 'onChange',
     reValidateMode: "onChange",
@@ -31,19 +32,20 @@ function createvote() {
   //submit
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
     console.log('data : ', data)
-    useEffect(()=>{
-      if((data.topicVoteItems.length === 1 && data.topicVoteItems[0].topicVoteItemName === '')){
-        alert('답을 입력해주세요!')
-      }else if(data.closedAt === undefined){
-        alert('마감날짜를 입력해주세요!')
-      }else{
-        //   const response = await axios.post('http://localhost:3000/api/topics');
-        //   console.log(response)
-        //   return response.data;
-        dispatch(createData(data))
-      }
-    },[])
+    setSubmitData(data)
   }
+  useEffect(()=>{
+    if((sumbmitData?.topicVoteItems.length === 1 && sumbmitData?.topicVoteItems[0].topicVoteItemName === '')){
+      alert('답을 입력해주세요!')
+    }else if(sumbmitData?.closedAt === undefined){
+      alert('마감날짜를 입력해주세요!')
+    }else{
+      //   const response = await axios.post('http://localhost:3000/api/topics');
+      //   console.log(response)
+      //   return response.data;
+      dispatch(createData(sumbmitData))
+    }
+  },[])
   
   //category
   const [categoryMsg, setCategoryMsg] = useState<string>('');
