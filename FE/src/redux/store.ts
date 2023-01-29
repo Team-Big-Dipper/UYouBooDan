@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import pageIdReducer from './slices/pageIdSlice';
-import createVoteSlice from './slices/createVoteSlice';
+import currentVoteReducer from './slices/currentVoteSlice';
 
 export const store = configureStore({
   reducer: {
     pageId: pageIdReducer,
-    createVote: createVoteSlice,
+    currentVote: currentVoteReducer,
   },
 });
 

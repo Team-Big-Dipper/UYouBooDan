@@ -8,9 +8,9 @@ interface propTypes {
     id: number;
     category: string;
     content: string;
-    createdAt: number;
+    createdAt: string;
     username: string;
-    endDate: number;
+    endDate: string;
   };
 }
 
@@ -29,7 +29,7 @@ const CardItem = ({ data }: propTypes) => {
         <S.CardCategory>#{data.category}</S.CardCategory>
         <S.CardContents>
           <S.Content>{data.content}</S.Content>
-          <S.CardDDay>D-{data.endDate - data.createdAt}</S.CardDDay>
+          <S.CardDDay>D-{data.endDate}</S.CardDDay>
         </S.CardContents>
       </div>
       <S.ProfileContainer>

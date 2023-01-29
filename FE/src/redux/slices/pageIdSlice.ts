@@ -15,7 +15,6 @@ export const pageIdSlice = createSlice({
   reducers: {
     getPageId: (state, action: PayloadAction<any>) => {
       state.pageIdState = action.payload;
-      //console.log(action.payload);
     },
   },
 });

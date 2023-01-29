@@ -4,7 +4,6 @@ import { Fingerprint } from '../../assets/fingerprint';
 import { HotVote } from '../../components/Main/HotVote';
 
 function Main() {
-
   return(
   <S.MainContainer>
     <S.MakeVoteContainer>
@@ -141,10 +140,10 @@ function Main() {
               <tr>
                 <S.DeadLineCard>
                   <div>
-                    <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                    <S.CardContent>
-                      Lorem ipsum dolor sit amet
-                    </S.CardContent>
+                    <S.CardTitle>
+                      #카테고리&nbsp;<span>D-3</span>
+                    </S.CardTitle>
+                    <S.CardContent>Lorem ipsum dolor sit amet</S.CardContent>
                   </div>
                   <S.AuthorDay>
                     작성자

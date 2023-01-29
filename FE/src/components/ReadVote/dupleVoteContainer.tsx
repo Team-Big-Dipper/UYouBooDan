@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { TextVote } from './textVote';
-import { ImageVote } from './imageVote';
-
+import { DupleTextVote } from './dupleTextVote';
+import { DupleImageVote } from './dupleImageVote';
 type propTypes = {
   content: string;
   count: number;
@@ -10,6 +9,7 @@ type propTypes = {
   duplicate: boolean | undefined;
   voteType: string | undefined;
   id: number;
+  totalCount: number;
 };
 export const DupleVoteContainer = ({
   content,
@@ -19,6 +19,7 @@ export const DupleVoteContainer = ({
   duplicate,
   voteType,
   id,
+  totalCount,
 }: propTypes) => {
   const [clicked, setClicked] = useState(false);
   const handleFocus = () => {
@@ -56,11 +57,11 @@ export const DupleVoteContainer = ({
       <>
         {voteType === 'text' ? (
           <div onClick={onVote}>
-            <TextVote clicked={clicked} content={content} count={count} />
+            <DupleTextVote clicked={clicked} content={content} count={count} />
           </div>
         ) : (
           <div onClick={onVote} style={{ margin: '5px' }}>
-            <ImageVote clicked={clicked} content={content} count={count} />
+            <DupleImageVote clicked={clicked} content={content} count={count} />
           </div>
         )}
       </>
