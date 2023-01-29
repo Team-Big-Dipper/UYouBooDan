@@ -1,12 +1,12 @@
 import React from 'react';
-import Login from './Login';
+import Auth from '../../components/Auth';
+import * as S from './style';
 
 const auth = () => {
   return (
-    <>
-      <div>auth pages!</div>
-      <Login />
-    </>
+    <S.AuthPageContainer>
+      <Auth />
+    </S.AuthPageContainer>
   );
 };
 
