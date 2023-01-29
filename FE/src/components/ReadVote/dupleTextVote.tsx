@@ -6,7 +6,7 @@ interface propsTypes {
   count: number;
   clicked: boolean;
 }
-export const TextVote = ({ content, count, clicked }: propsTypes) => {
+export const DupleTextVote = ({ content, count, clicked }: propsTypes) => {
   return (
     <S.SelectTextDuple clicked={clicked}>
       {content}

@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from './sidebar';
 import ListPage from './listPage';
 import * as S from './style';
+import axios from 'axios';
 
 interface props {
   id: number;
   category: string;
   content: string;
-  createdAt: number;
+  createdAt: string;
   username: string;
-  endDate: number;
+  endDate: string;
 }
 
 const VoteList = () => {
@@ -17,67 +18,16 @@ const VoteList = () => {
   const [condition, setCondition] = useState('all');
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  console.log(condition, 'api call');
-  console.log(page, 'api call');
-
   useEffect(() => {
-    const initialdata = {
-      totalPage: 4,
-      data: [
-        {
-          id: 1,
-          category: '음식골라줘',
-          content: '문장입니다',
-          createdAt: 20221212,
-          username: 'DADADA',
-          endDate: 20221231,
-        },
-        {
-          id: 2,
-          category: '음식골라줘',
-          content: '문장입니다',
-          createdAt: 20221212,
-          username: 'DADADA',
-          endDate: 20221231,
-        },
-        {
-          id: 3,
-          category: '음식골라줘',
-          content: '문장입니다',
-          createdAt: 20221212,
-          username: 'DADADA',
-          endDate: 20221231,
-        },
-        {
-          id: 4,
-          category: '음식골라줘',
-          content: '문장입니다',
-          createdAt: 20221212,
-          username: 'DADADA',
-          endDate: 20221231,
-        },
-        {
-          id: 5,
-          category: '음식골라줘',
-          content: '문장입니다',
-          createdAt: 20221212,
-          username: 'DADADA',
-          endDate: 20221231,
-        },
-        {
-          id: 6,
-          category: '음식골라줘',
-          content: '문장입니다',
-          createdAt: 20221212,
-          username: 'DADADA',
-          endDate: 20221231,
-        },
-      ],
-    };
-
-    setData([...initialdata.data]);
-    setTotalPage(initialdata.totalPage);
-  }, []);
+    axios.get(`/api/topics/${condition}`).then((res) => {
+      try {
+        setData(res?.data[0].data);
+        setTotalPage(res?.data[0].totalPage);
+      } catch (e) {
+        console.log(e);
+      }
+    });
+  }, [condition]);
 
   return (
     <>

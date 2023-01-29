@@ -8,6 +8,7 @@ export const ModalBackground = styled.div`
   top: 0;
   left: 0;
   color: white;
+  z-index: 2;
 `;
 
 export const ModalContainer = styled.div`
@@ -21,8 +22,12 @@ export const ModalContainer = styled.div`
   flex-direction: column;
   justify-content: end;
   border-radius: 10px;
+  z-index: 2;
 `;
 
+export const ModalButtonContainer = styled.div`
+  display: flex;
+`;
 export const ModalLeftButton = styled.span`
   font-size: 1.2rem;
   justify-content: space-between;
@@ -33,6 +38,8 @@ export const ModalLeftButton = styled.span`
   padding: 2rem;
   cursor: default;
   flex: 1;
+  z-index: 2;
+
   &:hover {
     background-color: #4285f4;
     color: white;
@@ -48,6 +55,8 @@ export const ModalRightButton = styled.span`
   padding: 2rem;
   cursor: default;
   flex: 1;
+  z-index: 2;
+
   &:hover {
     background-color: #4285f4;
     color: white;
@@ -56,4 +65,27 @@ export const ModalRightButton = styled.span`
 `;
 export const ModalText = styled.div`
   font-size: 1.2rem;
+  z-index: 2;
+`;
+
+export const LinkContainer = styled.div`
+  width: 25vw;
+  height: 40vh;
+  background-color: white;
+  color: black;
+  position: relative;
+  margin: 25vh auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  z-index: 2;
+`;
+
+export const LinkCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 35%;
 `;
