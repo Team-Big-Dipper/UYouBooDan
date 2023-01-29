@@ -13,9 +13,9 @@ export const DeleteSvg = () => {
       <path
         d="M12.8007 7.01562L10.0001 9.99981M10.0001 9.99981L7.19939 12.984M10.0001 9.99981L7.01587 7.19915M10.0001 9.99981L12.9842 12.8005"
         stroke="#667085"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

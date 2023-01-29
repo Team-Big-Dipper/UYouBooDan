@@ -33,7 +33,8 @@ export const EmailTitle = styled.div`
 export const EmailInputBtnDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 5.5vh;
+  /* height: 5.5vh; */
+  height: 6.5vh;
   margin-bottom: 1vh;
   button {
     width: 6vw;
@@ -59,6 +60,7 @@ export const EmailInputDiv = styled.div`
   padding: 0 2%;
   input {
     font-size: 1rem;
+    width: 80%;
     border: none;
     outline: none;
   }
@@ -106,7 +108,7 @@ export const PwInput = styled.div<ValidAndExist>`
       : 'white'};
   display: flex;
   justify-content: space-between;
-  height: 5.5vh;
+  height: 6.5vh;
   border-radius: 9px;
   padding: 0 2%;
   margin-bottom: 1vh;
@@ -147,7 +149,7 @@ export const PwCheckInput = styled.div<ValidAndExist>`
       : 'white'};
   display: flex;
   justify-content: space-between;
-  height: 5.5vh;
+  height: 6.5vh;
   border-radius: 9px;
   padding: 0 2%;
   margin-bottom: 1vh;
@@ -207,7 +209,7 @@ export const NickTitle = styled.div`
 export const NickInputAndBtn = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 5.5vh;
+  height: 6.5vh;
   margin-bottom: 1vh;
   button {
     width: 6vw;
@@ -233,6 +235,7 @@ export const NickInputDiv = styled.div`
   padding: 0 2%;
   input {
     font-size: 1rem;
+    width: 80%;
     border: none;
     outline: none;
   }
@@ -312,7 +315,6 @@ export const SignUpBtnContainer = styled.div<Ok>`
     cursor: pointer;
     transition-duration: 0.3s;
     :active {
-      /* background-color: #d6d9dc; */
       background-color: ${(props) => (props.isOk ? '#d6d9dc' : '#7b8c9f')};
     }
   }
