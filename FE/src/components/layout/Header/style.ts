@@ -36,8 +36,10 @@ export const Mypage = styled(Link)`
   align-items: center;
   font-size: 0.85rem;
   margin-bottom: 10px;
+  margin-right: 1vw;
   text-decoration: none;
   color: black;
+  gap: 0.3vw;
 `;
 export const LoginSignUpDiv = styled.div`
   display: flex;
