@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
+import axios from 'axios';
 // 통신 성공 시 보내게 될 데이터의 타입
 export interface Inputs {
   data:{
@@ -23,6 +23,13 @@ const initialState: Inputs = {
     closedAt: '',
   }
 }
+
+// This action is what we will call using the dispatch in order to trigger the API call.
+// export const postVote = createAsyncThunk('createVote/post', async () => {
+//   const response = await axios.post('http://localhost:3000/api/topics');
+//   console.log(response)
+//   return response.data;
+// });
 
 export const createVoteSlice = createSlice({
   name: 'createVote',

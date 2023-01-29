@@ -23,6 +23,7 @@ function createvote() {
 	const dispatch = useDispatch();
   const { register, handleSubmit, watch, control, formState: {isSubmitting, errors} } = useForm<Inputs>({
     mode: 'onChange',
+    reValidateMode: "onChange",
     defaultValues: {
       topicVoteItems: [{topicVoteItemName:''}]
     }
@@ -36,10 +37,23 @@ function createvote() {
       }else if(data.closedAt === undefined){
         alert('마감날짜를 입력해주세요!')
       }else{
+        //   const response = await axios.post('http://localhost:3000/api/topics');
+        //   console.log(response)
+        //   return response.data;
         dispatch(createData(data))
       }
     },[])
   }
+  
+  //category
+  const [categoryMsg, setCategoryMsg] = useState<string>('');
+  useEffect(()=>{
+    if(watch().category ==='' || errors.category?.message){
+      setCategoryMsg('카테고리를 선택해주세요.')
+    }else{
+      setCategoryMsg('')
+    }
+  },[watch('category')])
 
   //questionTitle value
   const [qTitlevalue, setQTitleValue] = useState('');
@@ -114,9 +128,9 @@ function createvote() {
   }
 
   //datepicker
-  const [startDate, setStartDate] = useState(null);
-  // const day = new Date(+startDate+ 3240*10000).toISOString().replace("T", " ").replace(/\..*/, '');
-  // console.log(day)
+  const [startDate, setStartDate] = useState(new Date());
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <S.CreateContainer>
       <S.Path>홈 &gt; 나만의 투표 만들기</S.Path>
@@ -137,7 +151,11 @@ function createvote() {
           <option value="취미운동">취미/운동</option>
           <option value="일반">일반</option>
         </S.Select>
-        {}
+        {(watch('category') && errors.category?.message && categoryMsg) ||
+          categoryMsg === '카테고리를 선택해주세요.' ? (
+            <S.CategoryErrorMessage>{categoryMsg}</S.CategoryErrorMessage>
+          ) :(<S.CategoryErrorMessage></S.CategoryErrorMessage>)
+        }
         <S.Hr />
 
         {/* 질문 */}
@@ -155,10 +173,12 @@ function createvote() {
           />
           <S.BtnClear onClick={clearQuestionTitle}> x</S.BtnClear>
         </S.InputWrapper>
-        {qTitlevalue === '' ? <S.ErrorMessage>질문을 입력해주세요!</S.ErrorMessage> : ''}
-        <S.QuestionTitleLength>
-          {qTitlevalue.length}&nbsp;/&nbsp;<span>200</span>
-        </S.QuestionTitleLength>
+        <S.ErrorLength>
+          {qTitlevalue === '' ? <S.ErrorMessage>질문을 입력해주세요!</S.ErrorMessage> : ''}
+          <S.QuestionTitleLength>
+            {qTitlevalue.length}&nbsp;/&nbsp;<span>200</span>
+          </S.QuestionTitleLength>
+        </S.ErrorLength>
         <S.SubQuestion>
           <S.SubTitle>추가설명이 필요하다면 적어주세요.</S.SubTitle>
           <S.ContentInput
@@ -272,17 +292,22 @@ function createvote() {
         <Controller 
           control={control}
           name="closedAt"
-          render={({field}) => (
-            <DatePicker
+          render={({ field: { onChange, value } }) => (
+            <S.StyledDatePicker
               {...register('closedAt', {
                 required: true
               })}
-              selected={startDate}  
-              onChange={(date: Date) => field.onChange(date)}
+              selected={startDate}
+              onChange={(date: Date) => {
+                const day = date.toISOString().replace("T", " ").replace(/\..*/, '')
+                setStartDate(date)
+                onChange(day)
+                setIsOpen(!isOpen)
+              }}
               timeInputLabel="Time:"
               dateFormat="yyyy-MM-dd hh:mm aa"
               showTimeInput
-              minDate={startDate}
+              minDate={new Date()}
               placeholderText="종료 날짜 및 시간을 선택해주세요."
             />
           )}

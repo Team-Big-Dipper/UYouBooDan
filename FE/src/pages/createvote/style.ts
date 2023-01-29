@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import Link from 'next/link'
+import Link from 'next/link';
+import DatePicker from 'react-datepicker'
 
 export const CreateContainer = styled.div`
   flex: 1;
@@ -35,6 +36,7 @@ export const Select = styled.select`
   cursor: pointer;
   outline: none;
   color: #667085;
+  margin-bottom: 10px;
 `;
 
 export const InputWrapper = styled.div`
@@ -70,9 +72,13 @@ export const BtnClear = styled.button`
   font-size: 0.6rem;
 `;
 
+export const ErrorLength = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 export const QuestionTitleLength = styled.div`
   font-size: 0.85rem;
-  margin-top: 1vh;
+  /* margin-top: 1vh; */
   display: flex;
   justify-content: flex-end;
   span{
@@ -256,6 +262,14 @@ export const Warning = styled.div`
     color: red;
   }
 `;
+//datepicker
+export const StyledDatePicker = styled(DatePicker)`
+  border: 1px solid #d6d9dc;
+  width: 200px;
+  border-radius: 5px;
+  padding: 5px;
+  cursor: pointer;
+`;
 
 
 export const Btns = styled.div`
@@ -294,4 +308,8 @@ export const ErrorMessage = styled.div`
   color: red;
   font-size: 0.8rem;
   margin-left: 10px;
+`;
+export const CategoryErrorMessage = styled.div`
+  color: red;
+  font-size: 0.8rem;
 `;
