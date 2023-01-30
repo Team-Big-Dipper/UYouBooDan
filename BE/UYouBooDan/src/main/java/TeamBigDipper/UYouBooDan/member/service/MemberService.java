@@ -2,10 +2,14 @@ package TeamBigDipper.UYouBooDan.member.service;
 
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
+import TeamBigDipper.UYouBooDan.global.oauth2.kakao.KakaoProfile;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
+import TeamBigDipper.UYouBooDan.member.value.Name;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +31,10 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final PasswordEncoder passwordEncoder;
+
+    @Getter
+    @Value("${oauth.kakao.initialKey}")
+    private String initialKey;
 
     /**
      * 예시 코드
@@ -144,4 +152,27 @@ public class MemberService {
         Optional<Member> optionalEmail = memberRepository.findByNickname(nickname);
         if (optionalEmail.isPresent()) throw new BusinessLogicException(ExceptionCode.NICKNAME_EXIST);
     }
+
+
+    @Transactional
+    public Member createKakaoMember (KakaoProfile kakaoProfile) {
+        Optional<Member> optMember = memberRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
+        if(optMember.isEmpty()) {
+            Member member = Member.builder()
+                    .memberId(kakaoProfile.getId())   // <- 카카오에서 제공하는 Id값 입력할 수 있도록 해보기
+                    .nickname(new Name("Mock"+ kakaoProfile.getId()))
+                    .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수로 설정해둠
+                    .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
+                    .build();
+            if (kakaoProfile.getKakao_account().getEmail()==null) member.modifyEmail(kakaoProfile.getId().toString()+"@uyouboodan.com");
+            else member.modifyEmail(kakaoProfile.getKakao_account().getEmail());
+
+            member.defaultProfile();
+            List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
+            member.setRoles(roles);
+            return memberRepository.save(member);
+        }
+        else return optMember.get();
+    }
+
 }

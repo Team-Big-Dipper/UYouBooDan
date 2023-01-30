@@ -24,7 +24,10 @@ dependencies {
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0'
 	implementation group: 'com.google.code.gson', name: 'gson'
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'  // for security (dongjin)
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // for oauth2 (dongjin)
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // for oauth2 (dongjin)
+	implementation 'org.apache.httpcomponents:httpclient' // for oauth2 - BasicNameValuePair (dongjin)
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 //	runtimeOnly 'com.h2database:h2'
