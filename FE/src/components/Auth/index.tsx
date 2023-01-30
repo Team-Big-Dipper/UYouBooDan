@@ -14,6 +14,8 @@ import { useRouter } from 'next/router';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
 import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
+import { NoCheckSvg } from '../../assets/noCheck';
+import { OnCheckSvg } from '../../assets/onCheck';
 
 const Auth = () => {
   const {
@@ -144,12 +146,13 @@ const Auth = () => {
           )}
         </S.PwContainer>
         <S.ContinueCheckBoxDiv>
-          <input
-            type="checkbox"
-            onChange={() => {
+          <div
+            onClick={() => {
               setChecked(!checked);
             }}
-          />
+          >
+            {checked ? <OnCheckSvg /> : <NoCheckSvg />}
+          </div>
           <div>로그인 유지</div>
         </S.ContinueCheckBoxDiv>
         <S.SearchAndSignUpDiv>

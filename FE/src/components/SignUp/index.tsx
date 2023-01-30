@@ -15,6 +15,8 @@ import { overLapEmailApi, overLapNickApi } from '../../apis/overLap';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { NoVectorSvg } from '../../assets/noVector';
+import { OnCheckSvg } from '../../assets/onCheck';
+import { NoCheckSvg } from '../../assets/noCheck';
 
 const SignUp = () => {
   const {
@@ -324,12 +326,13 @@ const SignUp = () => {
           <S.TermsTitle>약관동의</S.TermsTitle>
           <S.TermsContentOne>
             <S.TermsOneRadioAndText>
-              <input
-                type="checkbox"
-                name="checkbox1"
-                checked={checkedOne}
-                onChange={() => setCheckedOne(!checkedOne)}
-              />
+              <div
+                onClick={() => {
+                  setCheckedOne(!checkedOne);
+                }}
+              >
+                {checkedOne ? <OnCheckSvg /> : <NoCheckSvg />}
+              </div>
               <div>개인정보 수집 및 이용 동의(필수)</div>
               <>{console.log('첫번째체크여부', checkedOne)}</>
             </S.TermsOneRadioAndText>
@@ -337,12 +340,13 @@ const SignUp = () => {
           </S.TermsContentOne>
           <S.TermsContentTwo>
             <S.TermsTwoRadioAndText>
-              <input
-                type="checkbox"
-                name="checkbox2"
-                checked={checkedTwo}
-                onChange={() => setCheckedTwo(!checkedTwo)}
-              />
+              <div
+                onClick={() => {
+                  setCheckedTwo(!checkedTwo);
+                }}
+              >
+                {checkedTwo ? <OnCheckSvg /> : <NoCheckSvg />}
+              </div>
               <div>이용약관동의(필수)</div>
               <>{console.log('두번째체크여부', checkedTwo)}</>
             </S.TermsTwoRadioAndText>

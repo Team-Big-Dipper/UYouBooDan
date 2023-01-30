@@ -59,7 +59,7 @@ export const LoginEmailDeleteDiv = styled.div`
 
 // password
 export const PwContainer = styled.div`
-  margin-bottom: 1.5vh;
+  margin-bottom: 2.5vh;
 `;
 export const PwTitle = styled.div`
   font-weight: bold;
