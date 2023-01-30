@@ -154,6 +154,11 @@ public class MemberService {
     }
 
 
+    /**
+     * 카카오 외부 로그인 전용 멤버 생성 및 검증 메소드
+     * @param kakaoProfile
+     * @return member
+     */
     @Transactional
     public Member createKakaoMember (KakaoProfile kakaoProfile) {
         Optional<Member> optMember = memberRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
