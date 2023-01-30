@@ -3,6 +3,7 @@ import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { DeleteSvg } from '../../assets/delete';
 import { VectorSvg } from '../../assets/vector';
+import { NoVectorSvg } from '../../assets/noVector';
 import { FailureSvg } from '../../assets/failure';
 import { KakaoSvg } from '../../assets/kakaoSvg';
 import { NaverSvg } from '../../assets/naverSvg';
@@ -13,6 +14,8 @@ import { useRouter } from 'next/router';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
 import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
+import { NoCheckSvg } from '../../assets/noCheck';
+import { OnCheckSvg } from '../../assets/onCheck';
 
 const Auth = () => {
   const {
@@ -27,6 +30,7 @@ const Auth = () => {
   const router = useRouter();
   const { checkedLogin, loginMsgFunc } = useLogin();
   const [loginMsg, setLoginMsg] = useState<string>('');
+  const [vector, setVector] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
   console.log('checked : ', checked);
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -59,10 +63,6 @@ const Auth = () => {
         });
     }
   };
-  // console.log(
-  //   'localstorage.getItem(accesstoken) : ',
-  //   localStorage.getItem('accesstoken'),
-  // );
   // 유효성메세지가 계속 나오게 하지 않기 위해
   // 유효성 에러메세지가 나온뒤 수정할때 input값을 한쪽이라도 지우면
   // 유효성 메세지 사라지게 만드는 코드
@@ -111,7 +111,7 @@ const Auth = () => {
           <S.PwTitle>비밀번호</S.PwTitle>
           <S.PwInputDiv>
             <input
-              type="password"
+              type={vector ? 'text' : 'password'}
               placeholder="비밀번호를 입력해주세요."
               {...register('password', {
                 required: '비밀번호 필수입력.',
@@ -128,8 +128,12 @@ const Auth = () => {
             >
               {watch('password') ? <DeleteSvg /> : <></>}
             </S.PwDeleteDiv>
-            <S.PwVectorDiv>
-              <VectorSvg />
+            <S.PwVectorDiv
+              onClick={() => {
+                setVector(!vector);
+              }}
+            >
+              {vector ? <NoVectorSvg /> : <VectorSvg />}
             </S.PwVectorDiv>
           </S.PwInputDiv>
           {watch('email') && watch('password') && loginMsg ? (
@@ -142,12 +146,13 @@ const Auth = () => {
           )}
         </S.PwContainer>
         <S.ContinueCheckBoxDiv>
-          <input
-            type="checkbox"
-            onChange={() => {
+          <div
+            onClick={() => {
               setChecked(!checked);
             }}
-          />
+          >
+            {checked ? <OnCheckSvg /> : <NoCheckSvg />}
+          </div>
           <div>로그인 유지</div>
         </S.ContinueCheckBoxDiv>
         <S.SearchAndSignUpDiv>
@@ -159,7 +164,9 @@ const Auth = () => {
           <S.SignUpBtnDiv href={'/signup'}>회원가입</S.SignUpBtnDiv>
         </S.SearchAndSignUpDiv>
         <S.LoginBtnDiv>
-          <button type="submit">로그인</button>
+          <button type="submit" disabled={isSubmitting}>
+            로그인
+          </button>
         </S.LoginBtnDiv>
       </form>
       <S.SnsLoginTitleDiv>

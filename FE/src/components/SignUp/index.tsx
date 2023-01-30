@@ -14,6 +14,9 @@ import { FailureSvg } from '../../assets/failure';
 import { overLapEmailApi, overLapNickApi } from '../../apis/overLap';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { NoVectorSvg } from '../../assets/noVector';
+import { OnCheckSvg } from '../../assets/onCheck';
+import { NoCheckSvg } from '../../assets/noCheck';
 
 const SignUp = () => {
   const {
@@ -29,6 +32,8 @@ const SignUp = () => {
   console.log('router : ', router);
   const [checkedOne, setCheckedOne] = useState<boolean>(false);
   const [checkedTwo, setCheckedTwo] = useState<boolean>(false);
+  const [vectorOne, setVectorOne] = useState<boolean>(false);
+  const [vectorTwo, setVectorTwo] = useState<boolean>(false);
   const [emailMsg, setEmailMsg] = useState<string>('');
   const [pwMsg, setPwMsg] = useState<string>('');
   const [nickMsg, setNickMsg] = useState<string>('');
@@ -192,7 +197,7 @@ const SignUp = () => {
           <S.PwTitle>비밀번호</S.PwTitle>
           <S.PwInput valid={pwMsg} exist={watch('passwordCheck')}>
             <input
-              type="password"
+              type={vectorOne ? 'text' : 'password'}
               placeholder="비밀번호를 입력해주세요."
               {...register('password', {
                 required: '비밀번호 필수입력.',
@@ -209,13 +214,18 @@ const SignUp = () => {
             >
               {watch('password') ? <DeleteSvg /> : <></>}
             </S.PwDeleteDiv>
-            <S.PwVectorDiv>
-              <VectorSvg />
+            <S.PwVectorDiv
+              onClick={() => {
+                setVectorOne(!vectorOne);
+              }}
+            >
+              {vectorOne ? <NoVectorSvg /> : <VectorSvg />}
+              {/* <VectorSvg /> */}
             </S.PwVectorDiv>
           </S.PwInput>
           <S.PwCheckInput valid={pwMsg} exist={watch('passwordCheck')}>
             <input
-              type="password"
+              type={vectorTwo ? 'text' : 'password'}
               placeholder="비밀번호를 확인해주세요."
               {...register('passwordCheck', {
                 required: '비밀번호 재확인 필수.',
@@ -232,8 +242,13 @@ const SignUp = () => {
             >
               {watch('passwordCheck') ? <DeleteSvg /> : <></>}
             </S.PwCheckDeleteDiv>
-            <S.PwCheckVectorDiv>
-              <VectorSvg />
+            {/* {vectorTwo ?  : } */}
+            <S.PwCheckVectorDiv
+              onClick={() => {
+                setVectorTwo(!vectorTwo);
+              }}
+            >
+              {vectorTwo ? <NoVectorSvg /> : <VectorSvg />}
             </S.PwCheckVectorDiv>
           </S.PwCheckInput>
           <S.Notice>
@@ -311,12 +326,13 @@ const SignUp = () => {
           <S.TermsTitle>약관동의</S.TermsTitle>
           <S.TermsContentOne>
             <S.TermsOneRadioAndText>
-              <input
-                type="checkbox"
-                name="checkbox1"
-                checked={checkedOne}
-                onChange={() => setCheckedOne(!checkedOne)}
-              />
+              <div
+                onClick={() => {
+                  setCheckedOne(!checkedOne);
+                }}
+              >
+                {checkedOne ? <OnCheckSvg /> : <NoCheckSvg />}
+              </div>
               <div>개인정보 수집 및 이용 동의(필수)</div>
               <>{console.log('첫번째체크여부', checkedOne)}</>
             </S.TermsOneRadioAndText>
@@ -324,12 +340,13 @@ const SignUp = () => {
           </S.TermsContentOne>
           <S.TermsContentTwo>
             <S.TermsTwoRadioAndText>
-              <input
-                type="checkbox"
-                name="checkbox2"
-                checked={checkedTwo}
-                onChange={() => setCheckedTwo(!checkedTwo)}
-              />
+              <div
+                onClick={() => {
+                  setCheckedTwo(!checkedTwo);
+                }}
+              >
+                {checkedTwo ? <OnCheckSvg /> : <NoCheckSvg />}
+              </div>
               <div>이용약관동의(필수)</div>
               <>{console.log('두번째체크여부', checkedTwo)}</>
             </S.TermsTwoRadioAndText>

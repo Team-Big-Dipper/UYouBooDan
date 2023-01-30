@@ -274,7 +274,11 @@ export const TermsContentOne = styled.div`
 export const TermsOneRadioAndText = styled.div`
   display: flex;
   font-size: 1rem;
-  gap: 0.4vw;
+  gap: 0.5vw;
+  div {
+    display: flex;
+    align-items: center;
+  }
 `;
 export const TermsOneInfo = styled.div`
   font-size: 0.9rem;
@@ -290,7 +294,11 @@ export const TermsContentTwo = styled.div`
 export const TermsTwoRadioAndText = styled.div`
   display: flex;
   font-size: 1rem;
-  gap: 0.4vw;
+  gap: 0.5vw;
+  div {
+    display: flex;
+    align-items: center;
+  }
 `;
 export const TermsTwoInfo = styled.div`
   font-size: 0.9rem;
