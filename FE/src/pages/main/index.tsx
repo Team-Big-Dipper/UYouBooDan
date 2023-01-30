@@ -2,6 +2,7 @@ import React, {useState, useEffect, Suspense} from 'react';
 import * as S from './style';
 import { Fingerprint } from '../../assets/fingerprint';
 import { HotVote } from '../../components/Main/HotVote';
+import { MainDeadMobile } from '../../assets/mainDeadMobile';
 
 function Main() {
   return(
@@ -16,11 +17,11 @@ function Main() {
     </S.MakeVoteContainer>
     <S.ContinueVoteContainer>
       <S.ContinueTitle>
-        <h2>진행중인 투표에 참여해보세요.</h2>
+        <h2>진행중인 투표에 <br />참여해보세요.</h2>
         <div>더보기 &gt;</div>
       </S.ContinueTitle>
       <S.CarouselContainer>
-        <S.Crads>
+        <S.Cards>
           <S.Card>
             <div>
               <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
@@ -93,7 +94,7 @@ function Main() {
               <span>2023.01.16</span>
             </S.AuthorDay>
           </S.Card>
-        </S.Crads>
+        </S.Cards>
       </S.CarouselContainer>
     </S.ContinueVoteContainer>
     <S.HotContainer>
@@ -102,6 +103,7 @@ function Main() {
     </S.HotContainer>
     <S.ImageDeadLineContainer>
       <S.ImageContainer></S.ImageContainer>
+      <MainDeadMobile />
       <S.DeadLineContainer>
         <S.DeadLineTitle>
           <div className='title'>마감임박 투표</div>
@@ -109,62 +111,64 @@ function Main() {
         </S.DeadLineTitle>
           <S.DeadLineTable>
             <S.DeadLineCards>
-              <tr>
-                <S.DeadLineCard className='top'>
-                  <div>
-                    <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                    <S.CardContent>
-                      Lorem ipsum dolor sit amet
-                    </S.CardContent>
-                  </div>
-                  <S.AuthorDay>
-                    작성자
-                    <span>2023.01.16</span>
-                  </S.AuthorDay>
-                </S.DeadLineCard>
-              </tr>
-              <tr>
-                <S.DeadLineCard className='second'>
-                  <div>
-                    <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                    <S.CardContent>
-                      Lorem ipsum dolor sit amet
-                    </S.CardContent>
-                  </div>
-                  <S.AuthorDay>
-                    작성자
-                    <span>2023.01.16</span>
-                  </S.AuthorDay>
-                </S.DeadLineCard>
-              </tr>
-              <tr>
-                <S.DeadLineCard>
-                  <div>
-                    <S.CardTitle>
-                      #카테고리&nbsp;<span>D-3</span>
-                    </S.CardTitle>
-                    <S.CardContent>Lorem ipsum dolor sit amet</S.CardContent>
-                  </div>
-                  <S.AuthorDay>
-                    작성자
-                    <span>2023.01.16</span>
-                  </S.AuthorDay>
-                </S.DeadLineCard>
-              </tr>
-              <tr>
-                <S.DeadLineCard className='bottom'>
-                  <div>
-                    <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
-                    <S.CardContent>
-                      Lorem ipsum dolor sit amet
-                    </S.CardContent>
-                  </div>
-                  <S.AuthorDay>
-                    작성자
-                    <span>2023.01.16</span>
-                  </S.AuthorDay>
-                </S.DeadLineCard>
-              </tr>
+              <tbody>
+                <tr>
+                  <S.DeadLineCard className='top'>
+                    <div>
+                      <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                      <S.CardContent>
+                        Lorem ipsum dolor sit amet
+                      </S.CardContent>
+                    </div>
+                    <S.AuthorDay>
+                      작성자
+                      {/* <span>2023.01.16</span> */}
+                    </S.AuthorDay>
+                  </S.DeadLineCard>
+                </tr>
+                <tr>
+                  <S.DeadLineCard className='second'>
+                    <div>
+                      <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                      <S.CardContent>
+                        Lorem ipsum dolor sit amet
+                      </S.CardContent>
+                    </div>
+                    <S.AuthorDay>
+                      작성자
+                      <span>2023.01.16</span>
+                    </S.AuthorDay>
+                  </S.DeadLineCard>
+                </tr>
+                <tr>
+                  <S.DeadLineCard>
+                    <div>
+                      <S.CardTitle>
+                        #카테고리&nbsp;<span>D-3</span>
+                      </S.CardTitle>
+                      <S.CardContent>Lorem ipsum dolor sit amet</S.CardContent>
+                    </div>
+                    <S.AuthorDay>
+                      작성자
+                      <span>2023.01.16</span>
+                    </S.AuthorDay>
+                  </S.DeadLineCard>
+                </tr>
+                <tr>
+                  <S.DeadLineCard className='bottom'>
+                    <div>
+                      <S.CardTitle>#카테고리&nbsp;<span>D-3</span></S.CardTitle>
+                      <S.CardContent>
+                        Lorem ipsum dolor sit amet
+                      </S.CardContent>
+                    </div>
+                    <S.AuthorDay>
+                      작성자
+                      <span>2023.01.16</span>
+                    </S.AuthorDay>
+                  </S.DeadLineCard>
+                </tr>
+              </tbody>
             </S.DeadLineCards>
           </S.DeadLineTable>
       </S.DeadLineContainer>
