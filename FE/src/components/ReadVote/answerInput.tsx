@@ -24,7 +24,7 @@ const AnswerInput = ({ id, setData }: any) => {
     let request = {
       id: 6,
       like: 11,
-      created_at: '2023-01-12',
+      created_at: '2023-02-30 11:21:21',
       username: 'DAMONG',
       status: 'ACTIVE',
       content: data.answer,

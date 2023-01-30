@@ -3,7 +3,7 @@ import * as S from './style';
 import VoteTitle from '../../components/ReadVote/voteTitle';
 import VoteContent from '../../components/ReadVote/voteContent';
 import AnswerList from '../../components/ReadVote/answerList';
-import { DupleVoteContainer } from '../../components/ReadVote/dupleVoteContainer';
+//import { DupleVoteContainer } from '../../components/ReadVote/dupleVoteContainer';
 import { SingleVoteContainer } from '../../components/ReadVote/singleVoteContainer';
 import { useRouter } from 'next/router';
 import VoteBtn from '../../components/ReadVote/voteBtn';
@@ -102,39 +102,39 @@ const ReadVote = () => {
       <VoteContent content={data?.content} image={data?.image} />
       <div style={displayStyle}>
         {voteBtns?.map((el, idx) => {
-          if (data?.duplicate) {
-            //중복투표
-            return (
-              <DupleVoteContainer
-                key={idx}
-                id={el.id}
-                content={el.content}
-                count={el.totalVote}
-                selectedBtn={selectedBtn}
-                duplicate={data?.duplicate}
-                handleSelectedBtn={handleSelectedBtn}
-                voteType={data?.voteType}
-                totalCount={totalCount}
-                // isTopicVoteItemVoted={el.isTopicVoteItemVoted}
-              />
-            );
-          } else {
-            //단일투표
-            return (
-              <SingleVoteContainer
-                key={idx}
-                id={el.id}
-                content={el.content}
-                count={el.totalVote}
-                selectedBtn={selectedBtn}
-                duplicate={data?.duplicate}
-                handleSelectedBtn={handleSelectedBtn}
-                voteType={data?.voteType}
-                totalCount={totalCount}
-                isTopicVoteItemVoted={el.isTopicVoteItemVoted}
-              />
-            );
-          }
+          // if (data?.duplicate) {
+          //   //중복투표
+          //   return (
+          //     <DupleVoteContainer
+          //       key={idx}
+          //       id={el.id}
+          //       content={el.content}
+          //       count={el.totalVote}
+          //       selectedBtn={selectedBtn}
+          //       duplicate={data?.duplicate}
+          //       handleSelectedBtn={handleSelectedBtn}
+          //       voteType={data?.voteType}
+          //       totalCount={totalCount}
+          //       // isTopicVoteItemVoted={el.isTopicVoteItemVoted}
+          //     />
+          //   );
+          // } else {
+          //단일투표
+          return (
+            <SingleVoteContainer
+              key={idx}
+              id={el.id}
+              content={el.content}
+              count={el.totalVote}
+              selectedBtn={selectedBtn}
+              duplicate={data?.duplicate}
+              handleSelectedBtn={handleSelectedBtn}
+              voteType={data?.voteType}
+              totalCount={totalCount}
+              isTopicVoteItemVoted={el.isTopicVoteItemVoted}
+            />
+          );
+          // }
         })}
       </div>
       <S.TotalVoteCount>
