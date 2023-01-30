@@ -70,7 +70,7 @@ public class Member extends BaseTimeEntity {
      * 기본 프로필 지정
      */
     public void defaultProfile() {
-        if(this.profile.getPhoto()==null)
+        if(this.profile==null || this.profile.getPhoto()==null)
         this.profile = new Photo("https://scontent-gmp1-1.xx.fbcdn.net/v/t1.18169-9/527016_499021583525593_732357164_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=CdbnqyyFWXkAX_obHCp&_nc_ht=scontent-gmp1-1.xx&oh=00_AfDBQSsLnCXMKoAPnGFrOeSBgvMp__vgjXLEqmtS6etfcw&oe=63F1DB6A");
     }
 
@@ -82,6 +82,7 @@ public class Member extends BaseTimeEntity {
         return optMember.orElseThrow(()->new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
     }
 
+    public void modifyEmail(String email) {this.email = email;}
     public void modifyPassword(String password){ this.password = password; }
     public void modifyNickname(Name nickname){
         this.nickname = nickname;
