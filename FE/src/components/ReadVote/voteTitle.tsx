@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { QuestionIcon } from '../../assets/questionIcon';
 import * as S from './style';
 import { LikeSvg } from '../../assets/likeSvg';
 import { ShareLinkSvg } from '../../assets/shareLinkSvg';
 import LinkModal from '../commons/linkModal';
+import { CalcDday } from '../../utils/calculate';
+import { ChangDateFormat } from '../../utils/parseDate';
 
 type propTypes = {
   category: string | undefined;
   title: string | undefined;
-  createdAt: number | undefined;
+  createdAt: string | undefined;
   author: string | undefined;
-  dday: number | undefined;
+  closedAt: string | undefined;
   views: number | undefined;
   likes: number | undefined;
 };
@@ -20,10 +22,12 @@ const VoteTitle = ({
   title,
   createdAt,
   author,
-  dday,
+  closedAt,
   views,
   likes,
 }: propTypes) => {
+  const [Dday, setDday] = useState(0);
+  const [created, setCreated] = useState('');
   const [copied, setCopied] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const onClickLike = () => {
@@ -34,7 +38,12 @@ const VoteTitle = ({
     const url = window.document.location.href;
     resolve(url);
   });
-
+  useEffect(() => {
+    const result = CalcDday(createdAt, closedAt);
+    setDday(result);
+    const changedDate = ChangDateFormat(createdAt);
+    setCreated(changedDate);
+  }, [createdAt, closedAt]);
   const onClickShareLink = () => {
     saveUrl.then((res: any) => {
       if (navigator.clipboard) {
@@ -63,7 +72,7 @@ const VoteTitle = ({
         <S.ContentContainer>
           <S.devideDiv>
             <S.ContentInfo>
-              {createdAt} | {author} | 조회수{views} |{' '}
+              {created} | {author} | 조회수{views} |{' '}
               <S.LikeButton onClick={onClickLike}>
                 <LikeSvg />
                 {likes}
@@ -77,7 +86,7 @@ const VoteTitle = ({
           <S.devideDiv>
             <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
             <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
-            <S.DdayIcon>D-{dday}</S.DdayIcon>
+            <S.DdayIcon>D-{Dday}</S.DdayIcon>
           </S.devideDiv>
         </S.ContentContainer>
       </S.VoteTitleOutLine>

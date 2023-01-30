@@ -2,7 +2,7 @@ const mockAnswer = [
   {
     id: 1,
     like: 20,
-    created_at: '20230101',
+    created_at: '2023-01-01 01:01:01',
     username: 'DAMONG',
     status: 'ACTIVE',
     content:
@@ -11,7 +11,7 @@ const mockAnswer = [
   {
     id: 2,
     like: 25,
-    created_at: '20230104',
+    created_at: '2023-01-04 01:01:01',
     username: 'DAMONG',
     status: 'ACTIVE',
     content:
@@ -20,7 +20,7 @@ const mockAnswer = [
   {
     id: 3,
     like: 20,
-    created_at: '20230105',
+    created_at: '2023-01-05 01:01:01',
     username: 'DAMONG',
     status: 'DELETE',
     content:
@@ -29,7 +29,7 @@ const mockAnswer = [
   {
     id: 4,
     like: 8,
-    created_at: '20230110',
+    created_at: '2023-01-10 01:01:01',
     username: 'DAMONG',
     status: 'ACTIVE',
     content:
@@ -38,7 +38,7 @@ const mockAnswer = [
   {
     id: 5,
     like: 11,
-    created_at: '20230112',
+    created_at: '2023-01-12 01:01:01',
     username: 'DAMONG',
     status: 'ACTIVE',
     content:
