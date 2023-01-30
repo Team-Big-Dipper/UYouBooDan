@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "eslint-config-prettier": "^8.6.0"
+  }
+}

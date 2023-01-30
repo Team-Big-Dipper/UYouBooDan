@@ -141,10 +141,11 @@ export const handlers = [
   }),
   // Vote 투표 작성 보내기
   rest.post('/api/topics', (req, res, ctx) => {
-    const request = req.body;
+    const voteData:any = req.body;
     console.log('msw 내부 요청 받았음!');
-    console.log('request: ', request);
+    console.log('voteData: ', voteData);
     console.log('req', req);
+    MockVote.push(voteData);
 
     return res(ctx.delay(), ctx.status(200), ctx.json(MockVote));
   }),
