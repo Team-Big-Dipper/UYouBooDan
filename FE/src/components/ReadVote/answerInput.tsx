@@ -14,29 +14,30 @@ const AnswerInput = ({ id, setData }: any) => {
     handleSubmit,
     watch,
     formState: { errors },
+    reset,
   } = useForm<Inputs>({
     defaultValues: {
       answer: '',
     },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data.answer);
     let request = {
-      id: 5,
+      id: 6,
       like: 11,
-      created_at: '20230112',
+      created_at: '2023-02-30 11:21:21',
       username: 'DAMONG',
       status: 'ACTIVE',
       content: data.answer,
     };
-    axios.post(`/api/topic/${String(id)}/comments`, request).then(() => {
+    axios.post(`/api/topics/${String(id)}/comments`, request).then(() => {
       setData((prev: any) => [...prev, request]);
     });
-    alert('댓글이 작성되었습니다!');
+    alert('댓글이 작성되었습니다');
+    reset({ answer: '' });
   };
 
-  // console.log(errors);
-  //console.log(watch('answer'));
+  //console.log(errors.answer?.message);
+  console.log(watch('answer'));
   return (
     <>
       <S.AnswerInputContainer onSubmit={handleSubmit(onSubmit)}>
