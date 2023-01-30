@@ -2,6 +2,7 @@ package TeamBigDipper.UYouBooDan.member.controller;
 
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
+import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.dto.MemberPatchReqDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberPostReqDto;
 import TeamBigDipper.UYouBooDan.member.dto.MemberResDto;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 public class MemberController {
 
     private final MemberService memberService;
+
+    private final JwtExtractUtil jwtExtractUtil;
 
     /**
      * Post 요청
@@ -44,13 +48,14 @@ public class MemberController {
      * Patch 요청
      * @return "data" : "String"
      * @param memberPatchReqDto : 요청 Body
-     * @param memberId : 시큐리티 구성 전 임시 Variable
      * @return void
      */
-    @PatchMapping("/edit/{member-id}")
+    @PatchMapping("/edit")
     public ResponseEntity<SingleResDto<String>> patchMember (@RequestBody MemberPatchReqDto memberPatchReqDto,
-                                                             @PathVariable("member-id") Long memberId) {
+                                                             HttpServletRequest request) {
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         memberService.modifyMember(memberPatchReqDto.toEntity(), memberId);
+
         return new ResponseEntity<>(new SingleResDto<>("Success Patch"), HttpStatus.OK);
     }
 
@@ -62,9 +67,9 @@ public class MemberController {
      * 회원탈퇴(withdraw) 후 성공 메세지 반환
      * @return "data" : "성공 메세지"
      */
-    @DeleteMapping("/remove/{member-id}")
-    public ResponseEntity<SingleResDto<String>> withdrawMember (@PathVariable("member-id") Long memberId) {
-        memberService.withdrawMember(memberId);
+    @DeleteMapping("/remove")
+    public ResponseEntity<SingleResDto<String>> withdrawMember (HttpServletRequest request) {
+        memberService.withdrawMember(jwtExtractUtil.extractMemberIdFromJwt(request));
 
         return new ResponseEntity<>(new SingleResDto<>("Success Withdraw"), HttpStatus.OK);
     }
@@ -74,9 +79,9 @@ public class MemberController {
      * 회원 삭제 메소드
      * @return 삭제 성공 메세지
      */
-    @DeleteMapping("/delete/{member-id}")
-    public ResponseEntity<SingleResDto<String>> deleteMember (@PathVariable("member-id") Long memberId) {
-        memberService.removeMember(memberId);
+    @DeleteMapping("/delete")
+    public ResponseEntity<SingleResDto<String>> deleteMember (HttpServletRequest request) {
+        memberService.removeMember(jwtExtractUtil.extractMemberIdFromJwt(request));
 
         return new ResponseEntity<>(new SingleResDto<>("Success Delete"), HttpStatus.OK);
     }
@@ -86,9 +91,9 @@ public class MemberController {
      * 단일 Get 요청
      * @return "data" : "단일 객체에 대한 응답정보"
      */
-    @GetMapping("/find/{member-id}")
-    public ResponseEntity<SingleResDto<MemberResDto>> getMember (@PathVariable("member-id") Long memberId) {
-        Member member = memberService.findMember(memberId);
+    @GetMapping("/find")
+    public ResponseEntity<SingleResDto<MemberResDto>> getMember (HttpServletRequest request) {
+        Member member = memberService.findMember(jwtExtractUtil.extractMemberIdFromJwt(request));
         MemberResDto response = new MemberResDto(member);
 
         return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
@@ -113,18 +118,18 @@ public class MemberController {
      * password 확인 : 성공시 String 메세지, 실패시 BusinessLoginException 발생
      * 추후 Password 인코더 구현 시 추가 작업 예정
      */
-    @PostMapping("/verify/{member-id}")
-    public ResponseEntity<SingleResDto<String>> checkPassword(@PathVariable("member-id") Long memberId,
-                                                              @RequestBody PasswordReqDto passwordDto) {
-        memberService.verifyPassword(passwordDto.getPassword(), memberId);
+    @PostMapping("/verify")
+    public ResponseEntity<SingleResDto<String>> checkPassword(@RequestBody PasswordReqDto passwordDto,
+                                                              HttpServletRequest request) {
+        memberService.verifyPassword(passwordDto.getPassword(), jwtExtractUtil.extractMemberIdFromJwt(request));
 
         return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
     }
 
 
-/**
- * email확인 및 nickname 확인 API 다음작업시 구현예정 (현재는 Handler메소드만 구현)
- */
+    /**
+     * email확인 및 nickname 확인 API 다음작업시 구현예정 (현재는 Handler메소드만 구현)
+     */
 
     /**
      * email 중복확인
@@ -137,6 +142,7 @@ public class MemberController {
 
         return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
     }
+
 
     /**
      * 닉네임 중복확인
