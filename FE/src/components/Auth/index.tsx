@@ -3,6 +3,7 @@ import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { DeleteSvg } from '../../assets/delete';
 import { VectorSvg } from '../../assets/vector';
+import { NoVectorSvg } from '../../assets/noVector';
 import { FailureSvg } from '../../assets/failure';
 import { KakaoSvg } from '../../assets/kakaoSvg';
 import { NaverSvg } from '../../assets/naverSvg';
@@ -60,10 +61,6 @@ const Auth = () => {
         });
     }
   };
-  // console.log(
-  //   'localstorage.getItem(accesstoken) : ',
-  //   localStorage.getItem('accesstoken'),
-  // );
   // 유효성메세지가 계속 나오게 하지 않기 위해
   // 유효성 에러메세지가 나온뒤 수정할때 input값을 한쪽이라도 지우면
   // 유효성 메세지 사라지게 만드는 코드
@@ -134,7 +131,7 @@ const Auth = () => {
                 setVector(!vector);
               }}
             >
-              <VectorSvg />
+              {vector ? <NoVectorSvg /> : <VectorSvg />}
             </S.PwVectorDiv>
           </S.PwInputDiv>
           {watch('email') && watch('password') && loginMsg ? (
@@ -164,7 +161,9 @@ const Auth = () => {
           <S.SignUpBtnDiv href={'/signup'}>회원가입</S.SignUpBtnDiv>
         </S.SearchAndSignUpDiv>
         <S.LoginBtnDiv>
-          <button type="submit">로그인</button>
+          <button type="submit" disabled={isSubmitting}>
+            로그인
+          </button>
         </S.LoginBtnDiv>
       </form>
       <S.SnsLoginTitleDiv>

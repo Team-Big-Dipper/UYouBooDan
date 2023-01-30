@@ -14,6 +14,7 @@ import { FailureSvg } from '../../assets/failure';
 import { overLapEmailApi, overLapNickApi } from '../../apis/overLap';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { NoVectorSvg } from '../../assets/noVector';
 
 const SignUp = () => {
   const {
@@ -216,7 +217,8 @@ const SignUp = () => {
                 setVectorOne(!vectorOne);
               }}
             >
-              <VectorSvg />
+              {vectorOne ? <NoVectorSvg /> : <VectorSvg />}
+              {/* <VectorSvg /> */}
             </S.PwVectorDiv>
           </S.PwInput>
           <S.PwCheckInput valid={pwMsg} exist={watch('passwordCheck')}>
@@ -238,12 +240,13 @@ const SignUp = () => {
             >
               {watch('passwordCheck') ? <DeleteSvg /> : <></>}
             </S.PwCheckDeleteDiv>
+            {/* {vectorTwo ?  : } */}
             <S.PwCheckVectorDiv
               onClick={() => {
                 setVectorTwo(!vectorTwo);
               }}
             >
-              <VectorSvg />
+              {vectorTwo ? <NoVectorSvg /> : <VectorSvg />}
             </S.PwCheckVectorDiv>
           </S.PwCheckInput>
           <S.Notice>
