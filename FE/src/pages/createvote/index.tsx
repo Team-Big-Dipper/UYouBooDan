@@ -10,6 +10,7 @@ import axios, { AxiosResponse, AxiosError } from 'axios';
 //datepicker
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css";
+import {useRouter} from 'next/router'
 
 export interface Inputs {
     category: String;
@@ -22,6 +23,7 @@ export interface Inputs {
 
 function createvote() {
 	const dispatch = useDispatch();
+  const router = useRouter();
   const [sumbmitData, setSubmitData] = useState<Inputs>()
   const { register, handleSubmit, watch, control, formState: {isSubmitting, errors} } = useForm<Inputs>({
     mode: 'onChange',
@@ -30,6 +32,14 @@ function createvote() {
       topicVoteItems: [{topicVoteItemName:''}]
     }
   });
+  //cancle
+  const onHandleCancle = () => {
+    if(confirm('정말 취소하시겠습니까?')){
+      router.push('/')
+    }else{
+      console.log()
+    }
+  }
   //submit
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
     console.log('data : ', data)
@@ -140,6 +150,14 @@ function createvote() {
   //datepicker
   const [startDate, setStartDate] = useState(new Date());
   const [isOpen, setIsOpen] = useState(false);
+  const [deadLineMsg, setDeadLineMsg] = useState<string>('');
+  useEffect(()=>{
+    if(startDate === new Date() || errors.closedAt?.message){
+      setDeadLineMsg('마감일자를 선택해주세요.')
+    }else{
+      setDeadLineMsg('')
+    }
+  },[watch('closedAt')])
 
   return (
     <S.CreateContainer>
@@ -150,10 +168,10 @@ function createvote() {
         <S.CategoryTitle>
           카테고리<span>*</span>
         </S.CategoryTitle>
-        <S.Select {...register(`category`, {
+        <S.Select defaultValue='' {...register(`category`, {
           required: '카테고리를 선택해주세요.'
         })}>
-          <option value='' selected disabled hidden>==선택==</option>
+          <option value='' disabled hidden>==선택==</option>
           <option value="음식">음식</option>
           <option value="패션뷰티">패션/뷰티</option>
           <option value="쇼핑">쇼핑</option>
@@ -164,7 +182,7 @@ function createvote() {
         {(watch('category') && errors.category?.message && categoryMsg) ||
           categoryMsg === '카테고리를 선택해주세요.' ? (
             <S.CategoryErrorMessage>{categoryMsg}</S.CategoryErrorMessage>
-          ) :(<S.CategoryErrorMessage></S.CategoryErrorMessage>)
+          ) :(<S.CategoryErrorMessage>{categoryMsg}</S.CategoryErrorMessage>)
         }
         <S.Hr />
 
@@ -322,6 +340,11 @@ function createvote() {
             />
           )}
         />
+        {(watch('closedAt') && errors.closedAt?.message && deadLineMsg) ||
+          deadLineMsg === '마감일자를 선택해주세요.' ? (
+            <S.CategoryErrorMessage>{deadLineMsg}</S.CategoryErrorMessage>
+          ) :(<S.CategoryErrorMessage>{deadLineMsg}</S.CategoryErrorMessage>)
+        }
         <S.Warning>
           <div>
             <span>*</span>
@@ -333,7 +356,7 @@ function createvote() {
           </div>
         </S.Warning>
         <S.Btns>
-          <S.Cancle href="/">취소하기</S.Cancle>
+          <S.Cancle onClick={onHandleCancle}>취소하기</S.Cancle>
           <S.Submit type='submit' disabled={isSubmitting}>등록하기</S.Submit>
         </S.Btns>
       </form>
