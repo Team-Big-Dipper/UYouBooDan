@@ -113,10 +113,9 @@ public class KakaoOauthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 자체 JWT 생성 및 HttpServletResponse 의 Header 에 저장 (클라이언트 응답용)
-        // JwtAuthenticationFilter 의 SuccessAuthenticate 메소드 사용가능한지 리팩토링 테스트 진행해보기
         String accessToken = jwtTokenizer.delegateAccessToken(kakaoMember);
         String refreshToken = jwtTokenizer.delegateRefreshToken(kakaoMember);
-        response.setHeader("Authentication", "Bearer " + accessToken);
+        response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
         return "Success Login: User";
