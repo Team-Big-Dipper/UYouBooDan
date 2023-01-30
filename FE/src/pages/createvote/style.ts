@@ -277,7 +277,7 @@ export const Btns = styled.div`
   margin: 2vh 0;
   justify-content: center;
 `;
-export const Cancle = styled(Link)`
+export const Cancle = styled.div`
   width: 10vw;
   border: 1px solid #4285F4;
   color: #4285F4;

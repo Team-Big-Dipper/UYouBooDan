@@ -1,22 +1,28 @@
-
 import { AxiosRequestConfig } from 'axios';
 import { DefaultBodyType, PathParams, rest, RestRequest } from 'msw';
 import {
   mockUsers,
   mockVote,
   mockVoteList,
-  mockSortedList,
-  mockReadVoteText,
+  mockSortedInProgress,
+  mockSortedTerminate,
+  mockReadVoteText1,
+  mockReadVoteText2,
+  mockReadVoteText3,
+  mockReadVoteText4,
   mockReadVoteImage,
   mockAnswer,
 } from './data';
 
-
 let MockUsers = [...mockUsers];
 let MockVote = [...mockVote];
 let MockVoteList = [...mockVoteList];
-let MockSortedList = [...mockSortedList];
-let MockReadVoteText = [...mockReadVoteText];
+let MockSortedInProgress = [...mockSortedInProgress];
+let MockSortedTerminate = [...mockSortedTerminate];
+let MockReadVoteText1 = [...mockReadVoteText1];
+let MockReadVoteText2 = [...mockReadVoteText2];
+let MockReadVoteText3 = [...mockReadVoteText3];
+let MockReadVoteText4 = [...mockReadVoteText4];
 let MockReadVoteImage = [...mockReadVoteImage];
 let MockAnswer = [...mockAnswer];
 
@@ -135,10 +141,11 @@ export const handlers = [
   }),
   // Vote 투표 작성 보내기
   rest.post('/api/topics', (req, res, ctx) => {
-    const request = req.body;
+    const voteData:any = req.body;
     console.log('msw 내부 요청 받았음!');
-    console.log('request: ', request);
+    console.log('voteData: ', voteData);
     console.log('req', req);
+    MockVote.push(voteData);
 
     return res(ctx.delay(), ctx.status(200), ctx.json(MockVote));
   }),
@@ -149,11 +156,13 @@ export const handlers = [
     console.log('req', req);
     if (request.condition === 'all') {
       return res(ctx.delay(), ctx.status(200), ctx.json(MockVoteList));
-    } else {
-      return res(ctx.delay(), ctx.status(200), ctx.json(MockSortedList));
+    } else if (request.condition === 'inProgress') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockSortedInProgress));
+    } else if (request.condition === 'terminate') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockSortedTerminate));
     }
   }),
-  rest.get('/api/topic/:id', (req, res, ctx) => {
+  rest.get('/api/topics/:id', (req, res, ctx) => {
     const request = req.params;
     console.log('msw 내부 요청 받았음!');
     console.log('request: ', request.condition);
@@ -161,24 +170,24 @@ export const handlers = [
     if (request.id === '5') {
       return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteImage));
     } else {
-      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText));
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText1));
     }
   }),
-  rest.get('/api/topic/:id/comments', (req, res, ctx) => {
+  rest.get('/api/topics/:id/comments', (req, res, ctx) => {
     const request = req.params;
     console.log('msw 내부 요청 받았음!');
     console.log('request: ', request);
     console.log('req', req);
     return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
   }),
-  rest.post('/api/topic/:id/comments', (req, res, ctx) => {
+  rest.post('/api/topics/:id/comments', (req, res, ctx) => {
     const request: any = req.body;
     console.log('msw 내부 요청 받았음!');
     console.log('request: ', request);
     console.log('req', req);
     return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
   }),
-  rest.patch('/api/topic/:id/comments/:commentId', (req, res, ctx) => {
+  rest.patch('/api/topics/:id/comments/:commentId', (req, res, ctx) => {
     const request: any = req.body;
     const params = req.params;
     console.log('msw 내부 요청 받았음!');

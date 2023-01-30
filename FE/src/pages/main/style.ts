@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import Frame from '../../../public/Mainimage.png';
 import HotFrame from '../../../public/HotFrame.png';
 import MainImageVote from '../../../public/MainImageVote.png';
+import MainTopMobile from '../../../public/MainTopMobile.png'
+import HotMobile from '../../../public/HotMobile.png'
 import Link from 'next/link';
 
 export const MainContainer = styled.div`
@@ -17,6 +19,13 @@ export const MakeVoteContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media screen and (max-width: 768px) {
+    background-image: url(${MainTopMobile.src});
+    justify-content: flex-start;
+    padding-top: 50px;
+    height: 50vh;
+    padding: 20px 30px;
+  }
 `;
 
 export const MakeVoteContent = styled.div`
@@ -51,6 +60,11 @@ export const ContinueVoteContainer = styled.div`
   justify-content: center;
   display: flex;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0 30px;
+  }
 `;
 export const ContinueTitle = styled.div`
   width: 150px;
@@ -65,14 +79,25 @@ export const ContinueTitle = styled.div`
     margin-top: 10px;
     font-size: 0.9rem;
   }
+  @media screen and (max-width: 768px) {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
 `;
 
 export const CarouselContainer = styled.div`
   padding: 0 15px;
   margin: 0 auto;
   width: 75%;
+  @media screen and (max-width: 768px) {
+    align-items: flex-start;
+    width: 100%;
+    padding: 0px;
+  }
 `;
-export const Crads = styled.ul`
+export const Cards = styled.ul`
   display: grid;
   grid-column-gap: 10px;
   grid-auto-flow: column;
@@ -149,6 +174,11 @@ export const HotContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    background-image: url(${HotMobile.src});
+    height: 100%;
+    padding: 50px 0;
+  }
 `;
 export const HotTitle = styled.div`
   color: #242424;
@@ -168,6 +198,10 @@ export const ImageDeadLineContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    padding: 50px 0;
+  }
 `;
 
 export const ImageContainer = styled.div`
@@ -175,9 +209,17 @@ export const ImageContainer = styled.div`
   width: 50%;
   background-image: url(${MainImageVote.src});
   background-size: 100% 100%;
+  @media screen and (max-width: 768px){
+    display: none;
+    width: 100%;
+    height: fit-content;
+  }
 `;
 export const DeadLineContainer = styled.div`
   width: 45%;
+  @media screen and (max-width: 768px) {
+    margin-top: 20px;
+  }
 `;
 export const DeadLineTitle = styled.div`
   display: flex;
@@ -187,6 +229,7 @@ export const DeadLineTitle = styled.div`
     color: #242424;
     font-family: 'yg-jalnan' !important;
     font-size: 1.2rem;
+
   }
   .more {
     color: #667085;

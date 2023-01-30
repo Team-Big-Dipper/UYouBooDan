@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
-export const HotVoteContainer = styled.div``;
+export const HotVoteContainer = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    padding: 0 50px;
+  }
+`;
 
 export const Tabs = styled.div`
   display: flex;
@@ -26,7 +31,11 @@ export const Tab = styled.div`
   }
 `;
 
-export const HotVoteArrContainer = styled.div``;
+export const HotVoteArrContainer = styled.div`
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
+`;
 
 export const CardAdd = styled.div`
   display: flex;
@@ -38,6 +47,12 @@ export const Crads = styled.ul`
   grid-auto-flow: column;
   padding: 25px 0px;
   list-style: none;
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
 `;
 
 export const Card = styled.li`
@@ -56,7 +71,11 @@ export const Card = styled.li`
   transition: all 0.2s;
   cursor: pointer;
   &:hover {
-    border: 2px solid #4285F4;
+    border: 2px solid #4285f4;
+  }
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    max-width: none;
   }
 `;
 

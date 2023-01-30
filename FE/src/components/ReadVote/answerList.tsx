@@ -28,7 +28,7 @@ const AnswerList = ({ id }: any) => {
     };
   }, []);
   useEffect(() => {
-    axios.get(`/api/topic/${String(id)}/comments`).then((res) => {
+    axios.get(`/api/topics/${String(id)}/comments`).then((res) => {
       try {
         setData(res.data);
       } catch (e) {
@@ -36,7 +36,6 @@ const AnswerList = ({ id }: any) => {
       }
     });
   }, [id]);
-
   return (
     <div>
       <p style={textMargin}>댓글({answercount})</p>
