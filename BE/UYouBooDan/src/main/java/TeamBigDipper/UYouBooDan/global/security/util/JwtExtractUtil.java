@@ -34,7 +34,7 @@ public class JwtExtractUtil {
             String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
             Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
             Object value = claims.get("memberId");
-//            if( value == null ) return extractById(claims); // 만약 다른 테이블에 존재하는 Id값에 대한 조회 케이스가 필요한 경우 활성화
+            if( value == null ) return extractById(claims); // 만약 다른 테이블에 존재하는 Id값에 대한 조회 케이스가 필요한 경우 활성화
             return Long.valueOf(String.valueOf(value));
         }
 

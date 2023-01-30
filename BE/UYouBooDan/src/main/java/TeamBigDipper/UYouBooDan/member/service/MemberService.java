@@ -159,12 +159,12 @@ public class MemberService {
         Optional<Member> optMember = memberRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
         if(optMember.isEmpty()) {
             Member member = Member.builder()
-                    .memberId(kakaoProfile.getId())   // <- 카카오에서 제공하는 Id값 입력할 수 있도록 해보기
+                    .memberId(kakaoProfile.getId())
                     .nickname(new Name("Mock"+ kakaoProfile.getId()))
-                    .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수로 설정해둠
+                    .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수 default값 설정해둠
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();
-            if (kakaoProfile.getKakao_account().getEmail()==null) member.modifyEmail(kakaoProfile.getId().toString()+"@uyouboodan.com");
+            if (kakaoProfile.getKakao_account().getEmail()==null) member.modifyEmail(kakaoProfile.getId().toString()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
             else member.modifyEmail(kakaoProfile.getKakao_account().getEmail());
 
             member.defaultProfile();

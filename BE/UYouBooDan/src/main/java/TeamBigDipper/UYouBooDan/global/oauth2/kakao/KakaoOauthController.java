@@ -1,7 +1,7 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.kakao;
 
-
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
+import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -18,7 +18,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
@@ -29,9 +28,6 @@ public class KakaoOauthController {
     @Getter
     @Value("${oauth.kakao.appKey.restApiKey}")
     private String kakaoAppKey;
-    @Getter
-    @Value("${oauth.kakao.initialKey}")
-    private String initialKey;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
 

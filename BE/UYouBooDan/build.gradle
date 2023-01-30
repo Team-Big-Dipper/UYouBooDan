@@ -27,7 +27,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'  // for security (dongjin)
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // for oauth2 (dongjin)
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // for oauth2 (dongjin)
-	implementation 'org.apache.httpcomponents:httpclient' // for oauth2 - BasicNameValuePair (dongjin)
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 //	runtimeOnly 'com.h2database:h2'
