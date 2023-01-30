@@ -29,6 +29,8 @@ const SignUp = () => {
   console.log('router : ', router);
   const [checkedOne, setCheckedOne] = useState<boolean>(false);
   const [checkedTwo, setCheckedTwo] = useState<boolean>(false);
+  const [vectorOne, setVectorOne] = useState<boolean>(false);
+  const [vectorTwo, setVectorTwo] = useState<boolean>(false);
   const [emailMsg, setEmailMsg] = useState<string>('');
   const [pwMsg, setPwMsg] = useState<string>('');
   const [nickMsg, setNickMsg] = useState<string>('');
@@ -192,7 +194,7 @@ const SignUp = () => {
           <S.PwTitle>비밀번호</S.PwTitle>
           <S.PwInput valid={pwMsg} exist={watch('passwordCheck')}>
             <input
-              type="password"
+              type={vectorOne ? 'text' : 'password'}
               placeholder="비밀번호를 입력해주세요."
               {...register('password', {
                 required: '비밀번호 필수입력.',
@@ -209,13 +211,17 @@ const SignUp = () => {
             >
               {watch('password') ? <DeleteSvg /> : <></>}
             </S.PwDeleteDiv>
-            <S.PwVectorDiv>
+            <S.PwVectorDiv
+              onClick={() => {
+                setVectorOne(!vectorOne);
+              }}
+            >
               <VectorSvg />
             </S.PwVectorDiv>
           </S.PwInput>
           <S.PwCheckInput valid={pwMsg} exist={watch('passwordCheck')}>
             <input
-              type="password"
+              type={vectorTwo ? 'text' : 'password'}
               placeholder="비밀번호를 확인해주세요."
               {...register('passwordCheck', {
                 required: '비밀번호 재확인 필수.',
@@ -232,7 +238,11 @@ const SignUp = () => {
             >
               {watch('passwordCheck') ? <DeleteSvg /> : <></>}
             </S.PwCheckDeleteDiv>
-            <S.PwCheckVectorDiv>
+            <S.PwCheckVectorDiv
+              onClick={() => {
+                setVectorTwo(!vectorTwo);
+              }}
+            >
               <VectorSvg />
             </S.PwCheckVectorDiv>
           </S.PwCheckInput>

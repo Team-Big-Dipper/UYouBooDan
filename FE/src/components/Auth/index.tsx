@@ -27,6 +27,7 @@ const Auth = () => {
   const router = useRouter();
   const { checkedLogin, loginMsgFunc } = useLogin();
   const [loginMsg, setLoginMsg] = useState<string>('');
+  const [vector, setVector] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
   console.log('checked : ', checked);
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -111,7 +112,7 @@ const Auth = () => {
           <S.PwTitle>비밀번호</S.PwTitle>
           <S.PwInputDiv>
             <input
-              type="password"
+              type={vector ? 'text' : 'password'}
               placeholder="비밀번호를 입력해주세요."
               {...register('password', {
                 required: '비밀번호 필수입력.',
@@ -128,7 +129,11 @@ const Auth = () => {
             >
               {watch('password') ? <DeleteSvg /> : <></>}
             </S.PwDeleteDiv>
-            <S.PwVectorDiv>
+            <S.PwVectorDiv
+              onClick={() => {
+                setVector(!vector);
+              }}
+            >
               <VectorSvg />
             </S.PwVectorDiv>
           </S.PwInputDiv>
