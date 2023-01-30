@@ -60,7 +60,7 @@ const ReadVote = () => {
   //api요청
   useEffect(() => {
     if (!pid) return;
-    axios.get(`/api/topic/${String(pid)}`).then((res) => {
+    axios.get(`/api/topics/${String(pid)}`).then((res) => {
       try {
         setData({ ...res.data[0] });
         setVoteBtns([...res.data[0].vote.topicVoteItems]);
@@ -95,7 +95,7 @@ const ReadVote = () => {
         title={data?.title}
         createdAt={data?.created_at}
         author={data?.author}
-        dday={data?.closedAt - data?.created_at}
+        closedAt={data?.closedAt}
         views={data?.views}
         likes={data?.likes}
       />
