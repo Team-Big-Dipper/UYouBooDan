@@ -2,6 +2,9 @@ import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
 import * as S from './style';
 import { useRouter } from 'next/router';
+import MySideBar from './MyPageSideBar';
+import MyPageHeader from './MyPageHeader';
+import MyPageMain from './MyPageMain';
 
 const MyPage = () => {
   const router = useRouter();
@@ -15,10 +18,11 @@ const MyPage = () => {
 
   return (
     <S.MyPageContainer>
-      <div>My Page 컴포넌트</div>
-      <div>
-        <button onClick={logoutHandler}>임시로그아웃버튼</button>
-      </div>
+      <MySideBar />
+      <S.MyPageRightContainer>
+        <MyPageHeader />
+        <MyPageMain />
+      </S.MyPageRightContainer>
     </S.MyPageContainer>
   );
 };
