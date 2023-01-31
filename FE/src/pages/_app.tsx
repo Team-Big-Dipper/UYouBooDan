@@ -3,6 +3,8 @@ import type { AppProps } from 'next/app';
 import Layout from '../components/layout';
 import Head from 'next/head';
 import '../fonts/style.css';
+import { ThemeProvider } from 'styled-components'
+import { theme } from '../styles/theme'
 
 //redux
 import { store } from '../redux/store';
@@ -17,18 +19,18 @@ export default function App({ Component, pageProps }: AppProps) {
 
   // 아래 코드는 hydration 에러를 해결하기위한 해결책보다는 에러를 건너뛰는 방식
   // -> 좋은방법은 아닌것 같다.
-  const [showChild, setShowChild] = useState(false);
+  // const [showChild, setShowChild] = useState(false);
 
-  useEffect(() => {
-    setShowChild(true);
-  }, []);
+  // useEffect(() => {
+  //   setShowChild(true);
+  // }, []);
 
-  if (!showChild) {
-    return null;
-  }
-  if (typeof window === 'undefined') {
-    return <></>;
-  } else {
+  // if (!showChild) {
+  //   return null;
+  // }
+  // if (typeof window === 'undefined') {
+  //   return <></>;
+  // } else {
     return (
       <>
         <Head>
@@ -37,10 +39,12 @@ export default function App({ Component, pageProps }: AppProps) {
         <Provider store={store}>
           <Layout>
             <GlobalStyles />
-            <Component {...pageProps} />
+            <ThemeProvider theme={theme}>
+              <Component {...pageProps} />
+            </ThemeProvider>
           </Layout>
         </Provider>
       </>
     );
-  }
+  // }
 }

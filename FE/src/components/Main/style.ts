@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Link from 'next/link'
 
 export const HotVoteContainer = styled.div`
   @media screen and (max-width: 768px) {
@@ -107,7 +108,7 @@ export const AddContainer = styled.div`
   justify-content: center;
 `;
 
-export const Add = styled.div`
+export const Add = styled(Link)`
   display: flex;
   justify-content: center;
   background-color: white;
@@ -116,6 +117,7 @@ export const Add = styled.div`
   padding: 5px 15px;
   border-radius: 50px;
   width: fit-content;
+  text-decoration: none;
   cursor: pointer;
   &:hover{
     color: white;

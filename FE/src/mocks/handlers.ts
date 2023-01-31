@@ -25,7 +25,6 @@ let MockReadVoteText3 = [...mockReadVoteText3];
 let MockReadVoteText4 = [...mockReadVoteText4];
 let MockReadVoteImage = [...mockReadVoteImage];
 let MockAnswer = [...mockAnswer];
-
 console.log(MockUsers);
 console.log(MockVote);
 
@@ -39,6 +38,15 @@ interface VoteList {
   totalPage?: number;
   currentPage?: number;
   data?: Object[];
+}
+
+interface ContinueVoteList {
+  topics: {
+    category: string;
+    title: string;
+    author: string;
+    closedAt: string;
+  };
 }
 
 export const handlers = [
@@ -141,7 +149,7 @@ export const handlers = [
   }),
   // Vote 투표 작성 보내기
   rest.post('/api/topics', (req, res, ctx) => {
-    const voteData:any = req.body;
+    const voteData: any = req.body;
     console.log('msw 내부 요청 받았음!');
     console.log('voteData: ', voteData);
     console.log('req', req);
@@ -195,4 +203,12 @@ export const handlers = [
     console.log('req', req);
     return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
   }),
+  //메인페이지
+  // rest.get<ContinueVoteList>('/api/topics/continue', (req, res, ctx) => {
+  //   const request = req.params;
+  //   console.log('msw 내부 요청 받았음!');
+  //   console.log('request: ', request.condition);
+  //   console.log('req', req);
+  //   return res(ctx.delay(), ctx.status(200), ctx.json(MockContinueList));
+  // }),
 ];
