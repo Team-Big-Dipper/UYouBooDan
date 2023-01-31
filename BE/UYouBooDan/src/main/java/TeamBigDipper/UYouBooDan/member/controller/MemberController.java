@@ -134,26 +134,26 @@ public class MemberController {
     /**
      * email 중복확인
      * @param email
-     * @return
+     * @return 사용 가능시 : data "사용 가능한 이메일입니다.", 사용 불가시 : EMAIL_EXIST(401, "중복된 이메일 입니다.")
      */
     @GetMapping("/verify-email")
     public ResponseEntity<SingleResDto<String>> checkEmail(@RequestParam(required = false) String email) {
         memberService.verifyNotExistEmail(email);
 
-        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("사용 가능한 이메일입니다."),HttpStatus.OK);
     }
 
 
     /**
      * 닉네임 중복확인
      * @param nickname
-     * @return
+     * @return 사용 가능시 : data "사용 가능한 닉네임입니다.", 사용 불가시 : NICKNAME_EXIST(401, "중복된 닉네임 입니다.")
      */
     @GetMapping("/verify-nickname")
     public ResponseEntity<SingleResDto<String>> checkNickname(@RequestParam(required = false) String nickname) {
         memberService.verifyNotExistNickname(nickname);
 
-        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("사용 가능한 닉네임입니다."),HttpStatus.OK);
     }
 
 }
