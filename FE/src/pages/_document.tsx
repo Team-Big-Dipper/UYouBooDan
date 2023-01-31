@@ -1,4 +1,3 @@
-
 // import { Html, Head, Main, NextScript } from 'next/document'
 
 // export default function Document() {
@@ -58,6 +57,6 @@ class MyDocument extends Document {
       </Html>
     );
   }
+}
 
-import { Html, Head, Main, NextScript } from 'next/document';
-
+export default MyDocument;
