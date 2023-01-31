@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import * as S from './style';
+import * as style from './style';
 
 interface HotVoteArr {
   전체: JSX.Element;
@@ -7,8 +7,10 @@ interface HotVoteArr {
   생활: JSX.Element;
 }
 
+
 export const HotVote = () => {
   const [clicked, setClicked] = useState<string>('전체');
+  const category = ['전체', '일반', '음식', '쇼핑', '패션뷰티', '반려동물', '취미운동'];
 
   const onClick = useCallback((e: any)=>{
     const text = e.target.innerText;
@@ -17,160 +19,155 @@ export const HotVote = () => {
 
   const HotVoteArr: any = {
     전체: (
-      <S.CardAdd>
-        <S.Crads>
-          <S.Card>
+      <style.CardAdd>
+        <style.Crads>
+          <style.Card>
             <div>
-              <S.CardTitle>#맛집&nbsp;<span>D-day</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#맛집&nbsp;<span>D-day</span></style.CardTitle>
+              <style.CardContent>
                 오늘 점심은 뭘 먹을까요?
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-          <S.Card>
+            </style.AuthorDay>
+          </style.Card>
+          <style.Card>
             <div>
-              <S.CardTitle>#생활&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#생활&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 어떤걸 사는게 좋을까요?
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-          <S.Card>
+            </style.AuthorDay>
+          </style.Card>
+          <style.Card>
             <div>
-              <S.CardTitle>#맛집&nbsp;<span>D-day</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#맛집&nbsp;<span>D-day</span></style.CardTitle>
+              <style.CardContent>
                 오늘 저녁은 뭘 먹을까요?
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-        </S.Crads>
-        <S.AddContainer>
-          <S.Add>+  더보기</S.Add>
-        </S.AddContainer>
-      </S.CardAdd>
+            </style.AuthorDay>
+          </style.Card>
+        </style.Crads>
+        <style.AddContainer>
+          <style.Add href="/topics?size=6&page=1&filter=hot">+  더보기</style.Add>
+        </style.AddContainer>
+      </style.CardAdd>
     ),
-    맛집추천: (
-      <S.CardAdd>
-        <S.Crads>
-          <S.Card>
+    음식: (
+      <style.CardAdd>
+        <style.Crads>
+          <style.Card>
             <div>
-              <S.CardTitle>#맛집&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#음식&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 Lorem ipsum dolor sit amet
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-          <S.Card>
+            </style.AuthorDay>
+          </style.Card>
+          <style.Card>
             <div>
-              <S.CardTitle>#맛집&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#음식&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 Lorem ipsum dolor sit amet
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-          <S.Card>
+            </style.AuthorDay>
+          </style.Card>
+          <style.Card>
             <div>
-              <S.CardTitle>#맛집&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#음식&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 Lorem ipsum dolor sit amet
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-        </S.Crads>
-        <S.AddContainer>
-          <S.Add>+  더보기</S.Add>
-        </S.AddContainer>
-      </S.CardAdd>
+            </style.AuthorDay>
+          </style.Card>
+        </style.Crads>
+        <style.AddContainer>
+          <style.Add href="/topics?size=6&page=1&filter=hot">+  더보기</style.Add>
+        </style.AddContainer>
+      </style.CardAdd>
     ),
-    생활: (
-      <S.CardAdd>
-        <S.Crads>
-          <S.Card>
+    일반: (
+      <style.CardAdd>
+        <style.Crads>
+          <style.Card>
             <div>
-              <S.CardTitle>#생활&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#일반&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 Lorem ipsum dolor sit amet
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-          <S.Card>
+            </style.AuthorDay>
+          </style.Card>
+          <style.Card>
             <div>
-              <S.CardTitle>#생활&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#일반&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 Lorem ipsum dolor sit amet
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-          <S.Card>
+            </style.AuthorDay>
+          </style.Card>
+          <style.Card>
             <div>
-              <S.CardTitle>#생활&nbsp;<span>D-3</span></S.CardTitle>
-              <S.CardContent>
+              <style.CardTitle>#일반&nbsp;<span>D-3</span></style.CardTitle>
+              <style.CardContent>
                 Lorem ipsum dolor sit amet
-              </S.CardContent>
+              </style.CardContent>
             </div>
-            <S.AuthorDay>
+            <style.AuthorDay>
               작성자
               <span>2023.01.16</span>
-            </S.AuthorDay>
-          </S.Card>
-        </S.Crads>
-        <S.AddContainer>
-          <S.Add>+  더보기</S.Add>
-        </S.AddContainer>
-      </S.CardAdd>
+            </style.AuthorDay>
+          </style.Card>
+        </style.Crads>
+        <style.AddContainer>
+          <style.Add href="/topics?size=6&page=1&filter=hot">+  더보기</style.Add>
+        </style.AddContainer>
+      </style.CardAdd>
     )
   }
   return (
-    <S.HotVoteContainer>
-      <S.Tabs>
-        <S.Tab
-          className={clicked === '전체' ? 'clicked' : ''}
+    <style.HotVoteContainer>
+      <style.Tabs>
+        {category.map((ele, idx)=>{
+          return(<style.Tab
+          key={idx}
+          className={clicked === `${ele}` ? 'clicked' : ''}
           onClick={onClick}
-          >전체</S.Tab>
-        <S.Tab
-          className={clicked === '맛집추천' ? 'clicked' : ''}
-          onClick={onClick}
-        >맛집추천</S.Tab>
-        <S.Tab
-          className={clicked === '생활' ? 'clicked' : ''}
-          onClick={onClick}
-        >생활</S.Tab>
-      </S.Tabs>
-      <S.HotVoteArrContainer>
+          >{ele}</style.Tab>)
+        })}
+      </style.Tabs>
+      <style.HotVoteArrContainer>
         {HotVoteArr[clicked]}
-      </S.HotVoteArrContainer>
-    </S.HotVoteContainer>
+      </style.HotVoteArrContainer>
+    </style.HotVoteContainer>
   )
 }
