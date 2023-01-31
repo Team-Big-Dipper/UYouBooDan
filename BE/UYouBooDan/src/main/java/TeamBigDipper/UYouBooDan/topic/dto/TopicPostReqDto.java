@@ -32,13 +32,11 @@ public class TopicPostReqDto {
      * @return Topic Entity 클래스
      */
     public Topic toTopic(Member member) {
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
         Topic topic = Topic.builder()
                 .title(this.title)
                 .content(this.content)
                 .category(this.category)
-                .closedAt(LocalDateTime.parse(this.closedAt, timeFormatter))
+                .closedAt(this.closedAt)
                 .member(member)
                 .build();
 
