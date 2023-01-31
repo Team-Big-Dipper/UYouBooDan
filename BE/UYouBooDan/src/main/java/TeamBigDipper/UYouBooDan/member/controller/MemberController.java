@@ -56,7 +56,7 @@ public class MemberController {
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         memberService.modifyMember(memberPatchReqDto.toEntity(), memberId);
 
-        return new ResponseEntity<>(new SingleResDto<>("Success Edit"), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("Success Modify"), HttpStatus.OK);
     }
 
 
