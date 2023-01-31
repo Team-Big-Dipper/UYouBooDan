@@ -1,4 +1,4 @@
-const mockContinueList = [
+export const mockContinueList = [
   {
     topics: [
       {
@@ -40,4 +40,4 @@ const mockContinueList = [
     ]
 }];
 
-export default mockContinueList;
+// export default mockContinueList;
