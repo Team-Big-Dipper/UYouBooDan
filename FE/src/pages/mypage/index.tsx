@@ -3,9 +3,9 @@ import * as S from './style';
 
 const mypage = () => {
   return (
-    <S.MyPagePageContainer>
+    <S.MyPageContainer>
       <MyPage />
-    </S.MyPagePageContainer>
+    </S.MyPageContainer>
   );
 };
 
