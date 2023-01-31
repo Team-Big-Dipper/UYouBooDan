@@ -1,7 +1,9 @@
 package TeamBigDipper.UYouBooDan.topic.controller;
 
 import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
+import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
+import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import TeamBigDipper.UYouBooDan.topic.dto.TopicPostReqDto;
 import TeamBigDipper.UYouBooDan.topic.dto.TopicPostResDto;
 import TeamBigDipper.UYouBooDan.topic.dto.TopicResDto;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -24,23 +27,29 @@ import java.util.List;
 public class TopicController {
 
     private final TopicService topicService;
+    private final JwtExtractUtil jwtExtractUtil;
+    private final MemberService memberService;
 
 
+    /**
+     * 투표 게시글 작성
+     * @param topicPostReqDto 투표게시글 Post Request DTO 객체
+     * @param request HttpServletRequest 객체 - 토큰 확인
+     * @return 투표게시글 ID, HTTP Status
+     */
     @PostMapping
-    public ResponseEntity<SingleResDto<TopicPostResDto>> postTopic(@RequestBody TopicPostReqDto topicPostReqDto) {
-
-        // TODO: token으로부터 memberId 받아서 Member클래스로 변환
-        Member member;
+    public ResponseEntity<SingleResDto<TopicPostResDto>> postTopic(@RequestBody TopicPostReqDto topicPostReqDto,
+                                                                   HttpServletRequest request) {
+        // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
+        Member member = memberService.findMember(jwtExtractUtil.extractMemberIdFromJwt(request));
 
         // 투표 게시글 저장
         Topic topic = topicService.createTopic(topicPostReqDto.toTopic(member));
 
-        // 투표 게시글에 대한 투표 항목 저장
-//        List<TopicVoteItem> topicVoteItems = topicService.createTopicVoteItems(topicPostReqDto.toTopicVoteItems(topic.getTopicId()));
-
         // Topic 클래스를 ResponseDTO로 변환
         TopicPostResDto topicPostResDto = new TopicPostResDto(topic.getTopicId());
 
+        // 투표 게시글 ID, HTTP Status Created 리턴 
         return new ResponseEntity<>(new SingleResDto<>(topicPostResDto), HttpStatus.CREATED);
     }
 
