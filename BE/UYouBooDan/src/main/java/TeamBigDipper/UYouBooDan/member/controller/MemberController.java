@@ -56,7 +56,7 @@ public class MemberController {
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         memberService.modifyMember(memberPatchReqDto.toEntity(), memberId);
 
-        return new ResponseEntity<>(new SingleResDto<>("Success Patch"), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("Success Edit"), HttpStatus.OK);
     }
 
 
@@ -71,7 +71,7 @@ public class MemberController {
     public ResponseEntity<SingleResDto<String>> withdrawMember (HttpServletRequest request) {
         memberService.withdrawMember(jwtExtractUtil.extractMemberIdFromJwt(request));
 
-        return new ResponseEntity<>(new SingleResDto<>("Success Withdraw"), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("정상적으로 탈퇴되었습니다."), HttpStatus.OK);
     }
 
 
@@ -123,7 +123,7 @@ public class MemberController {
                                                               HttpServletRequest request) {
         memberService.verifyPassword(passwordDto.getPassword(), jwtExtractUtil.extractMemberIdFromJwt(request));
 
-        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("Success Verify"),HttpStatus.OK);
     }
 
 
