@@ -68,7 +68,8 @@ public class MemberService {
     @Transactional
     public void modifyMember(Member member, Long memberId) {
         Member existMember = new Member().verifyMember(memberRepository.findById(memberId));
-        Optional.ofNullable(member.getPassword()).ifPresent(existMember::modifyPassword);
+
+        Optional.ofNullable(member.getPassword()).ifPresent(pw -> existMember.modifyPassword(passwordEncoder.encode(pw))); // 비밀번호는 필수항목? 혹은 비밀번호 변경은 따로 분리?
         Optional.ofNullable(member.getNickname()).ifPresent(existMember::modifyNickname);
         Optional.ofNullable(member.getProfile()).ifPresent(existMember::modifyProfile);  // 현재 profile의 경우 단순 URI상태. 추후 파일로 변경 예정
         Optional.ofNullable(member.getMemberStatus()).ifPresent(existMember::modifyMemberStatus);
@@ -119,15 +120,17 @@ public class MemberService {
     }
 
 
-    // 패스워드 인코딩 관련 수정이 필요한 메소드 입니다.
     /**
      * password 일치 여부 조회 메소드
      * @param memberId
      */
+    @Transactional
     public void verifyPassword(String password, Long memberId) {
         Member member = new Member().verifyMember(memberRepository.findById(memberId));
-        String encryptedPassword = passwordEncoder.encode(password);
-        member.checkPassword(encryptedPassword);
+        if(passwordEncoder.matches(password, member.getPassword())) {
+            String updatedPassword = passwordEncoder.encode(password);
+            member.modifyPassword(updatedPassword);
+        } else throw new BusinessLogicException(ExceptionCode.NOT_EXACT_PASSWORD);
     }
 
 

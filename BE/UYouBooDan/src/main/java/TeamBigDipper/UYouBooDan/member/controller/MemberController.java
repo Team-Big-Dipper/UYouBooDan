@@ -128,10 +128,6 @@ public class MemberController {
 
 
     /**
-     * email확인 및 nickname 확인 API 다음작업시 구현예정 (현재는 Handler메소드만 구현)
-     */
-
-    /**
      * email 중복확인
      * @param email
      * @return 사용 가능시 : data "사용 가능한 이메일입니다.", 사용 불가시 : EMAIL_EXIST(401, "중복된 이메일 입니다.")
