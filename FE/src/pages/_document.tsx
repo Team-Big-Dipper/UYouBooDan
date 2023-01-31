@@ -60,4 +60,3 @@ class MyDocument extends Document {
   }
 
 import { Html, Head, Main, NextScript } from 'next/document';
-

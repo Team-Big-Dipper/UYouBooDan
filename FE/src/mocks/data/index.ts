@@ -10,8 +10,6 @@ import {
 } from './readvoteText';
 import mockReadVoteImage from './reacvoteImage';
 import mockAnswer from './answers';
-import mockSortedList from './sortedList';
-import mockReadVoteText from './readvoteText';
 export {
   mockUsers,
   mockVote,
