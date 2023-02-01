@@ -77,6 +77,7 @@ public class TopicController {
      * @param pageable Pageable 객체
      * @return 투표게시글 전체 리스트, Page 관련 정보, HttpStatus
      */
+    @GetMapping
     public ResponseEntity<MultiResDto> getTopics(Pageable pageable) {
         // TopicService에서 투표 게시글 Topic Page 반환
         Page<Topic> topicPage = topicService.findTopics(pageable);
