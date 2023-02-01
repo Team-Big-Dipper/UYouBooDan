@@ -26,6 +26,12 @@ public class TopicVoteItem extends BaseTimeEntity {
 //    @OneToMany(mappedBy = "topic")
 //    private List<TopicVote> topicVotes;     // 투표항목에 누가 투표했는지
 
+    @Transient
+    private Integer numberOfVotes;             // 투표 수
+
+    @Transient
+    private Boolean isTopicVoteItemVoted;       // 조회하는 사람이 투표했는지 여부
+
     @Builder
     public TopicVoteItem(Topic topic, String topicVoteItemName) {
         this.topic = topic;
