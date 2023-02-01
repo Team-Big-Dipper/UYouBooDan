@@ -1,5 +1,7 @@
 package TeamBigDipper.UYouBooDan.topic.service;
 
+import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
+import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
 import TeamBigDipper.UYouBooDan.topic.repository.TopicRepository;
@@ -8,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,14 +29,29 @@ public class TopicService {
         return topicRepository.save(topic);
     }
 
-//    /**
-//     * 투표 게시글에 대한 투표 항목 저장
-//     * @param topicVoteItems 투표 항목 TopicVoteItem 엔티티 클래스를 원소로 갖는 리스트
-//     * @return repository에 저장한 TopicVoteItem 클래스를 원소로 갖는 리스트
-//     */
-//    public List<TopicVoteItem> createTopicVoteItems(List<TopicVoteItem> topicVoteItems) {
-//        return topicVoteItems.stream()
-//                .map(topicVoteItem -> topicVoteItemRepository.save(topicVoteItem))
-//                .collect(Collectors.toList());
-//    }
+    /**
+     * topic ID를 통해서 투표 게시글 조회
+     * @param topicId 투표 게시글 topic id
+     * @return 투표게시글 Topic 객체
+     */
+    public Topic findTopic(long topicId) {
+        // 유효한 투표 게시글 Topic 조회해서 반환
+        return findVerifiedTopic(topicId);
+    }
+
+    /**
+     * topic ID를 통해서 repository에 저장된 유효한 Topic 조회
+     * @param topicId 투표 게시글 topic id
+     * @return 투표 게시글 Topic 객체
+     */
+    private Topic findVerifiedTopic(long topicId) {
+        // topic id를 이용하여 topicRepository에서 존재하는지 조회
+        Optional<Topic> optionalTopic = topicRepository.findById(topicId);
+
+        // topic id에 해당하는 Topic이 존재하지 않으면(topic이 null이면) 예외처리
+        Topic findTopic = optionalTopic.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.TOPIC_NOT_EXIST));
+
+        return findTopic;
+    }
 }

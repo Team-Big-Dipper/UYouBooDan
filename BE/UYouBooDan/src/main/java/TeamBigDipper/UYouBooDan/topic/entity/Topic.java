@@ -42,6 +42,12 @@ public class Topic extends BaseTimeEntity {
     @OneToMany(mappedBy = "topic", cascade = CascadeType.PERSIST)       // 일대다 맵핑, PERSIST로 TopicVoteItem도 같이 저장
     private List<TopicVoteItem> topicVoteItems;      // 투표 항목
 
+    @Transient
+    private Boolean isAuthor;       // 조회하는 사람이 작성자인지 여부
+
+    @Transient
+    private Boolean isVoted;        // 조회하는 사람이 투표했는지 여부
+
     @Builder
     public Topic(String title, String content, String category,
                  Member member, String closedAt) {
@@ -120,5 +126,4 @@ public class Topic extends BaseTimeEntity {
             this.message = message;
         }
     }
-
 }
