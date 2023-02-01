@@ -1,13 +1,17 @@
+import * as S from './style';
+import MyPageHeader from './MyPageHeader';
 import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
-import * as S from './style';
 import { useRouter } from 'next/router';
-import MySideBar from './MyPageSideBar';
-import MyPageHeader from './MyPageHeader';
-import MyPageMain from './MyPageMain';
+import { useState } from 'react';
+
+import { MakeVote } from '../../assets/makeVote';
 
 const MyPage = () => {
   const router = useRouter();
+  // 기본 값 내가 쓴 게시글
+  const [selectCategory, setSelectCategory] =
+    useState<string>('내가 쓴 게시글');
 
   const logoutHandler = () => {
     LocalStorage.removeItem('accesstoken');
@@ -15,13 +19,59 @@ const MyPage = () => {
     SessionStorage.removeItem('accesstoken');
     router.push('/main', '/main');
   };
-
   return (
     <S.MyPageContainer>
-      <MySideBar />
+      <S.SideBarContainer>
+        <S.SideBarRouteText>
+          홈 {'>'} 마이페이지 {'>'} 내가 쓴 댓글
+        </S.SideBarRouteText>
+        <S.SibeBarCategotyDiv>
+          <S.SideBarUserInfoDiv>
+            <S.UserNickDiv>#띨렁이</S.UserNickDiv>
+            <S.EditBtnDiv>개인정보수정</S.EditBtnDiv>
+            <S.CreateVoteBtnDiv href="/createvote">
+              <MakeVote />
+            </S.CreateVoteBtnDiv>
+          </S.SideBarUserInfoDiv>
+          <S.CategoryDiv>
+            <S.CategoryTitle>게시글관리</S.CategoryTitle>
+            <S.UnderlineDiv></S.UnderlineDiv>
+            <S.CategoryListDiv>
+              <div
+                onClick={() => {
+                  setSelectCategory('내가 쓴 게시글');
+                }}
+              >
+                내가 쓴 게시글
+              </div>
+              <div
+                onClick={() => {
+                  setSelectCategory('내가 쓴 댓글');
+                }}
+              >
+                내가 쓴 댓글
+              </div>
+              <div
+                onClick={() => {
+                  setSelectCategory('나의 선택');
+                }}
+              >
+                나의 선택
+              </div>
+            </S.CategoryListDiv>
+          </S.CategoryDiv>
+          <S.CategoryDiv>
+            <S.CategoryTitle>정보관리</S.CategoryTitle>
+            <S.UnderlineDiv></S.UnderlineDiv>
+            <S.CategoryListDiv>
+              <div>회원탈퇴</div>
+              <div onClick={logoutHandler}>로그아웃</div>
+            </S.CategoryListDiv>
+          </S.CategoryDiv>
+        </S.SibeBarCategotyDiv>
+      </S.SideBarContainer>
       <S.MyPageRightContainer>
-        <MyPageHeader />
-        <MyPageMain />
+        <MyPageHeader category={selectCategory} />
       </S.MyPageRightContainer>
     </S.MyPageContainer>
   );
