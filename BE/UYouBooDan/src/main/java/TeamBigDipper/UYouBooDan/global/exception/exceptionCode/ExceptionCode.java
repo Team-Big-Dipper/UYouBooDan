@@ -16,7 +16,9 @@ public enum ExceptionCode {
     EMAIL_EXIST(401, "중복된 이메일 입니다."),
     NICKNAME_EXIST(401, "중복된 닉네임 입니다."),
     NAT_EXACT_PASSWORD(401,"비밀번호가 일치하지 않습니다."),
-    LOGIN_REQUIRED(401, "로그인이 필요한 서비스 입니다.");
+    LOGIN_REQUIRED(401, "로그인이 필요한 서비스 입니다."),
+    TOPIC_NOT_EXIST(404, "존재하지 않는 게시글 입니다.")
+    ;
 
 
     @Getter
