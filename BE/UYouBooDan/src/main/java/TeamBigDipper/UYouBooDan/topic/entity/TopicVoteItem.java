@@ -18,7 +18,7 @@ public class TopicVoteItem extends BaseTimeEntity {
     private Long topicVoteItemId;       // 투표 항목 ID
 
     @ManyToOne                          // 투표 게시글과 다대일 관계
-    @JoinColumn(name = "TOPIC_ID")      // 외래키는 Topic의 ID
+    @JoinColumn(name = "topic_id")      // 외래키는 Topic의 ID
     private Topic topic;                // 투표 게시글
 
     private String topicVoteItemName;   // 투표 항목 이름
