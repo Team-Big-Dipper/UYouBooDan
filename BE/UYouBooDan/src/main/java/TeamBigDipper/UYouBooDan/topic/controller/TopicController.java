@@ -13,10 +13,7 @@ import TeamBigDipper.UYouBooDan.topic.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -51,6 +48,23 @@ public class TopicController {
 
         // 투표 게시글 ID, HTTP Status Created 리턴 
         return new ResponseEntity<>(new SingleResDto<>(topicPostResDto), HttpStatus.CREATED);
+    }
+
+    /**
+     * 투표 게시글 상세 조회
+     * @param topicId 투표 게시글의 id
+     * @return 조회된 투표게시글 상세, HTTP Status
+     */
+    @GetMapping("/{topic-id}")
+    public ResponseEntity getTopic(@PathVariable("topic-id") long topicId) {
+        // topic Service에서 topic id로 투표 게시글 topic 조회
+        Topic topic = topicService.findTopic(topicId);
+
+        // 투포 게시글 topic을 Response DTO 객체로 변환
+        TopicResDto topicResDto = new TopicResDto(topic);
+
+        // 투표 게시글 topic responseDTO, HTTP Status OK 리턴
+        return new ResponseEntity<>(new SingleResDto<>(topicResDto), HttpStatus.OK);
     }
 
 }
