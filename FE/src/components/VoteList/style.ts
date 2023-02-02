@@ -51,3 +51,14 @@ export const UserName = styled.div`
   color: #667085;
   margin: 0 1%;
 `;
+
+export const RadioButton = styled.input`
+  cursor: pointer;
+  margin-right: 6px;
+  margin-top: 30px;
+`;
+export const ButtonLabel = styled.label`
+  cursor: pointer;
+  margin-right: 10px;
+  margin-top: 30px;
+`;
