@@ -34,16 +34,17 @@ const VoteTitle = ({
     console.log('api call');
     alert('좋아요+1');
   };
-  const saveUrl = new Promise((resolve, reject) => {
-    const url = window.document.location.href;
-    resolve(url);
-  });
   useEffect(() => {
     const result = CalcDday(createdAt, closedAt);
     setDday(result);
     const changedDate = ChangDateFormat(createdAt);
     setCreated(changedDate);
   }, [createdAt, closedAt]);
+
+  const saveUrl = new Promise((resolve, reject) => {
+    const url = window.document.location.href;
+    resolve(url);
+  });
   const onClickShareLink = () => {
     saveUrl.then((res: any) => {
       if (navigator.clipboard) {

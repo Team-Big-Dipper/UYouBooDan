@@ -10,13 +10,14 @@ import {
   mockReadVoteText2,
   mockReadVoteText3,
   mockReadVoteText4,
-  mockReadVoteImage,
+  mockReadVoteImage1,
+  mockReadVoteImage2,
   mockContinueList,
   mockAnswer,
 } from './data';
 
 let MockUsers = [...mockUsers];
-let MockVote = {...mockVote};
+let MockVote = { ...mockVote };
 let MockVoteList = [...mockVoteList];
 let MockSortedInProgress = [...mockSortedInProgress];
 let MockSortedTerminate = [...mockSortedTerminate];
@@ -24,9 +25,10 @@ let MockReadVoteText1 = [...mockReadVoteText1];
 let MockReadVoteText2 = [...mockReadVoteText2];
 let MockReadVoteText3 = [...mockReadVoteText3];
 let MockReadVoteText4 = [...mockReadVoteText4];
-let MockReadVoteImage = [...mockReadVoteImage];
+let MockReadVoteImage1 = [...mockReadVoteImage1];
+let MockReadVoteImage2 = [...mockReadVoteImage2];
 let MockAnswer = [...mockAnswer];
-let MockContinueList = {...mockContinueList};
+let MockContinueList = { ...mockContinueList };
 console.log(MockUsers);
 console.log(MockVote);
 
@@ -177,9 +179,17 @@ export const handlers = [
     console.log('request: ', request.condition);
     console.log('req', req);
     if (request.id === '5') {
-      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteImage));
-    } else {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteImage1));
+    } else if (request.id === '1') {
       return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText1));
+    } else if (request.id === '2') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText2));
+    } else if (request.id === '3') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText3));
+    } else if (request.id === '4') {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteImage2));
+    } else {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText4));
     }
   }),
   rest.get('/api/topics/:id/comments', (req, res, ctx) => {

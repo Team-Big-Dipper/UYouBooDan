@@ -12,6 +12,7 @@ export const mockReadVoteText1 = [
     vote: {
       isAuthor: false,
       isVoted: true,
+      bestItem: null,
       topicVoteItems: [
         {
           id: 1,
@@ -60,14 +61,15 @@ export const mockReadVoteText2 = [
     image:
       'https://cdn.pixabay.com/photo/2023/01/01/23/37/woman-7691013_640.jpg',
     vote: {
-      isAuthor: false,
-      isVoted: true,
+      isAuthor: true,
+      isVoted: false,
+      bestItem: null,
       topicVoteItems: [
         {
           id: 1,
           content: '카페인',
           totalVote: 3,
-          isTopicVoteItemVoted: true,
+          isTopicVoteItemVoted: false,
         },
         {
           id: 2,
@@ -111,13 +113,14 @@ export const mockReadVoteText3 = [
       'https://cdn.pixabay.com/photo/2023/01/01/23/37/woman-7691013_640.jpg',
     vote: {
       isAuthor: false,
-      isVoted: true,
+      isVoted: false,
+      bestItem: 3,
       topicVoteItems: [
         {
           id: 1,
           content: '카페인',
           totalVote: 3,
-          isTopicVoteItemVoted: true,
+          isTopicVoteItemVoted: false,
         },
         {
           id: 2,
@@ -128,7 +131,7 @@ export const mockReadVoteText3 = [
         {
           id: 3,
           content: '아무거나',
-          totalVote: 7,
+          totalVote: 20,
           isTopicVoteItemVoted: false,
         },
         {
@@ -144,7 +147,7 @@ export const mockReadVoteText3 = [
     likes: 5,
     duplicate: false,
     voteType: 'text',
-    closed: false,
+    closed: true,
   },
 ];
 
@@ -162,6 +165,7 @@ export const mockReadVoteText4 = [
     vote: {
       isAuthor: false,
       isVoted: true,
+      bestItem: 4,
       topicVoteItems: [
         {
           id: 1,
@@ -194,6 +198,6 @@ export const mockReadVoteText4 = [
     likes: 5,
     duplicate: false,
     voteType: 'text',
-    closed: false,
+    closed: true,
   },
 ];

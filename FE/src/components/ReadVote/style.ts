@@ -78,7 +78,7 @@ export const SelectTextDuple = styled.div<Clicked>`
 `;
 
 interface isVoted {
-  isTopicVoteItemVoted: boolean;
+  isChangedComponent: boolean;
 }
 export const SelectTextSingle = styled.button<isVoted>`
   width: 100%;
@@ -90,8 +90,8 @@ export const SelectTextSingle = styled.button<isVoted>`
   text-align: center;
   margin-bottom: 0.5rem;
   background-color: ${(props) =>
-    props.isTopicVoteItemVoted ? '#4285f4' : 'white'};
-  color: ${(props) => (props.isTopicVoteItemVoted ? 'white' : 'black')};
+    props.isChangedComponent ? '#4285f4' : 'white'};
+  color: ${(props) => (props.isChangedComponent ? 'white' : 'black')};
 `;
 
 export const buttonContainer = styled.div`
@@ -155,7 +155,7 @@ export const SingleImageContainer = styled.button<isVoted>`
   background: none;
   border: none;
   z-index: 1;
-  filter: ${(props) => (props.isTopicVoteItemVoted ? 'brightness(60%)' : null)};
+  filter: ${(props) => (props.isChangedComponent ? 'brightness(60%)' : null)};
 `;
 
 export const ImageVoteCount = styled.div`

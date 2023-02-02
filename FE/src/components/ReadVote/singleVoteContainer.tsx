@@ -25,12 +25,26 @@ export const SingleVoteContainer = ({
   isTopicVoteItemVoted,
 }: propTypes) => {
   const [text, setText] = useState('투표할까요?');
+  const [openModal, setOpenModal] = useState(false);
+  const [calculated, setCalculated] = useState<number>(1);
   const { isAuthor, isVoted, isClosed } = useSelector(
     (state: any) => state.currentVote,
   );
-  const [openModal, setOpenModal] = useState(false);
+  const imageMargin = useMemo(() => {
+    return { margin: '5px' };
+  }, []);
+
+  useEffect(() => {
+    setCalculated(CalcPercentage(count, totalCount));
+  }, [totalCount]);
+
   const handleModal = () => {
-    if (!isAuthor) setOpenModal((prev) => !prev);
+    if (!!isClosed) {
+      return;
+    }
+    if (!isAuthor) {
+      setOpenModal((prev) => !prev);
+    }
     if (!!isTopicVoteItemVoted && isVoted) {
       setText('투표를 취소할까요?');
     } else if (!isTopicVoteItemVoted && isVoted) {
@@ -43,15 +57,6 @@ export const SingleVoteContainer = ({
   const onVote = () => {
     console.log('api call');
   };
-
-  const imageMargin = useMemo(() => {
-    return { margin: '5px' };
-  }, []);
-
-  const [calculated, setCalculated] = useState<number>(1);
-  useEffect(() => {
-    setCalculated(CalcPercentage(count, totalCount));
-  }, [totalCount]);
 
   return (
     <>
@@ -66,6 +71,7 @@ export const SingleVoteContainer = ({
         {voteType === 'text' ? (
           <div onClick={handleModal}>
             <SingleTextVote
+              id={id}
               content={content}
               count={calculated}
               isTopicVoteItemVoted={isTopicVoteItemVoted}
@@ -74,6 +80,7 @@ export const SingleVoteContainer = ({
         ) : (
           <div onClick={handleModal} style={imageMargin}>
             <SingleImageVote
+              id={id}
               content={content}
               count={calculated}
               isTopicVoteItemVoted={isTopicVoteItemVoted}
