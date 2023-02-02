@@ -42,7 +42,7 @@ public class TopicResDto {
         this.title = topic.getTitle();                          // 투표 게시글 제목
         this.content = topic.getContent();                      // 투표게시글 내용
         this.createdAt = topic.getCreatedAt()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));     // 작성일 
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));     // 작성일
         this.closedAt = topic.getClosedAt() 
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));    // 마감일
         topicVoteItems = new ArrayList<>();     // 투표 항목 리스트 생성
