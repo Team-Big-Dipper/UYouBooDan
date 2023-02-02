@@ -44,7 +44,8 @@ const CardItem = ({ data }: propTypes) => {
       </div>
       <S.ProfileContainer>
         <ProfileImage />
-        <S.UserName>{data.username}</S.UserName>|<S.Date>{created}</S.Date>
+        <S.UserName>{data.username} |</S.UserName>
+        <S.Date>{created}</S.Date>
       </S.ProfileContainer>
     </S.CardItem>
   );

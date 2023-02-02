@@ -17,7 +17,7 @@ export const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
-export const devideDiv = styled.div`
+export const DevideDiv = styled.div`
   display: flex;
   margin-left: 8%;
   margin-top: 2%;
@@ -36,15 +36,16 @@ export const CategoryIcon = styled.div`
   height: 1.4rem;
   background: ${(props) => props.color};
   text-align: center;
-  padding: 2%;
+  padding: 4px;
   color: white;
+  margin-right: 3px;
 `;
 export const DdayIcon = styled.div`
   border-radius: 10px;
   width: 4rem;
   height: 1.4rem;
   background: #4285f4;
-  padding: 2%;
+  padding: 4px;
   text-align: center;
   color: white;
 `;

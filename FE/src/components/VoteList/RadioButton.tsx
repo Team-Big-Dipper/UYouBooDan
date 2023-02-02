@@ -13,7 +13,7 @@ export const RadioButton = ({ condition, setCondition }: ConditionProps) => {
   };
 
   return (
-    <div>
+    <>
       <S.RadioButton
         id={condition}
         type="radio"
@@ -23,6 +23,6 @@ export const RadioButton = ({ condition, setCondition }: ConditionProps) => {
       <S.ButtonLabel htmlFor={condition} onClick={handleCondition}>
         {conditions[condition]}
       </S.ButtonLabel>
-    </div>
+    </>
   );
 };
