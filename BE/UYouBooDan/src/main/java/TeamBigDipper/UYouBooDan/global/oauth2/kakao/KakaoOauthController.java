@@ -1,7 +1,6 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.kakao;
 
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
-import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -28,6 +27,9 @@ public class KakaoOauthController {
     @Getter
     @Value("${oauth.kakao.appKey.restApiKey}")
     private String kakaoAppKey;
+    @Getter
+    @Value("${oauth.kakao.clientId}")
+    private String kakaoClientId;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
 
@@ -37,21 +39,20 @@ public class KakaoOauthController {
      * @return redirect url for kakao Authorization
      */
     @GetMapping("/oauth")
-    public String kakaoConnect() {
+    public ResponseEntity<?> kakaoConnect() {
         StringBuffer url = new StringBuffer();
         url.append("https://kauth.kakao.com/oauth/authorize?");
         url.append("client_id=" + getKakaoAppKey()); // App Key
-        url.append("&redirect_uri=http://www.localhost:8080/kakao/callback"); // 경로 확인 (아래 핸들러 메소드?)
+        url.append("&redirect_uri=http://www.localhost:3000/main"); // 프론트쪽에서 인가 코드를 받을 리다이렉트 URL(카카오 리다이렉트에 등록 필요)
         url.append("&response_type=code");
 
-//        return new ResponseEntity<>(url.toString(), HttpStatus.MOVED_PERMANENTLY); // 자동 Redirect 메소드
-        return "redirect: " + url;
+        return new ResponseEntity<>(url.toString(), HttpStatus.OK); // 프론트 브라우저로 보내는 주소(프론트에서 받아서 리다이렉트 시키면, 인가코드를 받을 수 있다.)
     }
 
 
     /**
      * 카카오 callback API : 토큰 발급 및 서비스 멤버 생성
-     * @param code 카카오 인증 code
+     * @param code 카카오 인증 code (프론트에서 카카오로부터 받아서 이 API에 담아서 전달해주면 됨)
      * @return Success Login message
      * @throws JsonProcessingException
      */
