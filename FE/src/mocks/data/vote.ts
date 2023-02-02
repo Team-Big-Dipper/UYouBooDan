@@ -1,11 +1,13 @@
-const mockVote = [{
-  data:{
-    category: 'a',
-    title: '제목입니다',
-    content: '설명입니다',
-    topicVoteItems: ['1','2','3'],
-    closedAt: '2023-02-13 02:12:34'
-  },
-}];
+const mockVote = {
+  category: '반려동물',
+  title: '장난감 뭐사지?',
+  content: '',
+  topicVoteItems: [
+    { topicVoteItemName: '장난감1' },
+    { topicVoteItemName: '장난감2' },
+    { topicVoteItemName: '장난감3' },
+  ],
+  closedAt: '2023-02-13 02:12:34',
+};
 
 export default mockVote;

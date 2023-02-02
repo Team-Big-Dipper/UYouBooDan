@@ -11,20 +11,21 @@ export const DeadLineCards = styled.table`
   width: 100%;
   border-radius: 12px;
 `;
-export const DeadLineCard = styled.td`
-  display: flex;
-  display: table-cell;
-  flex-direction: column;
+export const DeadLineCard = styled.tr`
   justify-content: space-between;
   height: 130px;
-  padding: 15px;
   background: white;
-  border: 1px solid #d6d9dc;
+  border: 2px solid #d6d9dc;
   scroll-snap-align: start;
   transition: all 0.2s;
   cursor: pointer;
-  &:hover {
-    border: 1px solid #4285f4;
+  td {
+    display: table-cell;
+    height: 130px;
+    padding: 15px;
+    &:hover {
+      border: 2px solid #4285f4;
+    }
   }
   &.top {
     border-top-left-radius: 12px;
