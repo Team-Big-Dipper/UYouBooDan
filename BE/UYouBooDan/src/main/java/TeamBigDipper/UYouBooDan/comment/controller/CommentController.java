@@ -8,6 +8,7 @@ import TeamBigDipper.UYouBooDan.comment.entity.Comment;
 import TeamBigDipper.UYouBooDan.comment.entity.CommentLike;
 import TeamBigDipper.UYouBooDan.comment.service.CommentService;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
+import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -33,13 +34,13 @@ public class CommentController {
      * @return 201 Created
      */
     @PostMapping("/{topicId}/comments")
-    public ResponseEntity<CommentResDto> postComment(@PathVariable(value = "topicId") Long topicId,
+    public ResponseEntity<SingleResDto<CommentResDto>> postComment(@PathVariable(value = "topicId") Long topicId,
                                                      @RequestBody CommentPostReqDto commentPostReqDto){
         Comment comment = commentPostReqDto.toEntity(topicId);
         Comment createdComment = commentService.createComment(comment);
         CommentResDto response = new CommentResDto(createdComment);
 
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.CREATED);
     }
 
     /**
@@ -49,13 +50,13 @@ public class CommentController {
      * @return 200 OK
      */
     @PatchMapping("/comments/{commentId}")
-    public ResponseEntity<CommentResDto> patchComment(@PathVariable(value = "commentId") Long commentId,
-                                                      @RequestBody CommentPatchReqDto commentPatchReqDto){
+    public ResponseEntity<SingleResDto<CommentResDto>> patchComment(@PathVariable(value = "commentId") Long commentId,
+                                                                   @RequestBody CommentPatchReqDto commentPatchReqDto){
         Comment comment = commentPatchReqDto.toEntity(commentId);
         Comment updateComment = commentService.updateComment(comment);
         CommentResDto response = new CommentResDto(updateComment);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
     }
 
     /**
@@ -64,12 +65,12 @@ public class CommentController {
      * @return
      */
     @PatchMapping("/comments/{commentId}/remove")
-    public ResponseEntity<CommentResDto> deleteComment(@PathVariable(value = "commentId") Long commentId){
+    public ResponseEntity<SingleResDto<CommentResDto>> deleteComment(@PathVariable(value = "commentId") Long commentId){
 
         Comment deleteComment = commentService.deleteComment(commentId);
         CommentResDto response = new CommentResDto(deleteComment);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
     }
 
     /**
@@ -78,11 +79,11 @@ public class CommentController {
      * @return 200 OK
      */
     @GetMapping("/comments/{commentId}")
-    public ResponseEntity<CommentResDto> getComment(@PathVariable(value = "commentId") Long commentId){
+    public ResponseEntity<SingleResDto<CommentResDto>> getComment(@PathVariable(value = "commentId") Long commentId){
         Comment comment = commentService.getComment(commentId);
         CommentResDto response = new CommentResDto(comment);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
     }
 
     /**
