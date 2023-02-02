@@ -88,6 +88,9 @@ export const ContinueMore = styled(Link)`
   margin-top: 10px;
   font-size: 0.9rem;
   text-decoration: none;
+  &:hover {
+    color: #4285f4;
+  }
 `;
 
 export const CarouselContainer = styled.div`
@@ -231,7 +234,10 @@ export const DeadLineTitle = styled.div`
 `;
 
 export const deadMore = styled(Link)`
-    color: #667085;
-    font-size: 0.9rem;
-    text-decoration: none;
+  color: #667085;
+  font-size: 0.9rem;
+  text-decoration: none;
+  &:hover {
+    color: #4285f4;
+  }
 `;

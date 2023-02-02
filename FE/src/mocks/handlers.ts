@@ -11,11 +11,12 @@ import {
   mockReadVoteText3,
   mockReadVoteText4,
   mockReadVoteImage,
+  mockContinueList,
   mockAnswer,
 } from './data';
 
 let MockUsers = [...mockUsers];
-let MockVote = [...mockVote];
+let MockVote = {...mockVote};
 let MockVoteList = [...mockVoteList];
 let MockSortedInProgress = [...mockSortedInProgress];
 let MockSortedTerminate = [...mockSortedTerminate];
@@ -25,6 +26,7 @@ let MockReadVoteText3 = [...mockReadVoteText3];
 let MockReadVoteText4 = [...mockReadVoteText4];
 let MockReadVoteImage = [...mockReadVoteImage];
 let MockAnswer = [...mockAnswer];
+let MockContinueList = {...mockContinueList};
 console.log(MockUsers);
 console.log(MockVote);
 
@@ -153,7 +155,6 @@ export const handlers = [
     console.log('msw 내부 요청 받았음!');
     console.log('voteData: ', voteData);
     console.log('req', req);
-    MockVote.push(voteData);
 
     return res(ctx.delay(), ctx.status(200), ctx.json(MockVote));
   }),
@@ -204,11 +205,11 @@ export const handlers = [
     return res(ctx.delay(), ctx.status(200), ctx.json(MockAnswer));
   }),
   //메인페이지
-  // rest.get<ContinueVoteList>('/api/topics/continue', (req, res, ctx) => {
-  //   const request = req.params;
-  //   console.log('msw 내부 요청 받았음!');
-  //   console.log('request: ', request.condition);
-  //   console.log('req', req);
-  //   return res(ctx.delay(), ctx.status(200), ctx.json(MockContinueList));
-  // }),
+  rest.get<ContinueVoteList>('/api/main/continue', (req, res, ctx) => {
+    const request = req.params;
+    // console.log('msw 내부 요청 받았음!');
+    // console.log('request: ', request.condition);
+    // console.log('req', req);
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockContinueList));
+  }),
 ];

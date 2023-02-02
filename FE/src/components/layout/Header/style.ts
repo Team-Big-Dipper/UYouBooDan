@@ -7,6 +7,9 @@ export const HeaderContainer = styled.div`
   height: 119px;
   padding: 0 20%;
   border-bottom: 1px solid #e2e6ee;
+  @media screen and (max-width: 768px) {
+    padding: 0 5%;
+  }
 `;
 
 export const Logo = styled(Link)`
@@ -17,12 +20,31 @@ export const Logo = styled(Link)`
   align-items: center;
   text-decoration: none;
   color: black;
+  @media screen and (max-width: 768px) {
+    width: 70vw;
+  }
+  @media (min-width: 769px){
+    width: 100vw;
+  }
 `;
 
 export const Right = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+`;
+
+export const HamburgerIcon = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+  @media (min-width: 769px){
+    display: none;
+  }
 `;
 
 export const Vote = styled.div`
@@ -83,6 +105,7 @@ export const AllVote = styled(Link)`
   font-size: 1.25rem;
   text-decoration: none;
   color: black;
+  white-space: nowrap;
   &:focus {
     color: #4285f4;
   }
@@ -95,6 +118,7 @@ export const MakeVote = styled(Link)`
   font-size: 1.25rem;
   padding: 0 20px;
   text-decoration: none;
+  white-space: nowrap;
   color: black;
   &:focus {
     color: #4285f4;
@@ -114,8 +138,9 @@ export const SearchDiv = styled.div`
   height: 50px;
   padding: 15px 18px;
 `;
+
 export const Search = styled.input`
-  font-size: 1rem;
+  font-size: 0.85rem;
   border: none;
   ::placeholder {
     color: #667085;

@@ -18,12 +18,14 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
 
+export interface topicVoteItem {
+    topicVoteItemName : string;
+  }
 export interface Inputs {
   category: String;
   title: String;
   content?: String;
-  voteRule: String;
-  topicVoteItems: any[];
+  topicVoteItems: topicVoteItem[];
   closedAt: String;
 }
 
@@ -63,6 +65,8 @@ function createvote() {
         headers: {
           'Access-Control-Allow-Origin': '*',
           // 'ngrok-skip-browser-warning': 'any',
+          Authorization: `${localStorage.getItem("Authorization")}`,
+          "Content-Type": "application/json",
         },
       })
       .then((res: AxiosResponse) => {
@@ -326,10 +330,10 @@ function createvote() {
         </div>
 
         {/* 단일투표/ 중복투표 */}
-        <S.CategoryTitle>
+        {/* <S.CategoryTitle>
           단일투표와 중복투표 여부를 선택해주세요.<span>*</span>
-        </S.CategoryTitle>
-        <S.Radio>
+        </S.CategoryTitle> */}
+        {/* <S.Radio>
           <div>
             <input
               type="radio"
@@ -343,7 +347,7 @@ function createvote() {
             <input type="radio" value="중복 투표" {...register('voteRule')} />
             중복 투표
           </div>
-        </S.Radio>
+        </S.Radio> */}
 
         {/* 투표 종료 날짜, 시간 */}
         <S.CategoryTitle>
