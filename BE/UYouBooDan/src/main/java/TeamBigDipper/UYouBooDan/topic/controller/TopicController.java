@@ -1,9 +1,11 @@
 package TeamBigDipper.UYouBooDan.topic.controller;
 
+import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
+import TeamBigDipper.UYouBooDan.topic.dto.TopicPageResDto;
 import TeamBigDipper.UYouBooDan.topic.dto.TopicPostReqDto;
 import TeamBigDipper.UYouBooDan.topic.dto.TopicPostResDto;
 import TeamBigDipper.UYouBooDan.topic.dto.TopicResDto;
@@ -11,12 +13,15 @@ import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
 import TeamBigDipper.UYouBooDan.topic.service.TopicService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/topics")
@@ -65,6 +70,27 @@ public class TopicController {
 
         // 투표 게시글 topic responseDTO, HTTP Status OK 리턴
         return new ResponseEntity<>(new SingleResDto<>(topicResDto), HttpStatus.OK);
+    }
+
+    /**
+     * 투표 게시글 전체 조회
+     * @param pageable Pageable 객체
+     * @return 투표게시글 전체 리스트, Page 관련 정보, HttpStatus
+     */
+    @GetMapping
+    public ResponseEntity<MultiResDto> getTopics(Pageable pageable) {
+        // TopicService에서 투표 게시글 Topic Page 반환
+        Page<Topic> topicPage = topicService.findTopics(pageable);
+
+        // Page Topic을 Response DTO로 변환
+        Page<TopicPageResDto> topicPageResDtos = topicPage.map(TopicPageResDto::new);
+
+        // Topic Response DTO를 리스트로 변환
+        List<TopicPageResDto> topicPageResDtoList = topicPageResDtos.stream()
+                                                        .collect(Collectors.toList());
+
+        // Topic Page Response DTO, Page 정보, HTTP Status 반환
+        return new ResponseEntity<>(new MultiResDto<>(topicPageResDtoList, topicPage), HttpStatus.OK);
     }
 
 }

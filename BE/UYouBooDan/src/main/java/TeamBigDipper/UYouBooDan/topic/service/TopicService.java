@@ -7,6 +7,9 @@ import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
 import TeamBigDipper.UYouBooDan.topic.repository.TopicRepository;
 import TeamBigDipper.UYouBooDan.topic.repository.TopicVoteItemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,5 +56,14 @@ public class TopicService {
                 new BusinessLogicException(ExceptionCode.TOPIC_NOT_EXIST));
 
         return findTopic;
+    }
+
+    /**
+     * Pagination을 적용하여 투표 게시글 전체 목록 조회
+     * @param pageable Pageable 객체
+     * @return Page<Topic> Topic클래스 타입의 Page
+     */
+    public Page<Topic> findTopics(Pageable pageable) {
+        return topicRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
 }
