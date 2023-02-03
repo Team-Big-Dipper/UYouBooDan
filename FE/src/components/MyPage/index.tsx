@@ -3,11 +3,13 @@ import MyPageHeader from './MyPageHeader';
 import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { MakeVote } from '../../assets/makeVote';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 
 const MyPage = () => {
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
   // 기본 값 내가 쓴 게시글
   const [selectCategory, setSelectCategory] =
@@ -19,6 +21,24 @@ const MyPage = () => {
     SessionStorage.removeItem('accesstoken');
     router.push('/main', '/main');
   };
+
+  useEffect(() => {
+    axios
+      .get(`${api}/members/find`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+          Authorization: LocalStorage.getItem('accesstoken'),
+        },
+      })
+      .then((res: AxiosResponse) => {
+        console.log('mypage 정보요청 res : ', res);
+      })
+      .catch((err: AxiosError) => {
+        console.log('err : ', err.message);
+      });
+  }, []);
+
   return (
     <S.MyPageContainer>
       <S.SideBarContainer>

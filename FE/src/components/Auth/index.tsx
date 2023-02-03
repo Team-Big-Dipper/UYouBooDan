@@ -8,16 +8,17 @@ import { FailureSvg } from '../../assets/failure';
 import { KakaoSvg } from '../../assets/kakaoSvg';
 import { NaverSvg } from '../../assets/naverSvg';
 import { GoogleSvg } from '../../assets/googleSvg';
-import axios, { AxiosResponse, AxiosError, AxiosResponseHeaders } from 'axios';
+import { NoCheckSvg } from '../../assets/noCheck';
+import { OnCheckSvg } from '../../assets/onCheck';
+import axios, { AxiosResponse, AxiosError } from 'axios';
+import kakaoAuth from '../../apis/oauth/kakaoLogin';
 import useLogin from '../../hooks/login/useLogin';
 import { useRouter } from 'next/router';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
-import LocalStorage from '../../constants/localstorage';
-import SessionStorage from '../../constants/sessionstorage';
-import { NoCheckSvg } from '../../assets/noCheck';
-import { OnCheckSvg } from '../../assets/onCheck';
 
 const Auth = () => {
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  const { authCodeRequest } = kakaoAuth();
   const {
     register,
     handleSubmit,
@@ -32,29 +33,24 @@ const Auth = () => {
   const [loginMsg, setLoginMsg] = useState<string>('');
   const [vector, setVector] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
-  console.log('checked : ', checked);
   const [isValid, setIsValid] = useState<boolean>(true);
 
   const onValid = (data: any): void => {
     if (isValid) {
       axios
-        .post('/api/auth/login', data)
-        .then((res) => {
-          console.log('res : ', res);
-          // 아래코드는 백엔드 API 나오면 그때 주석풀기!
-          // const access_token: any = res.headers.Authorization.accesstoken.split(' ')[1];
-          // const refresh_token: any = res.headers.Authorization.refreshtoken;
-          // checkedLogin(access_token, refresh_token, checked);
+        .post(`${api}/auth/login`, data)
+        .then((res: AxiosResponse) => {
+          console.log('로그인 성공!');
+          console.log('로그인 버튼 눌렀을때 res : ', res);
+          const access_token: any = res.headers.Authorization?.split(' ')[1];
+          const refresh_token: any = res.headers.refreshtoken;
+          checkedLogin(access_token, refresh_token, checked);
+
           console.log('res.data', res.data);
-          if (checked) {
-            LocalStorage.setItem('accesstoken', 'access: 나 엑세스토큰!');
-            LocalStorage.setItem('refreshtoken', '나 리프레시토큰!');
-          } else {
-            SessionStorage.setItem('accesstoken', 'access: 나 엑세스토큰!');
-          }
-          router.push('/main', '/main');
+          router.push('/main');
         })
         .catch((err: AxiosError) => {
+          console.log('로그인 실패!');
           console.log('err : ', err);
           console.log('err.response.data : ', err.response?.data);
           const errMsg: any = err.response?.data;
@@ -175,7 +171,25 @@ const Auth = () => {
         <S.SecondDeco></S.SecondDeco>
       </S.SnsLoginTitleDiv>
       <S.SnsLoginContainer>
-        <S.KaKaoLoginDiv>
+        <S.KaKaoLoginDiv
+          onClick={() => {
+            authCodeRequest();
+            // axios
+            //   .get(`${api}/kakao/oauth`, {
+            //     headers: {
+            //       'Access-Control-Allow-Origin': '*',
+            //       'ngrok-skip-browser-warning': 'any',
+            //     },
+            //   })
+            //   .then((res: AxiosResponse) => {
+            //     console.log('res.data : ', res.data);
+            //     router.push(res.data);
+            //   })
+            //   .catch((err: AxiosError) => {
+            //     console.log('err : ', err.message);
+            //   });
+          }}
+        >
           <KakaoSvg />
         </S.KaKaoLoginDiv>
         <S.NaverLoginDiv>
