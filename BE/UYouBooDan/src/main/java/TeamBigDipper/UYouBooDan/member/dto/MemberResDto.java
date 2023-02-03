@@ -1,11 +1,12 @@
 package TeamBigDipper.UYouBooDan.member.dto;
 
+import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class MemberResDto {
+public class MemberResDto extends BaseTimeEntity {
 
     private Long memberId;
 
@@ -24,6 +25,8 @@ public class MemberResDto {
         this.nickname = member.getNickname().getName();
         this.profile = member.getProfile().getPhoto();
         this.memberStatus = member.getMemberStatus().getStatus();
+        super.setCreatedAt(member.getCreatedAt());
+        super.setModifiedAt(member.getModifiedAt());
     }
 }
 

@@ -56,7 +56,7 @@ public class MemberController {
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         memberService.modifyMember(memberPatchReqDto.toEntity(), memberId);
 
-        return new ResponseEntity<>(new SingleResDto<>("Success Patch"), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("Success Modify"), HttpStatus.OK);
     }
 
 
@@ -71,7 +71,7 @@ public class MemberController {
     public ResponseEntity<SingleResDto<String>> withdrawMember (HttpServletRequest request) {
         memberService.withdrawMember(jwtExtractUtil.extractMemberIdFromJwt(request));
 
-        return new ResponseEntity<>(new SingleResDto<>("Success Withdraw"), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("정상적으로 탈퇴되었습니다."), HttpStatus.OK);
     }
 
 
@@ -123,37 +123,33 @@ public class MemberController {
                                                               HttpServletRequest request) {
         memberService.verifyPassword(passwordDto.getPassword(), jwtExtractUtil.extractMemberIdFromJwt(request));
 
-        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("Success Verify"),HttpStatus.OK);
     }
 
 
     /**
-     * email확인 및 nickname 확인 API 다음작업시 구현예정 (현재는 Handler메소드만 구현)
-     */
-
-    /**
      * email 중복확인
      * @param email
-     * @return
+     * @return 사용 가능시 : data "사용 가능한 이메일입니다.", 사용 불가시 : EMAIL_EXIST(401, "중복된 이메일 입니다.")
      */
     @GetMapping("/verify-email")
     public ResponseEntity<SingleResDto<String>> checkEmail(@RequestParam(required = false) String email) {
         memberService.verifyNotExistEmail(email);
 
-        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("사용 가능한 이메일입니다."),HttpStatus.OK);
     }
 
 
     /**
      * 닉네임 중복확인
      * @param nickname
-     * @return
+     * @return 사용 가능시 : data "사용 가능한 닉네임입니다.", 사용 불가시 : NICKNAME_EXIST(401, "중복된 닉네임 입니다.")
      */
     @GetMapping("/verify-nickname")
     public ResponseEntity<SingleResDto<String>> checkNickname(@RequestParam(required = false) String nickname) {
         memberService.verifyNotExistNickname(nickname);
 
-        return new ResponseEntity<>(new SingleResDto<>("Verify Success."),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>("사용 가능한 닉네임입니다."),HttpStatus.OK);
     }
 
 }
