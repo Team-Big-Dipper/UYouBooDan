@@ -22,11 +22,7 @@ const AnswerList = ({ id }: any) => {
     let num = Number(e.target.textContent);
     setPageNum(num);
   }, []);
-  const textMargin = useMemo((): any => {
-    return {
-      marginBottom: '1rem',
-    };
-  }, []);
+
   useEffect(() => {
     axios.get(`/api/topics/${String(id)}/comments`).then((res) => {
       try {
@@ -37,8 +33,8 @@ const AnswerList = ({ id }: any) => {
     });
   }, [id]);
   return (
-    <div>
-      <p style={textMargin}>댓글({answercount})</p>
+    <S.AnswerListContainer>
+      <S.AnswerHeader>댓글 ({answercount})</S.AnswerHeader>
       <AnswerInput id={id} setData={setData} />
       <>
         {data?.map((el, idx) => (
@@ -63,7 +59,7 @@ const AnswerList = ({ id }: any) => {
           );
         })}
       </S.AnswerPageBtns>
-    </div>
+    </S.AnswerListContainer>
   );
 };
 

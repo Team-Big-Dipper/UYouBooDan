@@ -34,16 +34,17 @@ const VoteTitle = ({
     console.log('api call');
     alert('좋아요+1');
   };
-  const saveUrl = new Promise((resolve, reject) => {
-    const url = window.document.location.href;
-    resolve(url);
-  });
   useEffect(() => {
     const result = CalcDday(createdAt, closedAt);
     setDday(result);
     const changedDate = ChangDateFormat(createdAt);
     setCreated(changedDate);
   }, [createdAt, closedAt]);
+
+  const saveUrl = new Promise((resolve, reject) => {
+    const url = window.document.location.href;
+    resolve(url);
+  });
   const onClickShareLink = () => {
     saveUrl.then((res: any) => {
       if (navigator.clipboard) {
@@ -70,7 +71,7 @@ const VoteTitle = ({
           <S.Title>{title}</S.Title>
         </S.TitleContainer>
         <S.ContentContainer>
-          <S.devideDiv>
+          <S.DevideSubtitleDiv>
             <S.ContentInfo>
               {created} | {author} | 조회수{views} |{' '}
               <S.LikeButton onClick={onClickLike}>
@@ -82,12 +83,12 @@ const VoteTitle = ({
                 <ShareLinkSvg />
               </span>
             </S.ContentInfo>
-          </S.devideDiv>
-          <S.devideDiv>
+          </S.DevideSubtitleDiv>
+          <S.DevideIconDiv>
             <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
             <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
             <S.DdayIcon>D-{Dday}</S.DdayIcon>
-          </S.devideDiv>
+          </S.DevideIconDiv>
         </S.ContentContainer>
       </S.VoteTitleOutLine>
       <>
