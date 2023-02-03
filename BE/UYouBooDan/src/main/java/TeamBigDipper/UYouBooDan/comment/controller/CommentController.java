@@ -100,6 +100,12 @@ public class CommentController {
         return new ResponseEntity<>(new MultiResDto<>(commentList, dtoPage), HttpStatus.OK);
     }
 
+    /**
+     * 댓글 좋아요
+     * @param commentId
+     * @param memberId
+     * @return 200 OK
+     */
     @PostMapping("/comments/{commentId}/{memberId}/like")
     public ResponseEntity<CommentLikeResDto> postCommentLike(@PathVariable(value = "commentId") Long commentId,
                                                              @PathVariable(value = "memberId") Long memberId){
