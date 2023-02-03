@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -86,23 +87,39 @@ public class CommentService {
     }
 
     /**
+     * 베스트 댓글 조회
+     * @param topicId
+     * @return
+     */
+    public List<Comment> getBestComments(Long topicId){
+        List<Comment> bestComments = commentRepository.findTop1ByTopicIdOrderByTotalLikeDesc(topicId);
+
+        return bestComments;
+    }
+
+    /**
      * 댓글 좋아요
      * @param commentId
      * @param memberId
      * @return
      */
-    public CommentLike likeComment(Long commentId, Long memberId){// commentLike 엔티티 내 메서드로 옮겨서 만들어서 쓰자 & 레포지토리 접근은 냅두고
+    public CommentLike likeComment(Long commentId, Long memberId){
         Comment savedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        int commentLikeNum = savedComment.getTotalLike(); // 해당 댓글 좋아요 수 조회
 
         if(commentLikeRepository.existsByCommentIdAndMemberId(commentId, memberId)){// commentLike 존재할 경우
             CommentLike savedCommentLike = commentLikeRepository.findByCommentIdAndMemberId(commentId, memberId);
             if(savedCommentLike.getCommentLikeStatus()){//좋아요로 되어있다면
                 savedCommentLike.setCommentLikeStatus(false);// 좋아요 취소
+                savedComment.setTotalLike(commentLikeNum - 1);
                 savedCommentLike.setModifiedAt(LocalDateTime.now());
+                commentRepository.save(savedComment);
             }else{
                 savedCommentLike.setCommentLikeStatus(true);// 좋아요가 안되어있으면 좋아요
+                savedComment.setTotalLike(commentLikeNum + 1);
                 savedCommentLike.setModifiedAt(LocalDateTime.now());
+                commentRepository.save(savedComment);
             }
             return commentLikeRepository.save(savedCommentLike);
 
@@ -113,6 +130,8 @@ public class CommentService {
             commentLike.setCommentLikeStatus(true);
             commentLike.setCreatedAt(LocalDateTime.now());
             commentLike.setModifiedAt(LocalDateTime.now());
+            savedComment.setTotalLike(commentLikeNum + 1);
+            commentRepository.save(savedComment);
             return commentLikeRepository.save(commentLike);
         }
     }
