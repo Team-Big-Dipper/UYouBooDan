@@ -19,6 +19,9 @@ import { OnCheckSvg } from '../../assets/onCheck';
 import { NoCheckSvg } from '../../assets/noCheck';
 
 const SignUp = () => {
+  // nextjs 에서는 이렇게!
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  console.log('api : ', api);
   const {
     register,
     handleSubmit,
@@ -29,7 +32,7 @@ const SignUp = () => {
     mode: 'onChange', // mode: onChange 를 써줘야 아래 errors도 확인(출력) 가능!
   });
   const router = useRouter();
-  console.log('router : ', router);
+  // console.log('router : ', router);
   const [checkedOne, setCheckedOne] = useState<boolean>(false);
   const [checkedTwo, setCheckedTwo] = useState<boolean>(false);
   const [vectorOne, setVectorOne] = useState<boolean>(false);
@@ -68,7 +71,7 @@ const SignUp = () => {
 
   // password 유효성 메세지 UI 나오게 하는 코드
   useEffect(() => {
-    console.log('useEffect들어옴');
+    // console.log('useEffect들어옴');
     if (watch('passwordCheck')) {
       // password,passwordCheck 가 변한다고해서 실행되는게 아니라 비밀번호재확인이 존재할때도 조건에 추가!
       checkPw();
@@ -76,23 +79,6 @@ const SignUp = () => {
       setPwMsg('');
     }
   }, [watch('passwordCheck'), watch('password')]);
-
-  // checkPw(watch('password'), 'watch('passwordCheck')', setPwMsg);
-  // useEffect(() => {
-  //   axios
-  //     .get('https://13a5-222-233-138-154.jp.ngrok.io/test/all?size=10&page=5', {
-  //       headers: {
-  //         'Access-Control-Allow-Origin': '*',
-  //         'ngrok-skip-browser-warning': 'any',
-  //       },
-  //     })
-  //     .then((res: AxiosResponse) => {
-  //       console.log('요청 성공!', res);
-  //     })
-  //     .catch((err: AxiosError) => {
-  //       console.log('요청 실패!', err.message);
-  //     });
-  // }, []);
 
   // 전체 유효성, 중복 검사, 약관동의 체크 통과시 isOk상태 true로 해줄 코드
   useEffect(() => {
@@ -114,14 +100,14 @@ const SignUp = () => {
     }
   }, [watch(), checkedOne, checkedTwo]);
 
-  console.log('isOk : ', isOk);
+  // console.log('isOk : ', isOk);
 
   console.log('watch() : ', watch());
   // submit 버튼 눌렀을때 실행되는 함수
   const onValid = (data: any) => {
     delete data.passwordCheck;
     axios
-      .post('/api/members', data)
+      .post(`${api}/members`, data)
       .then((res: AxiosResponse) => {
         console.log('res: ', res);
         console.log('회원가입성공!');
@@ -134,8 +120,6 @@ const SignUp = () => {
   // const onInValid = (data: any): void => {
   //   alert(data);
   // };
-
-  console.log('watch() : ', watch());
   return (
     <S.SignUpContainer>
       <form onSubmit={handleSubmit(onValid)}>
@@ -334,7 +318,7 @@ const SignUp = () => {
                 {checkedOne ? <OnCheckSvg /> : <NoCheckSvg />}
               </div>
               <div>개인정보 수집 및 이용 동의(필수)</div>
-              <>{console.log('첫번째체크여부', checkedOne)}</>
+              {/* <>{console.log('첫번째체크여부', checkedOne)}</> */}
             </S.TermsOneRadioAndText>
             <S.TermsOneInfo>보기</S.TermsOneInfo>
           </S.TermsContentOne>
@@ -348,7 +332,7 @@ const SignUp = () => {
                 {checkedTwo ? <OnCheckSvg /> : <NoCheckSvg />}
               </div>
               <div>이용약관동의(필수)</div>
-              <>{console.log('두번째체크여부', checkedTwo)}</>
+              {/* <>{console.log('두번째체크여부', checkedTwo)}</> */}
             </S.TermsTwoRadioAndText>
             <S.TermsTwoInfo>보기</S.TermsTwoInfo>
           </S.TermsContentTwo>

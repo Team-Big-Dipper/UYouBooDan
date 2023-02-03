@@ -4,11 +4,42 @@ import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
 import LocalStorage from '../../../constants/localstorage';
 import SessionStorage from '../../../constants/sessionstorage';
+
+import { useRouter } from 'next/router';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
+
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
   const [isAuth, setIsAuth] = useState(false);
+  // const api = process.env.NEXT_PUBLIC_SERVER_URL;
+
+  // const router = useRouter();
+  // const nowUrl = router.query;
+  // console.log('nowUrl : ', nowUrl);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${api}/kakao/callback`, {
+  //       headers: {
+  //         'Access-Control-Allow-Origin': '*',
+  //         'ngrok-skip-browser-warning': 'any',
+  //       },
+  //       params: nowUrl,
+  //     })
+  //     .then((res: AxiosResponse) => {
+  //       console.log('인가코드 백으로 보내기 res : ', res);
+  //       const kakao_access: any = res.headers.authorization?.split(' ')[1];
+  //       const kakao_refresh: any = res.headers.refreshtoken;
+  //       LocalStorage.setItem('accesstoken', kakao_access);
+  //       LocalStorage.setItem('refreshtoken', kakao_refresh);
+  //       router.push('/mypage');
+  //     })
+  //     .catch((err: AxiosError) => {
+  //       console.log('err : ', err.message);
+  //     });
+  // }, [nowUrl]);
 
   // storage에 accesstoken이 있을때 useEffect실행
   useEffect(() => {

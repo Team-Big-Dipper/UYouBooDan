@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export const MyPageContainer = styled.div`
+export const KakaoRedirectContainer = styled.div`
   flex: 1;
   padding: 5% 20%;
-  /* border: 1px solid red; */
+  font-size: 5rem;
 `;

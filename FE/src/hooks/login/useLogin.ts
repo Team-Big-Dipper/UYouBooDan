@@ -1,5 +1,5 @@
-// import LocalStorage from '../../constants/localstorage';
-// import SessionStorage from '../../constants/sessionstorage';
+import LocalStorage from '../../constants/localstorage';
+import SessionStorage from '../../constants/sessionstorage';
 
 const useLogin = () => {
   const checkedLogin = (
@@ -7,12 +7,12 @@ const useLogin = () => {
     refresh: string,
     checked: boolean,
   ): void => {
-    // if (checked) {
-    //   LocalStorage.setItem('accesstoken', access);
-    //   LocalStorage.setItem('refreshtoken', refresh);
-    // } else {
-    //   SessionStorage.setItem('accesstoken', access);
-    // }
+    if (checked) {
+      LocalStorage.setItem('accesstoken', access);
+      LocalStorage.setItem('refreshtoken', refresh);
+    } else {
+      SessionStorage.setItem('accesstoken', access);
+    }
   };
 
   const loginMsgFunc = (
