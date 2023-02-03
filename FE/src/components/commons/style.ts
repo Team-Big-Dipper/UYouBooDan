@@ -23,6 +23,9 @@ export const ModalContainer = styled.div`
   justify-content: end;
   border-radius: 10px;
   z-index: 2;
+  @media (max-width: 375px) {
+    width: 90%;
+  }
 `;
 
 export const ModalButtonContainer = styled.div`

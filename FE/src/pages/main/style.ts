@@ -4,6 +4,7 @@ import HotFrame from '../../../public/HotFrame.png';
 import MainImageVote from '../../../public/MainImageVote.png';
 import MainTopMobile from '../../../public/MainTopMobile.png'
 import HotMobile from '../../../public/HotMobile.png'
+import { MainDeadMobile } from '../../assets/mainDeadMobile';
 import Link from 'next/link';
 
 export const MainContainer = styled.div`
@@ -74,16 +75,21 @@ export const ContinueTitle = styled.div`
     color: #242424;
     line-height: 1.5rem;
   }
-  div {
-    color: #667085;
-    margin-top: 10px;
-    font-size: 0.9rem;
-  }
   @media screen and (max-width: 768px) {
     display: flex;
     width: 100%;
     justify-content: space-between;
     align-items: flex-end;
+  }
+`;
+
+export const ContinueMore = styled(Link)`
+  color: #667085;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-decoration: none;
+  &:hover {
+    color: #4285f4;
   }
 `;
 
@@ -141,28 +147,6 @@ export const Card = styled.li`
     border: 2px solid #4285f4;
   }
 `;
-export const CardTitle = styled.h3`
-  font-size: 0.9rem;
-  color: #667085;
-  span {
-    color: white;
-    background-color: #4285f4;
-    padding: 2px 10px;
-    border-radius: 50px;
-    margin-left: 10px;
-  }
-`;
-export const CardContent = styled.div`
-  margin: 20px 0;
-  max-width: 85%;
-  font-weight: bold;
-`;
-export const AuthorDay = styled.div`
-  display: flex;
-  justify-content: space-between;
-  color: #667085;
-  font-size: 0.8rem;
-`;
 
 //핫한 투표
 export const HotContainer = styled.div`
@@ -201,6 +185,7 @@ export const ImageDeadLineContainer = styled.div`
   @media screen and (max-width: 768px) {
     flex-direction: column;
     padding: 50px 0;
+    height: fit-content;
   }
 `;
 
@@ -219,6 +204,21 @@ export const DeadLineContainer = styled.div`
   width: 45%;
   @media screen and (max-width: 768px) {
     margin-top: 20px;
+    width: 100%;
+    padding: 0 50px;
+  }
+`;
+export const MobileDiv = styled.div`
+  display: flex;
+  width: fit-content;
+  @media (min-width: 769px) {
+    display: none;
+    width: 100vw;
+  }
+`;
+export const MainDeadMobileStyled = styled(MainDeadMobile)`
+  @media (min-width: 769px) {
+    display: none;
   }
 `;
 export const DeadLineTitle = styled.div`
@@ -231,43 +231,13 @@ export const DeadLineTitle = styled.div`
     font-size: 1.2rem;
 
   }
-  .more {
-    color: #667085;
-    font-size: 0.9rem;
-  }
 `;
-export const DeadLineTable = styled.div`
-  width: 100%;
-`;
-export const DeadLineCards = styled.table`
-  /* display: flex;
-  flex-direction: column; */
-  display: table;
-  border-collapse: collapse;
-  width: 100%;
-  border-radius: 12px;
-`;
-export const DeadLineCard = styled.td`
-  display: flex;
-  display: table-cell;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 130px;
-  padding: 15px;
-  background: white;
-  border: 1px solid #d6d9dc;
-  scroll-snap-align: start;
-  transition: all 0.2s;
-  cursor: pointer;
+
+export const deadMore = styled(Link)`
+  color: #667085;
+  font-size: 0.9rem;
+  text-decoration: none;
   &:hover {
-    border: 1px solid #4285f4;
-  }
-  &.top {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-  }
-  &.bottom {
-    border-end-start-radius: 12px;
-    border-end-end-radius: 12px;
+    color: #4285f4;
   }
 `;

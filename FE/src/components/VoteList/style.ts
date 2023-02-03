@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 export const CardItem = styled.div`
-  border: 1px solid #667085;
+  border: 1px solid #e2e6ee;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -12,42 +12,64 @@ export const CardItem = styled.div`
 `;
 
 export const CardCategory = styled.div`
-  /* border: 1px solid green; */
   font-size: 0.8rem;
   margin-bottom: 2%;
   color: #667085;
 `;
 
 export const CardContents = styled.div`
-  /* border: 1px solid yellow; */
   display: flex;
   justify-content: space-between;
   height: 3vh;
+  @media (max-width: 375px) {
+    margin-top: 14px;
+  }
 `;
 export const Content = styled.div`
   //border: 1px solid blue;
 `;
 
 export const CardDDay = styled.div`
-  /* border: 1px solid purple; */
   background-color: #4285f4;
   color: white;
   padding: 0.7%;
   border-radius: 15px;
   width: 4rem;
-  //justify-content: center;
-  //align-items: center;
   text-align: center;
+  @media (max-width: 375px) {
+    padding: 7px;
+    font-size: 0.8rem;
+    padding: 4px;
+  }
 `;
 export const Date = styled.div`
-  /* border: 1px solid pink; */
   margin: 0 1%;
+  color: #667085;
 `;
 export const ProfileContainer = styled.div`
   font-size: 0.8rem;
   display: flex;
 `;
 export const UserName = styled.div`
-  color: #667085;
+  color: #a2adc5;
   margin: 0 1%;
+`;
+
+export const RadioButton = styled.input`
+  cursor: pointer;
+  margin-right: 6px;
+  margin-top: 30px;
+  @media (max-width: 780px) {
+    width: 1rem;
+    margin-right: 8px;
+  }
+`;
+export const ButtonLabel = styled.label`
+  cursor: pointer;
+  margin-right: 10px;
+  margin-top: 30px;
+  @media (max-width: 780px) {
+    font-size: 1rem;
+    margin-right: 8px;
+  }
 `;

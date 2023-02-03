@@ -4,8 +4,13 @@ import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
 import LocalStorage from '../../../constants/localstorage';
 import SessionStorage from '../../../constants/sessionstorage';
+
 import { useRouter } from 'next/router';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+
+import { LogoImg } from '../../../assets/logo';
+import { Hamburger } from '../../../assets/hamburger';
+
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
   const [isAuth, setIsAuth] = useState(false);
@@ -59,7 +64,8 @@ const Header = () => {
 
   return (
     <S.HeaderContainer>
-      <S.Logo href="/">우유부단</S.Logo>
+      <S.Logo href="/"><LogoImg /></S.Logo>
+      <S.HamburgerIcon><Hamburger /></S.HamburgerIcon>
       <S.Right>
         {isAuth ? (
           <S.Mypage href="/mypage">

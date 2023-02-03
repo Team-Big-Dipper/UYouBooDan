@@ -37,14 +37,18 @@ const VoteBtn = () => {
     console.log('patch');
   };
   return (
-    <S.buttonContainer>
+    <S.ReadVoteBtnContainer>
       {login ? (
         <>
           {!isAuthor ? (
             <>
-              <S.button id="votelist" onClick={handleLink} color={'#4285f4'}>
+              <S.ReadVoteBtn
+                id="votelist"
+                onClick={handleLink}
+                color={'#4285f4'}
+              >
                 목록가기
-              </S.button>
+              </S.ReadVoteBtn>
               <>
                 {openModal ? (
                   <ButtonModal
@@ -58,19 +62,27 @@ const VoteBtn = () => {
           ) : (
             <>
               <>
-                <S.button id="delete" onClick={onClickBtn}>
+                <S.ReadVoteBtn id="delete" onClick={onClickBtn}>
                   삭제하기
-                </S.button>
+                </S.ReadVoteBtn>
                 <>
                   {isClosed ? null : (
-                    <S.button id="patch" onClick={onClickBtn} color={'gray'}>
+                    <S.ReadVoteBtn
+                      id="patch"
+                      onClick={onClickBtn}
+                      color={'gray'}
+                    >
                       수정하기
-                    </S.button>
+                    </S.ReadVoteBtn>
                   )}
                 </>
-                <S.button id="votelist" onClick={handleLink} color={'#4285f4'}>
+                <S.ReadVoteBtn
+                  id="votelist"
+                  onClick={handleLink}
+                  color={'#4285f4'}
+                >
                   목록가기
-                </S.button>
+                </S.ReadVoteBtn>
               </>
               <>
                 {openModal ? (
@@ -88,12 +100,12 @@ const VoteBtn = () => {
         </>
       ) : (
         <>
-          <S.button id="votelist" onClick={handleLink} color={'#4285f4'}>
+          <S.ReadVoteBtn id="votelist" onClick={handleLink} color={'#4285f4'}>
             목록가기
-          </S.button>
+          </S.ReadVoteBtn>
         </>
       )}
-    </S.buttonContainer>
+    </S.ReadVoteBtnContainer>
   );
 };
 

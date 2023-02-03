@@ -1,8 +1,5 @@
 type ObjType = {
-  [index: string]: string;
-  all: string;
-  inProgress: string;
-  terminate: string;
+  [key: string]: string;
 };
 
 export const conditions: ObjType = {

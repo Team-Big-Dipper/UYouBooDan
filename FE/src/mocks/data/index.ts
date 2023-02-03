@@ -7,9 +7,11 @@ import {
   mockReadVoteText2,
   mockReadVoteText3,
   mockReadVoteText4,
+  mockReadVoteText5,
 } from './readvoteText';
-import mockReadVoteImage from './reacvoteImage';
+import { mockReadVoteImage1, mockReadVoteImage2 } from './reacvoteImage';
 import mockAnswer from './answers';
+import { mockContinueList } from './continueList';
 export {
   mockUsers,
   mockVote,
@@ -20,6 +22,9 @@ export {
   mockReadVoteText2,
   mockReadVoteText3,
   mockReadVoteText4,
-  mockReadVoteImage,
+  mockReadVoteText5,
+  mockReadVoteImage1,
+  mockReadVoteImage2,
   mockAnswer,
+  mockContinueList,
 };
