@@ -10,8 +10,8 @@ export const mockReadVoteImage1 = [
     image:
       'https://cdn.pixabay.com/photo/2023/01/01/23/37/woman-7691013_640.jpg',
     vote: {
-      isAuthor: false,
-      isVoted: true,
+      isAuthor: true,
+      isVoted: false,
       bestItem: 3,
       topicVoteItems: [
         {

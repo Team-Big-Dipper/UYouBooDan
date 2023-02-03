@@ -71,7 +71,7 @@ const VoteTitle = ({
           <S.Title>{title}</S.Title>
         </S.TitleContainer>
         <S.ContentContainer>
-          <S.DevideDiv>
+          <S.DevideSubtitleDiv>
             <S.ContentInfo>
               {created} | {author} | 조회수{views} |{' '}
               <S.LikeButton onClick={onClickLike}>
@@ -83,12 +83,12 @@ const VoteTitle = ({
                 <ShareLinkSvg />
               </span>
             </S.ContentInfo>
-          </S.DevideDiv>
-          <S.DevideDiv>
+          </S.DevideSubtitleDiv>
+          <S.DevideIconDiv>
             <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
             <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
             <S.DdayIcon>D-{Dday}</S.DdayIcon>
-          </S.DevideDiv>
+          </S.DevideIconDiv>
         </S.ContentContainer>
       </S.VoteTitleOutLine>
       <>

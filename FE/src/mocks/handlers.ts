@@ -10,6 +10,7 @@ import {
   mockReadVoteText2,
   mockReadVoteText3,
   mockReadVoteText4,
+  mockReadVoteText5,
   mockReadVoteImage1,
   mockReadVoteImage2,
   mockContinueList,
@@ -25,6 +26,7 @@ let MockReadVoteText1 = [...mockReadVoteText1];
 let MockReadVoteText2 = [...mockReadVoteText2];
 let MockReadVoteText3 = [...mockReadVoteText3];
 let MockReadVoteText4 = [...mockReadVoteText4];
+let MockReadVoteText5 = [...mockReadVoteText5];
 let MockReadVoteImage1 = [...mockReadVoteImage1];
 let MockReadVoteImage2 = [...mockReadVoteImage2];
 let MockAnswer = [...mockAnswer];
@@ -171,6 +173,8 @@ export const handlers = [
       return res(ctx.delay(), ctx.status(200), ctx.json(MockSortedInProgress));
     } else if (request.condition === 'terminate') {
       return res(ctx.delay(), ctx.status(200), ctx.json(MockSortedTerminate));
+    } else {
+      return;
     }
   }),
   rest.get('/api/topics/:id', (req, res, ctx) => {
@@ -188,8 +192,10 @@ export const handlers = [
       return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText3));
     } else if (request.id === '4') {
       return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteImage2));
-    } else {
+    } else if (request.id === '6') {
       return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText4));
+    } else {
+      return res(ctx.delay(), ctx.status(200), ctx.json(MockReadVoteText5));
     }
   }),
   rest.get('/api/topics/:id/comments', (req, res, ctx) => {

@@ -28,7 +28,7 @@ export const Sidebar = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0.3rem;
-  @media (max-width: 375px) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;

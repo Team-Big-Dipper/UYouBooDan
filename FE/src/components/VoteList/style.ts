@@ -39,6 +39,7 @@ export const CardDDay = styled.div`
   @media (max-width: 375px) {
     padding: 7px;
     font-size: 0.8rem;
+    padding: 4px;
   }
 `;
 export const Date = styled.div`

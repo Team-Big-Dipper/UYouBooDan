@@ -42,15 +42,17 @@ export const SingleVoteContainer = ({
     if (!!isClosed) {
       return;
     }
+    setOpenModal((prev) => !prev);
     if (!isAuthor) {
-      setOpenModal((prev) => !prev);
-    }
-    if (!!isTopicVoteItemVoted && isVoted) {
-      setText('투표를 취소할까요?');
-    } else if (!isTopicVoteItemVoted && isVoted) {
-      setText('투표를 변경할까요?');
+      if (!!isTopicVoteItemVoted && isVoted) {
+        return setText('투표를 취소할까요?');
+      } else if (!isTopicVoteItemVoted && isVoted) {
+        return setText('투표를 변경할까요?');
+      } else {
+        return setText('투표할까요?');
+      }
     } else {
-      setText('투표할까요?');
+      return setText('본인 게시물에 투표 금지!!');
     }
   };
 

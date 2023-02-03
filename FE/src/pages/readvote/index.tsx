@@ -50,10 +50,6 @@ const ReadVote = () => {
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(1);
 
-  // redux
-  // const testttt = useSelector((state: any) => state.createVote);
-  // console.log('여기입니다', testttt);
-
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
@@ -79,9 +75,16 @@ const ReadVote = () => {
       }
     });
   }, [pid]);
-  const displayStyle = useMemo((): any => {
+  // redux
+  const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
+  console.log(isClosed, isAuthor);
+  const displayStyle = useMemo((): object => {
     if (data?.voteType === 'text') {
-      return;
+      return {
+        display: 'flex',
+        flexDirection: 'column',
+        margin: '10px 10px 0px 10px',
+      };
     } else {
       return { display: 'flex', flexWrap: 'wrap', justifyContent: 'center' };
     }
@@ -89,9 +92,9 @@ const ReadVote = () => {
 
   return (
     <S.PageContainer>
-      <p>
+      <S.CurrentCategoty>
         홈{' > '}카테고리{' > '}게시글
-      </p>
+      </S.CurrentCategoty>
       <VoteTitle
         category={data?.category}
         title={data?.title}
@@ -139,8 +142,8 @@ const ReadVote = () => {
           // }
         })}
       </div>
-      <S.TotalVoteCount>
-        {data?.closed ? '총투표수: ' + totalCount + '표' : null}
+      <S.TotalVoteCount isClosed={isClosed}>
+        {isClosed && isAuthor ? '총투표수: ' + totalCount + '표' : null}
       </S.TotalVoteCount>
       <VoteBtn />
       <AnswerList id={pid} />
