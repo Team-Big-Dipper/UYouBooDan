@@ -32,7 +32,8 @@ public class SecurityConfiguration {
         return httpSecurity
                 .headers().frameOptions().sameOrigin() // 동일 출처로부터 들어오는 request만 페이지 렌더링 허용
                 .and()
-                .cors(withDefaults())
+                .cors()
+                .and()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
