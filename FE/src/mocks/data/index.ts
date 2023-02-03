@@ -11,6 +11,7 @@ import {
 import mockReadVoteImage from './reacvoteImage';
 import mockAnswer from './answers';
 import { mockContinueList } from './continueList';
+import { mockDeadLineList } from './deadLineList';
 export {
   mockUsers,
   mockVote,
@@ -24,4 +25,5 @@ export {
   mockReadVoteImage,
   mockAnswer,
   mockContinueList,
+  mockDeadLineList,
 };

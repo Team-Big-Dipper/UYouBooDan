@@ -59,3 +59,4 @@ export const AuthorDay = styled.div`
   color: #667085;
   font-size: 0.8rem;
 `;
+export const Date = styled.span``;
