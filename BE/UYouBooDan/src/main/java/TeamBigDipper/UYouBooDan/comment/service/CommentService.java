@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -83,6 +84,17 @@ public class CommentService {
         Page<Comment> page = commentRepository.findAllByTopicIdOrderByCreatedAtDesc(pageable, topicId);
 
         return page;
+    }
+
+    /**
+     * 베스트 댓글 조회
+     * @param topicId
+     * @return
+     */
+    public List<Comment> getBestComments(Long topicId){
+        List<Comment> bestComments = commentRepository.findTop1ByTopicIdOrderByTotalLikeDesc(topicId);
+
+        return bestComments;
     }
 
     /**

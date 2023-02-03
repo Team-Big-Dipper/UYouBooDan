@@ -1,9 +1,6 @@
 package TeamBigDipper.UYouBooDan.comment.controller;
 
-import TeamBigDipper.UYouBooDan.comment.dto.CommentLikeResDto;
-import TeamBigDipper.UYouBooDan.comment.dto.CommentPatchReqDto;
-import TeamBigDipper.UYouBooDan.comment.dto.CommentPostReqDto;
-import TeamBigDipper.UYouBooDan.comment.dto.CommentResDto;
+import TeamBigDipper.UYouBooDan.comment.dto.*;
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
 import TeamBigDipper.UYouBooDan.comment.entity.CommentLike;
 import TeamBigDipper.UYouBooDan.comment.service.CommentService;
@@ -87,17 +84,19 @@ public class CommentController {
     }
 
     /**
-     * 댓글 리스트 조회
+     * 댓글 리스트 조회 (베스트 댓글 포함)
      * @param pageable
      * @return 200 OK
      */
     @GetMapping("/{topicId}/comments")
-    public ResponseEntity<MultiResDto> getComments(@PathVariable(value = "topicId") Long topicId,
+    public ResponseEntity<CommentMultiResDto> getComments(@PathVariable(value = "topicId") Long topicId,
                                                    Pageable pageable){
         Page<Comment> page = commentService.getComments(pageable, topicId);
         Page<CommentResDto> dtoPage = page.map(CommentResDto::new);
         List<Comment> commentList = page.toList();
-        return new ResponseEntity<>(new MultiResDto<>(commentList, dtoPage), HttpStatus.OK);
+
+        List<Comment> bestCommentList = commentService.getBestComments(topicId);
+        return new ResponseEntity<>(new CommentMultiResDto<>(bestCommentList, commentList, dtoPage), HttpStatus.OK);
     }
 
     /**
