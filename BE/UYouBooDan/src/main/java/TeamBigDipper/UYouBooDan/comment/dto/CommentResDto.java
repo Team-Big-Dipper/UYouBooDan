@@ -12,6 +12,7 @@ public class CommentResDto extends BaseTimeEntity {
     private Long topicId;
     private String commentContent;
     private Comment.CommentStatus commentStatus;
+    private int totalLike;
 
     public CommentResDto(Comment comment){
         this.commentId = comment.getCommendId();
@@ -19,6 +20,7 @@ public class CommentResDto extends BaseTimeEntity {
         this.topicId = comment.getTopicId();
         this.commentContent = comment.getCommentContent();
         this.commentStatus = comment.getCommentStatus();
+        this.totalLike = comment.getTotalLike();
         setCreatedAt(comment.getCreatedAt());
         setModifiedAt(comment.getModifiedAt());
     }
