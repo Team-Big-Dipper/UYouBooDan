@@ -15,16 +15,16 @@ export const ContinueVote = () => {
   const [datas, setDatas] = useState<continueData[]>([]);
   useEffect(()=>{
     axios
-      .get('/api/main/continue')
+      .get('/api/topics?size=6&page=1&filter=progress')
       .then((res: AxiosResponse) => {
-        console.log('요청 성공!', res);
+        // console.log('요청 성공!', res);
         setDatas(res.data.data);
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
       });
   },[])
-  console.log(datas)
+  // console.log(datas)
   return(
     <Style.CarouselContainer>
         <Style.Cards>
