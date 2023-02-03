@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import * as S from './style';
 import { LikeSvg } from '../../assets/likeSvg';
 import { ProfileImage } from '../../assets/profileImage';
@@ -30,12 +30,15 @@ const AnswerCard = ({
   const onClickLike = () => {
     alert('좋아요+1');
   };
+  const deletedCommentColor = useMemo(() => {
+    return { color: '#667085' };
+  }, []);
 
   return (
     <>
       <S.AnswerCard>
         {status === 'DELETE' ? (
-          <p>삭제된 댓글입니다</p>
+          <p style={deletedCommentColor}>삭제된 댓글입니다</p>
         ) : (
           <>
             <S.AnswerCardTop>
@@ -49,14 +52,13 @@ const AnswerCard = ({
               </S.AnswerLike>
             </S.AnswerCardTop>
             <S.AnswerContent>{content}</S.AnswerContent>
-            <S.AnswerCardBottom>
+            <S.AnswerCardBottomContainer>
               <S.AnswerCreatedAt>{created}</S.AnswerCreatedAt>
               <p>|</p>
               <S.AnswerButtons>수정</S.AnswerButtons>
               <p>|</p>
               <S.AnswerButtons>삭제</S.AnswerButtons>
-              <S.AddAnswerButton>댓글작성</S.AddAnswerButton>
-            </S.AnswerCardBottom>
+            </S.AnswerCardBottomContainer>
           </>
         )}
       </S.AnswerCard>

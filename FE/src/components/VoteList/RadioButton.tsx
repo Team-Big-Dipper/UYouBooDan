@@ -1,5 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { conditions } from '../../constants/conditions';
+import * as S from './style';
 
 type ConditionProps = {
   condition: string;
@@ -7,22 +8,21 @@ type ConditionProps = {
 };
 
 export const RadioButton = ({ condition, setCondition }: ConditionProps) => {
-  const container = useMemo(() => {
-    return { marginRight: '5px', marginTop: '30px' };
-  }, []);
   const handleCondition = () => {
     setCondition(condition);
   };
 
   return (
-    <div style={container}>
-      <input
+    <>
+      <S.RadioButton
+        id={condition}
         type="radio"
         name="condition"
-        style={container}
         onChange={handleCondition}
       />
-      <label htmlFor={condition}>{conditions[condition]}</label>
-    </div>
+      <S.ButtonLabel htmlFor={condition} onClick={handleCondition}>
+        {conditions[condition]}
+      </S.ButtonLabel>
+    </>
   );
 };

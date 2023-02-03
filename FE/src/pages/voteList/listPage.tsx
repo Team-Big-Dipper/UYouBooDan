@@ -33,11 +33,13 @@ const ListPage = ({ data, totalPage, setCondition, setPage }: propsArray) => {
       <S.PageHeader>
         <div>
           <S.PageTitle>#맛집추천</S.PageTitle>
-          <p>맛집 추천에 관한 다양한 투표가 진행되고 있습니다.</p>
+          <S.PageSubTitle>
+            맛집 추천에 관한 다양한 투표가 진행되고 있습니다.
+          </S.PageSubTitle>
         </div>
-        <Link href="/createvote">
+        <S.PageLink href="/createvote">
           <MakeVote />
-        </Link>
+        </S.PageLink>
       </S.PageHeader>
       <S.ButtonWrapper>
         {conditionKey.map((el) => {
@@ -46,8 +48,8 @@ const ListPage = ({ data, totalPage, setCondition, setPage }: propsArray) => {
           );
         })}
       </S.ButtonWrapper>
-      {data?.map((el, idx) => {
-        return <CardItem key={idx} data={el} />;
+      {data?.map((el) => {
+        return <CardItem key={el.id} data={el} />;
       })}
       <S.pageNum>
         {page.map((el) => (

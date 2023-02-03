@@ -7,12 +7,12 @@ type propTypes = {
 //질문: string타입 안에서 줄바꿈이 왜 안될까?
 const VoteContent = ({ content, image }: propTypes) => {
   return (
-    <>
+    <S.VoteContentContainer>
       <S.VoteContent>{content}</S.VoteContent>
-      <S.AddedImage>
-        <img src={image} />
-      </S.AddedImage>
-    </>
+      <S.AddedImageContainer>
+        <S.AddedImage src={image} />
+      </S.AddedImageContainer>
+    </S.VoteContentContainer>
   );
 };
 
