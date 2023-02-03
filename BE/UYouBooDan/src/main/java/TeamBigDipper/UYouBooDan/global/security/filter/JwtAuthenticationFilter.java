@@ -64,8 +64,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Member authenticatedMember = (Member) authResult.getPrincipal();
         String accessToken = jwtTokenizer.delegateAccessToken(authenticatedMember);
         String refreshToken = jwtTokenizer.delegateRefreshToken(authenticatedMember);
-        response.setHeader("Authentication", "Bearer " + accessToken);
-        response.setHeader("RefreshToken", refreshToken);
+        response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("RefreshToken", refreshToken); // 쿠키에 넣기
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 
