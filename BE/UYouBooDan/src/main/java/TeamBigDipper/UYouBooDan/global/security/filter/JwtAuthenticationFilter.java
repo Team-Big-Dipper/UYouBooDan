@@ -13,6 +13,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -65,7 +66,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = jwtTokenizer.delegateAccessToken(authenticatedMember);
         String refreshToken = jwtTokenizer.delegateRefreshToken(authenticatedMember);
         response.setHeader("Authorization", "Bearer " + accessToken);
-        response.setHeader("RefreshToken", refreshToken); // 쿠키에 넣기
+
+        Cookie cookie = new Cookie("refreshToken",refreshToken);
+//        cookie.setMaxAge(7*24*60*60);
+//        cookie.setPath("/");
+        cookie.setSecure(true);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
+
+//        response.setHeader("RefreshToken", refreshToken); // 쿠키에 넣음
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 
