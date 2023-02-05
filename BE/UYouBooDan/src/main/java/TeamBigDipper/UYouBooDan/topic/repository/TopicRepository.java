@@ -4,6 +4,8 @@ import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
 
@@ -41,4 +43,14 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
      * @return Pagination 적용된 Topic 객체
      */
     Page<Topic> findAllByClosedAtIsBeforeOrderByCreatedAtDesc(LocalDateTime now, Pageable pageable);
+
+    /**
+     * 내가 쓴 투표 게시글 목록을 Pagination 적용하여 작성일 역순으로 조회
+     * @param memberId 현재 로그인 한 유저의 식별자
+     * @param pageable Pagination 파라미터
+     * @return
+     */
+    @Query(value = "SELECT * FROM Topic topic WHERE topic.MEMBER_ID =:memberId Order By createdAt Desc", nativeQuery = true)
+    Page<Topic> findAllByMemberIdOrderByCreatedAtDesc(@Param("memberId") Long memberId, Pageable pageable);
+
 }
