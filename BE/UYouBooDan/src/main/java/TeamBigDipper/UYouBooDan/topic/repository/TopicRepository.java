@@ -44,7 +44,13 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
      */
     Page<Topic> findAllByClosedAtIsBeforeOrderByCreatedAtDesc(LocalDateTime now, Pageable pageable);
 
-    @Query(value = "SELECT * FROM Topic topic WHERE topic.MEMBER_ID =:memberId", nativeQuery = true)
+    /**
+     * 내가 쓴 투표 게시글 목록을 Pagination 적용하여 작성일 역순으로 조회
+     * @param memberId 현재 로그인 한 유저의 식별자
+     * @param pageable Pagination 파라미터
+     * @return
+     */
+    @Query(value = "SELECT * FROM Topic topic WHERE topic.MEMBER_ID =:memberId Order By createdAt Desc", nativeQuery = true)
     Page<Topic> findAllByMemberIdOrderByCreatedAtDesc(@Param("memberId") Long memberId, Pageable pageable);
 
 }
