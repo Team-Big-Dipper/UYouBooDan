@@ -8,3 +8,6 @@ INSERT INTO member_roles(Member_memberId,roles) values
 (1,'USER'),
 (2,'USER'),
 (3,'USER');
+
+INSERT INTO Topic(topicId, createdAt, last_modified_at, category, closedAt, content, title, topicStatus, MEMBER_ID) VALUES
+(1, '2023-01-01 00:05:33.825730', '2023-01-01 00:05:33.825730', '음식', '2023-02-28 00:05:33.825730', '상세내용', '제목', 'ACTIVE', 1);
