@@ -8,3 +8,10 @@ INSERT INTO member_roles(Member_memberId,roles) values
 (1,'USER'),
 (2,'USER'),
 (3,'USER');
+
+INSERT INTO Topic(topicId, createdAt, last_modified_at, category, closedAt, content, title, topicStatus, MEMBER_ID) VALUES
+(1, '2023-01-01 00:05:33.825730', '2023-01-01 00:05:33.825730', 'Food', '2023-02-28 00:05:30.000000', '상세내용', '제목', 'ACTIVE', 1);
+
+INSERT INTO TopicVoteItem(topicVoteItemId, createdAt, last_modified_at, topicVoteItemName, topic_id) VALUES
+(1,'2023-01-01 00:05:33.825730','2023-01-01 00:05:33.825730', '투표 게시글 투표 항목1 테스트',1),
+(2,'2023-01-01 00:05:33.825730','2023-01-01 00:05:33.825730', '투표 게시글 투표 항목2 테스트',1);
