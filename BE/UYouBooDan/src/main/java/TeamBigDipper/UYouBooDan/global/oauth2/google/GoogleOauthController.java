@@ -70,7 +70,7 @@ public class GoogleOauthController {
 
         // Http 통신을 위한 RestTemplate 활용
         RestTemplate restTemplate = new RestTemplate();
-        GoogleLoginRequest request = GoogleLoginRequest.builder()
+        GoogleLoginReqVo request = GoogleLoginReqVo.builder()
                 .clientId(getGoogleClientId())
                 .clientSecret(getGoogleClientSecret())
                 .code(code)
@@ -83,7 +83,7 @@ public class GoogleOauthController {
         // try ~ catch 문을 통해 성공했을 경우 토큰을 전달받기위 DTO 클래스
         ResponseEntity<String> oauthTokenResponse;
         // try ~ catch 문을 통해 성공했을 경우 로그인 Response를 전달받기 위한 VO
-        GoogleLoginResponse loginResponse;
+        GoogleLoginResVo loginResponse;
         // try ~ catch 문을 통해 성공했을 경우 값을 전달받기위 DTO 클래스
         GoogleLoginDto googleProfile;
 
@@ -92,7 +92,7 @@ public class GoogleOauthController {
             // Http Header 설정
             HttpHeaders headers  = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<GoogleLoginRequest> googleTokenRequest = new HttpEntity<>(request, headers);
+            HttpEntity<GoogleLoginReqVo> googleTokenRequest = new HttpEntity<>(request, headers);
 
             // fetching for token
 //            oauthTokenResponse = restTemplate.postForEntity("https://oauth2.googleapis.com" + "/token", googleTokenRequest, String.class); // legacy 코드
