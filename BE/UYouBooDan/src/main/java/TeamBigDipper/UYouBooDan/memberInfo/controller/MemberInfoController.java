@@ -1,5 +1,6 @@
 package TeamBigDipper.UYouBooDan.memberInfo.controller;
 
+import TeamBigDipper.UYouBooDan.comment.entity.Comment;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.memberInfo.service.MemberInfoService;
@@ -40,6 +41,14 @@ public class MemberInfoController {
         List<TopicPageResDto> list = resDtos.stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<MultiResDto> getMemberComments (HttpServletRequest request, Pageable pageable) {
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Page<Comment> page = memberInfoService.findMemberComment(memberId, pageable);
+
+        return new ResponseEntity<>(new MultiResDto(null, null), HttpStatus.OK);
     }
 
 }
