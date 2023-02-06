@@ -1,11 +1,9 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.google;
 
-
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
@@ -35,27 +33,40 @@ public class GoogleOauthController {
     @Getter
     @Value("${oauth.google.clientSecret}")
     private String googleClientSecret;
+    @Getter
+    @Value("${oauth.google.redirectUrl}")
+    private String googleRedirectUrl;
     @Value("${oauth.google.scope}")
     private String scopes;
 
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
 
-
+    /**
+     * 프론트 요청 API : 인증 code 받기용
+     * @return redirect url for Google Authorization
+     */
     @GetMapping("/oauth")
     public ResponseEntity<?> googleConnect() {
         StringBuffer url = new StringBuffer();
         url.append("https://accounts.google.com/o/oauth2/v2/auth?");
         url.append("client_id=" + getGoogleClientId());
-        url.append("&redirect_uri=http://localhost:8080/google/login/redirect");
+        url.append("&redirect_uri=" + getGoogleRedirectUrl());
         url.append("&response_type=code");
         url.append("&scope="+ getScopeUrl());
 
         return new ResponseEntity<>(url.toString(), HttpStatus.OK);
     }
 
-    @GetMapping("/login/redirect")
-    public String redirectGoogleLogin(@RequestParam("code") String code, HttpServletResponse response) throws JsonProcessingException {
+
+    /**
+     *
+     * 구글 callback API : 토큰 발급 및 서비스 멤버 생성
+     * @param code 구글 인증 code (프론트에서 구글로부터 받아서 이 API에 담아서 전달해주면 됨)
+     * @return Success Login message
+     */
+    @GetMapping("/callback")
+    public String redirectGoogleLogin(@RequestParam("code") String code, HttpServletResponse response) {
 
         // Http 통신을 위한 RestTemplate 활용
         RestTemplate restTemplate = new RestTemplate();
@@ -63,45 +74,58 @@ public class GoogleOauthController {
                 .clientId(getGoogleClientId())
                 .clientSecret(getGoogleClientSecret())
                 .code(code)
-                .redirectUri("http://localhost:8080/google/login/redirect")
+                .redirectUri(getGoogleRedirectUrl())
                 .grantType("authorization_code")
                 .build();
 
+        // try ~ catch 문을 통해 성공했을 경우 값을 전달받기위한 엔티티 클래스
         ResponseEntity<GoogleLoginDto> userDetailsResponse = null;
+        // try ~ catch 문을 통해 성공했을 경우 토큰을 전달받기위 DTO 클래스
+        ResponseEntity<String> oauthTokenResponse;
+        // try ~ catch 문을 통해 성공했을 경우 로그인 Response를 전달받기 위한 VO
+        GoogleLoginResponse loginResponse;
+        // try ~ catch 문을 통해 성공했을 경우 값을 전달받기위 DTO 클래스
         GoogleLoginDto googleProfile;
 
+        // 구글로 토큰 발급 및 계정정보 요청
         try {
             // Http Header 설정
             HttpHeaders headers  = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            HttpEntity<GoogleLoginRequest> httpReqEntity = new HttpEntity<>(request, headers);
-            ResponseEntity<String> apiResJson = restTemplate.postForEntity("https://oauth2.googleapis.com" + "/token", httpReqEntity, String.class);
+            HttpEntity<GoogleLoginRequest> googleTokenRequest = new HttpEntity<>(request, headers);
 
-            // ObjectMapper를 통해 String to Object로 변환
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // NULL이 아닌 값만 응답 받기
-            GoogleLoginResponse loginResponse = mapper.readValue(apiResJson.getBody(), new TypeReference<>() {});
+            // fetching for token
+//            oauthTokenResponse = restTemplate.postForEntity("https://oauth2.googleapis.com" + "/token", googleTokenRequest, String.class); // legacy 코드
+            oauthTokenResponse = restTemplate.exchange(
+                    "https://oauth2.googleapis.com" + "/token",
+                    HttpMethod.POST,
+                    googleTokenRequest,
+                    String.class
+            );
 
-            // 사용자의 정보는 JWT Token으로 저장되어 있고, Id_Token에 값을 저장
+            // Google token converting process
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL); // NULL이 아닌 값만 응답 받기
+            loginResponse = objectMapper.readValue(oauthTokenResponse.getBody(), new TypeReference<>() {});
+
             String jwtToken = loginResponse.getIdToken();
-
-            // JWT Token을 전달해 JWT에 저장된 사용자 정보 확인
             String requestUrl = UriComponentsBuilder.fromHttpUrl("https://oauth2.googleapis.com/tokeninfo").queryParam("id_token", jwtToken).toUriString();
 
+            // fetching for profile data
             String resultJson = restTemplate.getForObject(requestUrl, String.class);
 
+            // Google profile converting process
             if(resultJson != null) {
-                GoogleLoginDto loginDto = mapper.readValue(resultJson, new TypeReference<>() {});
+                GoogleLoginDto loginDto = objectMapper.readValue(resultJson, new TypeReference<>() {});
                 userDetailsResponse = ResponseEntity.ok().body(loginDto);
             } else {
                 throw new Exception("Google OAuth failed");
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
 
+        // 서비스 회원 등록 위임
         googleProfile = userDetailsResponse.getBody();
         Member googleMember = memberService.createGoogleMember(googleProfile);
 
@@ -119,7 +143,12 @@ public class GoogleOauthController {
         return "Success Login: User";
     }
 
-    public String getScopeUrl() {
+
+    /**
+     * scope 설정용 get 메소드
+     * @return scopes
+     */
+    private String getScopeUrl() {
         return scopes.replaceAll(",", "%20");
     }
 }
