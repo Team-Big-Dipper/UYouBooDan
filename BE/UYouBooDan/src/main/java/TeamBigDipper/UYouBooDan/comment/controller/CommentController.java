@@ -6,6 +6,7 @@ import TeamBigDipper.UYouBooDan.comment.entity.CommentLike;
 import TeamBigDipper.UYouBooDan.comment.service.CommentService;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
+import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,6 +26,7 @@ import java.util.List;
 @Slf4j
 public class CommentController {
     private final CommentService commentService;
+    private final JwtExtractUtil jwtExtractUtil;
 
     /**
      * 댓글 등록
@@ -32,8 +35,10 @@ public class CommentController {
      */
     @PostMapping("/{topicId}/comments")
     public ResponseEntity<SingleResDto<CommentResDto>> postComment(@PathVariable(value = "topicId") Long topicId,
+                                                                   HttpServletRequest request,
                                                      @RequestBody CommentPostReqDto commentPostReqDto){
-        Comment comment = commentPostReqDto.toEntity(topicId);
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Comment comment = commentPostReqDto.toEntity(topicId, memberId);
         Comment createdComment = commentService.createComment(comment);
         CommentResDto response = new CommentResDto(createdComment);
 
@@ -102,12 +107,13 @@ public class CommentController {
     /**
      * 댓글 좋아요
      * @param commentId
-     * @param memberId
-     * @return 200 OK
+     * @param request
+     * @return
      */
-    @PostMapping("/comments/{commentId}/{memberId}/like")
+    @PostMapping("/comments/{commentId}/like")
     public ResponseEntity<CommentLikeResDto> postCommentLike(@PathVariable(value = "commentId") Long commentId,
-                                                             @PathVariable(value = "memberId") Long memberId){
+                                                             HttpServletRequest request){
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         CommentLike commentLike = commentService.likeComment(commentId, memberId);
         CommentLikeResDto response = new CommentLikeResDto(commentLike);
 
