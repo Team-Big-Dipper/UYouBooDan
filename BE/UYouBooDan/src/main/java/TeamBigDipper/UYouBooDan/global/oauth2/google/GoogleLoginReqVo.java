@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class GoogleLoginRequest {
+public class GoogleLoginReqVo {
 
     private String clientId;    // 애플리케이션의 클라이언트 ID
     private String redirectUri; // Google 로그인 후 redirect 위치
