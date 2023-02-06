@@ -6,7 +6,7 @@ export const mockDeadLineList = {
       title: '마감 임박 테스트 ',
       nickName: 'test1',
       createdAt: '2023-02-02 21:10:50',
-      closedAt: '2023-02-02 22:30:00',
+      closedAt: '2023-03-23 22:30:00',
     },
     {
       topicId: 17,
@@ -14,7 +14,7 @@ export const mockDeadLineList = {
       title: '마감 임박 테스트2 ',
       nickName: 'test1',
       createdAt: '2023-02-02 21:10:45',
-      closedAt: '2023-02-02 23:30:00',
+      closedAt: '2023-04-12 23:30:00',
     },
     {
       topicId: 16,
@@ -22,7 +22,7 @@ export const mockDeadLineList = {
       title: '마감 임박 테스트3 ',
       nickName: 'test1',
       createdAt: '2023-02-02 21:10:41',
-      closedAt: '2023-02-03 01:30:00',
+      closedAt: '2023-02-20 01:30:00',
     },
     {
       topicId: 15,
@@ -30,7 +30,7 @@ export const mockDeadLineList = {
       title: '마감 임박 테스트4 ',
       nickName: 'test1',
       createdAt: '2023-02-02 21:10:37',
-      closedAt: '2023-02-03 02:30:00',
+      closedAt: '2023-05-01 02:30:00',
     },
   ],
   pageInfo: {
