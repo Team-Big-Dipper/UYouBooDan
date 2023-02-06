@@ -4,13 +4,14 @@ import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
 import LocalStorage from '../../../constants/localstorage';
 import SessionStorage from '../../../constants/sessionstorage';
-
 import { useRouter } from 'next/router';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+
 import kakaoAuth from '../../../apis/oauth/kakaoLogin';
 
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
+import { Menu } from '../../MobileNav/Menu';
 
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
@@ -64,14 +65,25 @@ const Header = () => {
     SessionStorage.getItem('accesstoken'),
   ]);
 
+
+  //모바일화면 햄버거 클릭
+  const [isOpen, setIsOpen] = useState(false);
+
+  const HandleOpen = () => {
+    setIsOpen(!isOpen)
+  }
+
   return (
     <S.HeaderContainer>
-      <S.Logo href="/">
-        <LogoImg />
-      </S.Logo>
-      <S.HamburgerIcon>
-        <Hamburger />
+      <S.Logo href="/"><LogoImg /></S.Logo>
+      {/* <S.HamburgerIcon onClick={() => setIsOpen(!isOpen)}><Hamburger /></S.HamburgerIcon>
+      */}
+      <S.HamburgerIcon onClick={() => setIsOpen(!isOpen)} className={isOpen ? 'open' : ''}>
+        <div className='top' />
+        <div className='middle' />
+        <div className='bottom' />
       </S.HamburgerIcon>
+      <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
       <S.Right>
         {isAuth ? (
           <S.Mypage href="/mypage">

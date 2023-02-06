@@ -37,11 +37,47 @@ export const Right = styled.div`
   }
 `;
 
-export const HamburgerIcon = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
+export const HamburgerIcon = styled.button`
+  position: absolute;
+  top: 5.7em;
+  right: 5%;
+  margin-left: -2em;
+  margin-top: -45px;
+  width: 2em;
+  height: 40px;
+  z-index: 5;
+  border: none;
+  background-color: white;
   cursor: pointer;
+  div {
+    position: relative;
+    width: 3em;
+    height: 7px;
+    border-radius: 3px;
+    background-color: #4285f4;
+    margin-top: 8px;
+    transition: all 0.3s ease-in-out;
+  }
+  &.open {
+    border-radius: 1px;
+    background-color: #f8f8f8;
+    position: fixed;
+    div {
+      background-color: black;
+      &.top {
+        transform: rotate(-45deg);
+        margin-top: 25px;
+      }
+      &.middle {
+        transform: rotate(45deg);
+        margin-top: -7px;
+      }
+      &.bottom {
+        opacity: 0;
+        transform: rotate(45deg);
+      }
+    }
+  }
   @media (min-width: 769px) {
     display: none;
   }
