@@ -21,7 +21,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/topics")
+@RequestMapping("/")
 @Validated
 @Slf4j
 public class CommentController {
@@ -33,7 +33,7 @@ public class CommentController {
      * @param commentPostReqDto
      * @return 201 Created
      */
-    @PostMapping("/{topicId}/comments")
+    @PostMapping("topics/{topicId}/comments")
     public ResponseEntity<SingleResDto<CommentResDto>> postComment(@PathVariable(value = "topicId") Long topicId,
                                                                    HttpServletRequest request,
                                                      @RequestBody CommentPostReqDto commentPostReqDto){
@@ -51,7 +51,7 @@ public class CommentController {
      * @param commentPatchReqDto
      * @return 200 OK
      */
-    @PatchMapping("/comments/{commentId}")
+    @PatchMapping("topics/comments/{commentId}")
     public ResponseEntity<SingleResDto<CommentResDto>> patchComment(@PathVariable(value = "commentId") Long commentId,
                                                                    @RequestBody CommentPatchReqDto commentPatchReqDto){
         Comment comment = commentPatchReqDto.toEntity(commentId);
@@ -66,7 +66,7 @@ public class CommentController {
      * @param commentId
      * @return
      */
-    @PatchMapping("/comments/{commentId}/remove")
+    @PatchMapping("topics/comments/{commentId}/remove")
     public ResponseEntity<SingleResDto<CommentResDto>> deleteComment(@PathVariable(value = "commentId") Long commentId){
 
         Comment deleteComment = commentService.deleteComment(commentId);
@@ -80,7 +80,7 @@ public class CommentController {
      * @param commentId
      * @return 200 OK
      */
-    @GetMapping("/comments/{commentId}")
+    @GetMapping("topics/comments/{commentId}")
     public ResponseEntity<SingleResDto<CommentResDto>> getComment(@PathVariable(value = "commentId") Long commentId){
         Comment comment = commentService.getComment(commentId);
         CommentResDto response = new CommentResDto(comment);
@@ -93,7 +93,7 @@ public class CommentController {
      * @param pageable
      * @return 200 OK
      */
-    @GetMapping("/{topicId}/comments")
+    @GetMapping("topics/{topicId}/comments")
     public ResponseEntity<CommentMultiResDto> getComments(@PathVariable(value = "topicId") Long topicId,
                                                    Pageable pageable){
         Page<Comment> page = commentService.getComments(pageable, topicId);
@@ -108,9 +108,9 @@ public class CommentController {
      * 댓글 좋아요
      * @param commentId
      * @param request
-     * @return
+     * @return 200 OK
      */
-    @PostMapping("/comments/{commentId}/like")
+    @PostMapping("topics/comments/{commentId}/like")
     public ResponseEntity<CommentLikeResDto> postCommentLike(@PathVariable(value = "commentId") Long commentId,
                                                              HttpServletRequest request){
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
@@ -119,5 +119,22 @@ public class CommentController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
 
+    }
+
+    /**
+     * 마이페이지 내 댓글 조회 기능
+     * @param pageable
+     * @param request
+     * @return 200 OK
+     */
+    @GetMapping("myPage/comments")
+    public ResponseEntity<MultiResDto> getMyComments(Pageable pageable,
+                                                   HttpServletRequest request){
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Page<Comment> page = commentService.getMyComments(pageable, memberId);
+        Page<CommentResDto> dtoPage = page.map(CommentResDto::new);
+        List<Comment> commentList = page.toList();
+
+        return new ResponseEntity<>(new MultiResDto<>(commentList, dtoPage), HttpStatus.OK);
     }
 }

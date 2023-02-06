@@ -12,4 +12,5 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findAllByTopicIdOrderByCreatedAtDesc(Pageable pageable, Long topicId);
     List<Comment> findTop1ByTopicIdOrderByTotalLikeDesc(Long topicId);
+    Page<Comment> findAllByMemberIdOrderByCreatedAtDesc(Pageable pageable, Long memberId);
     }
