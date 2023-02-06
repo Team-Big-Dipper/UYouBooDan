@@ -3,7 +3,7 @@ package TeamBigDipper.UYouBooDan.member.service;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.oauth2.google.GoogleLoginDto;
-import TeamBigDipper.UYouBooDan.global.oauth2.kakao.KakaoProfile;
+import TeamBigDipper.UYouBooDan.global.oauth2.kakao.KakaoProfileVo;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
@@ -167,7 +167,7 @@ public class MemberService {
      * @return member
      */
     @Transactional
-    public Member createKakaoMember (KakaoProfile kakaoProfile) {
+    public Member createKakaoMember (KakaoProfileVo kakaoProfile) {
         Optional<Member> optMember = memberRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
         if(optMember.isEmpty()) {
             Member member = Member.builder()
