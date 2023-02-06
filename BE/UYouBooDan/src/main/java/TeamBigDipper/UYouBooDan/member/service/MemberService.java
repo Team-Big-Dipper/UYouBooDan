@@ -2,11 +2,13 @@ package TeamBigDipper.UYouBooDan.member.service;
 
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
+import TeamBigDipper.UYouBooDan.global.oauth2.google.GoogleLoginDto;
 import TeamBigDipper.UYouBooDan.global.oauth2.kakao.KakaoProfile;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
 import TeamBigDipper.UYouBooDan.member.value.Name;
+import TeamBigDipper.UYouBooDan.member.value.Photo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -180,9 +182,40 @@ public class MemberService {
             member.defaultProfile();
             List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
             member.setRoles(roles);
+
             return memberRepository.save(member);
         }
         else return optMember.get();
     }
+
+    /**
+     * 구글 외부 로그인 전용 멤버 생성 및 검증 메소드
+     * @param googleProfile
+     * @return member
+     */
+    @Transactional
+    public Member createGoogleMember (GoogleLoginDto googleProfile) {
+        Optional<Member> optMember = memberRepository.findByEmail(googleProfile.getEmail());
+        if(optMember.isEmpty()) {
+            Member member = Member.builder()
+                    .nickname(new Name("Mock"+ googleProfile.getName()+googleProfile.getFamilyName()))
+                    .password(passwordEncoder.encode(getInitialKey()))
+                    .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
+                    .build();
+
+            if(googleProfile.getEmail()==null) member.modifyEmail(googleProfile.getSub()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
+            else member.modifyEmail(googleProfile.getEmail());
+
+            if(googleProfile.getPicture()!=null) member.modifyProfile(new Photo(googleProfile.getPicture()));
+            else member.defaultProfile();
+
+            List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
+            member.setRoles(roles);
+
+            return memberRepository.save(member);
+        }
+        else return optMember.get();
+    }
+
 
 }
