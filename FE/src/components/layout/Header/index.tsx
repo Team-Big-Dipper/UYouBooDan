@@ -7,6 +7,7 @@ import SessionStorage from '../../../constants/sessionstorage';
 
 import { useRouter } from 'next/router';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import kakaoAuth from '../../../apis/oauth/kakaoLogin';
 
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
@@ -14,6 +15,7 @@ import { Hamburger } from '../../../assets/hamburger';
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
   const [isAuth, setIsAuth] = useState(false);
+  const { authCodeSend } = kakaoAuth();
   // const api = process.env.NEXT_PUBLIC_SERVER_URL;
 
   // const router = useRouter();
@@ -64,8 +66,12 @@ const Header = () => {
 
   return (
     <S.HeaderContainer>
-      <S.Logo href="/"><LogoImg /></S.Logo>
-      <S.HamburgerIcon><Hamburger /></S.HamburgerIcon>
+      <S.Logo href="/">
+        <LogoImg />
+      </S.Logo>
+      <S.HamburgerIcon>
+        <Hamburger />
+      </S.HamburgerIcon>
       <S.Right>
         {isAuth ? (
           <S.Mypage href="/mypage">

@@ -23,7 +23,7 @@ export const Logo = styled(Link)`
   @media screen and (max-width: 768px) {
     width: 70vw;
   }
-  @media (min-width: 769px){
+  @media (min-width: 769px) {
     width: 100vw;
   }
 `;
@@ -42,7 +42,7 @@ export const HamburgerIcon = styled.div`
   align-items: center;
   height: 100%;
   cursor: pointer;
-  @media (min-width: 769px){
+  @media (min-width: 769px) {
     display: none;
   }
 `;

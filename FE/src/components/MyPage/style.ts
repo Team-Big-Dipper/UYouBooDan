@@ -7,9 +7,10 @@ export const MyPageContainer = styled.div`
 `;
 export const MyPageRightContainer = styled.div`
   width: 85%;
+  /* width: 1200px; */
   padding-top: 50px;
   margin-left: 30px;
-  border: 1px solid green;
+  /* border: 1px solid green; */
 `;
 
 export const SideBarContainer = styled.div`
@@ -40,6 +41,10 @@ export const EditBtnDiv = styled.div`
   text-decoration: underline;
   color: #667085;
   margin-bottom: 20px;
+  cursor: pointer;
+  &:hover {
+    color: #4285f4;
+  }
 `;
 export const CreateVoteBtnDiv = styled(Link)``;
 
@@ -64,4 +69,9 @@ export const CategoryListDiv = styled.div`
   gap: 15px;
   margin-bottom: 7vh;
   cursor: pointer;
+  div {
+    &:hover {
+      color: #4285f4;
+    }
+  }
 `;

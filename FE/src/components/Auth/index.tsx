@@ -173,21 +173,21 @@ const Auth = () => {
       <S.SnsLoginContainer>
         <S.KaKaoLoginDiv
           onClick={() => {
-            authCodeRequest();
-            // axios
-            //   .get(`${api}/kakao/oauth`, {
-            //     headers: {
-            //       'Access-Control-Allow-Origin': '*',
-            //       'ngrok-skip-browser-warning': 'any',
-            //     },
-            //   })
-            //   .then((res: AxiosResponse) => {
-            //     console.log('res.data : ', res.data);
-            //     router.push(res.data);
-            //   })
-            //   .catch((err: AxiosError) => {
-            //     console.log('err : ', err.message);
-            //   });
+            // authCodeRequest();
+            axios
+              .get(`${api}/kakao/oauth`, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  'ngrok-skip-browser-warning': 'any',
+                },
+              })
+              .then((res: AxiosResponse) => {
+                console.log('res.data : ', res.data);
+                router.push(res.data);
+              })
+              .catch((err: AxiosError) => {
+                console.log('err : ', err.message);
+              });
           }}
         >
           <KakaoSvg />
