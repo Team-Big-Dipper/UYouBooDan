@@ -37,18 +37,9 @@ export const Right = styled.div`
   }
 `;
 
-// export const HamburgerIcon = styled.div`
-//   display: flex;
-//   align-items: center;
-//   height: 100%;
-//   cursor: pointer;
-//   @media (min-width: 769px){
-//     display: none;
-//   }
-// `;
 export const HamburgerIcon = styled.button`
   position: absolute;
-  top: 5em;
+  top: 5.7em;
   right: 5%;
   margin-left: -2em;
   margin-top: -45px;
@@ -70,6 +61,7 @@ export const HamburgerIcon = styled.button`
   &.open {
     border-radius: 1px;
     background-color: #f8f8f8;
+    position: fixed;
     div {
       background-color: black;
       &.top {

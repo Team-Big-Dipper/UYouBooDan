@@ -1,7 +1,9 @@
 import React from "react";
-import { LoginNav } from "./loginNav";
 import * as style from './style';
 import { SearchSvg } from '../../assets/search';
+import { LogInAfterNav } from "./loginAfterNav";
+import { LoginNav } from "./loginNav";
+
 
 interface HambugerNav {
   isOpen: boolean;
@@ -9,8 +11,11 @@ interface HambugerNav {
 }
 
 export const Menu: React.FunctionComponent<HambugerNav> = ({ isOpen, setIsOpen }) => {
+  // const accessLocal = localStorage.getItem('Authorization')
+  // const accessSession = sessionStorage.getItem('Authorization')
   return(
     <style.MenuContainer className={isOpen ? 'open' : ''}>
+      {/* {(accessLocal || accessSession) ? <LogInAfterNav /> : <LoginNav />} */}
       <LoginNav />
       <style.MenuBottomContainer>
         <style.VoteConditionContainer>
