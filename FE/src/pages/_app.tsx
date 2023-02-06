@@ -3,8 +3,8 @@ import type { AppProps } from 'next/app';
 import Layout from '../components/layout';
 import Head from 'next/head';
 import '../fonts/style.css';
-import { ThemeProvider } from 'styled-components'
-import { theme } from '../styles/theme'
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../styles/theme';
 
 //redux
 import { store } from '../redux/store';
@@ -31,20 +31,20 @@ export default function App({ Component, pageProps }: AppProps) {
   // if (typeof window === 'undefined') {
   //   return <></>;
   // } else {
-    return (
-      <>
-        <Head>
-          <title>우유부단</title>
-        </Head>
-        <Provider store={store}>
-          <Layout>
-            <GlobalStyles />
-            <ThemeProvider theme={theme}>
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </Layout>
-        </Provider>
-      </>
-    );
+  return (
+    <>
+      <Head>
+        <title>우유부단</title>
+      </Head>
+      <Provider store={store}>
+        <Layout>
+          <GlobalStyles />
+          <ThemeProvider theme={theme}>
+            <Component {...pageProps} />
+          </ThemeProvider>
+        </Layout>
+      </Provider>
+    </>
+  );
   // }
 }

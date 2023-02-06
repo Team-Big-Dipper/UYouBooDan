@@ -6,6 +6,9 @@ import LocalStorage from '../../../constants/localstorage';
 import SessionStorage from '../../../constants/sessionstorage';
 import { useRouter } from 'next/router';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+
+import kakaoAuth from '../../../apis/oauth/kakaoLogin';
+
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
@@ -13,6 +16,7 @@ import { Menu } from '../../MobileNav/Menu';
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
   const [isAuth, setIsAuth] = useState(false);
+  const { authCodeSend } = kakaoAuth();
   // const api = process.env.NEXT_PUBLIC_SERVER_URL;
 
   // const router = useRouter();

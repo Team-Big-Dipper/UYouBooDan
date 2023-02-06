@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 
 export const MypageHeaderContainer = styled.div`
-  border: 1px solid red;
+  /* border: 1px solid red; */
+  height: 120vh;
 `;
 export const HeaderTitleDiv = styled.div`
   font-size: 1.9rem;
@@ -12,6 +13,7 @@ export const RadioContainer = styled.div`
   display: flex;
   margin-bottom: 23px;
   gap: 20px;
+  color: #667085;
 `;
 export const RadioListDiv = styled.div`
   display: flex;
