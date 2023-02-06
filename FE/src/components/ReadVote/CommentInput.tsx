@@ -1,14 +1,14 @@
 import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
-import { AnswerSubmit } from '../../assets/answerSubmit';
+import { CommentSubmit } from '../../assets/commentSubmit';
 import axios from 'axios';
 
 interface Inputs {
   answer: string;
 }
 
-const AnswerInput = ({ id, setData }: any) => {
+const CommentInput = ({ id, setData }: any) => {
   const {
     register,
     handleSubmit,
@@ -40,8 +40,8 @@ const AnswerInput = ({ id, setData }: any) => {
   console.log(watch('answer'));
   return (
     <>
-      <S.AnswerInputContainer onSubmit={handleSubmit(onSubmit)}>
-        <S.AnswerInput
+      <S.CommentInputContainer onSubmit={handleSubmit(onSubmit)}>
+        <S.CommentInput
           {...register('answer', {
             required: '글자를 입력하세요',
             maxLength: {
@@ -53,11 +53,11 @@ const AnswerInput = ({ id, setData }: any) => {
         />
         <input type="submit" id="btnSubmit" style={{ display: 'none' }} />
         <label htmlFor="btnSubmit">
-          <AnswerSubmit />
+          <CommentSubmit />
         </label>
-      </S.AnswerInputContainer>
+      </S.CommentInputContainer>
       {/* <p>{errors.answer?.message}</p> */}
     </>
   );
 };
-export default AnswerInput;
+export default CommentInput;

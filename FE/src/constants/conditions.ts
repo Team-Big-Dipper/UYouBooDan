@@ -3,7 +3,8 @@ type ObjType = {
 };
 
 export const conditions: ObjType = {
-  all: '전체',
-  inProgress: '진행중인투표',
-  terminate: '종료된투표',
+  all: '전체 투표',
+  progress: '진행중 투표',
+  closed: '종료된 투표',
+  imminent: '마감임박순 투표',
 };

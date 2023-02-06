@@ -16,11 +16,19 @@ export const CalcPercentage = (count: number, totalCount: number) => {
   return result;
 };
 
-export const CalcDday = (start: any, end: any): number => {
+export const CalcDday = (start: any, end: any): number | string => {
   const startDate = ParseDate(start);
   const endDate = ParseDate(end);
   const distance = endDate.getTime() - startDate.getTime();
   const day = Math.floor(distance / (1000 * 60 * 60 * 24));
   //console.log(day, '일');
-  return day;
+  if (day >= 0 && day < 1) {
+    return '-day';
+  } else if (day < 0) {
+    return '-0';
+  } else if (day >= 1) {
+    return '-' + day;
+  } else {
+    return '-0';
+  }
 };

@@ -5,7 +5,7 @@ import { ProfileImage } from '../../assets/profileImage';
 import { ChangDateFormat } from '../../utils/parseDate';
 
 interface propTypes {
-  username: string;
+  username: number;
   content: string;
   id: number;
   index: number;
@@ -13,7 +13,7 @@ interface propTypes {
   createdAt: string;
   status: string;
 }
-const AnswerCard = ({
+const CommentCard = ({
   index,
   id,
   username,
@@ -36,33 +36,33 @@ const AnswerCard = ({
 
   return (
     <>
-      <S.AnswerCard>
+      <S.CommentCard>
         {status === 'DELETE' ? (
           <p style={deletedCommentColor}>삭제된 댓글입니다</p>
         ) : (
           <>
-            <S.AnswerCardTop>
-              <S.AnswerUserName>
+            <S.CommentCardTop>
+              <S.CommentUserName>
                 <ProfileImage />
                 {username}
-              </S.AnswerUserName>
-              <S.AnswerLike onClick={onClickLike}>
+              </S.CommentUserName>
+              <S.CommentLike onClick={onClickLike}>
                 <LikeSvg />
                 {like}
-              </S.AnswerLike>
-            </S.AnswerCardTop>
-            <S.AnswerContent>{content}</S.AnswerContent>
-            <S.AnswerCardBottomContainer>
-              <S.AnswerCreatedAt>{created}</S.AnswerCreatedAt>
+              </S.CommentLike>
+            </S.CommentCardTop>
+            <S.CommentContent>{content}</S.CommentContent>
+            <S.CommentCardBottomContainer>
+              <S.CommentCreatedAt>{created}</S.CommentCreatedAt>
               <p>|</p>
-              <S.AnswerButtons>수정</S.AnswerButtons>
+              <S.CommentButtons>수정</S.CommentButtons>
               <p>|</p>
-              <S.AnswerButtons>삭제</S.AnswerButtons>
-            </S.AnswerCardBottomContainer>
+              <S.CommentButtons>삭제</S.CommentButtons>
+            </S.CommentCardBottomContainer>
           </>
         )}
-      </S.AnswerCard>
+      </S.CommentCard>
     </>
   );
 };
-export default AnswerCard;
+export default CommentCard;
