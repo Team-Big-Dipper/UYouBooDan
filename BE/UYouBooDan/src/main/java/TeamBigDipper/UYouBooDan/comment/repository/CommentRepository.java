@@ -14,6 +14,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findAllByTopicIdOrderByCreatedAtDesc(Pageable pageable, Long topicId);
     List<Comment> findTop1ByTopicIdOrderByTotalLikeDesc(Long topicId);
+    Page<Comment> findAllByMemberIdOrderByCreatedAtDesc(Pageable pageable, Long memberId);
 
     /**
      * *** Comment 엔티티에 member Id에 대한 매핑 필요 ***
