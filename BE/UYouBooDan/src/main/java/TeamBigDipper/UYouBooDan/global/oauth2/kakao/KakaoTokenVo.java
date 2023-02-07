@@ -3,7 +3,7 @@ package TeamBigDipper.UYouBooDan.global.oauth2.kakao;
 import lombok.Data;
 
 @Data
-public class KakaoToken {
+public class KakaoTokenVo {
     private String access_token;
     private String token_type;
     private String refresh_token;

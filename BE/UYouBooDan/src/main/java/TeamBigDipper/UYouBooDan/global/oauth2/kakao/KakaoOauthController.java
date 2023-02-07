@@ -81,8 +81,8 @@ public class KakaoOauthController {
 
         // kakao token converting process
         ObjectMapper objectMapper = new ObjectMapper();
-        KakaoToken kakaoToken = null;
-        try { kakaoToken = objectMapper.readValue(oauthTokenResponse.getBody(), KakaoToken.class); }
+        KakaoTokenVo kakaoToken = null;
+        try { kakaoToken = objectMapper.readValue(oauthTokenResponse.getBody(), KakaoTokenVo.class); }
         catch (JsonMappingException je) { je.printStackTrace(); }
 
         RestTemplate restTemplate2 = new RestTemplate();
@@ -101,8 +101,8 @@ public class KakaoOauthController {
 
         // kakao profile converting process
         ObjectMapper objectMapper2 = new ObjectMapper();
-        KakaoProfile kakaoProfile = null;
-        try { kakaoProfile = objectMapper2.readValue(userDetailsResponse.getBody(), KakaoProfile.class); }
+        KakaoProfileVo kakaoProfile = null;
+        try { kakaoProfile = objectMapper2.readValue(userDetailsResponse.getBody(), KakaoProfileVo.class); }
         catch (JsonMappingException je) { je.printStackTrace(); }
 
         // 서비스 회원 등록 위임
