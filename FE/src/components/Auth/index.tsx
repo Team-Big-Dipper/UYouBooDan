@@ -195,7 +195,24 @@ const Auth = () => {
         <S.NaverLoginDiv>
           <NaverSvg />
         </S.NaverLoginDiv>
-        <S.GoogleLoginDiv>
+        <S.GoogleLoginDiv
+          onClick={() => {
+            axios
+              .get(`${api}/google/oauth`, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  'ngrok-skip-browser-warning': 'any',
+                },
+              })
+              .then((res: AxiosResponse) => {
+                console.log('res', res);
+                router.push(res.data);
+              })
+              .catch((err: AxiosError) => {
+                console.log('err : ', err.message);
+              });
+          }}
+        >
           <GoogleSvg />
         </S.GoogleLoginDiv>
       </S.SnsLoginContainer>

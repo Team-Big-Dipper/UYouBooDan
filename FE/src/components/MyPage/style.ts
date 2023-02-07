@@ -28,6 +28,12 @@ export const SideBarUserInfoDiv = styled.div`
   align-items: center;
   justify-content: center;
   margin-bottom: 50px;
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+  }
 `;
 
 export const UserNickDiv = styled.div`

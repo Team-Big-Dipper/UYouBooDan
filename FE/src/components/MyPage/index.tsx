@@ -11,7 +11,9 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
+  // const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
   const [profile, setProfile] = useState<string>('');
+  const [photo, setPhoto] = useState<string>('');
   // 기본 값 내가 쓴 게시글
   const [selectCategory, setSelectCategory] =
     useState<string>('내가 쓴 게시글');
@@ -35,6 +37,7 @@ const MyPage = () => {
       .then((res: AxiosResponse) => {
         console.log('mypage 정보요청 res : ', res);
         setProfile(res.data.data.nickname);
+        setPhoto(res.data.data.profile);
       })
       .catch((err: AxiosError) => {
         console.log('err : ', err.message);
@@ -49,6 +52,7 @@ const MyPage = () => {
         </S.SideBarRouteText>
         <S.SibeBarCategotyDiv>
           <S.SideBarUserInfoDiv>
+            <img src={photo} />
             <S.UserNickDiv>#{profile}</S.UserNickDiv>
             <S.EditBtnDiv>개인정보수정</S.EditBtnDiv>
             <S.CreateVoteBtnDiv href="/createvote">
@@ -62,6 +66,20 @@ const MyPage = () => {
               <div
                 onClick={() => {
                   setSelectCategory('내가 쓴 게시글');
+                  axios
+                    .get(`${api}/member-info/topics?page=1&size=10`, {
+                      headers: {
+                        'Access-Control-Allow-Origin': '*',
+                        'ngrok-skip-browser-warning': 'any',
+                        Authorization: LocalStorage.getItem('accesstoken'),
+                      },
+                    })
+                    .then((res: AxiosResponse) => {
+                      console.log('res : ', res);
+                    })
+                    .catch((err: AxiosError) => {
+                      console.log('err : ', err.message);
+                    });
                 }}
               >
                 내가 쓴 게시글
