@@ -28,3 +28,6 @@ INSERT INTO TopicVote(topicVoteId, createdAt, last_modified_at, memberId, topicV
 (1,'2023-01-01 00:05:33.825730','2023-01-01 00:05:33.825730',1,1),
 (2,'2023-01-01 00:05:33.825730','2023-01-01 00:05:33.825730',2,1),
 (3,'2023-01-01 00:05:33.825730','2023-01-01 00:05:33.825730',3,2);
+
+INSERT INTO Comment(comment_id, createdAt, last_modified_at, commentContent, commentStatus, memberId, topicId, totalLike) VALUES
+(1, '2023-01-03 00:05:33.825730','2023-01-03 00:05:33.825730', '테스트 댓글1', 0, 1, 1, 1);
