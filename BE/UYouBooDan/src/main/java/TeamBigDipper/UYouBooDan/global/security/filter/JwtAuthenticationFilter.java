@@ -1,14 +1,11 @@
 package TeamBigDipper.UYouBooDan.global.security.filter;
 
-import TeamBigDipper.UYouBooDan.global.security.config.ParamsConfig;
 import TeamBigDipper.UYouBooDan.global.security.dto.LoginDto;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
