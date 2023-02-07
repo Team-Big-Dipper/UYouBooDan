@@ -32,7 +32,7 @@ const kakaoAuth = () => {
       });
   };
 
-  const authCodeSend = (): void => {
+  const authCodeSend = (code: string): void => {
     console.log('code : ', code);
 
     authApi

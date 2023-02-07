@@ -11,6 +11,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
+  const [profile, setProfile] = useState<string>('');
   // 기본 값 내가 쓴 게시글
   const [selectCategory, setSelectCategory] =
     useState<string>('내가 쓴 게시글');
@@ -33,6 +34,7 @@ const MyPage = () => {
       })
       .then((res: AxiosResponse) => {
         console.log('mypage 정보요청 res : ', res);
+        setProfile(res.data.data.nickname);
       })
       .catch((err: AxiosError) => {
         console.log('err : ', err.message);
@@ -47,7 +49,7 @@ const MyPage = () => {
         </S.SideBarRouteText>
         <S.SibeBarCategotyDiv>
           <S.SideBarUserInfoDiv>
-            <S.UserNickDiv>#띨렁이</S.UserNickDiv>
+            <S.UserNickDiv>#{profile}</S.UserNickDiv>
             <S.EditBtnDiv>개인정보수정</S.EditBtnDiv>
             <S.CreateVoteBtnDiv href="/createvote">
               <MakeVote />
