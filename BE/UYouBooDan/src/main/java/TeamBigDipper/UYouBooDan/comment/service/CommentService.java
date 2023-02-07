@@ -42,6 +42,7 @@ public class CommentService {
     public Comment updateComment(Comment comment, Long memberId){
         Comment savedComment = commentRepository.findById(comment.getCommendId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        verifyCommentStatus(savedComment);
         verifyAuthor(savedComment, memberId);
         Optional.of(comment.getCommentContent()).ifPresent(savedComment::setCommentContent);
         savedComment.setModifiedAt(LocalDateTime.now());
@@ -58,6 +59,7 @@ public class CommentService {
     public Comment deleteComment(Long commentId, Long memberId){
         Comment savedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        verifyCommentStatus(savedComment);
         verifyAuthor(savedComment, memberId);
         savedComment.setCommentStatus(Comment.CommentStatus.REMOVED);
         savedComment.setModifiedAt(LocalDateTime.now());
@@ -119,6 +121,7 @@ public class CommentService {
     public CommentLike likeComment(Long commentId, Long memberId){
         Comment savedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        verifyCommentStatus(savedComment);// 댓글 삭제 여부 검증
         int commentLikeNum = savedComment.getTotalLike(); // 해당 댓글 좋아요 수 조회
 
         if(commentLikeRepository.existsByCommentIdAndMemberId(commentId, memberId)){// commentLike 존재할 경우
@@ -156,7 +159,17 @@ public class CommentService {
      */
     public void verifyAuthor(Comment comment, Long memberId){
         if(memberId != comment.getMemberId()){
-            throw new BusinessLogicException(ExceptionCode.NON_ACCESS);
+            throw new BusinessLogicException(ExceptionCode.NON_COMMENT_ACCESS);
+        }
+    }
+
+    /**
+     * 댓글의 삭제 여부 검증 메서드
+     * @param comment
+     */
+    public void verifyCommentStatus(Comment comment){
+        if(comment.getCommentStatus().equals(Comment.CommentStatus.REMOVED)){
+            throw new BusinessLogicException(ExceptionCode.REMOVED_COMMENT);
         }
     }
 }
