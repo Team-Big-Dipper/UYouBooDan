@@ -39,10 +39,10 @@ public class CommentService {
      * @return
      */
     @Transactional
-    public Comment updateComment(Comment comment){
+    public Comment updateComment(Comment comment, Long memberId){
         Comment savedComment = commentRepository.findById(comment.getCommendId())
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
-
+        verifyAuthor(savedComment, memberId);
         Optional.of(comment.getCommentContent()).ifPresent(savedComment::setCommentContent);
         savedComment.setModifiedAt(LocalDateTime.now());
 
@@ -55,9 +55,10 @@ public class CommentService {
      * @return
      */
     @Transactional
-    public Comment deleteComment(Long commentId){
+    public Comment deleteComment(Long commentId, Long memberId){
         Comment savedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        verifyAuthor(savedComment, memberId);
         savedComment.setCommentStatus(Comment.CommentStatus.REMOVED);
         savedComment.setModifiedAt(LocalDateTime.now());
 
@@ -139,6 +140,17 @@ public class CommentService {
             savedComment.setTotalLike(commentLikeNum + 1);
             commentRepository.save(savedComment);
             return commentLikeRepository.save(commentLike);
+        }
+    }
+
+    /**
+     * 댓글 수정 및 삭제 권한 확인 메서드
+     * @param comment
+     * @param memberId
+     */
+    public void verifyAuthor(Comment comment, Long memberId){
+        if(memberId != comment.getMemberId()){
+            throw new BusinessLogicException(ExceptionCode.NON_ACCESS);
         }
     }
 }

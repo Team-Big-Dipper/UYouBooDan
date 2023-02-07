@@ -53,9 +53,11 @@ public class CommentController {
      */
     @PatchMapping("topics/comments/{commentId}")
     public ResponseEntity<SingleResDto<CommentResDto>> patchComment(@PathVariable(value = "commentId") Long commentId,
+                                                                    HttpServletRequest request,
                                                                    @RequestBody CommentPatchReqDto commentPatchReqDto){
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         Comment comment = commentPatchReqDto.toEntity(commentId);
-        Comment updateComment = commentService.updateComment(comment);
+        Comment updateComment = commentService.updateComment(comment, memberId);
         CommentResDto response = new CommentResDto(updateComment);
 
         return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
@@ -67,9 +69,10 @@ public class CommentController {
      * @return
      */
     @PatchMapping("topics/comments/{commentId}/remove")
-    public ResponseEntity<SingleResDto<CommentResDto>> deleteComment(@PathVariable(value = "commentId") Long commentId){
-
-        Comment deleteComment = commentService.deleteComment(commentId);
+    public ResponseEntity<SingleResDto<CommentResDto>> deleteComment(@PathVariable(value = "commentId") Long commentId,
+                                                                     HttpServletRequest request){
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Comment deleteComment = commentService.deleteComment(commentId, memberId);
         CommentResDto response = new CommentResDto(deleteComment);
 
         return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
