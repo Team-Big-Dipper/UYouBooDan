@@ -6,7 +6,7 @@ export const mockContinueList = {
         title: '이 신발 어때요?',
         nickName: '쇼핑중독자',
         createdAt: '2023-02-01',
-        closedAt: '2023-02-20 02:12:34',
+        closedAt: '2023-02-07 19:12:34',
       },
       {
         topicId: 2,

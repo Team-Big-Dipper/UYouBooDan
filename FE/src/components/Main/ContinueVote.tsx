@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import * as Style from './continueStyle';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { DdayCal } from '../../utils/dDay';
+import { mockDeadLineList } from '../../mocks/data/deadLineList';
 
 interface continueData {
   topicId: number;
@@ -35,7 +37,7 @@ export const ContinueVote = () => {
             <Style.Card key={idx}>
               <div>
                 <Style.CardTitle>
-                  #{data.category}&nbsp;<span>D-3</span>
+                  #{data.category}&nbsp;<span>D-{DdayCal(data.closedAt)}</span>
                 </Style.CardTitle>
                 <Style.CardContent>{data.title}</Style.CardContent>
               </div>

@@ -15,7 +15,8 @@ import {
   mockReadVoteImage2,
   mockContinueList,
   mockAnswer,
-  mockDeadLineList
+  mockDeadLineList,
+  mockHotList,
 } from './data';
 
 let MockUsers = [...mockUsers];
@@ -33,6 +34,7 @@ let MockReadVoteImage2 = [...mockReadVoteImage2];
 let MockAnswer = [...mockAnswer];
 let MockContinueList = {...mockContinueList};
 let MockDeadLineList = { ...mockDeadLineList };
+let MockHotList = {...mockHotList };
 console.log(MockUsers);
 console.log(MockDeadLineList);
 
@@ -233,14 +235,18 @@ export const handlers = [
       return res(ctx.delay(), ctx.status(200), ctx.json(MockContinueList));
     },
   ),
-  rest.get(
-    '/api/topics?size=4&page=1&filter=imminent',
-    (req, res, ctx) => {
-      const request = req.params;
-      // console.log('msw 내부 요청 받았음!');
-      // console.log('request: ', request.condition);
-      // console.log('req', req);
-      return res(ctx.delay(), ctx.status(200), ctx.json(MockDeadLineList));
-    },
-  ),
+  rest.get('/api/imminent', (req, res, ctx) => {
+    const request = req.params;
+    // console.log('msw 내부 요청 받았음!');
+    // console.log('request: ', request.condition);
+    // console.log('req', req);
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockDeadLineList));
+  }),
+  rest.get('/api/hot', (req, res, ctx) => {
+    const request = req.params;
+    // console.log('msw 내부 요청 받았음!');
+    // console.log('request: ', request.condition);
+    // console.log('req', req);
+    return res(ctx.delay(), ctx.status(200), ctx.json(MockHotList));
+  }),
 ];
