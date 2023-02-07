@@ -27,7 +27,7 @@ function Main() {
     {/* 핫한 투표 */}
     <S.HotContainer>
       <S.HotTitle><span>핫한</span>&nbsp;투표를 만나보세요!</S.HotTitle>
-      <HotVote />
+      {/* <HotVote /> */}
     </S.HotContainer>
     {/* 마감임박 투표 */}
     <S.ImageDeadLineContainer>

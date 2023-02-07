@@ -32,6 +32,7 @@ export interface Inputs {
 function createvote() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const [sumbmitData, setSubmitData] = useState<Inputs>();
   const {
     register,
@@ -61,10 +62,10 @@ function createvote() {
   };
   useEffect(() => {
     axios
-      .post('/api/topics', {
+      .post(`${api}/topics`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
-          // 'ngrok-skip-browser-warning': 'any',
+          'ngrok-skip-browser-warning': 'any',
           Authorization: `${localStorage.getItem("Authorization")}`,
           "Content-Type": "application/json",
         },
