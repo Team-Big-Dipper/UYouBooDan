@@ -26,7 +26,7 @@ const VoteTitle = ({
   views,
   likes,
 }: propTypes) => {
-  const [Dday, setDday] = useState(0);
+  const [Dday, setDday] = useState<number | string>(0);
   const [created, setCreated] = useState('');
   const [copied, setCopied] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -87,7 +87,7 @@ const VoteTitle = ({
           <S.DevideIconDiv>
             <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
             <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
-            <S.DdayIcon>D-{Dday}</S.DdayIcon>
+            <S.DdayIcon>D{Dday}</S.DdayIcon>
           </S.DevideIconDiv>
         </S.ContentContainer>
       </S.VoteTitleOutLine>

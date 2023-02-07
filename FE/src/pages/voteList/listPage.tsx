@@ -1,55 +1,48 @@
 import React from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
-import { RadioButton } from '../../components/VoteList/RadioButton';
-import { conditions } from '../../constants/conditions';
 import CardItem from '../../components/VoteList/CardItem';
-import Link from 'next/link';
+import { conditions } from '../../constants/conditions';
 
 interface props {
+  data: {
+    category: string;
+    closedAt: string;
+    createdAt: string;
+    nickName: string;
+    title: string;
+    topicId: number;
+  };
   id: number;
-  category: string;
-  content: string;
-  createdAt: string;
-  username: string;
-  endDate: string;
+  pageInfo: any;
 }
 interface propsArray {
   data: props[];
-  setCondition: React.Dispatch<React.SetStateAction<string>>;
   setPage: Function;
   totalPage: number;
+  condition: string;
 }
 
-const ListPage = ({ data, totalPage, setCondition, setPage }: propsArray) => {
-  const conditionKey = Object.keys(conditions);
+const ListPage = ({ data, totalPage, setPage, condition }: propsArray) => {
   const page = Array.from({ length: totalPage }, (_, i) => i + 1);
   const handlePage = (e: any) => {
     setPage(e.target.textContent);
   };
-
   return (
     <S.VoteList>
       <S.PageHeader>
         <div>
-          <S.PageTitle>#맛집추천</S.PageTitle>
+          <S.PageTitle>#{conditions[condition]}</S.PageTitle>
           <S.PageSubTitle>
-            맛집 추천에 관한 다양한 투표가 진행되고 있습니다.
+            다양한 {conditions[condition]}가 진행되고 있습니다.
           </S.PageSubTitle>
         </div>
         <S.PageLink href="/createvote">
           <MakeVote />
         </S.PageLink>
       </S.PageHeader>
-      <S.ButtonWrapper>
-        {conditionKey.map((el) => {
-          return (
-            <RadioButton key={el} condition={el} setCondition={setCondition} />
-          );
-        })}
-      </S.ButtonWrapper>
       {data?.map((el) => {
-        return <CardItem key={el.id} data={el} />;
+        return <CardItem key={el.id} prop={el.data} />;
       })}
       <S.pageNum>
         {page.map((el) => (

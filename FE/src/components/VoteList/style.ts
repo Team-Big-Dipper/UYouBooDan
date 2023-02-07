@@ -21,7 +21,7 @@ export const CardContents = styled.div`
   display: flex;
   justify-content: space-between;
   height: 3vh;
-  @media (max-width: 375px) {
+  @media (max-width: 479px) {
     margin-top: 14px;
   }
 `;
@@ -36,7 +36,7 @@ export const CardDDay = styled.div`
   border-radius: 15px;
   width: 4rem;
   text-align: center;
-  @media (max-width: 375px) {
+  @media (max-width: 479px) {
     padding: 7px;
     font-size: 0.8rem;
     padding: 4px;
@@ -59,7 +59,7 @@ export const RadioButton = styled.input`
   cursor: pointer;
   margin-right: 6px;
   margin-top: 30px;
-  @media (max-width: 780px) {
+  @media (max-width: 767px) {
     width: 1rem;
     margin-right: 8px;
   }
@@ -68,7 +68,7 @@ export const ButtonLabel = styled.label`
   cursor: pointer;
   margin-right: 10px;
   margin-top: 30px;
-  @media (max-width: 780px) {
+  @media (max-width: 767px) {
     font-size: 1rem;
     margin-right: 8px;
   }

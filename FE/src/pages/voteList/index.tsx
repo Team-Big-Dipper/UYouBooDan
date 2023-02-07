@@ -2,42 +2,44 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from './sidebar';
 import ListPage from './listPage';
 import * as S from './style';
-import axios from 'axios';
+import { getVoteList } from '../../apis/votelist';
 
 interface props {
+  data: {
+    category: string;
+    closedAt: string;
+    createdAt: string;
+    nickName: string;
+    title: string;
+    topicId: number;
+  };
   id: number;
-  category: string;
-  content: string;
-  createdAt: string;
-  username: string;
-  endDate: string;
+  pageInfo: any;
 }
 
 const VoteList = () => {
   const [data, setData] = useState<props[]>([]);
   const [condition, setCondition] = useState('all');
   const [page, setPage] = useState(1);
+  const [size, setSize] = useState(6);
   const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
-    axios.get(`/api/topics/${condition}`).then((res) => {
-      try {
-        setData(res?.data[0].data);
-        setTotalPage(res?.data[0].totalPage);
-      } catch (e) {
-        console.log(e);
-      }
+    console.log('api call');
+    getVoteList(page, size, condition)?.then((res) => {
+      setData(res.data);
+      setTotalPage(res.pageInfo.totalPages);
     });
-  }, [condition]);
+  }, [condition, page]);
 
   return (
     <>
       <S.PageContainer>
-        <Sidebar />
+        <Sidebar condition={condition} setCondition={setCondition} />
         <ListPage
           data={data}
           totalPage={totalPage}
-          setCondition={setCondition}
           setPage={setPage}
+          condition={condition}
         />
       </S.PageContainer>
     </>
