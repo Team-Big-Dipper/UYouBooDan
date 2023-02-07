@@ -1,9 +1,11 @@
 package TeamBigDipper.UYouBooDan.memberInfo.controller;
 
+import TeamBigDipper.UYouBooDan.comment.dto.CommentResDto;
+import TeamBigDipper.UYouBooDan.comment.entity.Comment;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
+import TeamBigDipper.UYouBooDan.memberInfo.dto.MemberTopicResDto;
 import TeamBigDipper.UYouBooDan.memberInfo.service.MemberInfoService;
-import TeamBigDipper.UYouBooDan.topic.dto.TopicPageResDto;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -36,8 +38,18 @@ public class MemberInfoController {
     public ResponseEntity<MultiResDto> getMemberTopics (HttpServletRequest request, Pageable pageable) {
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         Page<Topic> page = memberInfoService.findMemberTopics(memberId, pageable);
-        Page<TopicPageResDto> resDtos = page.map(TopicPageResDto::new);
-        List<TopicPageResDto> list = resDtos.stream().collect(Collectors.toList());
+        Page<MemberTopicResDto> resDto = page.map(MemberTopicResDto::new);
+        List<MemberTopicResDto> list = resDto.stream().collect(Collectors.toList());
+
+        return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<MultiResDto> getMemberComments (HttpServletRequest request, Pageable pageable) {
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Page<Comment> page = memberInfoService.findMemberComment(memberId, pageable);
+        Page<CommentResDto> resDto = page.map(CommentResDto::new);
+        List<CommentResDto> list = resDto.stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
     }
