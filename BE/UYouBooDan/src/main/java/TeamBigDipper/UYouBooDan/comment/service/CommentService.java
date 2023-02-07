@@ -98,6 +98,12 @@ public class CommentService {
         return bestComments;
     }
 
+    /**
+     * 마이페이지 내 댓글 조회
+     * @param pageable
+     * @param memberId
+     * @return
+     */
     public Page<Comment> getMyComments(Pageable pageable, Long memberId){
         Page<Comment> page = commentRepository.findAllByMemberIdOrderByCreatedAtDesc(pageable, memberId);
 
