@@ -1,6 +1,7 @@
 package TeamBigDipper.UYouBooDan.comment.dto;
 
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
