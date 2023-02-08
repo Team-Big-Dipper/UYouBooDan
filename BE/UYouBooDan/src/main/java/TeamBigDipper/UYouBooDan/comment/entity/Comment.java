@@ -2,6 +2,7 @@ package TeamBigDipper.UYouBooDan.comment.entity;
 
 import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
+import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -23,6 +24,12 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "member_id")
     private Long memberId;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "topic_id", insertable = false, updatable = false)
+    private Topic topic;
+
+    @Column(name = "topic_id")
     private Long topicId;
 
     private String commentContent;
@@ -31,9 +38,10 @@ public class Comment extends BaseTimeEntity {
 
     private int totalLike;
 
-    public Comment(Long memberId){
-        this.memberId = memberId;
-    }
+//    public Comment(Long memberId, Long topicId){
+//        this.memberId = memberId;
+//        this.topicId = topicId;
+//    }
 
     public enum CommentStatus {
         ACTIVE(0, "활성화"),
