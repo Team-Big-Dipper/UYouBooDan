@@ -15,7 +15,7 @@ public class Comment extends BaseTimeEntity {
     private Long commendId;
 
     @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id")
     private Member memberId;
 
     private Long topicId;
