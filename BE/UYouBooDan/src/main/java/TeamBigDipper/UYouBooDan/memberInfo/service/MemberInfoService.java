@@ -33,6 +33,6 @@ public class MemberInfoService {
      * @return 로그인 한 회원에 관련한 댓글을 페이지로 조회 (Id 참조 방식)
      */
     public Page<Comment> findMemberComment(Long memberId, Pageable pageable) {
-        return commentRepository.findAllByMemberIdOrderByCreatedAtDesc(memberId, pageable);
+        return commentRepository.findAllByMemberIdOrderByCreatedAtDesc(pageable, memberId);
     }
 }
