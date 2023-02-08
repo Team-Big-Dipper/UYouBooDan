@@ -1,6 +1,7 @@
 package TeamBigDipper.UYouBooDan.comment.repository;
 
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Page<Comment> findAllByTopicIdOrderByCreatedAtDesc(Pageable pageable, Long topicId);
     List<Comment> findTop1ByTopicIdOrderByTotalLikeDesc(Long topicId);
+    @Query(value = "SELECT * FROM Comment comment WHERE comment.member_Id =:memberId ORDER BY createdAt DESC", nativeQuery = true)
     Page<Comment> findAllByMemberIdOrderByCreatedAtDesc(Pageable pageable, Long memberId);
 
     /**
@@ -24,7 +26,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      * @param pageable Pagination 파라미터
      * @return
      */
-    @Query(value = "SELECT * FROM Comment comment WHERE comment.memberId =:memberId ORDER BY createdAt DESC", nativeQuery = true)
-    Page<Comment> findAllByMemberIdOrderByCreatedAtDesc(@Param("memberId") Long memberId, Pageable pageable);
+//    @Query(value = "SELECT * FROM Comment comment WHERE comment.member =:memberId ORDER BY createdAt DESC", nativeQuery = true)
+//    Page<Comment> findAllByMemberIdOrderByCreatedAtDesc(@Param("memberId") Long memberId, Pageable pageable);
 
 }

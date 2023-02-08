@@ -7,6 +7,8 @@ import TeamBigDipper.UYouBooDan.comment.service.CommentService;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
+import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
     private final JwtExtractUtil jwtExtractUtil;
+    private final MemberService memberService;
 
     /**
      * 댓글 등록

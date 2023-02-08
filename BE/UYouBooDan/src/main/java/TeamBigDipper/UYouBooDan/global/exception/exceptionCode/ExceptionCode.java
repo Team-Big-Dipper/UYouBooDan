@@ -21,7 +21,7 @@ public enum ExceptionCode {
     LOGIN_REQUIRED(401, "로그인이 필요한 서비스 입니다."),
     TOPIC_NOT_EXIST(404, "존재하지 않는 게시글 입니다."),
     FILTER_NOT_EXIST(400, "잘못된 조회 필터 입니다"),
-    NOT_EXACT_PASSWORD(400, "비밀번호가 올바르지 않습니다.")
+//    NOT_EXACT_PASSWORD(400, "비밀번호가 올바르지 않습니다.")
     ;
 
 
