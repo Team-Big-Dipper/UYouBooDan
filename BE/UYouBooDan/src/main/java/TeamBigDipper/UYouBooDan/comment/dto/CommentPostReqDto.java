@@ -1,6 +1,7 @@
 package TeamBigDipper.UYouBooDan.comment.dto;
 
 import TeamBigDipper.UYouBooDan.comment.entity.Comment;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,9 +11,9 @@ import java.time.LocalDateTime;
 public class CommentPostReqDto {
     private String commentContent;
 
-    public Comment toEntity(Long topicId, Long memberId){
+    public Comment toEntity(Long topicId, Member member){
         Comment comment = new Comment().builder()
-                .memberId(memberId)
+                .memberId(member)
                 .topicId(topicId)
                 .commentContent(this.commentContent)
                 .commentStatus(Comment.CommentStatus.ACTIVE)

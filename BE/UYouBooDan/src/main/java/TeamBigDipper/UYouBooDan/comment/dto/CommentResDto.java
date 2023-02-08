@@ -16,7 +16,9 @@ public class CommentResDto extends BaseTimeEntity {
 
     public CommentResDto(Comment comment){
         this.commentId = comment.getCommendId();
-        this.memberId = comment.getMemberId();
+        this.memberId = comment.getMemberId().getMemberId();
+//        Member member = new Member();
+//        member.setMemberId(comment.getMember().getMemberId());
         this.topicId = comment.getTopicId();
         this.commentContent = comment.getCommentContent();
         this.commentStatus = comment.getCommentStatus();

@@ -1,6 +1,7 @@
 package TeamBigDipper.UYouBooDan.comment.entity;
 
 import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -8,11 +9,14 @@ import javax.persistence.*;
 @NoArgsConstructor @AllArgsConstructor
 @Entity @Getter @Setter @Builder
 public class Comment extends BaseTimeEntity {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long commendId;
 
-    private Long memberId;
+    @ManyToOne
+    @JoinColumn(name = "MEMBER_ID")
+    private Member memberId;
 
     private Long topicId;
 
