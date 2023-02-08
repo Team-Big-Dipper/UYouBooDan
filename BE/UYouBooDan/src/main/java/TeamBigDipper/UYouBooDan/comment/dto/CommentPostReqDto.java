@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 public class CommentPostReqDto {
     private String commentContent;
 
-    public Comment toEntity(Long topicId, Member member){
+    public Comment toEntity(Long topicId, Long memberId){
         Comment comment = new Comment().builder()
-                .memberId(member)
+                .memberId(memberId)
                 .topicId(topicId)
                 .commentContent(this.commentContent)
                 .commentStatus(Comment.CommentStatus.ACTIVE)

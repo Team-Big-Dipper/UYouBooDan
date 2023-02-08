@@ -158,7 +158,7 @@ public class CommentService {
      * @param memberId
      */
     public void verifyAuthor(Comment comment, Long memberId){
-        if(memberId != comment.getMemberId().getMemberId()){
+        if(memberId != comment.getMemberId()){
             throw new BusinessLogicException(ExceptionCode.NON_COMMENT_ACCESS);
         }
     }

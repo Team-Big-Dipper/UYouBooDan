@@ -2,6 +2,7 @@ package TeamBigDipper.UYouBooDan.comment.entity;
 
 import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,9 +15,13 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_id")
     private Long commendId;
 
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    private Member memberId;
+    @JoinColumn(name = "member_id", insertable = false, updatable = false)
+    private Member member;
+
+    @Column(name = "member_id")
+    private Long memberId;
 
     private Long topicId;
 
@@ -25,6 +30,10 @@ public class Comment extends BaseTimeEntity {
     private CommentStatus commentStatus;
 
     private int totalLike;
+
+    public Comment(Long memberId){
+        this.memberId = memberId;
+    }
 
     public enum CommentStatus {
         ACTIVE(0, "활성화"),

@@ -40,8 +40,8 @@ public class CommentController {
     public ResponseEntity<SingleResDto<CommentResDto>> postComment(@PathVariable(value = "topic-id") Long topicId,
                                                                    HttpServletRequest request,
                                                      @RequestBody CommentPostReqDto commentPostReqDto){
-        Member member = memberService.findMember(jwtExtractUtil.extractMemberIdFromJwt(request));
-        Comment comment = commentPostReqDto.toEntity(topicId, member);
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Comment comment = commentPostReqDto.toEntity(topicId, memberId);
         Comment createdComment = commentService.createComment(comment);
         CommentResDto response = new CommentResDto(createdComment);
 
