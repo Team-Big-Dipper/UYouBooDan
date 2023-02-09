@@ -34,6 +34,11 @@ public class TopicVoteItem extends BaseTimeEntity {
     @Transient
     private Boolean topicVoteItemVoted;       // 조회하는 사람이 투표했는지 여부
 
+    /**
+     * TopicVoteItem 객체 생성자
+     * @param topic 투표 게시글 Topic 객체
+     * @param topicVoteItemName 투표 항목이름 String 객체
+     */
     @Builder
     public TopicVoteItem(Topic topic, String topicVoteItemName) {
         this.topic = topic;
@@ -41,26 +46,47 @@ public class TopicVoteItem extends BaseTimeEntity {
         topicVotes = new ArrayList<>();
     }
 
+    /**
+     * 해당 투표 항목에 투표 추가
+     * @param topicVote 투표 TopicVote 객체
+     */
+
     public void voteTopicVoteItem(TopicVote topicVote) {
         topicVotes.add(topicVote);
     }
 
+    /**
+     * 투표 취소하기
+     * @param topicVote 투표 TopicVote객체
+     */
     public void cancelVote(TopicVote topicVote) {
+        // 투표 TopicVote객체 리스트 순회하면서
         for (int i = 0; i < topicVotes.size(); i++) {
             TopicVote current = topicVotes.get(i);
+            // 투표 항목에 되어있는 투표 TopicVote 의 id와 현재 투표 TopicVote id가 같으면
             if (current.getTopicVoteId().equals(topicVote.getTopicVoteId())) {
+                // 투표 TopicVote 객체 리스트에서 현재 TopicVote 객체 제거
                 topicVotes.remove(current);
             }
         }
     }
 
+    /**
+     * 사용자가 해당 투표 항목에 투표했는지 여부 확인
+     * @param memberId 사용자 id Long
+     * @return 투표했으면 true, 안했으면 false 반환
+     */
+
     public Boolean isTopicVoteItemVoted(Long memberId) {
+        // 투표 TopicVote 객체 리스트 순회하면서
         for (TopicVote topicVote : topicVotes) {
+            // 투표 TopicVote 객체의 Member id와 사용자의 id가 같으면
             if (topicVote.getMember().getMemberId().equals(memberId)) {
-                topicVoteItemVoted = true;
+                topicVoteItemVoted = true;      // 투표한 것으로 처리
                 return true;
             }
         }
+        // 리스트 다 순회하면 투표를 하지 않음
         topicVoteItemVoted = false;
         return false;
     }
