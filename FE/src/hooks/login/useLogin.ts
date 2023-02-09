@@ -7,7 +7,10 @@ const useLogin = () => {
     refresh: string,
     checked: boolean,
   ): void => {
-    console.log('accesstoken : ', LocalStorage.getItem('accesstoken'));
+    console.log(
+      'hooks -> checkedLogin -> LocalStorage.getItem(accesstoken) : ',
+      LocalStorage.getItem('accesstoken'),
+    );
     if (checked) {
       LocalStorage.setItem('accesstoken', access);
       LocalStorage.setItem('refreshtoken', refresh);

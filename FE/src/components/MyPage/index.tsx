@@ -62,7 +62,7 @@ const MyPage = () => {
             <img
               width={80}
               height={80}
-              src={`blob: ${photo}`}
+              src={photo}
               alt="Img"
               onError={handleErrorImg}
             />
