@@ -53,15 +53,15 @@ public class TopicResDto {
                     TopicVoteItemResDto topicVoteItemResDto = TopicVoteItemResDto.builder()
                             .topicVoteItemId(topicVoteItem.getTopicVoteItemId())
                             .topicVoteItemName(topicVoteItem.getTopicVoteItemName())
+                            .numberOfVotes(topicVoteItem.getTopicVotes().size())
+                            .isTopicVoteItemVoted(topicVoteItem.getTopicVoteItemVoted())
                             .build();
                     return topicVoteItemResDto;})
                 .forEach(topicVoteItemResDto -> topicVoteItems.add(topicVoteItemResDto));
 
         this.author = topic.getMember().getNickname().getName();    // 작성자 nickname
-
-        // TODO: 투표 게시글을 조회하는 사람이 작성자인지 투표했는지 여부
-//        this.isAuthor = topic.getIsAuthor();        // 조회하는 사람이 작성자인지 여부
-//        this.isVoted = topic.getIsVoted();          // 조회하는 사람이 투표했는지 여부
+        this.isAuthor = topic.getIsAuthor();        // 조회하는 사람이 작성자인지 여부
+        this.isVoted = topic.getIsVoted();          // 조회하는 사람이 투표했는지 여부
 
         // TODO: 투표 게시글의 조회수, 좋아요 수
         // views
