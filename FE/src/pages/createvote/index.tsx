@@ -30,8 +30,9 @@ export interface Inputs {
 }
 
 function createvote() {
-  const dispatch = useDispatch();
   const router = useRouter();
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  // const initialToken = localStorage.getItem("Authorization");
   const [sumbmitData, setSubmitData] = useState<Inputs>();
   const {
     register,
@@ -58,28 +59,43 @@ function createvote() {
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
     console.log('data : ', data);
     setSubmitData(data);
-  };
-  useEffect(() => {
     axios
-      .post('/api/topics', {
+      .post(`${api}/topics`, data, {
         headers: {
           'Access-Control-Allow-Origin': '*',
-          // 'ngrok-skip-browser-warning': 'any',
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          "Content-Type": "application/json",
-        },
+          'ngrok-skip-browser-warning': 'any',
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU3ODcxNDksImV4cCI6MTY3NTc4NzQ0OX0.jnQ1R6poDYziZYaw3u7c-dyASDiAdH4z_ION-c7dDLQ`
+        }
       })
       .then((res: AxiosResponse) => {
         console.log('요청 성공!', res);
+        console.log(res.data.data.topicId)
+        router.push(`/topics/${res.data.data.topicId}`)
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
       });
+  };
+  // useEffect(() => {
+  //   axios
+  //     .post(`${api}/topics`, {
+  //       headers: {
+  //         'Access-Control-Allow-Origin': '*',
+  //         'ngrok-skip-browser-warning': 'any',
+  //         Authorization: `${localStorage.getItem("Authorization")}`
+  //       }
+  //     })
+  //     .then((res: AxiosResponse) => {
+  //       console.log('요청 성공!', res);
+  //     })
+  //     .catch((err: AxiosError) => {
+  //       console.log('요청 실패!', err.message);
+  //     });
     // const response = await axios.post('http://localhost:3000/api/topics');
     // console.log(response)
     //   return response.data;
-    dispatch(createData(sumbmitData));
-  }, []);
+    // dispatch(createData(sumbmitData));
+  // }, []);
 
   //category
   const [categoryMsg, setCategoryMsg] = useState<string>('');

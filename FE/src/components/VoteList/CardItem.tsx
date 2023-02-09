@@ -6,45 +6,46 @@ import { CalcDday } from '../../utils/calculate';
 import { ChangDateFormat } from '../../utils/parseDate';
 
 interface propTypes {
-  data: {
-    id: number;
+  prop: {
     category: string;
-    content: string;
+    closedAt: string;
     createdAt: string;
-    username: string;
-    endDate: string;
+    nickName: string;
+    title: string;
+    topicId: number;
   };
 }
 
-const CardItem = ({ data }: propTypes) => {
+const CardItem = ({ prop }: propTypes) => {
   const router = useRouter();
-  const [Dday, setDday] = useState(0);
+  const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');
-  const handleLink = () => {
+  const handleLink = (e: any) => {
+    e.preventDefault();
     router.push({
       pathname: '/readvote',
-      query: { pid: data.id },
+      query: { pid: prop.topicId },
     });
   };
   useEffect(() => {
-    const result = CalcDday(data.createdAt, data.endDate);
+    const result = CalcDday(prop.closedAt);
     setDday(result);
-    const changedDate = ChangDateFormat(data.createdAt);
+    const changedDate = ChangDateFormat(prop.createdAt);
     setCreated(changedDate);
   }, []);
 
   return (
     <S.CardItem onClick={handleLink}>
       <div>
-        <S.CardCategory># {data.category}</S.CardCategory>
+        <S.CardCategory># {prop.category}</S.CardCategory>
         <S.CardContents>
-          <S.Content>{data.content}</S.Content>
-          <S.CardDDay>D-{Dday}</S.CardDDay>
+          <S.Content>{prop.title}</S.Content>
+          <S.CardDDay>{Dday.length === 0 ? '종료' : Dday}</S.CardDDay>
         </S.CardContents>
       </div>
       <S.ProfileContainer>
         <ProfileImage />
-        <S.UserName>{data.username} |</S.UserName>
+        <S.UserName>{prop.nickName} |</S.UserName>
         <S.Date>{created}</S.Date>
       </S.ProfileContainer>
     </S.CardItem>

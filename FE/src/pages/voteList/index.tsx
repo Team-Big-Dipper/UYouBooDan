@@ -2,44 +2,48 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from './sidebar';
 import ListPage from './listPage';
 import * as S from './style';
-import axios from 'axios';
+import { getVoteList } from '../../apis/votelist';
 
-interface props {
-  id: number;
+interface propData {
   category: string;
-  content: string;
+  closedAt: string;
   createdAt: string;
-  username: string;
-  endDate: string;
+  nickName: string;
+  title: string;
+  topicId: number;
 }
 
 const VoteList = () => {
-  const [data, setData] = useState<props[]>([]);
+  const [data, setData] = useState<propData[]>([]);
   const [condition, setCondition] = useState('all');
   const [page, setPage] = useState(1);
+  const [size, setSize] = useState(6);
   const [totalPage, setTotalPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    axios.get(`/api/topics/${condition}`).then((res) => {
-      try {
-        setData(res?.data[0].data);
-        setTotalPage(res?.data[0].totalPage);
-      } catch (e) {
-        console.log(e);
-      }
+    setIsLoading(true);
+    getVoteList(page, size, condition)?.then((res) => {
+      setData(res.data);
+      setTotalPage(res.pageInfo.totalPages);
+      setIsLoading(false);
     });
-  }, [condition]);
+  }, [condition, page]);
 
   return (
     <>
-      <S.PageContainer>
-        <Sidebar />
-        <ListPage
-          data={data}
-          totalPage={totalPage}
-          setCondition={setCondition}
-          setPage={setPage}
-        />
-      </S.PageContainer>
+      {isLoading ? (
+        <p>로딩중</p>
+      ) : (
+        <S.PageContainer>
+          <Sidebar condition={condition} setCondition={setCondition} />
+          <ListPage
+            data={data}
+            totalPage={totalPage}
+            setPage={setPage}
+            condition={condition}
+          />
+        </S.PageContainer>
+      )}
     </>
   );
 };

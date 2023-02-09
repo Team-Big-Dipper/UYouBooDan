@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Style from './daedlineStyle';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { DdayCal } from '../../utils/dDay';
 interface deadLineData {
   topicId: number,
   category: string;
@@ -11,11 +12,17 @@ interface deadLineData {
 }
 
 export const DeadLine = () => {
-
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const [deadlineDatas, setDeadlineDatas] = useState<deadLineData[]>([]);
+  ///api/topics?size=4&page=1&filter=imminent
   useEffect(()=>{
     axios
-      .get('/api/topics?size=4&page=1&filter=imminent')
+      .get(`${api}/topics?size=4&page=1&filter=progress`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+        }
+      })
       .then((res: AxiosResponse) => {
         console.log('deadLineList :', res.data.data);
         setDeadlineDatas(res.data.data);
@@ -33,7 +40,7 @@ export const DeadLine = () => {
                     <Style.DeadLineCard key={idx}>
                     <td>
                       <div>
-                        <Style.CardTitle>#{data.category}&nbsp;<span>D-3</span></Style.CardTitle>
+                        <Style.CardTitle>#{data.category}&nbsp;<span>D-{DdayCal(data.closedAt)}</span></Style.CardTitle>
                         <Style.CardContent>
                           {data.title}
                         </Style.CardContent>
@@ -46,61 +53,6 @@ export const DeadLine = () => {
                   </Style.DeadLineCard>
                   )
                 })}
-                  {/* <Style.DeadLineCard className='top'>
-                    <td>
-                      <div>
-                        <Style.CardTitle>#카테고리&nbsp;<span>D-3</span></Style.CardTitle>
-                        <Style.CardContent>
-                          Lorem ipsum dolor sit amet
-                        </Style.CardContent>
-                      </div>
-                      <Style.AuthorDay>
-                        작성자
-                      </Style.AuthorDay>
-                    </td>
-                  </Style.DeadLineCard>
-                  <Style.DeadLineCard className='second'>
-                    <td>
-                      <div>
-                        <Style.CardTitle>#카테고리&nbsp;<span>D-3</span></Style.CardTitle>
-                        <Style.CardContent>
-                          Lorem ipsum dolor sit amet
-                        </Style.CardContent>
-                      </div>
-                      <Style.AuthorDay>
-                        작성자
-                        <span>2023.01.16</span>
-                      </Style.AuthorDay>
-                    </td>
-                  </Style.DeadLineCard>
-                  <Style.DeadLineCard>
-                    <td>
-                      <div>
-                        <Style.CardTitle>
-                          #카테고리&nbsp;<span>D-3</span>
-                        </Style.CardTitle>
-                        <Style.CardContent>Lorem ipsum dolor sit amet</Style.CardContent>
-                      </div>
-                      <Style.AuthorDay>
-                        작성자
-                        <span>2023.01.16</span>
-                      </Style.AuthorDay>
-                    </td>
-                  </Style.DeadLineCard>
-                  <Style.DeadLineCard className='bottom'>
-                    <td>
-                      <div>
-                        <Style.CardTitle>#카테고리&nbsp;<span>D-3</span></Style.CardTitle>
-                        <Style.CardContent>
-                          Lorem ipsum dolor sit amet
-                        </Style.CardContent>
-                      </div>
-                      <Style.AuthorDay>
-                        작성자
-                        <span>2023.01.16</span>
-                      </Style.AuthorDay>
-                    </td>
-                  </Style.DeadLineCard> */}
               </tbody>
             </Style.DeadLineCards>
           </Style.DeadLineTable>

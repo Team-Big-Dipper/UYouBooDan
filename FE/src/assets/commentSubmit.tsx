@@ -1,4 +1,4 @@
-export const AnswerSubmit = () => {
+export const CommentSubmit = () => {
   return (
     <>
       <svg

@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { SingleTextVote } from './singleTextVote';
-import { SingleImageVote } from './singleImageVote';
 import ButtonModal from '../commons/buttonModal';
 import { CalcPercentage } from '../../utils/calculate';
 import { useSelector } from 'react-redux';
@@ -10,8 +9,6 @@ type propTypes = {
   count: number;
   selectedBtn: number[];
   handleSelectedBtn: React.Dispatch<React.SetStateAction<number[]>>;
-  duplicate: boolean | undefined;
-  voteType: string | undefined;
   id: number;
   totalCount: number;
   isTopicVoteItemVoted: boolean;
@@ -19,7 +16,6 @@ type propTypes = {
 export const SingleVoteContainer = ({
   content,
   count,
-  voteType,
   id,
   totalCount,
   isTopicVoteItemVoted,
@@ -30,10 +26,6 @@ export const SingleVoteContainer = ({
   const { isAuthor, isVoted, isClosed } = useSelector(
     (state: any) => state.currentVote,
   );
-  const imageMargin = useMemo(() => {
-    return { margin: '5px' };
-  }, []);
-
   useEffect(() => {
     setCalculated(CalcPercentage(count, totalCount));
   }, [totalCount]);
@@ -70,25 +62,14 @@ export const SingleVoteContainer = ({
         />
       )}
       <>
-        {voteType === 'text' ? (
-          <div onClick={handleModal}>
-            <SingleTextVote
-              id={id}
-              content={content}
-              count={calculated}
-              isTopicVoteItemVoted={isTopicVoteItemVoted}
-            />
-          </div>
-        ) : (
-          <div onClick={handleModal} style={imageMargin}>
-            <SingleImageVote
-              id={id}
-              content={content}
-              count={calculated}
-              isTopicVoteItemVoted={isTopicVoteItemVoted}
-            />
-          </div>
-        )}
+        <div onClick={handleModal}>
+          <SingleTextVote
+            id={id}
+            content={content}
+            count={calculated}
+            isTopicVoteItemVoted={isTopicVoteItemVoted}
+          />
+        </div>
       </>
     </>
   );
