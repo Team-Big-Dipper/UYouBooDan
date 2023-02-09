@@ -5,11 +5,9 @@ import TeamBigDipper.UYouBooDan.global.dto.SingleResDto;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
-import TeamBigDipper.UYouBooDan.topic.dto.TopicPageResDto;
-import TeamBigDipper.UYouBooDan.topic.dto.TopicPostReqDto;
-import TeamBigDipper.UYouBooDan.topic.dto.TopicPostResDto;
-import TeamBigDipper.UYouBooDan.topic.dto.TopicResDto;
+import TeamBigDipper.UYouBooDan.topic.dto.*;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
+import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
 import TeamBigDipper.UYouBooDan.topic.service.TopicService;
 import lombok.RequiredArgsConstructor;
@@ -94,5 +92,33 @@ public class TopicController {
 
         // Topic Page Response DTO, Page 정보, HTTP Status 반환
         return new ResponseEntity<>(new MultiResDto<>(topicPageResDtoList, topicPage), HttpStatus.OK);
+    }
+
+    /**
+     * 투표게시글에 투표하기
+     * @param topicId : 투표 게시글 ID
+     * @param topicVoteReqDto : 투표 Request DTO 객체
+     * @param request HttpServletRequest 객체 - 토큰 확인
+     * @return 투표 게시글의 투표 항목 DTO 리스트, HTTP Status
+     */
+    @PatchMapping("/{topic-id}/vote")
+    public ResponseEntity patchTopicVote(@PathVariable("topic-id") long topicId,
+                                         @RequestBody TopicVoteReqDto topicVoteReqDto,
+                                         HttpServletRequest request) {
+
+        // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Member member = memberService.findMember(memberId);
+
+        // TopicService에서 투표 게시글에 투표 메서드 진행하여 투표 게시글의 투표 항목 반환
+        List<TopicVoteItem> topicVoteItems = topicService.voteTopic(member, topicId, topicVoteReqDto.getTopicVoteItemId());
+
+        // 투표 항목 TopicVoteItem 리스트를 Dto 리스트로 변환
+        List<TopicVoteResDto> topicVoteResDtos = topicVoteItems.stream()
+                                        .map(TopicVoteResDto::new)
+                                        .collect(Collectors.toList());
+
+        // TopicVote Response DTO, HTTP Status 반환
+        return new ResponseEntity<>(new SingleResDto<>(topicVoteResDtos), HttpStatus.OK);
     }
 }
