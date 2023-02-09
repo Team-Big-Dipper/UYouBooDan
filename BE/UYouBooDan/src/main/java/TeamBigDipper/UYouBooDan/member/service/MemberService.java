@@ -163,11 +163,11 @@ public class MemberService {
 
     /**
      * 카카오 외부 로그인 전용 멤버 생성 및 검증 메소드
-     * @param kakaoProfile
+     * @param kakaoProfile, kakaoAccessToken
      * @return member
      */
     @Transactional
-    public Member createKakaoMember (KakaoProfileVo kakaoProfile, String accessToken) {
+    public Member createKakaoMember (KakaoProfileVo kakaoProfile, String kakaoAccessToken) {
         // 중복 가입 방지 로직 추가
         Optional<Member> optMember;
         if(kakaoProfile.getKakao_account().getEmail()==null) optMember = memberRepository.findByEmail(kakaoProfile.getId().toString()+"@uyouboodan.com");
@@ -179,7 +179,7 @@ public class MemberService {
                     .nickname(new Name("Mock"+ kakaoProfile.getId()))
                     .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수 default값 설정해둠
                     .oauthId(kakaoProfile.getId())
-                    .oauthAccessToken(accessToken)
+                    .oauthAccessToken(kakaoAccessToken)
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();
             if (kakaoProfile.getKakao_account().getEmail()==null) member.modifyEmail(kakaoProfile.getId().toString()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
@@ -192,19 +192,20 @@ public class MemberService {
             return memberRepository.save(member);
         }
         else {
+            // 기존 회원으로 가입되어 있을 경우, 저장된 AccessToken 을 최신화 해줌 (로그아웃을 위함)
             Member member = optMember.get();
-            member.modifyOauthToken(accessToken);
+            member.modifyOauthToken(kakaoAccessToken);
             return memberRepository.save(member);
         }
     }
 
     /**
      * 구글 외부 로그인 전용 멤버 생성 및 검증 메소드
-     * @param googleProfile
+     * @param googleProfile, googleAccessToken
      * @return member
      */
     @Transactional
-    public Member createGoogleMember (GoogleLoginDto googleProfile, String accessToken) {
+    public Member createGoogleMember (GoogleLoginDto googleProfile, String googleAccessToken) {
         // 중복 가입 방지 로직 추가
         Optional<Member> optMember;
         if(googleProfile.getEmail()==null) optMember = memberRepository.findByEmail(googleProfile.getSub()+"@uyouboodan.com");
@@ -214,7 +215,7 @@ public class MemberService {
             Member member = Member.builder()
                     .nickname(new Name("Mock"+ googleProfile.getName()+googleProfile.getFamilyName()))
                     .password(passwordEncoder.encode(getInitialKey()))
-                    .oauthAccessToken(accessToken)
+                    .oauthAccessToken(googleAccessToken)
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();
 
@@ -231,6 +232,5 @@ public class MemberService {
         }
         else return optMember.get();
     }
-
 
 }
