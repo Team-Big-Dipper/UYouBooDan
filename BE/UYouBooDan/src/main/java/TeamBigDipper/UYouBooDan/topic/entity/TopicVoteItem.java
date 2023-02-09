@@ -86,7 +86,7 @@ public class TopicVoteItem extends BaseTimeEntity {
                 return true;
             }
         }
-        // 리스트 다 순회하면 투표를 하지 않음
+        // 리스트 다 순회하면 사용자는 투표를 하지 않음
         topicVoteItemVoted = false;
         return false;
     }
