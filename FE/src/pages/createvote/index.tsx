@@ -11,6 +11,8 @@ import { TabPanel, useTabs } from 'react-headless-tabs';
 import { TabSelector } from '../../components/CreateVote/TabSelector';
 import { createData } from '../../redux/slices/createVoteSlice';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import LocalStorage from '../../constants/localstorage';
+import SessionStorage from '../../constants/sessionstorage';
 
 //datepicker
 
@@ -55,6 +57,7 @@ function createvote() {
       console.log();
     }
   };
+  console.log(LocalStorage, SessionStorage);
   //submit
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
     console.log('data : ', data);
@@ -64,7 +67,7 @@ function createvote() {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU3ODcxNDksImV4cCI6MTY3NTc4NzQ0OX0.jnQ1R6poDYziZYaw3u7c-dyASDiAdH4z_ION-c7dDLQ`
+          'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU4NjAxODIsImV4cCI6MTY3NTg2MDQ4Mn0.z6UCStZ5TYufsgLl4twRC8q7zxoLNanvjPDm3E5CJh4`
         }
       })
       .then((res: AxiosResponse) => {
