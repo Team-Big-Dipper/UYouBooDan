@@ -4,16 +4,19 @@ import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 
 import { MakeVote } from '../../assets/makeVote';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import MyProfile from './MyProfile';
 
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
-  // const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
+  const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
   const [profile, setProfile] = useState<string>('');
   const [photo, setPhoto] = useState<string>('');
+  const [editClick, setEditClick] = useState<boolean>(false);
   // 기본 값 내가 쓴 게시글
   const [selectCategory, setSelectCategory] =
     useState<string>('내가 쓴 게시글');
@@ -23,6 +26,10 @@ const MyPage = () => {
     LocalStorage.removeItem('refreshtoken');
     SessionStorage.removeItem('accesstoken');
     router.push('/main', '/main');
+  };
+
+  const handleErrorImg = (e: any) => {
+    e.target.src = defaultImg;
   };
 
   useEffect(() => {
@@ -52,9 +59,21 @@ const MyPage = () => {
         </S.SideBarRouteText>
         <S.SibeBarCategotyDiv>
           <S.SideBarUserInfoDiv>
-            <img src={photo} />
+            <img
+              width={80}
+              height={80}
+              src={`blob: ${photo}`}
+              alt="Img"
+              onError={handleErrorImg}
+            />
             <S.UserNickDiv>#{profile}</S.UserNickDiv>
-            <S.EditBtnDiv>개인정보수정</S.EditBtnDiv>
+            <S.EditBtnDiv
+              onClick={() => {
+                setEditClick(true);
+              }}
+            >
+              개인정보수정
+            </S.EditBtnDiv>
             <S.CreateVoteBtnDiv href="/createvote">
               <MakeVote />
             </S.CreateVoteBtnDiv>
@@ -65,6 +84,7 @@ const MyPage = () => {
             <S.CategoryListDiv>
               <div
                 onClick={() => {
+                  setEditClick(false);
                   setSelectCategory('내가 쓴 게시글');
                   axios
                     .get(`${api}/member-info/topics?page=1&size=10`, {
@@ -86,6 +106,7 @@ const MyPage = () => {
               </div>
               <div
                 onClick={() => {
+                  setEditClick(false);
                   setSelectCategory('내가 쓴 댓글');
                 }}
               >
@@ -93,6 +114,7 @@ const MyPage = () => {
               </div>
               <div
                 onClick={() => {
+                  setEditClick(false);
                   setSelectCategory('나의 선택');
                 }}
               >
@@ -104,14 +126,28 @@ const MyPage = () => {
             <S.CategoryTitle>정보관리</S.CategoryTitle>
             <S.UnderlineDiv></S.UnderlineDiv>
             <S.CategoryListDiv>
-              <div>회원탈퇴</div>
-              <div onClick={logoutHandler}>로그아웃</div>
+              <div
+                onClick={() => {
+                  setEditClick(false);
+                }}
+              >
+                회원탈퇴
+              </div>
+              <div
+                onClick={() => {
+                  logoutHandler();
+                  setEditClick(false);
+                }}
+              >
+                로그아웃
+              </div>
             </S.CategoryListDiv>
           </S.CategoryDiv>
         </S.SibeBarCategotyDiv>
       </S.SideBarContainer>
       <S.MyPageRightContainer>
-        <MyPageHeader category={selectCategory} />
+        {editClick ? <MyProfile /> : <MyPageHeader category={selectCategory} />}
+        {/* <MyPageHeader category={selectCategory} /> */}
       </S.MyPageRightContainer>
     </S.MyPageContainer>
   );
