@@ -1,18 +1,16 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 
+interface PropsType {
+  isClosed: boolean;
+}
+
 export const PageContainer = styled.div`
   display: flex;
   padding: 5% 20% 0 20%;
   flex-direction: column;
-  @media (max-width: 479px) {
-    padding: 20px;
-  }
 `;
 
-interface PropsType {
-  isClosed: boolean;
-}
 export const TotalVoteCount = styled.div<PropsType>`
   margin: ${(props) => (props.isClosed ? '35px 0 10px 0' : '10px 0 0 0')};
   text-align: center;

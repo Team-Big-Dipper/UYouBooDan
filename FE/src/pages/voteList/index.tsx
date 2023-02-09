@@ -4,30 +4,27 @@ import ListPage from './listPage';
 import * as S from './style';
 import { getVoteList } from '../../apis/votelist';
 
-interface props {
-  data: {
-    category: string;
-    closedAt: string;
-    createdAt: string;
-    nickName: string;
-    title: string;
-    topicId: number;
-  };
-  id: number;
-  pageInfo: any;
+interface propData {
+  category: string;
+  closedAt: string;
+  createdAt: string;
+  nickName: string;
+  title: string;
+  topicId: number;
 }
 
 const VoteList = () => {
-  const [data, setData] = useState<props[]>([]);
+  const [data, setData] = useState<propData[]>([]);
   const [condition, setCondition] = useState('all');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(6);
   const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
-    console.log('api call');
+    console.log('votelist');
     getVoteList(page, size, condition)?.then((res) => {
       setData(res.data);
       setTotalPage(res.pageInfo.totalPages);
+      //console.log(res);
     });
   }, [condition, page]);
 

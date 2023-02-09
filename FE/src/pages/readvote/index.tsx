@@ -48,18 +48,21 @@ const ReadVote = () => {
   const [data, setData] = useState<stateType>();
   const [voteBtns, setVoteBtns] = useState<voteType[]>();
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(1);
+  const [totalCount, setTotalCount] = useState<number>(20);
 
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
-
   //api요청
+  console.log('pageid', pid);
   useEffect(() => {
-    if (!pid) return;
-    getReadVote(Number(pid))?.then((res) => {
-      console.log(res, 'pid', pid);
-      setData(res.data);
+    console.log('pageid', pid);
+    if (!pid) {
+      return;
+    }
+    getReadVote(pid)?.then((res) => {
+      console.log(res.data);
+      setData({ ...res.data });
       setVoteBtns([...res.data.topicVoteItems]);
       setTotalCount(CalcTotal(res.data.topicVoteItems));
       dispatch(
@@ -74,7 +77,6 @@ const ReadVote = () => {
   }, [pid]);
   // redux
   const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
-  console.log(isClosed, isAuthor);
   const displayStyle = useMemo((): object => {
     if (data) {
       return {
@@ -110,7 +112,7 @@ const ReadVote = () => {
         )}
 
         <div style={displayStyle}>
-          {voteBtns?.map((el, idx) => {
+          {voteBtns?.map((el) => {
             return (
               <SingleVoteContainer
                 key={el.topicVoteItemId}
@@ -130,7 +132,7 @@ const ReadVote = () => {
         </S.TotalVoteCount>
         <VoteBtn />
       </S.VoteContentLayout>
-      <CommentList id={pid} />
+      <CommentList topicId={pid} />
     </S.PageContainer>
   );
 };

@@ -3,18 +3,15 @@ import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
 import CardItem from '../../components/VoteList/CardItem';
 import { conditions } from '../../constants/conditions';
+import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
 
 interface props {
-  data: {
-    category: string;
-    closedAt: string;
-    createdAt: string;
-    nickName: string;
-    title: string;
-    topicId: number;
-  };
-  id: number;
-  pageInfo: any;
+  category: string;
+  closedAt: string;
+  createdAt: string;
+  nickName: string;
+  title: string;
+  topicId: number;
 }
 interface propsArray {
   data: props[];
@@ -28,6 +25,7 @@ const ListPage = ({ data, totalPage, setPage, condition }: propsArray) => {
   const handlePage = (e: any) => {
     setPage(e.target.textContent);
   };
+  console.log(data);
   return (
     <S.VoteList>
       <S.PageHeader>
@@ -42,14 +40,16 @@ const ListPage = ({ data, totalPage, setPage, condition }: propsArray) => {
         </S.PageLink>
       </S.PageHeader>
       {data?.map((el) => {
-        return <CardItem key={el.id} prop={el.data} />;
+        return <CardItem key={el.topicId} prop={el} />;
       })}
       <S.pageNum>
+        <LeftPageButton />
         {page.map((el) => (
           <S.pageNumFont onClick={handlePage} key={el}>
             {el}
           </S.pageNumFont>
         ))}
+        <RightPageButton />
       </S.pageNum>
     </S.VoteList>
   );

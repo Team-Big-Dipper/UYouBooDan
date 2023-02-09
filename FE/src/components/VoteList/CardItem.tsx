@@ -18,16 +18,17 @@ interface propTypes {
 
 const CardItem = ({ prop }: propTypes) => {
   const router = useRouter();
-  const [Dday, setDday] = useState<number | string>(0);
+  const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');
-  const handleLink = () => {
+  const handleLink = (e: any) => {
+    e.preventDefault();
     router.push({
-      pathname: `/readvote/${prop.topicId}`,
-      // query: { pid: prop.topicId },
+      pathname: '/readvote',
+      query: { pid: prop.topicId },
     });
   };
   useEffect(() => {
-    const result = CalcDday(prop.createdAt, prop.closedAt);
+    const result = CalcDday(prop.closedAt);
     setDday(result);
     const changedDate = ChangDateFormat(prop.createdAt);
     setCreated(changedDate);
@@ -39,7 +40,7 @@ const CardItem = ({ prop }: propTypes) => {
         <S.CardCategory># {prop.category}</S.CardCategory>
         <S.CardContents>
           <S.Content>{prop.title}</S.Content>
-          <S.CardDDay>D{Dday}</S.CardDDay>
+          <S.CardDDay>{Dday.length === 0 ? '종료' : Dday}</S.CardDDay>
         </S.CardContents>
       </div>
       <S.ProfileContainer>
