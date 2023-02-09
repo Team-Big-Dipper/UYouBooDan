@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
 import java.util.Map;
 
 
@@ -62,6 +65,21 @@ public class JwtExtractUtil {
 
 
     /**
+     * Authorization이 헤더에 존재하는지 검증하는 메소드
+     * 헤더에 Authorization이라는 키값 자체가 없거나, Authorization에 value가 없을 경우 false 반환 (비로그인 상태)
+     * 헤더에 Authorization의 밸류값이 존재하면, true 반환 (로그인 상태)
+     * @param request HttpServletRequest
+     * @return T | F 검증 : 로그인한 유저와 비로그인 상태의 조건을 주기위해 DI할 메소드
+     */
+    public Boolean isLoginUser(HttpServletRequest request) {
+        try{
+            if(request.getHeader("Authorization")!=null) return true;
+            else return false;
+        } catch (Exception e) { return false; }
+    }
+
+
+    /**
      * extractMemberIdFromJwt 내 로직에서 사용
      * 만약 Claims 안에 담겨있는 Id의 키값이 memberId가 아닌 경우. 즉, member테이블이 아닌 다른 테이블에 존재하는 객체를 조회하길 원하는 경우에 적용
      * @param claims
@@ -91,5 +109,6 @@ public class JwtExtractUtil {
         }
         catch (Exception e) { throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED); }
     }
+
 }
 
