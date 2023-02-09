@@ -5,6 +5,9 @@ interface ImageUrl {
 interface isVoted {
   isChangedComponent: boolean;
 }
+interface Rewrite {
+  rewrite: boolean;
+}
 
 export const VoteTitleOutLine = styled.div`
   margin-top: 5%;
@@ -92,7 +95,7 @@ export const LikeButton = styled.div`
   align-items: flex-start;
 `;
 export const CategoryIcon = styled.div`
-  border-radius: 10px;
+  border-radius: 15px;
   width: 5rem;
   height: 1.4rem;
   background: ${(props) => props.color};
@@ -100,10 +103,12 @@ export const CategoryIcon = styled.div`
   padding: 4px;
   color: white;
   margin-right: 3px;
+  font-size: 0.9rem;
 `;
 export const DdayIcon = styled.div`
-  border-radius: 10px;
-  width: 4rem;
+  font-size: 0.9rem;
+  border-radius: 15px;
+  width: 5rem;
   height: 1.4rem;
   background: #4285f4;
   padding: 4px;
@@ -112,13 +117,18 @@ export const DdayIcon = styled.div`
 `;
 export const VoteContent = styled.div`
   width: 100%;
-  padding: 2rem 1rem;
+  font-size: 1rem;
+  padding: 30px;
   line-height: 2rem;
+  color: #667085;
   background-color: #fafafa;
+  margin-bottom: 30px;
   @media (max-width: 479px) {
     padding: 15px 10px;
     background-color: #fafafa;
     border-radius: 10px;
+    margin-bottom: 0px;
+    font-size: 0.9rem;
   }
 `;
 export const VoteContentContainer = styled.div`
@@ -150,28 +160,25 @@ export const AddedImage = styled.div<ImageUrl>`
     height: 165px;
   }
 `;
-
 export const SelectTextSingle = styled.button<isVoted>`
   width: 100%;
-  border-style: solid;
-  border-width: 1px;
+  border: 1px solid #e2e6ee;
+  font-weight: bold;
   font-size: 1rem;
   border-radius: 10px;
-  padding: 1rem;
+  padding: 20px;
   text-align: center;
   margin-bottom: 0.5rem;
   background-color: ${(props) =>
     props.isChangedComponent ? '#4285f4' : 'white'};
   color: ${(props) => (props.isChangedComponent ? 'white' : 'black')};
 `;
-
 export const ReadVoteBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 10px;
 `;
-
 export const ReadVoteBtn = styled.div`
   border-color: ${(props) => (props.color ? props.color : 'gray')};
   border-width: 1px;
@@ -189,7 +196,6 @@ export const ReadVoteBtn = styled.div`
     margin: 20px 5px 35px 5px;
   }
 `;
-
 export const SingleImgItem = styled.img`
   position: absolute;
   top: 0;
@@ -202,7 +208,6 @@ export const SingleImgItem = styled.img`
   border-radius: 10px;
   z-index: 1;
 `;
-
 export const SingleImageContainer = styled.button<isVoted>`
   width: 270px;
   height: 270px;
@@ -220,7 +225,6 @@ export const SingleImageContainer = styled.button<isVoted>`
     min-height: 165px;
   }
 `;
-
 export const ImageVoteCount = styled.div`
   position: absolute;
   top: 10%;
@@ -237,12 +241,18 @@ export const ImageVoteCount = styled.div`
     font-size: 0.8rem;
   }
 `;
-
 export const CommentListContainer = styled.div`
   padding-top: 10px;
   background-color: #fafafa;
 `;
-
+export const CommentListCondition = styled.div`
+  background-color: white;
+  padding: 15px 0 10px 0;
+  font-size: 0.9rem;
+`;
+export const DeletedContent = styled.div`
+  color: #667085;
+`;
 export const CommentCard = styled.div`
   border-bottom: 1px solid #e2e6ee;
   display: flex;
@@ -250,13 +260,15 @@ export const CommentCard = styled.div`
   padding: 1.5rem;
   background-color: white;
 `;
-export const CommentInputContainer = styled.form`
-  border-top: 1px solid lightgray;
-  padding: 18px;
+export const CommentInputContainer = styled.form<Rewrite>`
+  border-top: ${(props) => (props.rewrite ? null : '1px solid lightgray')};
+  padding: ${(props) => (props.rewrite ? '0px' : '18px')};
   display: flex;
-  align-items: center;
-  margin: 2px 0;
-  background-color: #f6f9fe;
+  align-items: ${(props) => (props.rewrite ? 'flex-end' : 'center')};
+  margin: ${(props) => (props.rewrite ? '10px 0' : '2px 0')};
+  background-color: ${(props) => (props.rewrite ? null : ' #f6f9fe')};
+  width: 100%;
+  height: fit-content;
 `;
 export const CommentHeader = styled.p`
   padding: 30px 0 10px 10px;
@@ -269,9 +281,10 @@ export const CommentInput = styled.input`
   height: 6.5vh;
   border-radius: 8px;
   border: 1px solid lightgray;
-  margin: 0 1% 0 0;
-  padding: 0.3rem;
+  margin: 0 5px 5px 0;
+  padding: 10px;
   font-size: 1rem;
+  width: 100%;
   &:focus {
     outline: none;
   }
@@ -281,11 +294,20 @@ export const CommentCardTop = styled.div`
   justify-content: space-between;
 `;
 export const CommentUserName = styled.div`
-  font-size: 1rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 90px;
+  width: fit-content;
+  min-width: 50px;
+  margin-left: 10px;
+  font-weight: bold;
+  @media (max-width: 767px) {
+    margin-left: 5px;
+  }
+`;
+export const UserDataDiv = styled.div`
+  display: flex;
+  align-items: center;
 `;
 export const CommentLike = styled.div`
   color: #667085;
@@ -294,9 +316,13 @@ export const CommentLike = styled.div`
   align-items: center;
 `;
 export const CommentContent = styled.div`
-  padding: 1rem 0;
+  padding: 10px 5px;
+  color: #242424;
   font-size: 1rem;
   line-height: 150%;
+  @media (max-width: 479px) {
+    font-size: 0.9rem;
+  }
 `;
 export const CommentCardBottomContainer = styled.div`
   display: flex;
@@ -305,24 +331,35 @@ export const CommentCardBottomContainer = styled.div`
   cursor: default;
 `;
 export const CommentCreatedAt = styled.div`
-  font-size: 0.9rem;
-  margin: 0 0.5rem;
+  font-size: 0.8rem;
+  margin: 0 5px;
 `;
 export const CommentButtons = styled.div`
-  font-size: 0.9rem;
-  margin: 0 0.5rem;
+  font-size: 0.8rem;
+  margin: 0 5px;
   cursor: default;
 `;
 
 export const CommentPageBtns = styled.div`
-  padding: 3rem 1rem;
-  font-size: 1rem;
+  padding: 30px 10px;
+  font-size: 0.9rem;
   display: flex;
   justify-content: center;
   background-color: white;
+  align-items: center;
+
+  @media (min-width: 480px) and (max-width: 767px) {
+  }
+  @media (max-width: 479px) {
+    font-size: 0.6rem;
+  }
 `;
 
-export const CommentPage = styled.div`
-  margin: 0 1rem;
+export const CommentPageNum = styled.div`
+  font-size: 1rem;
+  margin: 0 10px;
   cursor: default;
+  @media (max-width: 479px) {
+    font-size: 0.9rem;
+  }
 `;

@@ -5,11 +5,26 @@ export const pageNum = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 100px;
+  margin-bottom: 200px;
+
+  @media (min-width: 480px) and (max-width: 767px) {
+    margin-top: 80px;
+    margin-bottom: 120px;
+  }
+  @media (max-width: 479px) {
+    margin-top: 50px;
+    margin-bottom: 80px;
+    font-size: 0.6rem;
+  }
 `;
 export const pageNumFont = styled.p`
-  font-size: 1.3rem;
-  margin-right: 1rem;
+  font-size: 1rem;
+  margin: 0 10px;
   cursor: default;
+  @media (max-width: 479px) {
+    font-size: 0.9rem;
+  }
 `;
 export const VoteList = styled.div`
   display: flex;
@@ -84,6 +99,7 @@ export const PageHeader = styled.div`
     margin-bottom: 70px;
   }
   @media (max-width: 479px) {
+    padding-top: 50px;
     height: 190px;
     flex-direction: column;
     margin-bottom: 50px;

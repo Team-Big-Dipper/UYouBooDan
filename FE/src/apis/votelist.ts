@@ -4,24 +4,25 @@ import voteInstance from './voteInstance';
 export const getVoteList = (
   pageNm: number = 1,
   size: number = 6,
-  condition = 'topics',
+  condition = 'all',
 ) => {
   try {
-    if (condition === 'all') {
-      condition = 'topics';
+    let query = '';
+    if (condition !== 'all') {
+      query = `page=${pageNm}&size=${size}&filter=${condition}`;
+    } else {
+      query = `page=${pageNm}&size=${size}`;
     }
     const result = voteInstance
-      .get(`/${condition}?_page=${pageNm}&_limit=${size}`)
+      .get(`/topics?${query}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+        },
+      })
       .then((res) => {
-        return {
-          data: res.data,
-          pageInfo: {
-            page: 1,
-            size: 10,
-            totalElements: 6,
-            totalPages: 3,
-          },
-        };
+        console.log('api call');
+        return res.data;
       });
     return result;
   } catch (error) {
@@ -32,86 +33,21 @@ export const getVoteList = (
     return;
   }
 };
-// export const getTotalList = (pageNm: number = 1, size: number = 6) => {
-//   try {
-//     const result = voteInstance
-//       .get(`/topics?_page=${pageNm}&_limit=${size}`)
-//       .then((res) => {
-//         return {
-//           data: res.data,
-//           pageInfo: {
-//             page: 1,
-//             size: 10,
-//             totalElements: 6,
-//             totalPages: 3,
-//           },
-//         };
-//       });
-//     return result;
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
-//     }
-//     return;
-//   }
-// };
 
-// export const getProgressList = (pageNm: number = 1, size: number = 6) => {
+// json-server용
+// export const getVoteList = (
+//   pageNm: number = 1,
+//   size: number = 6,
+//   condition = 'topics',
+// ) => {
 //   try {
-//     const result = voteInstance
-//       .get(`/progress?_page=${pageNm}&_limit=${size}`)
-//       .then((res) => {
-//         return {
-//           data: res.data,
-//           pageInfo: {
-//             page: 1,
-//             size: 10,
-//             totalElements: 6,
-//             totalPages: 2,
-//           },
-//         };
-//       });
-//     return result;
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
+//     if (condition === 'all') {
+//       condition = 'topics';
 //     }
-//     return;
-//   }
-// };
-
-// export const getClosedList = (pageNm: number = 1, size: number = 6) => {
-//   try {
 //     const result = voteInstance
-//       .get(`/closed?_page=${pageNm}&_limit=${size}`)
+//       .get(`/${condition}?_page=${pageNm}&_limit=${size}`)
 //       .then((res) => {
-//         return {
-//           data: res.data,
-//           pageInfo: {
-//             page: 1,
-//             size: 10,
-//             totalElements: 6,
-//             totalPages: 1,
-//           },
-//         };
-//       });
-//     return result;
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
-//     }
-//     return;
-//   }
-// };
-
-// export const getImminentList = (pageNm: number = 1, size: number = 6) => {
-//   try {
-//     const result = voteInstance
-//       .get(`/imminent?_page=${pageNm}&_limit=${size}`)
-//       .then((res) => {
+//         console.log('api call');
 //         return {
 //           data: res.data,
 //           pageInfo: {

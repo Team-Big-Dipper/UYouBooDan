@@ -6,14 +6,14 @@ export const CardItem = styled.div`
   display: flex;
   flex-direction: column;
   height: 150px;
-  padding: 3%;
-  margin-bottom: 3%;
+  padding: 20px;
+  margin-bottom: 15px;
   justify-content: space-between;
 `;
 
 export const CardCategory = styled.div`
   font-size: 0.8rem;
-  margin-bottom: 2%;
+  margin-bottom: 15px;
   color: #667085;
 `;
 
