@@ -3,7 +3,7 @@ package TeamBigDipper.UYouBooDan.global.oauth2.kakao;
 import lombok.Data;
 
 @Data
-public class KakaoProfile {
+public class KakaoProfileVo {
     private Long id;
     private String connected_at;
     private Properties properties;
