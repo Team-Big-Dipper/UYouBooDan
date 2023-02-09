@@ -52,13 +52,11 @@ const CommentList = ({ topicId }: any) => {
       );
       setCommentPageBtn(page);
       setTotalPages(res.pageInfo.totalPages);
-      console.log('댓글 리스트 api');
       setData([...res.data]);
       setBestComment({ ...res.best[0] });
       setTotalComments(res.pageInfo.totalElements);
       setIsLoading(false);
     });
-    console.log('삭제된아이디');
   }, [pageNum, pageSize, topicId]);
 
   return (

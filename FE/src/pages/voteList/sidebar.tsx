@@ -10,7 +10,6 @@ interface propTypes {
 
 const Sidebar = ({ condition, setCondition }: propTypes) => {
   const handleApiCondition = (e: any) => {
-    console.log(e.target.id);
     setCondition(e.target.id);
   };
   return (

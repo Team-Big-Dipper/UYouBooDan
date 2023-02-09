@@ -22,7 +22,6 @@ const VoteList = () => {
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setIsLoading(true);
-    console.log('votelist');
     getVoteList(page, size, condition)?.then((res) => {
       setData(res.data);
       setTotalPage(res.pageInfo.totalPages);

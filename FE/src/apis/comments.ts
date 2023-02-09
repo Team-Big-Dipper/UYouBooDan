@@ -16,7 +16,7 @@ export const getComments = async (
         },
       })
       .then((res) => {
-        console.log('calling comment');
+        console.log('get comment');
         return res.data;
       });
     return { ...data };
@@ -129,7 +129,7 @@ export const postCommentLike = async (commendId: number | undefined) => {
     if (commendId === 0) {
       return;
     } else {
-      console.log('like comment');
+      console.log('post like comment');
       const result = voteInstance.post(
         `/topics/comments/${commendId}/like`,
         {},
@@ -149,83 +149,3 @@ export const postCommentLike = async (commendId: number | undefined) => {
     return;
   }
 };
-
-//json-server용
-
-// export const getComments = async (
-//   pageNm: number = 1,
-//   size: number = 6,
-//   topicId: number = 1,
-// ) => {
-//   try {
-//     const pageInfo = {
-//       pageInfo: {
-//         page: 1,
-//         size: 6,
-//         totalElements: 12,
-//         totalPages: 2,
-//       },
-//     };
-//     const data = await voteInstance
-//       .get(`/comments?_page=${pageNm}&_limit=${size}`) //topicId 추가할 것
-//       .then((res) => {
-//         console.log('calling comment');
-//         return { data: res.data };
-//       });
-//     const best = await voteInstance.get(`/comment`).then((res) => {
-//       console.log('calling best');
-//       return { ...res };
-//     });
-//     return { ...best['data'], ...data, ...pageInfo };
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
-//     }
-//     return;
-//   }
-// };
-
-// export const postComment = async (
-//   comment: string = '',
-//   topicId: number = 1,
-// ) => {
-//   try {
-//     const result = await voteInstance
-//       .post('/comments', {
-//         //topicId 추가할 것
-//         data: {
-//           createdAt: new Date(),
-//           modifiedAt: new Date(),
-//           commendId: 17,
-//           memberId: 1,
-//           commentContent: comment,
-//           commentStatus: 'ACTIVE',
-//           totalLike: 0,
-//         },
-//       })
-//       .then((res) => {
-//         return res.data;
-//       });
-//     return result;
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
-//     }
-//     return;
-//   }
-// };
-
-// export const deleteComment = async (commendId: number) => {
-//   try {
-//     const result = await voteInstance.delete(`/comments/${commendId}`); //topicId 추가할 것
-//     return;
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
-//     }
-//     return;
-//   }
-// };
