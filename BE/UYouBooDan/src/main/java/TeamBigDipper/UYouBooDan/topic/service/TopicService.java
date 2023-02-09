@@ -42,9 +42,15 @@ public class TopicService {
      * @param topicId 투표 게시글 topic id
      * @return 투표게시글 Topic 객체
      */
-    public Topic findTopic(long topicId) {
-        // 유효한 투표 게시글 Topic 조회해서 반환
-        return findVerifiedTopic(topicId);
+    public Topic findTopic(long topicId, Long memberId) {
+
+        Topic verifiedTopic = findVerifiedTopic(topicId);   // 유효한 투표 게시글 Topic 조회
+
+        verifiedTopic.findTopicIsVoted(memberId);        // 투표 게시글의 투표 항목에 대해 사용자가 투표했는지 확인
+
+        verifiedTopic.findIsAuthor(memberId);           // 조회하는 사람이 투표 게시글 작성자인지 확인
+
+        return verifiedTopic;       // 투표 게시글 Topic 객체 반환
     }
 
     /**
