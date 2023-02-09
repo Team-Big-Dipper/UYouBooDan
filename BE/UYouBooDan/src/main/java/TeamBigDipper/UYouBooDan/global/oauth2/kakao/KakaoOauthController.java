@@ -1,5 +1,7 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.kakao;
 
+import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
+import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
@@ -131,28 +133,37 @@ public class KakaoOauthController {
     /**
      * Input Parameter가 AccessToken일 경우 : 해당 토큰에 한해서 로그아웃 (특정 기기만 로그아웃)
      * Input Parameter가 Admin key일 경우 : 해당사용자의 모든 토큰 만료처리 (모든 기기 로그아웃)
-     * @return
+     * @param request 로그인 한 유저를 찾기 위함
+     * @return 성공시 Success Logout | 실패시 예외 처리
      */
+    @GetMapping("/logout")
     public ResponseEntity<?> kakaoLogout (HttpServletRequest request) {
 
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
-        // 카카오 user id를 찾는 메서드 service에 만들기
+        Member loginMember = memberService.findMember(memberId);
 
-        RestTemplate resttemplate = new RestTemplate();
-        HttpHeaders userHttpHeaders = new HttpHeaders();
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, userHttpHeaders);
+        RestTemplate restTemplate = new RestTemplate(); // Http 요청을 보내기 위한 템플릿 클래스
+        HttpHeaders userHttpHeaders = new HttpHeaders(); // Http 요청을 위한 Headers
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(); // Http 요청을 위한 parameters를 설정해주기 위한 클래스
+        HttpEntity<MultiValueMap<String, String>> kakaoLogoutRequest = new HttpEntity<>(params, userHttpHeaders); // http 요청을 위한 엔티티 클래스 (Header와 Parans를 담아줌)
 
-        userHttpHeaders.set("Authorization", "KakaoAk " + getKakaoAppKey());
-//        params.add("target_id_type", user_Id 타입);
-//        params.add("target_id", user_Id);
+        userHttpHeaders.add("Authorization", "Bearer " + loginMember.getOauthAccessToken());  // "KakaoAk " + getKakaoAppKey());
+        userHttpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        params.add("target_id_type", "user_id");
+        params.add("target_id", loginMember.getOauthId().toString());
 
-        ResponseEntity<Long> LogoutResponse = resttemplate.exchange(
-                "https://kapi.kakao.com/v1/user/logout",
-                HttpMethod.POST,
-                kakaoTokenRequest,
-                Long.class
-        );
+        try {
+            ResponseEntity<String> LogoutResponse = restTemplate.exchange(
+                    "https://kapi.kakao.com/v1/user/logout",
+                    HttpMethod.POST,
+                    kakaoLogoutRequest,
+                    String.class
+            );
+            System.out.println(LogoutResponse);
+
+            // 자체 서비스 로그아웃 로직 추가하기
+
+        } catch (Exception e) { throw new BusinessLogicException(ExceptionCode.NOT_FOUND); }
 
         return new ResponseEntity<>("Success Logout: User", HttpStatus.OK);
     }
