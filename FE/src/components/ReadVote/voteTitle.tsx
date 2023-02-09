@@ -26,7 +26,7 @@ const VoteTitle = ({
   views,
   likes,
 }: propTypes) => {
-  const [Dday, setDday] = useState<number | string>(0);
+  const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');
   const [copied, setCopied] = useState(false);
   const [openModal, setOpenModal] = useState(false);
@@ -35,17 +35,19 @@ const VoteTitle = ({
     alert('좋아요+1');
   };
   useEffect(() => {
-    const result = CalcDday(createdAt, closedAt);
+    const result = CalcDday(closedAt);
     setDday(result);
     const changedDate = ChangDateFormat(createdAt);
     setCreated(changedDate);
   }, [createdAt, closedAt]);
 
-  const saveUrl = new Promise((resolve, reject) => {
-    const url = window.document.location.href;
-    resolve(url);
-  });
   const onClickShareLink = () => {
+    const saveUrl = new Promise((resolve, reject) => {
+      if (typeof window !== undefined) {
+        const url = window.document.location.href;
+        resolve(url);
+      }
+    });
     saveUrl.then((res: any) => {
       if (navigator.clipboard) {
         navigator.clipboard
@@ -87,7 +89,7 @@ const VoteTitle = ({
           <S.DevideIconDiv>
             <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon>
             <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
-            <S.DdayIcon>D{Dday}</S.DdayIcon>
+            <S.DdayIcon>{Dday.length === 0 ? '투표 종료' : Dday}</S.DdayIcon>
           </S.DevideIconDiv>
         </S.ContentContainer>
       </S.VoteTitleOutLine>

@@ -1,13 +1,17 @@
 import axios, { AxiosError } from 'axios';
 import voteInstance from './voteInstance';
 
-export const getReadVote = (id: number = 1, token: string = '') => {
+export const getReadVote = (id: string | string[] = '1') => {
   try {
     const result = voteInstance
-      .get(`/topic/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
+      .get(`/topics/${id}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+        },
       })
       .then((res) => {
+        console.log('api call');
         return res.data;
       });
     return result;

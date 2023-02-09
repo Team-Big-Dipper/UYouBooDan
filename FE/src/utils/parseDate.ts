@@ -5,7 +5,7 @@ export const ParseDate = (value: any): any => {
   const hour = value?.substring(11, 13);
   const minute = value?.substring(14, 16);
   const second = value?.substring(17, 19);
-  const result = new Date(year, month, day, hour, minute, second);
+  const result = new Date(year, month - 1, day, hour, minute, second);
 
   return result;
 };

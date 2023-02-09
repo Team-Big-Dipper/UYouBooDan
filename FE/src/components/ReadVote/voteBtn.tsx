@@ -65,17 +65,6 @@ const VoteBtn = () => {
                 <S.ReadVoteBtn id="delete" onClick={onClickBtn}>
                   삭제하기
                 </S.ReadVoteBtn>
-                <>
-                  {isClosed ? null : (
-                    <S.ReadVoteBtn
-                      id="patch"
-                      onClick={onClickBtn}
-                      color={'gray'}
-                    >
-                      수정하기
-                    </S.ReadVoteBtn>
-                  )}
-                </>
                 <S.ReadVoteBtn
                   id="votelist"
                   onClick={handleLink}
