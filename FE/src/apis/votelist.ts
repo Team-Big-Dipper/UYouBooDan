@@ -21,7 +21,7 @@ export const getVoteList = (
         },
       })
       .then((res) => {
-        console.log('api call');
+        console.log('api votelist');
         return res.data;
       });
     return result;
@@ -33,37 +33,3 @@ export const getVoteList = (
     return;
   }
 };
-
-// json-server용
-// export const getVoteList = (
-//   pageNm: number = 1,
-//   size: number = 6,
-//   condition = 'topics',
-// ) => {
-//   try {
-//     if (condition === 'all') {
-//       condition = 'topics';
-//     }
-//     const result = voteInstance
-//       .get(`/${condition}?_page=${pageNm}&_limit=${size}`)
-//       .then((res) => {
-//         console.log('api call');
-//         return {
-//           data: res.data,
-//           pageInfo: {
-//             page: 1,
-//             size: 10,
-//             totalElements: 6,
-//             totalPages: 3,
-//           },
-//         };
-//       });
-//     return result;
-//   } catch (error) {
-//     const err = error as AxiosError;
-//     if (axios.isAxiosError(err)) {
-//       console.error(err);
-//     }
-//     return;
-//   }
-// };

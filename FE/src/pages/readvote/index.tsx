@@ -44,7 +44,6 @@ interface voteType {
 const ReadVote = () => {
   const router = useRouter();
   const { pid } = router.query;
-  console.log('pid', pid);
   const dispatch = useDispatch();
   const [data, setData] = useState<stateType>();
   const [voteBtns, setVoteBtns] = useState<voteType[]>();
@@ -62,7 +61,6 @@ const ReadVote = () => {
     } else {
       setIsLoading(true);
       getReadVote(pid)?.then((res) => {
-        console.log(res.data);
         setData({ ...res.data });
         setVoteBtns([...res.data.topicVoteItems]);
         setTotalCount(CalcTotal(res.data.topicVoteItems));

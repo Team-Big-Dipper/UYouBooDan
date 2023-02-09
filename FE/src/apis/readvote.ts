@@ -11,7 +11,7 @@ export const getReadVote = (id: string | string[] = '1') => {
         },
       })
       .then((res) => {
-        console.log('api call');
+        console.log('api readvote');
         return res.data;
       });
     return result;

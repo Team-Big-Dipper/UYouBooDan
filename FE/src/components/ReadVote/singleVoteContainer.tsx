@@ -20,7 +20,6 @@ export const SingleVoteContainer = ({
   totalCount,
   isTopicVoteItemVoted,
 }: propTypes) => {
-  console.log(id);
   const [text, setText] = useState('투표할까요?');
   const [openModal, setOpenModal] = useState(false);
   const [calculated, setCalculated] = useState<number>(1);
