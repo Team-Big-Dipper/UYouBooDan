@@ -2,7 +2,7 @@ import { ParseDate } from './parseDate';
 
 export const CalcTotal = (arr: any) => {
   const countArr = arr.map((el: any) => {
-    return el.totalVote;
+    return el.numberOfVotes;
   });
   const total = countArr.reduce(function add(sum: number, currValue: number) {
     return sum + currValue;
@@ -16,11 +16,17 @@ export const CalcPercentage = (count: number, totalCount: number) => {
   return result;
 };
 
-export const CalcDday = (start: any, end: any): number => {
-  const startDate = ParseDate(start);
+export const CalcDday = (end: any): string => {
+  const startDate = new Date();
   const endDate = ParseDate(end);
   const distance = endDate.getTime() - startDate.getTime();
   const day = Math.floor(distance / (1000 * 60 * 60 * 24));
-  //console.log(day, '일');
-  return day;
+
+  if (day >= 0 && day < 1) {
+    return 'D-day';
+  } else if (day >= 1) {
+    return 'D-' + day;
+  } else {
+    return '';
+  }
 };

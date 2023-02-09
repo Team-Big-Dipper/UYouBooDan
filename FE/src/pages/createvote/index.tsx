@@ -67,7 +67,7 @@ function createvote() {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU4NjAxODIsImV4cCI6MTY3NTg2MDQ4Mn0.z6UCStZ5TYufsgLl4twRC8q7zxoLNanvjPDm3E5CJh4`
+          authorization: `Bearer ${LocalStorage.getItem('accesstoken')}`
         }
       })
       .then((res: AxiosResponse) => {

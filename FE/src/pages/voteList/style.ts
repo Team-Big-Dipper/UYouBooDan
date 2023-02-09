@@ -5,11 +5,26 @@ export const pageNum = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 100px;
+  margin-bottom: 200px;
+
+  @media (min-width: 480px) and (max-width: 767px) {
+    margin-top: 80px;
+    margin-bottom: 120px;
+  }
+  @media (max-width: 479px) {
+    margin-top: 50px;
+    margin-bottom: 80px;
+    font-size: 0.6rem;
+  }
 `;
 export const pageNumFont = styled.p`
-  font-size: 1.3rem;
-  margin-right: 1rem;
+  font-size: 1rem;
+  margin: 0 10px;
   cursor: default;
+  @media (max-width: 479px) {
+    font-size: 0.9rem;
+  }
 `;
 export const VoteList = styled.div`
   display: flex;
@@ -19,38 +34,49 @@ export const VoteList = styled.div`
 export const PageContainer = styled.div`
   display: flex;
   padding: 5% 20% 0 20%;
-  @media (max-width: 375px) {
-    padding: 15px;
+  @media (min-width: 480px) and (max-width: 767px) {
+    padding: 30px 80px 10px 80px;
+  }
+  @media (max-width: 479px) {
+    padding: 30px 50px 10px 50px;
   }
 `;
 export const Sidebar = styled.div`
-  min-width: 200px;
+  width: 200px;
   display: flex;
   flex-direction: column;
   padding: 0.3rem;
-  @media (max-width: 768px) {
+  margin-right: 50px;
+  @media (max-width: 767px) {
     display: none;
   }
 `;
 export const Pagename = styled.p`
+  height: 70px;
   font-size: 2rem;
   color: #667085;
   font-family: 'yg-jalnan' !important;
-  margin: 3rem 0 1rem 0.3rem;
+  margin: 45px 0 10px 4px;
+  line-height: 40px;
+`;
+export const SidebarLink = styled(Link)`
+  text-decoration: none;
+  color: black;
 `;
 export const SidebarCategory = styled.p`
   font-size: 1.3rem;
   color: #667085;
   font-family: 'yg-jalnan' !important;
-  padding: 1rem;
+  padding: 20px;
   border-bottom: 1px solid lightgray;
-  margin-bottom: 1rem;
-  margin-top: 4rem;
+  margin-bottom: 15px;
+  margin-top: 30px;
 `;
 export const CategoryTitle = styled.p`
   color: #667085;
   margin-top: 0.5rem;
   padding-left: 1rem;
+  line-height: 30px;
 `;
 export const PageLink = styled(Link)`
   display: flex;
@@ -59,18 +85,30 @@ export const PageLink = styled(Link)`
 
 export const PageHeader = styled.div`
   display: flex;
+  height: 135px;
   justify-content: space-between;
-  padding-top: 20%;
+  padding-top: 68px;
   color: #667085;
-  @media (max-width: 1230px) {
+  margin-bottom: 100px;
+  @media (min-width: 768px) and (max-width: 1040px) {
     flex-direction: column;
-    padding-top: 10%;
+  }
+  @media (min-width: 480px) and (max-width: 767px) {
+    flex-direction: column;
+    padding-top: 20px;
+    margin-bottom: 70px;
+  }
+  @media (max-width: 479px) {
+    padding-top: 50px;
+    height: 190px;
+    flex-direction: column;
+    margin-bottom: 50px;
   }
 `;
 export const ButtonWrapper = styled.div`
   display: flex;
   margin-bottom: 2rem;
-  @media (max-width: 375px) {
+  @media (max-width: 479px) {
     margin-bottom: 10px;
     display: flex;
     justify-content: end;
@@ -81,16 +119,19 @@ export const PageTitle = styled.div`
   font-family: 'yg-jalnan' !important;
   margin-bottom: 1rem;
   color: black;
-  @media (max-width: 375px) {
+  @media (max-width: 479px) {
     margin-bottom: 5px;
   }
 `;
 export const PageSubTitle = styled.p`
   padding: 5px;
   font-size: 1rem;
-  @media (max-width: 780px) {
-    font-size: 0.8rem;
+  @media (min-width: 480px) and (max-width: 767px) {
     width: 180px;
     line-height: 140%;
+  }
+  @media (max-width: 479px) {
+    line-height: 140%;
+    margin: 10px 0;
   }
 `;
