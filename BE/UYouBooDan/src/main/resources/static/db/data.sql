@@ -5,7 +5,7 @@ INSERT INTO Member(memberId, createdAt, last_modified_at, email, memberStatus, n
 (3, '2023-02-03 00:05:33.825730', '2023-02-03 00:05:33.825730', 'rlgywnd@naver.com', 'MEMBER_ACTIVE', 'Kakao 김효중', '{bcrypt}$2a$10$ps7EXP6V8pxDB0fgsBvbduRzcnHO5sD32FtFQ7tzBfcztBWSRTFIO', 'https://scontent-gmp1-1.xx.fbcdn.net/v/t1.18169-9/527016_499021583525593_732357164_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=CdbnqyyFWXkAX_obHCp&_nc_ht=scontent-gmp1-1.xx&oh=00_AfDBQSsLnCXMKoAPnGFrOeSBgvMp__vgjXLEqmtS6etfcw&oe=63F1DB6A'),
 (4, '2023-02-03 00:05:33.825730', '2023-02-03 00:05:33.825730', 'rlgywnd123@gmail.com', 'MEMBER_ACTIVE', 'Google 김효중', '{bcrypt}$2a$10$ps7EXP6V8pxDB0fgsBvbduRzcnHO5sD32FtFQ7tzBfcztBWSRTFIO', 'https://lh3.googleusercontent.com/a/AEdFTp60PjsqOwMeG52mdMrNG9kpqRrt7PXZBokb2sos=s96-c');
 
-INSERT INTO member_roles(Member_memberId,roles) values
+INSERT INTO Member_roles(Member_memberId,roles) values
 (1,'USER'),
 (2,'USER'),
 (3,'USER'),
