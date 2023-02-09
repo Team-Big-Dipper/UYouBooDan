@@ -83,7 +83,7 @@ public class GoogleOauthController {
         // try ~ catch 문을 통해 성공했을 경우 토큰을 전달받기위 DTO 클래스
         ResponseEntity<String> oauthTokenResponse;
         // try ~ catch 문을 통해 성공했을 경우 로그인 Response를 전달받기 위한 VO
-        GoogleLoginResVo loginResponse;
+        GoogleLoginResVo loginResponse = null;
         // try ~ catch 문을 통해 성공했을 경우 값을 전달받기위 DTO 클래스
         GoogleLoginDto googleProfile;
 
@@ -127,7 +127,7 @@ public class GoogleOauthController {
 
         // 서비스 회원 등록 위임
         googleProfile = userDetailsResponse.getBody();
-        Member googleMember = memberService.createGoogleMember(googleProfile);
+        Member googleMember = memberService.createGoogleMember(googleProfile, loginResponse.getAccessToken());
 
         // 시큐리티 영역
         // Authentication 을 Security Context Holder 에 저장
