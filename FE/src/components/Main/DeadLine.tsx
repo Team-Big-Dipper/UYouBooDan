@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import * as Style from './daedlineStyle';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { DdayCal } from '../../utils/dDay';
-import { mockDeadLineList } from '../../mocks/data/deadLineList';
 interface deadLineData {
   topicId: number,
   category: string;
@@ -13,12 +12,17 @@ interface deadLineData {
 }
 
 export const DeadLine = () => {
-
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const [deadlineDatas, setDeadlineDatas] = useState<deadLineData[]>([]);
   ///api/topics?size=4&page=1&filter=imminent
   useEffect(()=>{
     axios
-      .get('/api/imminent')
+      .get(`${api}/topics?size=4&page=1&filter=progress`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+        }
+      })
       .then((res: AxiosResponse) => {
         console.log('deadLineList :', res.data.data);
         setDeadlineDatas(res.data.data);

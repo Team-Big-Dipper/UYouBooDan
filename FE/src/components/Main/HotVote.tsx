@@ -14,6 +14,7 @@ interface hotData {
   closedAt: string;
 }
 export const HotVote = () => {
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const [clicked, setClicked] = useState<string>('전체');
   const category = ['전체', '일반', '음식', '쇼핑', '패션뷰티', '반려동물', '취미운동'];
 
@@ -23,7 +24,7 @@ export const HotVote = () => {
   },[]);
 
   const [hotDatas, setHotDatas] = useState<hotData[]>([]);
-  ///api/topics?size=4&page=1&filter=imminent
+
   useEffect(()=>{
     axios
       .get('/api/hot')
