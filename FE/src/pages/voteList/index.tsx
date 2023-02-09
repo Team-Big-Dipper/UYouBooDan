@@ -19,26 +19,32 @@ const VoteList = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(6);
   const [totalPage, setTotalPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    setIsLoading(true);
     console.log('votelist');
     getVoteList(page, size, condition)?.then((res) => {
       setData(res.data);
       setTotalPage(res.pageInfo.totalPages);
-      //console.log(res);
+      setIsLoading(false);
     });
   }, [condition, page]);
 
   return (
     <>
-      <S.PageContainer>
-        <Sidebar condition={condition} setCondition={setCondition} />
-        <ListPage
-          data={data}
-          totalPage={totalPage}
-          setPage={setPage}
-          condition={condition}
-        />
-      </S.PageContainer>
+      {isLoading ? (
+        <p>로딩중</p>
+      ) : (
+        <S.PageContainer>
+          <Sidebar condition={condition} setCondition={setCondition} />
+          <ListPage
+            data={data}
+            totalPage={totalPage}
+            setPage={setPage}
+            condition={condition}
+          />
+        </S.PageContainer>
+      )}
     </>
   );
 };

@@ -44,96 +44,95 @@ interface voteType {
 const ReadVote = () => {
   const router = useRouter();
   const { pid } = router.query;
+  console.log('pid', pid);
   const dispatch = useDispatch();
   const [data, setData] = useState<stateType>();
   const [voteBtns, setVoteBtns] = useState<voteType[]>();
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(20);
-
+  const [isLoading, setIsLoading] = useState(false);
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
   //api요청
-  console.log('pageid', pid);
   useEffect(() => {
     console.log('pageid', pid);
-    if (!pid) {
+    if (pid === undefined) {
       return;
+    } else {
+      setIsLoading(true);
+      getReadVote(pid)?.then((res) => {
+        console.log(res.data);
+        setData({ ...res.data });
+        setVoteBtns([...res.data.topicVoteItems]);
+        setTotalCount(CalcTotal(res.data.topicVoteItems));
+        dispatch(
+          getCurrent({
+            isAuthor: res.data.isAuthor,
+            isVoted: res.data.isVoted,
+            isClosed: res.data.closed,
+            bestItem: res.data.bestItem,
+          }),
+        );
+        setIsLoading(false);
+      });
     }
-    getReadVote(pid)?.then((res) => {
-      console.log(res.data);
-      setData({ ...res.data });
-      setVoteBtns([...res.data.topicVoteItems]);
-      setTotalCount(CalcTotal(res.data.topicVoteItems));
-      dispatch(
-        getCurrent({
-          isAuthor: res.data.isAuthor,
-          isVoted: res.data.isVoted,
-          isClosed: res.data.closed,
-          bestItem: res.data.bestItem,
-        }),
-      );
-    });
   }, [pid]);
   // redux
   const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
-  const displayStyle = useMemo((): object => {
-    if (data) {
-      return {
-        display: 'flex',
-        flexDirection: 'column',
-        margin: '10px 10px 0px 10px',
-      };
-    } else {
-      return { display: 'flex', flexWrap: 'wrap', justifyContent: 'center' };
-    }
-  }, [data]);
 
   return (
-    <S.PageContainer>
-      <S.CurrentCategoty>
-        <S.LinkButton href="/">홈</S.LinkButton>
-        {' > '}카테고리{' > '}게시글
-      </S.CurrentCategoty>
-      <VoteTitle
-        category={data?.category}
-        title={data?.title}
-        createdAt={data?.createdAt}
-        author={data?.author}
-        closedAt={data?.closedAt}
-        views={data?.views}
-        likes={data?.likes}
-      />
-      <S.VoteContentLayout>
-        {!data?.image ? (
-          <VoteContent content={data?.content} image={null} />
-        ) : (
-          <VoteContent content={data?.content} image={data?.image} />
-        )}
-
-        <div style={displayStyle}>
-          {voteBtns?.map((el) => {
-            return (
-              <SingleVoteContainer
-                key={el.topicVoteItemId}
-                id={el.topicVoteItemId}
-                content={el.topicVoteItemName}
-                count={el.numberOfVotes}
-                selectedBtn={selectedBtn}
-                handleSelectedBtn={handleSelectedBtn}
-                totalCount={totalCount}
-                isTopicVoteItemVoted={el.isTopicVoteItemVoted}
-              />
-            );
-          })}
-        </div>
-        <S.TotalVoteCount isClosed={isClosed}>
-          {isClosed && isAuthor ? '총투표수: ' + totalCount + '표' : null}
-        </S.TotalVoteCount>
-        <VoteBtn />
-      </S.VoteContentLayout>
-      <CommentList topicId={pid} />
-    </S.PageContainer>
+    <>
+      {isLoading ? (
+        <p>로딩중...</p>
+      ) : (
+        <>
+          <S.PageContainer>
+            <S.CurrentCategoty>
+              <S.LinkButton href="/">홈</S.LinkButton>
+              {' > '}카테고리{' > '}게시글
+            </S.CurrentCategoty>
+            <VoteTitle
+              category={data?.category}
+              title={data?.title}
+              createdAt={data?.createdAt}
+              author={data?.author}
+              closedAt={data?.closedAt}
+              views={data?.views}
+              likes={data?.likes}
+            />
+            <S.VoteContentLayout>
+              {!data?.image ? (
+                <VoteContent content={data?.content} image={null} />
+              ) : (
+                <VoteContent content={data?.content} image={data?.image} />
+              )}
+              <div>
+                {voteBtns?.map((el) => {
+                  return (
+                    <SingleVoteContainer
+                      key={el.topicVoteItemId}
+                      id={el.topicVoteItemId}
+                      content={el.topicVoteItemName}
+                      count={el.numberOfVotes}
+                      selectedBtn={selectedBtn}
+                      handleSelectedBtn={handleSelectedBtn}
+                      totalCount={totalCount}
+                      isTopicVoteItemVoted={el.isTopicVoteItemVoted}
+                    />
+                  );
+                })}
+              </div>
+              <S.TotalVoteCount isClosed={isClosed}>
+                {isClosed && isAuthor ? '총투표수: ' + totalCount + '표' : null}
+              </S.TotalVoteCount>
+              <VoteBtn />
+            </S.VoteContentLayout>
+            <CommentList topicId={pid} />
+          </S.PageContainer>
+        </>
+      )}
+    </>
   );
 };
 

@@ -25,7 +25,6 @@ const ListPage = ({ data, totalPage, setPage, condition }: propsArray) => {
   const handlePage = (e: any) => {
     setPage(e.target.textContent);
   };
-  console.log(data);
   return (
     <S.VoteList>
       <S.PageHeader>
