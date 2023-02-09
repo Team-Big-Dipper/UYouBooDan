@@ -55,13 +55,23 @@ public class TopicController {
 
     /**
      * 투표 게시글 상세 조회
-     * @param topicId 투표 게시글의 id
-     * @return 조회된 투표게시글 상세, HTTP Status
+     * @param topicId 투표 게시글의 id long
+     * @param request HttpServletRequest 객체 - 토큰 확인
+     * @return 조회된 투표 게시글 상세 내용, HTTP Status
      */
     @GetMapping("/{topic-id}")
-    public ResponseEntity getTopic(@PathVariable("topic-id") long topicId) {
+    public ResponseEntity getTopic(@PathVariable("topic-id") long topicId,
+                                   HttpServletRequest request) {
+
+        Long memberId;      // 사용자 id
+        if (false){         // 로그인한 사용자 이면
+            memberId = jwtExtractUtil.extractMemberIdFromJwt(request);      // 요청의 token으로부터 사용자 memberId 추출
+        } else {            // 로그인하지않은 사용자이면
+            memberId = null;
+        }
+
         // topic Service에서 topic id로 투표 게시글 topic 조회
-        Topic topic = topicService.findTopic(topicId);
+        Topic topic = topicService.findTopic(topicId, memberId);
 
         // 투포 게시글 topic을 Response DTO 객체로 변환
         TopicResDto topicResDto = new TopicResDto(topic);

@@ -29,8 +29,6 @@ public class Topic extends BaseTimeEntity {
 
     private String content;                 // 투표 게시글 내용
 
-    // private Long topicVoteId;            // 투표 Id
-
     @Enumerated(EnumType.STRING)         // Enum을 String으로 저장
     private TopicStatus topicStatus;     // 투표 게시글 상태
 
@@ -79,6 +77,34 @@ public class Topic extends BaseTimeEntity {
      */
     public void changeTopicStatusRemoved() {
         topicStatus = TopicStatus.REMOVED;
+    }
+
+    /**
+     * 투표 게시글 조회자가 투표 게시글 작성인지 여부 확인
+     * @param memberId 조회하는 사용자의 id Long
+     * @return 투표 게시글 작성자이면 true, 아니면 false
+     */
+    public Boolean findIsAuthor(Long memberId) {
+        // 투표 게시글 작성자 id와 조회하는 사용자의 id가 같은지 여부 확인
+        isAuthor = member.getMemberId().equals(memberId);
+        return isAuthor;
+    }
+
+    /**
+     * 투표 게시글 조회자가 투표 게시글에 투표했는지 여부 확인
+     * @param memberId 조회하는 사용자의 id Long
+     */
+    public void findTopicIsVoted(Long memberId) {
+        isVoted = false;        // 아직 투표 게시글에 투표를 하지 않은 초기 상태
+
+        // 투표 항목 TopicVoteItem 리스트를 순회하면서
+        for (TopicVoteItem topicVoteItem : topicVoteItems) {
+            topicVoteItem.isTopicVoteItemVoted(memberId);   // 투표 항목에 투표했는지 확인
+
+            if (topicVoteItem.getTopicVoteItemVoted()) {    // 투표 항목에 조회자가 투표했으면
+                isVoted = true;                             // 현재 투표 게시글에 투표한 상태
+            }
+        }
     }
 
     /**
