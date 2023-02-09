@@ -1,6 +1,7 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.kakao;
 
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
+import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +18,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RequiredArgsConstructor
@@ -32,6 +35,8 @@ public class KakaoOauthController {
     private String kakaoClientId;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
+
+    private final JwtExtractUtil jwtExtractUtil;
 
 
     /**
@@ -106,7 +111,7 @@ public class KakaoOauthController {
         catch (JsonMappingException je) { je.printStackTrace(); }
 
         // 서비스 회원 등록 위임
-        Member kakaoMember = memberService.createKakaoMember(kakaoProfile);
+        Member kakaoMember = memberService.createKakaoMember(kakaoProfile, kakaoToken.getAccess_token());
 
         // 시큐리티 영역
         // Authentication 을 Security Context Holder 에 저장
@@ -120,5 +125,35 @@ public class KakaoOauthController {
         response.setHeader("RefreshToken", refreshToken);
 
         return "Success Login: User";
+    }
+
+
+    /**
+     * Input Parameter가 AccessToken일 경우 : 해당 토큰에 한해서 로그아웃 (특정 기기만 로그아웃)
+     * Input Parameter가 Admin key일 경우 : 해당사용자의 모든 토큰 만료처리 (모든 기기 로그아웃)
+     * @return
+     */
+    public ResponseEntity<?> kakaoLogout (HttpServletRequest request) {
+
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        // 카카오 user id를 찾는 메서드 service에 만들기
+
+        RestTemplate resttemplate = new RestTemplate();
+        HttpHeaders userHttpHeaders = new HttpHeaders();
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, userHttpHeaders);
+
+        userHttpHeaders.set("Authorization", "KakaoAk " + getKakaoAppKey());
+//        params.add("target_id_type", user_Id 타입);
+//        params.add("target_id", user_Id);
+
+        ResponseEntity<Long> LogoutResponse = resttemplate.exchange(
+                "https://kapi.kakao.com/v1/user/logout",
+                HttpMethod.POST,
+                kakaoTokenRequest,
+                Long.class
+        );
+
+        return new ResponseEntity<>("Success Logout: User", HttpStatus.OK);
     }
 }

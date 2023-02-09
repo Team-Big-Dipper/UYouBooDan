@@ -36,6 +36,10 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Photo profile;
 
+    private Long oauthId;
+
+    private String oauthAccessToken;
+
     @Enumerated(value = EnumType.STRING)
     @Column(length = 20, nullable = false)  // 컬럼설정 지정 안할시 오류 발생 => Unable to instantiate custom type: org.hibernate.type.EnumType 에러발생
     private MemberStatus memberStatus;
@@ -94,4 +98,5 @@ public class Member extends BaseTimeEntity {
         this.memberStatus = status;
     }
     public void withdrawMember(){ this.memberStatus = MemberStatus.MEMBER_QUIT; }
+    public void modifyOauthToken(String oauthAccessToken){ this.oauthAccessToken = oauthAccessToken; }
 }
