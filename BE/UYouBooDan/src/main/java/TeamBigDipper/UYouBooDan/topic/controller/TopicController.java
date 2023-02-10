@@ -63,8 +63,8 @@ public class TopicController {
     public ResponseEntity getTopic(@PathVariable("topic-id") long topicId,
                                    HttpServletRequest request) {
 
-        Long memberId;      // 사용자 id
-        if (false){         // 로그인한 사용자 이면
+        Long memberId;                                                      // 사용자 id
+        if (jwtExtractUtil.isLoginUser(request)){                           // 로그인한 사용자 이면
             memberId = jwtExtractUtil.extractMemberIdFromJwt(request);      // 요청의 token으로부터 사용자 memberId 추출
         } else {            // 로그인하지않은 사용자이면
             memberId = null;
