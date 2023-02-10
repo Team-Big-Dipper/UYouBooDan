@@ -4,10 +4,6 @@ import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
 import LocalStorage from '../../../constants/localstorage';
 import SessionStorage from '../../../constants/sessionstorage';
-import { useRouter } from 'next/router';
-import axios, { AxiosError, AxiosResponse } from 'axios';
-
-import kakaoAuth from '../../../apis/oauth/kakaoLogin';
 
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
@@ -16,6 +12,12 @@ import { Menu } from '../../MobileNav/Menu';
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
   const [isAuth, setIsAuth] = useState(false);
+
+  const logoutHandler = () => {
+    LocalStorage.removeItem('accesstoken');
+    LocalStorage.removeItem('refreshtoken');
+    SessionStorage.removeItem('accesstoken');
+  };
 
   // storage에 accesstoken이 있을때 useEffect실행
   useEffect(() => {
@@ -63,10 +65,20 @@ const Header = () => {
       <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
       <S.Right>
         {isAuth ? (
-          <S.Mypage href="/mypage">
-            <MypageSvg />
-            마이페이지
-          </S.Mypage>
+          <S.MyPageLogoutDiv>
+            <S.Mypage href="/mypage">
+              <MypageSvg />
+              마이페이지
+            </S.Mypage>
+            <S.Logout
+              href="/main"
+              onClick={() => {
+                logoutHandler();
+              }}
+            >
+              로그아웃
+            </S.Logout>
+          </S.MyPageLogoutDiv>
         ) : (
           <S.LoginSignUpDiv>
             <S.Login href="/auth">로그인</S.Login>

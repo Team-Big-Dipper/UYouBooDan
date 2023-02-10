@@ -8,6 +8,9 @@ import { MakeVote } from '../../assets/makeVote';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import MyProfile from './MyProfile';
 import EditProfile from './MyProfile/EditProfile';
+import { FaceSvg } from '../../assets/face';
+import { ImgLabel } from '../../pages/createvote/style';
+import Image from 'next/image';
 
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -55,7 +58,8 @@ const MyPage = () => {
     <S.MyPageContainer>
       <S.SideBarContainer>
         <S.SideBarRouteText>
-          홈 {'>'} 마이페이지 {'>'} {selectCategory}
+          홈 {'>'} 마이페이지 {'>'}{' '}
+          {editClick ? '개인정보수정' : selectCategory}
         </S.SideBarRouteText>
         <S.SibeBarCategotyDiv>
           <S.SideBarUserInfoDiv>
@@ -66,6 +70,9 @@ const MyPage = () => {
               alt="Img"
               onError={handleErrorImg}
             />
+            <S.SideBarImgDiv>
+              <FaceSvg />
+            </S.SideBarImgDiv>
             <S.UserNickDiv>#{profile}</S.UserNickDiv>
             <S.EditBtnDiv
               onClick={() => {
