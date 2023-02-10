@@ -47,3 +47,12 @@ jobs:
     # 압축한 프로젝트를 S3로 전송합니다.
     - name: Upload to S3
       run: aws s3 cp --region ap-northeast-2 ./UYouBooDan.zip s3://$S3_BUCKET_NAME/UYouBooDan.zip
+    
+    #CodeDeploy
+    - name: Deploy to AWS EC2 from S3
+      run: |
+        aws deploy create-deployment \
+          --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
+          --deployment-config-name CodeDeployDefault.AllAtOnce \
+          --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
+          --s3-location bucket=$S3_BUCKET_NAME,key=$UYouBooDan.zip,bundleType=zip
