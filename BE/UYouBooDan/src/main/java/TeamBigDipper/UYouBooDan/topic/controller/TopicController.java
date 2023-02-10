@@ -7,6 +7,7 @@ import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import TeamBigDipper.UYouBooDan.topic.dto.*;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
+import TeamBigDipper.UYouBooDan.topic.entity.TopicLike;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
 import TeamBigDipper.UYouBooDan.topic.service.TopicService;
@@ -130,5 +131,32 @@ public class TopicController {
 
         // TopicVote Response DTO, HTTP Status 반환
         return new ResponseEntity<>(new SingleResDto<>(topicVoteResDtos), HttpStatus.OK);
+    }
+
+    /**
+     * 투표 게시글에 좋아요(추천하기)
+     * @param topicId 투표 게시글 ID Long
+     * @param request HttpServletRequest 객체 - 토큰 확인
+     * @return TopicLike Response DTO 클래스, HTTP Status 반환
+     */
+    @PatchMapping("/{topic-id}/like")
+    public ResponseEntity postTopicLike(@PathVariable("topic-id") long topicId,
+                                        HttpServletRequest request) {
+
+        // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Member member = memberService.findMember(memberId);
+
+        // Topic Service에서 투표 게시글 추천하기 후 Topic Like 객체 반환
+        TopicLike topicLike = topicService.likeTopic(topicId, member);
+
+        // 투표 게시글의 좋아요 수 반환 
+        long numberOfTopicLikes = topicService.findNumberOfTopicLikes(topicId);
+
+        // Topic Like 객체, 좋아요 수를 Response DTO 객체로 반환
+        TopicLikeResDto topicLikeResDto = new TopicLikeResDto(topicLike, numberOfTopicLikes);
+
+        // Topic Like Response DTO 객체와 HTTPStatus 반환
+        return new ResponseEntity<>(new SingleResDto<>(topicLikeResDto), HttpStatus.OK);
     }
 }

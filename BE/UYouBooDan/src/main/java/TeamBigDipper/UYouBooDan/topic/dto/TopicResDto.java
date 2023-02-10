@@ -31,6 +31,7 @@ public class TopicResDto {
 
     private Long views;         // 조회 수
     private Long likes;         // 좋아요 수
+    private Boolean isLiked;    // 조회하는 사람이 좋아요를 했는지 여부
 
     /**
      * 투표 게시글 Topic 객체를 Topic Response DTO 클래스로 변환하는 생성자
@@ -63,9 +64,10 @@ public class TopicResDto {
         this.isAuthor = topic.getIsAuthor();        // 조회하는 사람이 작성자인지 여부
         this.isVoted = topic.getIsVoted();          // 조회하는 사람이 투표했는지 여부
 
-        // TODO: 투표 게시글의 조회수, 좋아요 수
+        // TODO: 투표 게시글의 조회수
         // views
-        // likes
+        likes = topic.countNumberOfTopicLike();     // 투표 게시글의 좋아요 개수
+        this.isLiked = topic.getIsLiked();          // 조회하는 사람이 투표 게시글에 좋아요 했는지 여부
     }
 
     /**
