@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto11
+  build:
+    commands:
+      - echo Build Starting on `date`
+      - cd UYouBooDan
+      - chmod +x ./gradlew
+      - ./gradlew build
+  post_build:
+    commands:
+      - echo $(basename ./UYouBooDan/build/libs/*.jar)
+artifacts:
+  files:
+    - UYouBooDan/build/libs/*.jar
+    - UYouBooDan/scripts/**
+    - UYouBooDan/appspec.yml
+  discard-paths: yes
