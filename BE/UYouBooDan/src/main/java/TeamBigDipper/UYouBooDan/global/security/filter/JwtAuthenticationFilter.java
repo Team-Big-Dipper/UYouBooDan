@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
         // 게스트 로그인을 위한 부분
         if(loginDto.getEmail().equals("") && loginDto.getPassword().equals(""))
-            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("asdf1234@gmail.com","asdf1234@"); // configuration으로 관리하기(@Value 어노테이션으로 받아 올 수 없기 때문)
+            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("asdf1234@gmail.com","asd123!@#asd123"); // configuration으로 관리하기(@Value 어노테이션으로 받아 올 수 없기 때문)
         else usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
