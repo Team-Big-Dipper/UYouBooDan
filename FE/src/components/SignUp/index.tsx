@@ -203,7 +203,7 @@ const SignUp = () => {
                 setVectorOne(!vectorOne);
               }}
             >
-              {vectorOne ? <NoVectorSvg /> : <VectorSvg />}
+              {vectorOne ? <VectorSvg /> : <NoVectorSvg />}
               {/* <VectorSvg /> */}
             </S.PwVectorDiv>
           </S.PwInput>
@@ -232,7 +232,7 @@ const SignUp = () => {
                 setVectorTwo(!vectorTwo);
               }}
             >
-              {vectorTwo ? <NoVectorSvg /> : <VectorSvg />}
+              {vectorTwo ? <VectorSvg /> : <NoVectorSvg />}
             </S.PwCheckVectorDiv>
           </S.PwCheckInput>
           <S.Notice>

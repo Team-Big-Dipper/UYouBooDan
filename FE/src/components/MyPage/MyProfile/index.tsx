@@ -73,7 +73,7 @@ const MyProfile = ({ setSuccessPw }: any) => {
                 setVector(!vector);
               }}
             >
-              {vector ? <NoVectorSvg /> : <VectorSvg />}
+              {vector ? <VectorSvg /> : <NoVectorSvg />}
             </S.PwVectorDiv>
           </S.PwInputDiv>
           {watch('password') && err ? (

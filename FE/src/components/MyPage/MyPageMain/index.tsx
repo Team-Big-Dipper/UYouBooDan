@@ -103,17 +103,17 @@ const MyPageMain = () => {
       </S.ContentBoxDiv>
 
       <S.PageNationDiv>
-        <div>
+        <S.LeftDiv>
           <PageNationLeftSvg />
-        </div>
+        </S.LeftDiv>
         <S.PageNationNumberDiv>
           <div>1</div>
           <div>2</div>
           <div>3</div>
         </S.PageNationNumberDiv>
-        <div>
+        <S.RightDiv>
           <PageNationRightSvg />
-        </div>
+        </S.RightDiv>
       </S.PageNationDiv>
     </S.MyPageMainContainer>
   );

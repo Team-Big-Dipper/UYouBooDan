@@ -114,11 +114,23 @@ export const PageNationDiv = styled.div`
   margin-top: 100px;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
+  /* div {
+    border: 1px solid red;
+  } */
+`;
+export const LeftDiv = styled.div`
+  cursor: pointer;
+`;
+export const RightDiv = styled.div`
+  cursor: pointer;
 `;
 export const PageNationNumberDiv = styled.div`
   display: flex;
   font-size: 1.3rem;
   color: #667085;
-  gap: 30px;
+  gap: 40px;
+  div {
+    cursor: pointer;
+  }
 `;
