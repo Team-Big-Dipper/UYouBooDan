@@ -1,0 +1,59 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${RDS_URL}
+    username: admin #${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+      profiles:
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    defer-datasource-initialization: true
+    show-sql: true
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+decorator:
+  datasource:
+    p6spy:
+      enable-logging: true
+
+
+file:
+  img: Img/                       # 각 이미지 파일 저장 경로
+
+iam:
+  access-key: ${IAM_ACCESS_KEY}
+  secret-key: ${IAM_SECRET_KEY}
+  region: ap-northeast-2
+
+cloud:
+  aws:
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+
+mod: server
+jwt:
+  key:
+    secret: ${JWT_SECRET_KEY}
+    access-token-expiration-minutes: 30
+    refresh-token-expiration-minutes: 1440
+oauth:
+  kakao:
+    appKey:
+      restApiKey: ${KAKAO_RESTAPIKEY}
+    clientId: ${KEKEO_CLIENT_ID}
+    initialKey: ${KAKAO_INIT_KEY}
+  google:
+    clientId: ${GOOGLE_CLIENT_ID}
+    clientSecret: ${GOOGLE_CLIENT_SECRET}
+    scope: profile,email,openid
+    redirectUrl: http://localhost:3000/auth/googleredirect

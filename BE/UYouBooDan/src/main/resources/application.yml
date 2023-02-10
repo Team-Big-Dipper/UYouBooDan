@@ -8,7 +8,7 @@ server:
 
 spring:
   profiles:
-    active: local   # 로컬 프로파일 사용을 위한 설정
+    active: real   # 로컬 프로파일 사용을 위한 설정
   jpa:
     hibernate:
       ddl-auto: create
@@ -16,6 +16,10 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+  sql:
+    init:
+      data-locations: classpath:static/db/data.sql
+      mode: always
     properties:
       hibernate:
         default_batch_fetch_size: 100
