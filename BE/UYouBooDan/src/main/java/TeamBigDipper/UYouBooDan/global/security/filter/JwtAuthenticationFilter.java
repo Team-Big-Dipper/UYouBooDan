@@ -82,10 +82,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
+        // 로그인시, Redis 캐시 서버에 Refresh 토큰을 저장하는 로직 ( key:value 형식의 set방식으로 저장되며, key는 RTkey+회원 식별자, value는 refreshToken으로 저장)
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set("RTKey"+authenticatedMember.getMemberId(), refreshToken);
         log.info("redis RT : {}", valueOperations.get("RTKey"+authenticatedMember.getMemberId()));
-//        response.setHeader("RefreshToken", refreshToken); // 쿠키에 넣음
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }

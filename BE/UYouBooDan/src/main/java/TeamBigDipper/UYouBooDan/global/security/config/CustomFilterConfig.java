@@ -18,7 +18,7 @@ public class CustomFilterConfig extends AbstractHttpConfigurer<CustomFilterConfi
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
-    private final RedisTemplate redisTemplate; // 추후 레디스 적용 시 활성화
+    private final RedisTemplate redisTemplate;
 
 
     @Override

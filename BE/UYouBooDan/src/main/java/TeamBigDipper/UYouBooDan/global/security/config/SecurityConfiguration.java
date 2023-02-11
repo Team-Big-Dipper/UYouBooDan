@@ -25,7 +25,7 @@ public class SecurityConfiguration {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
-    private final RedisTemplate redisTemplate; // 추후 레디스 추가 시 사용
+    private final RedisTemplate redisTemplate;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
                 .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and()
-                .apply(new CustomFilterConfig(jwtTokenizer, customAuthorityUtils, redisTemplate)) //레디스 사용시 추가
+                .apply(new CustomFilterConfig(jwtTokenizer, customAuthorityUtils, redisTemplate))
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
