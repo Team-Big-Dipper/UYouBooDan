@@ -104,7 +104,8 @@ public class TopicService {
                 return topicRepository.findAllByClosedAtBetweenOrderByClosedAtAsc(now, end, pageable);
             // 전체 게시글 중 핫토픽 조회
             case HOT:
-                break;
+                // TODO: 전체 게시글 중에서 핫토픽 조회하는 메서드로 바꾸기
+                return topicRepository.findAllByClosedAtIsAfterOrderByCreatedAtDesc(now, pageable);
             // 투표 마감된 투표 게시글 목록 조회
             case CLOSED:
                 return topicRepository.findAllByClosedAtIsBeforeOrderByCreatedAtDesc(now, pageable);
