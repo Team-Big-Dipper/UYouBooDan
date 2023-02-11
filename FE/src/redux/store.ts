@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import CurrentVoteSlice from './slices/currentVoteSlice';
+import GetVoteConditionSlice from './slices/getVoteConditionSlice';
 
 export const store = configureStore({
   reducer: {
     currentVote: CurrentVoteSlice,
+    getVoteCondition: GetVoteConditionSlice,
   },
 });
 

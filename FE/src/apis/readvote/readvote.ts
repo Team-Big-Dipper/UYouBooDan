@@ -3,7 +3,7 @@ import voteInstance from '../voteInstance';
 
 export const getReadVote = (id: string | string[] = '1', token: string) => {
   try {
-    console.log('api readvote', id, token);
+    console.log('api readvote');
     const result = voteInstance
       .get(`/topics/${id}`, {
         headers: {
@@ -35,7 +35,7 @@ export const patchSingleVoteItem = (
   token: string,
 ) => {
   try {
-    console.log('api singlevote', topicId, itemId, token);
+    console.log('api singlevote');
     const result = voteInstance
       .patch(
         `/topics/${topicId}/vote`,
@@ -69,7 +69,7 @@ export const patchSingleVoteItem = (
 
 export const patchTopicLike = (topicId: number, token: string) => {
   try {
-    console.log('api likevote', topicId, token);
+    console.log('api likevote');
     const result = voteInstance
       .patch(
         `/topics/${topicId}/like`,

@@ -24,7 +24,7 @@ export const currentVoteSlice = createSlice({
       state.isVoted = action.payload.isVoted;
       state.isClosed = action.payload.isClosed;
       state.theFirstVoteId = action.payload.theFirstVoteId;
-      console.log(action.payload);
+      //console.log(action.payload);
     },
   },
 });

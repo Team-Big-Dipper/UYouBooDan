@@ -36,7 +36,6 @@ export const SingleVoteContainer = ({
   const { isAuthor, isVoted, isClosed } = useSelector(
     (state: any) => state.currentVote,
   );
-  console.log(isAuthor, isVoted, isClosed);
   useEffect(() => {
     setCalculated(CalcPercentage(count, totalCount));
   }, [totalCount]);

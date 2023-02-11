@@ -62,7 +62,6 @@ const ReadVote = () => {
   const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
 
   useEffect(() => {
-    console.log('pageid', pid);
     if (pid === undefined) {
       return;
     } else {
@@ -74,7 +73,7 @@ const ReadVote = () => {
           const dispatchCurrentObj = {
             isAuthor: res.data.isAuthor,
             isVoted: res.data.isVoted,
-            theFirstVoteId: theFirst.numberOfVotes,
+            // theFirstVoteId: theFirst.numberOfVotes,
           };
           setData({ ...res.data });
           setVoteBtns([...res.data.topicVoteItems]);
@@ -108,7 +107,7 @@ const ReadVote = () => {
           {' > '}카테고리{' > '}게시글
         </S.CurrentCategoty>
         <>
-          {isLoading ? (
+          {!isLoading ? (
             <p>로딩중...</p>
           ) : (
             <>

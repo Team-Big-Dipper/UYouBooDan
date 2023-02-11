@@ -4,16 +4,16 @@ import voteInstance from '../voteInstance';
 export const getVoteList = (
   pageNm: number = 1,
   size: number = 6,
-  condition = 'all',
+  condition: string = 'all',
 ) => {
   try {
     let query = '';
-    if (condition !== 'all') {
+    if (condition !== 'all' && condition !== null) {
       query = `page=${pageNm}&size=${size}&filter=${condition}`;
     } else {
       query = `page=${pageNm}&size=${size}`;
     }
-    console.log('api votelist');
+    console.log('api votelist', condition);
     const result = voteInstance
       .get(`/topics?${query}`, {
         headers: {

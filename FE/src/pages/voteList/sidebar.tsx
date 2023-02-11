@@ -16,14 +16,19 @@ const Sidebar = ({ condition, setPage, setCondition }: propTypes) => {
   return (
     <div>
       <S.Sidebar>
-        <p>
+        <S.CurrentCategoty>
           <S.SidebarLink href="/main">홈</S.SidebarLink> {' > '}{' '}
-          {conditions[condition]}
-        </p>
-        <S.Pagename>{conditions[condition]}</S.Pagename>
+          {condition === null ? conditions['all'] : conditions[condition]}
+        </S.CurrentCategoty>
+        <S.Pagename>
+          {condition === null ? conditions['all'] : conditions[condition]}
+        </S.Pagename>
         <S.SidebarCategory>투표현황</S.SidebarCategory>
         <S.CategoryTitle id="all" onClick={handleApiCondition}>
           전체 투표
+        </S.CategoryTitle>
+        <S.CategoryTitle id="hot" onClick={handleApiCondition}>
+          베스트 투표
         </S.CategoryTitle>
         <S.CategoryTitle id="progress" onClick={handleApiCondition}>
           진행중 투표

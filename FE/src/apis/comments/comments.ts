@@ -51,6 +51,10 @@ export const postComment = async (
         if (res.status === 201) {
           return { status: 'CREATED', ...res.data };
         }
+      })
+      .catch((e) => {
+        alert(e.response.data.message);
+        console.log(e.response.data.message);
       });
     return result;
   } catch (error) {
@@ -68,7 +72,7 @@ export const patchComment = async (
   token: string,
 ) => {
   try {
-    console.log('patch comment');
+    console.log('patch comment', commentId);
     const result = voteInstance
       .patch(
         `/topics/comments/${commentId}`,
@@ -84,10 +88,11 @@ export const patchComment = async (
       .then((res) => {
         if (res.status === 200) {
           return { status: 'REWRITED', ...res.data };
-        } else if (res.status === 401) {
-          alert('댓글 권한이 없습니다');
         }
-        throw new Error();
+      })
+      .catch((e) => {
+        alert(e.response.data.message);
+        console.log(e.response.data.message);
       });
     return result;
   } catch (error) {

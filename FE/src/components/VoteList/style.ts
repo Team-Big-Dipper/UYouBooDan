@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface isClosed {
+  isClosed: boolean;
+}
+
 export const CardItem = styled.div`
   border: 1px solid #e2e6ee;
   border-radius: 10px;
@@ -41,17 +45,17 @@ export const Content = styled.div`
   height: 40px;
 `;
 
-export const CardDDay = styled.div`
-  background-color: #4285f4;
+export const CardDDay = styled.div<isClosed>`
+  background-color: ${(props) => (props.isClosed ? '#a2adc5' : '#4285f4')};
   color: white;
-  padding: 7px;
+  padding: 9px;
   border-radius: 15px;
   width: 70px;
   height: 30px;
   text-align: center;
+  font-size: 0.8rem;
+
   @media (max-width: 479px) {
-    padding: 7px;
-    font-size: 0.8rem;
     padding: 4px;
   }
 `;

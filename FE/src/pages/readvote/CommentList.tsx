@@ -25,8 +25,7 @@ const CommentList = ({ topicId }: any) => {
   const [isPostComment, setIsPostComment] = useState(false);
 
   const handlePageNum = (e: any) => {
-    let num = Number(e.target.textContent);
-    setPageNum(num);
+    setPageNum(Number(e.target.textContent));
   };
   const handlePageButton = (e: any) => {
     console.log(e.target);
@@ -106,7 +105,11 @@ const CommentList = ({ topicId }: any) => {
               </div>
               {commentPageBtn.map((el, idx) => {
                 return (
-                  <S.CommentPageNum key={idx} onClick={handlePageNum}>
+                  <S.CommentPageNum
+                    key={idx}
+                    onClick={handlePageNum}
+                    isCurrentPage={pageNum === el ? true : false}
+                  >
                     {el}
                   </S.CommentPageNum>
                 );

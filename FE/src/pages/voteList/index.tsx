@@ -3,6 +3,8 @@ import Sidebar from './sidebar';
 import ListPage from './listPage';
 import * as S from './style';
 import { getVoteList } from '../../apis/votelist/votelist';
+import { useDispatch, useSelector } from 'react-redux';
+import { getVoteCondition } from '../../redux/slices/getVoteConditionSlice';
 
 interface propData {
   category: string;
@@ -17,10 +19,23 @@ interface propData {
 const VoteList = () => {
   const [data, setData] = useState<propData[]>([]);
   const [condition, setCondition] = useState('all');
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState(6);
-  const [totalPage, setTotalPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { mobileCondition } = useSelector(
+    (state: any) => state.getVoteCondition,
+  );
+  //console.log(conditions);
+  useEffect(() => {
+    setCondition(mobileCondition);
+    setPage(1);
+    if (mobileCondition === condition) {
+      dispatch(getVoteCondition({ mobileCondition: null }));
+    }
+  }, [mobileCondition]);
+
   useEffect(() => {
     setIsLoading(true);
     getVoteList(page, size, condition)?.then((res) => {
@@ -39,6 +54,7 @@ const VoteList = () => {
           setCondition={setCondition}
         />
         <ListPage
+          page={page}
           isLoading={isLoading}
           data={data}
           totalPage={totalPage}

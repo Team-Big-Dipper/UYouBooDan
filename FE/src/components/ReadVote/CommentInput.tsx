@@ -40,7 +40,6 @@ const CommentInput = ({ topicId, setData, setIsPostComment }: propsType) => {
         }
       });
       reset({ answer: '' });
-      console.log(data.answer);
     }
   };
 

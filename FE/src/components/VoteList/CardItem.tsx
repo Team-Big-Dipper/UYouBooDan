@@ -41,7 +41,9 @@ const CardItem = ({ prop }: propTypes) => {
         <S.CardCategory># {prop.category}</S.CardCategory>
         <S.CardContents>
           <S.Content>{prop.title}</S.Content>
-          <S.CardDDay>{Dday.length === 0 ? '종료' : Dday}</S.CardDDay>
+          <S.CardDDay isClosed={Dday.length === 0 ? true : false}>
+            {Dday.length === 0 ? '종료' : Dday}
+          </S.CardDDay>
         </S.CardContents>
       </S.CardContentsDiv>
       <S.ProfileContainer>
@@ -50,9 +52,7 @@ const CardItem = ({ prop }: propTypes) => {
         <S.Date>{created}</S.Date>
       </S.ProfileContainer>
       <S.TheFirstItem>
-        {prop.theFirstItemName === null ? null : (
-          <>1위 {prop.theFirstItemName}</>
-        )}
+        {!!prop.theFirstItemName ? <>1위 {prop.theFirstItemName}</> : null}
       </S.TheFirstItem>
     </S.CardItem>
   );
