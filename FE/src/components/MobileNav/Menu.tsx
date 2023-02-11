@@ -15,6 +15,8 @@ export const Menu: React.FunctionComponent<HambugerNav> = ({
   isOpen,
   setIsOpen,
 }) => {
+  // const accessLocal = localStorage.getItem('Authorization')
+  // const accessSession = sessionStorage.getItem('Authorization')
   const router = useRouter();
   const dispatch = useDispatch();
   const HandleGetVoteCondition = (e: any) => {
@@ -22,8 +24,6 @@ export const Menu: React.FunctionComponent<HambugerNav> = ({
     setIsOpen(false);
     router.push({ pathname: '/voteList', query: { conditions: e.target.id } });
   };
-  // const accessLocal = localStorage.getItem('Authorization')
-  // const accessSession = sessionStorage.getItem('Authorization')
   return (
     <style.MenuContainer className={isOpen ? 'open' : ''}>
       {/* {(accessLocal || accessSession) ? <LogInAfterNav /> : <LoginNav />} */}

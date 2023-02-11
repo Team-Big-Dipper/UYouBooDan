@@ -32,7 +32,7 @@ const VoteList = () => {
     setCondition(mobileCondition);
     setPage(1);
     if (mobileCondition === condition) {
-      dispatch(getVoteCondition({ mobileCondition: null }));
+      dispatch(getVoteCondition({ mobileCondition: mobileCondition }));
     }
   }, [mobileCondition]);
 
