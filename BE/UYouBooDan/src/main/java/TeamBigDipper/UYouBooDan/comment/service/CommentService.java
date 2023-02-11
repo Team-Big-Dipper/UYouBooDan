@@ -152,6 +152,12 @@ public class CommentService {
         }
     }
 
+    public int getTotalLike(Long commentId){
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        return comment.getTotalLike();
+    }
+
     /**
      * 댓글 수정 및 삭제 권한 확인 메서드
      * @param comment
