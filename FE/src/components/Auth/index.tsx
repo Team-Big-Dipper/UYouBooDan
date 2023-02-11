@@ -42,8 +42,15 @@ const Auth = () => {
         .then((res: AxiosResponse) => {
           console.log('로그인 성공!');
           console.log('로그인 버튼 눌렀을때 res : ', res);
+          console.log(
+            'res.headers.authorization : ',
+            res.headers.authorization,
+          );
           const access_token: any = res.headers.authorization?.split(' ')[1];
           const refresh_token: any = res.headers.refreshtoken;
+          axios.defaults.headers.common[
+            'Authorization'
+          ] = `Bearer ${access_token}`;
           checkedLogin(access_token, refresh_token, checked);
 
           console.log('res.data', res.data);
@@ -195,7 +202,24 @@ const Auth = () => {
         <S.NaverLoginDiv>
           <NaverSvg />
         </S.NaverLoginDiv>
-        <S.GoogleLoginDiv>
+        <S.GoogleLoginDiv
+          onClick={() => {
+            axios
+              .get(`${api}/google/oauth`, {
+                headers: {
+                  'Access-Control-Allow-Origin': '*',
+                  'ngrok-skip-browser-warning': 'any',
+                },
+              })
+              .then((res: AxiosResponse) => {
+                console.log('res', res);
+                router.push(res.data);
+              })
+              .catch((err: AxiosError) => {
+                console.log('err : ', err.message);
+              });
+          }}
+        >
           <GoogleSvg />
         </S.GoogleLoginDiv>
       </S.SnsLoginContainer>

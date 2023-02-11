@@ -21,12 +21,17 @@ export const ContentBox = styled.div`
   display: flex;
   align-items: center;
   gap: 60px;
+  /* border: 1px solid blue; */
+  height: 100%;
 `;
 
 export const ContentTextBox = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 25px 0 0 20px;
+  justify-content: space-between;
+  padding: 25px 0 10px 20px;
+  height: 100%;
+  /* border: 1px solid red; */
 `;
 export const ContentCategory = styled.div`
   margin-bottom: 8px;
@@ -111,9 +116,12 @@ export const PageNationDiv = styled.div`
   display: flex;
   margin-top: 100px;
   justify-content: center;
-  gap: 15px;
+  align-items: center;
+  gap: 20px;
 `;
 export const PageNationNumberDiv = styled.div`
   display: flex;
-  gap: 15px;
+  font-size: 1.3rem;
+  color: #667085;
+  gap: 30px;
 `;
