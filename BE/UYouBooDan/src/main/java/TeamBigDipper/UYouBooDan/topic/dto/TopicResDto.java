@@ -5,6 +5,7 @@ import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,12 +34,16 @@ public class TopicResDto {
     private Long likes;         // 좋아요 수
     private Boolean isLiked;    // 조회하는 사람이 좋아요를 했는지 여부
 
+    private Boolean isClosed;   // 투표가 마감됐는지 여부
+
+    private List<String> theFirstItemNames;         // 1위 투표 항목 - 공동 1위 포함
+
     /**
      * 투표 게시글 Topic 객체를 Topic Response DTO 클래스로 변환하는 생성자
      * @param topic 투표 게시글 Topic 객체
      */
     public TopicResDto(Topic topic) {
-        this.topicId = topic.getTopicId();                      // 투표 게시글 ID
+        topicId = topic.getTopicId();                      // 투표 게시글 ID
         this.category = topic.getCategory().getCategoryName();  // 카테고리 
         this.title = topic.getTitle();                          // 투표 게시글 제목
         this.content = topic.getContent();                      // 투표게시글 내용
@@ -63,11 +68,17 @@ public class TopicResDto {
         this.author = topic.getMember().getNickname().getName();    // 작성자 nickname
         this.isAuthor = topic.getIsAuthor();        // 조회하는 사람이 작성자인지 여부
         this.isVoted = topic.getIsVoted();          // 조회하는 사람이 투표했는지 여부
+        isClosed = topic.isTopicClosed(LocalDateTime.now());    // 현재 시간으로부터 투표가 마감됐는지 여부 확인
 
         // TODO: 투표 게시글의 조회수
         // views
+
         likes = topic.countNumberOfTopicLike();     // 투표 게시글의 좋아요 개수
         this.isLiked = topic.getIsLiked();          // 조회하는 사람이 투표 게시글에 좋아요 했는지 여부
+
+        theFirstItemNames = new ArrayList<>();      // DTO의 1위 투표 항목 이름 리스트 생성
+        topic.findTheFirstVoteItemName();           // 투표 게시글에서 1위 투표 항목 리스트 찾기
+        theFirstItemNames.addAll(topic.getTheFirstItemNames());     // DTO의 1위 투표 항목 이름 리스트에 삽입
     }
 
     /**
