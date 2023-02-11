@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,7 +17,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -75,12 +75,15 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = jwtTokenizer.delegateRefreshToken(authenticatedMember);
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-        Cookie cookie = new Cookie("refreshToken",refreshToken);
-//        cookie.setMaxAge(7*24*60*60);
-//        cookie.setPath("/");
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
+        // refreshToken responseCookie builder 방식
+        ResponseCookie cookie = ResponseCookie.from("refreshToken",refreshToken)
+//                .maxAge(7*24*60*60)
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .httpOnly(true)
+                .build();
+        response.setHeader("Set_Cookie", cookie.toString());
 
         // 로그인시, Redis 캐시 서버에 Refresh 토큰을 저장하는 로직 ( key:value 형식의 set방식으로 저장되며, key는 RTkey+회원 식별자, value는 refreshToken으로 저장)
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();

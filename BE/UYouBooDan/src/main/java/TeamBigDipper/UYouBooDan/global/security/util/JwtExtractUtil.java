@@ -3,14 +3,12 @@ package TeamBigDipper.UYouBooDan.global.security.util;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -77,6 +75,22 @@ public class JwtExtractUtil {
             else return false;
         } catch (Exception e) { return false; }
     }
+
+
+
+    public String extractAccessTokenFromJwt(HttpServletRequest request) {
+        try { return request.getHeader("Authorization").replace("Bearer ", ""); }
+        catch (Exception e) { throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED); }
+    }
+
+
+    public Long getExpiration (String accessToken) {
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        Date expiration = Jwts.parserBuilder().setSigningKey(base64EncodedSecretKey).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
+
 
 
     /**
