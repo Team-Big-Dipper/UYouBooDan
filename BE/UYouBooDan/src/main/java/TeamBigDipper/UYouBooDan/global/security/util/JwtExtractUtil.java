@@ -77,13 +77,23 @@ public class JwtExtractUtil {
     }
 
 
-
+    /**
+     * Authorization에서 AccessToken를 parsing하여 반환하는 메소드
+     * @param request
+     * @return
+     */
     public String extractAccessTokenFromJwt(HttpServletRequest request) {
         try { return request.getHeader("Authorization").replace("Bearer ", ""); }
         catch (Exception e) { throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED); }
     }
 
 
+    /**
+     * AccessToken에서 만료시간을 얻어, 현재시간부터 언제까지 시간이 남았는지 반환하는 메소드
+     * Redis에 저장된 Logout확인용 AccessToken의 Timeout 지정을 위함
+     * @param accessToken
+     * @return
+     */
     public Long getExpiration (String accessToken) {
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         Date expiration = Jwts.parserBuilder().setSigningKey(base64EncodedSecretKey).build().parseClaimsJws(accessToken).getBody().getExpiration();
