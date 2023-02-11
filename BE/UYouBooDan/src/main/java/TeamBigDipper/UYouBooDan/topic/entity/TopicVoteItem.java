@@ -90,4 +90,12 @@ public class TopicVoteItem extends BaseTimeEntity {
         topicVoteItemVoted = false;
         return false;
     }
+
+    /**
+     * 투표 항목의 투표 수 계산
+     * @return 투표 항목의 투표 수
+     */
+    public int findNumberOfVoteInItem() {
+        return topicVotes.size();
+    }
 }
