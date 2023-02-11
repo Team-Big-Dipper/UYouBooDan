@@ -6,6 +6,9 @@ import TeamBigDipper.UYouBooDan.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,11 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
+    private final RedisTemplate redisTemplate;
 
 
     /**
@@ -77,7 +82,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
 
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("RTKey"+authenticatedMember.getMemberId(), refreshToken);
+        log.info("redis RT : {}", valueOperations.get("RTKey"+authenticatedMember.getMemberId()));
 //        response.setHeader("RefreshToken", refreshToken); // 쿠키에 넣음
+
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }
 

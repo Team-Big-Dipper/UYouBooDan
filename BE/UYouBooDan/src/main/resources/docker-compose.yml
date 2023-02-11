@@ -1,0 +1,13 @@
+volumes:
+  data:
+
+services:
+  redis:
+    image: redis:latest
+    volumes:
+      - data:/data
+    hostname: localhost
+    ports:
+      - 6379:6379
+  myapp:
+    image: 2f66aad5324a
