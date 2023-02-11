@@ -27,9 +27,6 @@ const VoteBtn = () => {
   const handleLink = () => {
     router.push('/voteList');
   };
-  const handlePost = () => {
-    console.log('post');
-  };
   const handleDelete = () => {
     console.log('delete');
   };
@@ -49,15 +46,6 @@ const VoteBtn = () => {
               >
                 목록가기
               </S.ReadVoteBtn>
-              <>
-                {openModal ? (
-                  <ButtonModal
-                    text={askText}
-                    confirmFunc={handlePost}
-                    setOpenModal={setOpenModal}
-                  />
-                ) : null}
-              </>
             </>
           ) : (
             <>

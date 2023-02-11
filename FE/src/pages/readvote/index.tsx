@@ -2,12 +2,15 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
 import VoteTitle from '../../components/ReadVote/voteTitle';
 import VoteContent from '../../components/ReadVote/voteContent';
-import CommentList from '../../components/ReadVote/CommentList';
+import CommentList from './CommentList';
 import { SingleVoteContainer } from '../../components/ReadVote/singleVoteContainer';
 import { useRouter } from 'next/router';
 import VoteBtn from '../../components/ReadVote/voteBtn';
 import { CalcTotal } from '../../utils/calculate';
-import { getReadVote } from '../../apis/readvote';
+import { getReadVote } from '../../apis/readvote/readvote';
+import { CalcDday } from '../../utils/calculate';
+import { useGetToken } from '../../hooks/userToken/useGetToken';
+import FindTheFirstItem from '../../utils/findtheFirstItem';
 //redux
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrent } from '../../redux/slices/currentVoteSlice';
@@ -45,7 +48,9 @@ const ReadVote = () => {
   const router = useRouter();
   const { pid } = router.query;
   const dispatch = useDispatch();
+  const usertoken = useGetToken();
   const [data, setData] = useState<stateType>();
+  const [theFirstVoteItem, setTheFirstVoteItem] = useState<object>();
   const [voteBtns, setVoteBtns] = useState<voteType[]>();
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(20);
@@ -53,83 +58,106 @@ const ReadVote = () => {
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
-  //api요청
+  // redux
+  const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
+
   useEffect(() => {
     console.log('pageid', pid);
     if (pid === undefined) {
       return;
     } else {
       setIsLoading(true);
-      getReadVote(pid)?.then((res) => {
-        setData({ ...res.data });
-        setVoteBtns([...res.data.topicVoteItems]);
-        setTotalCount(CalcTotal(res.data.topicVoteItems));
-        dispatch(
-          getCurrent({
+      if (usertoken !== undefined) {
+        getReadVote(pid, usertoken)?.then((res) => {
+          const dday = CalcDday(res.data.closedAt);
+          const theFirst = FindTheFirstItem(res.data.topicVoteItems);
+          const dispatchCurrentObj = {
             isAuthor: res.data.isAuthor,
             isVoted: res.data.isVoted,
-            isClosed: res.data.closed,
-            bestItem: res.data.bestItem,
-          }),
-        );
-        setIsLoading(false);
-      });
+            theFirstVoteId: theFirst.numberOfVotes,
+          };
+          setData({ ...res.data });
+          setVoteBtns([...res.data.topicVoteItems]);
+          setTotalCount(CalcTotal(res.data.topicVoteItems));
+          if (dday.length === 0) {
+            dispatch(
+              getCurrent({
+                ...dispatchCurrentObj,
+                isClosed: true,
+              }),
+            );
+          } else {
+            dispatch(
+              getCurrent({
+                ...dispatchCurrentObj,
+                isClosed: false,
+              }),
+            );
+          }
+          setIsLoading(false);
+        });
+      }
     }
   }, [pid]);
-  // redux
-  const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
 
   return (
     <>
-      {isLoading ? (
-        <p>로딩중...</p>
-      ) : (
+      <S.PageContainer>
+        <S.CurrentCategoty>
+          <S.LinkButton href="/">홈</S.LinkButton>
+          {' > '}카테고리{' > '}게시글
+        </S.CurrentCategoty>
         <>
-          <S.PageContainer>
-            <S.CurrentCategoty>
-              <S.LinkButton href="/">홈</S.LinkButton>
-              {' > '}카테고리{' > '}게시글
-            </S.CurrentCategoty>
-            <VoteTitle
-              category={data?.category}
-              title={data?.title}
-              createdAt={data?.createdAt}
-              author={data?.author}
-              closedAt={data?.closedAt}
-              views={data?.views}
-              likes={data?.likes}
-            />
-            <S.VoteContentLayout>
-              {!data?.image ? (
-                <VoteContent content={data?.content} image={null} />
-              ) : (
-                <VoteContent content={data?.content} image={data?.image} />
-              )}
-              <div>
-                {voteBtns?.map((el) => {
-                  return (
-                    <SingleVoteContainer
-                      key={el.topicVoteItemId}
-                      id={el.topicVoteItemId}
-                      content={el.topicVoteItemName}
-                      count={el.numberOfVotes}
-                      selectedBtn={selectedBtn}
-                      handleSelectedBtn={handleSelectedBtn}
-                      totalCount={totalCount}
-                      isTopicVoteItemVoted={el.isTopicVoteItemVoted}
-                    />
-                  );
-                })}
-              </div>
-              <S.TotalVoteCount isClosed={isClosed}>
-                {isClosed && isAuthor ? '총투표수: ' + totalCount + '표' : null}
-              </S.TotalVoteCount>
-              <VoteBtn />
-            </S.VoteContentLayout>
-            <CommentList topicId={pid} />
-          </S.PageContainer>
+          {isLoading ? (
+            <p>로딩중...</p>
+          ) : (
+            <>
+              <VoteTitle
+                topidId={pid}
+                category={data?.category}
+                title={data?.title}
+                createdAt={data?.createdAt}
+                author={data?.author}
+                closedAt={data?.closedAt}
+                views={data?.views}
+                likes={data?.likes}
+              />
+              <S.VoteContentLayout>
+                {!data?.image ? (
+                  <VoteContent content={data?.content} image={null} />
+                ) : (
+                  <VoteContent content={data?.content} image={data?.image} />
+                )}
+                <div>
+                  {voteBtns?.map((el) => {
+                    return (
+                      <SingleVoteContainer
+                        key={el.topicVoteItemId}
+                        topicId={pid}
+                        itemId={el.topicVoteItemId}
+                        content={el.topicVoteItemName}
+                        count={el.numberOfVotes}
+                        setVoteBtns={setVoteBtns}
+                        selectedBtn={selectedBtn}
+                        handleSelectedBtn={handleSelectedBtn}
+                        totalCount={totalCount}
+                        isTopicVoteItemVoted={el.isTopicVoteItemVoted}
+                      />
+                    );
+                  })}
+                </div>
+                <S.TotalVoteCount isClosed={isClosed}>
+                  {isClosed && isAuthor
+                    ? '총투표수: ' + totalCount + '표'
+                    : null}
+                </S.TotalVoteCount>
+                <VoteBtn />
+              </S.VoteContentLayout>
+              <CommentList topicId={pid} />
+            </>
+          )}
         </>
-      )}
+      </S.PageContainer>
     </>
   );
 };

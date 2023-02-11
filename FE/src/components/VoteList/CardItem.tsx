@@ -13,6 +13,7 @@ interface propTypes {
     nickName: string;
     title: string;
     topicId: number;
+    theFirstItemName: string | null;
   };
 }
 
@@ -36,18 +37,23 @@ const CardItem = ({ prop }: propTypes) => {
 
   return (
     <S.CardItem onClick={handleLink}>
-      <div>
+      <S.CardContentsDiv>
         <S.CardCategory># {prop.category}</S.CardCategory>
         <S.CardContents>
           <S.Content>{prop.title}</S.Content>
           <S.CardDDay>{Dday.length === 0 ? '종료' : Dday}</S.CardDDay>
         </S.CardContents>
-      </div>
+      </S.CardContentsDiv>
       <S.ProfileContainer>
         <ProfileImage />
         <S.UserName>{prop.nickName} |</S.UserName>
         <S.Date>{created}</S.Date>
       </S.ProfileContainer>
+      <S.TheFirstItem>
+        {prop.theFirstItemName === null ? null : (
+          <>1위 {prop.theFirstItemName}</>
+        )}
+      </S.TheFirstItem>
     </S.CardItem>
   );
 };

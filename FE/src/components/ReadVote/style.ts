@@ -83,12 +83,19 @@ export const ContentInfo = styled.div`
   color: #667085;
   display: flex;
   margin-left: 15px;
+  width: 270px;
+  justify-content: space-between;
   @media (min-width: 480px) and (max-width: 767px) {
     margin: 0;
   }
   @media (max-width: 479px) {
     margin-left: 0;
   }
+`;
+export const ContentInfoSpan = styled.span`
+  overflow: hidden;
+  height: 17px;
+  width: fit-content;
 `;
 export const LikeButton = styled.div`
   display: flex;
@@ -348,8 +355,6 @@ export const CommentPageBtns = styled.div`
   background-color: white;
   align-items: center;
 
-  @media (min-width: 480px) and (max-width: 767px) {
-  }
   @media (max-width: 479px) {
     font-size: 0.6rem;
   }

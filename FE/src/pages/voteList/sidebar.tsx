@@ -1,15 +1,16 @@
 import React from 'react';
 import * as S from './style';
 import { conditions } from '../../constants/conditions';
-import Link from 'next/link';
 
 interface propTypes {
   condition: string;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
   setCondition: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Sidebar = ({ condition, setCondition }: propTypes) => {
+const Sidebar = ({ condition, setPage, setCondition }: propTypes) => {
   const handleApiCondition = (e: any) => {
+    setPage(1);
     setCondition(e.target.id);
   };
   return (

@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import voteInstance from './voteInstance';
+import voteInstance from '../voteInstance';
 
 export const getVoteList = (
   pageNm: number = 1,
@@ -13,6 +13,7 @@ export const getVoteList = (
     } else {
       query = `page=${pageNm}&size=${size}`;
     }
+    console.log('api votelist');
     const result = voteInstance
       .get(`/topics?${query}`, {
         headers: {
@@ -21,7 +22,6 @@ export const getVoteList = (
         },
       })
       .then((res) => {
-        console.log('api votelist');
         return res.data;
       });
     return result;

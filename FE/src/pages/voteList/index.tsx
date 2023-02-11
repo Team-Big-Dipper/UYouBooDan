@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Sidebar from './sidebar';
 import ListPage from './listPage';
 import * as S from './style';
-import { getVoteList } from '../../apis/votelist';
+import { getVoteList } from '../../apis/votelist/votelist';
 
 interface propData {
   category: string;
@@ -11,6 +11,7 @@ interface propData {
   nickName: string;
   title: string;
   topicId: number;
+  theFirstItemName: string | null;
 }
 
 const VoteList = () => {
@@ -31,19 +32,20 @@ const VoteList = () => {
 
   return (
     <>
-      {isLoading ? (
-        <p>로딩중</p>
-      ) : (
-        <S.PageContainer>
-          <Sidebar condition={condition} setCondition={setCondition} />
-          <ListPage
-            data={data}
-            totalPage={totalPage}
-            setPage={setPage}
-            condition={condition}
-          />
-        </S.PageContainer>
-      )}
+      <S.PageContainer>
+        <Sidebar
+          condition={condition}
+          setPage={setPage}
+          setCondition={setCondition}
+        />
+        <ListPage
+          isLoading={isLoading}
+          data={data}
+          totalPage={totalPage}
+          setPage={setPage}
+          condition={condition}
+        />
+      </S.PageContainer>
     </>
   );
 };

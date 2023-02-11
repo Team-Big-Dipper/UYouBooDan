@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import voteInstance from './voteInstance';
+import voteInstance from '../voteInstance';
 
 export const getComments = async (
   pageNm: number = 1,
@@ -7,16 +7,15 @@ export const getComments = async (
   topicId: string = '1',
 ) => {
   try {
+    console.log('get comment');
     const data = await voteInstance
       .get(`/topics/${topicId}/comments?page=${pageNm}&size=${size}`, {
         headers: {
-          Authorization: process.env.NEXT_PUBLIC_API_ACCESSTOKEN,
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
         },
       })
       .then((res) => {
-        console.log('get comment');
         return res.data;
       });
     return { ...data };
@@ -29,8 +28,13 @@ export const getComments = async (
   }
 };
 
-export const postComment = async (topicId: string, comment: string = '') => {
+export const postComment = async (
+  topicId: string,
+  comment: string = '',
+  token: string,
+) => {
   try {
+    console.log('post comment');
     const result = voteInstance
       .post(
         `/topics/${topicId}/comments`,
@@ -39,7 +43,7 @@ export const postComment = async (topicId: string, comment: string = '') => {
         },
         {
           headers: {
-            Authorization: process.env.NEXT_PUBLIC_API_ACCESSTOKEN,
+            Authorization: `Bearer ${token}`,
           },
         },
       )
@@ -47,7 +51,6 @@ export const postComment = async (topicId: string, comment: string = '') => {
         if (res.status === 201) {
           return { status: 'CREATED', ...res.data };
         }
-        console.log('post comment');
       });
     return result;
   } catch (error) {
@@ -62,9 +65,10 @@ export const postComment = async (topicId: string, comment: string = '') => {
 export const patchComment = async (
   commentId: number | undefined,
   comment: string = '',
+  token: string,
 ) => {
-  console.log('댓글아이디', commentId);
   try {
+    console.log('patch comment');
     const result = voteInstance
       .patch(
         `/topics/comments/${commentId}`,
@@ -73,15 +77,17 @@ export const patchComment = async (
         },
         {
           headers: {
-            Authorization: process.env.NEXT_PUBLIC_API_ACCESSTOKEN,
+            Authorization: `Bearer ${token}`,
           },
         },
       )
       .then((res) => {
-        if ((res.status = 200)) {
+        if (res.status === 200) {
           return { status: 'REWRITED', ...res.data };
+        } else if (res.status === 401) {
+          alert('댓글 권한이 없습니다');
         }
-        console.log('patch comment');
+        throw new Error();
       });
     return result;
   } catch (error) {
@@ -93,7 +99,10 @@ export const patchComment = async (
   }
 };
 
-export const deleteComment = async (commendId: number | undefined) => {
+export const deleteComment = async (
+  commendId: number | undefined,
+  token: string,
+) => {
   try {
     if (commendId === 0) {
       return;
@@ -105,7 +114,7 @@ export const deleteComment = async (commendId: number | undefined) => {
           {},
           {
             headers: {
-              Authorization: process.env.NEXT_PUBLIC_API_ACCESSTOKEN,
+              Authorization: `Bearer ${token}`,
             },
           },
         )
@@ -124,7 +133,10 @@ export const deleteComment = async (commendId: number | undefined) => {
     return;
   }
 };
-export const postCommentLike = async (commendId: number | undefined) => {
+export const postCommentLike = async (
+  commendId: number | undefined,
+  token: string,
+) => {
   try {
     if (commendId === 0) {
       return;
@@ -135,7 +147,7 @@ export const postCommentLike = async (commendId: number | undefined) => {
         {},
         {
           headers: {
-            Authorization: process.env.NEXT_PUBLIC_API_ACCESSTOKEN,
+            Authorization: `Bearer ${token}`,
           },
         },
       );

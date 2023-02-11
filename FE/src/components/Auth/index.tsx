@@ -42,7 +42,7 @@ const Auth = () => {
         .then((res: AxiosResponse) => {
           console.log('로그인 성공!');
           console.log('로그인 버튼 눌렀을때 res : ', res);
-          const access_token: any = res.headers.Authorization?.split(' ')[1];
+          const access_token: any = res.headers.authorization?.split(' ')[1];
           const refresh_token: any = res.headers.refreshtoken;
           checkedLogin(access_token, refresh_token, checked);
 

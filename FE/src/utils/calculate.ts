@@ -25,7 +25,7 @@ export const CalcDday = (end: any): string => {
   if (day >= 0 && day < 1) {
     return 'D-day';
   } else if (day >= 1) {
-    return 'D-' + day;
+    return 'D-' + (day + 1);
   } else {
     return '';
   }
