@@ -76,13 +76,15 @@ public class TopicService {
     }
 
     /**
-     * Pagination을 적용하여 투표 게시글 전체 목록조회
+     * Pagination을 적용하여 투표 게시글 전체 목록 조회
      * filter 값을 통해서 진행중, 마감된, 마감 임박 투표 게시글 조회 가능
+     * category 값을 통해서 각 카테고리에 해당하는 투표 게시글 조회 가능
      * @param pageable Pageable 객체
-     * @param topicFilter 투표 게시글 필터 : String 객체
-     * @return Page<Topic> Topic 클래스 타입의 Page
+     * @param topicFilter 투표 게시글 필터: String 객체
+     * @param topicCategory 투표 게시글 필터: String 객체
+     * @return Topic 클래스 타입의 Page 객체
      */
-    public Page<Topic> findTopics(Pageable pageable, String topicFilter) {
+    public Page<Topic> findTopics(Pageable pageable, String topicFilter, String topicCategory) {
 
         // 현재 시간
         LocalDateTime now = LocalDateTime.now();
