@@ -47,7 +47,8 @@ const CommentRewriteInput = ({
           setIsPostComment((prev: boolean) => !prev);
         }
       });
-      //reset({ answer: '' });
+    } else {
+      alert('로그인을 해주세요');
     }
   };
 

@@ -2,20 +2,23 @@ import Link from 'next/link';
 import styled from 'styled-components';
 
 interface PropsType {
-  isClosed: boolean;
+  isClosed: boolean | undefined;
 }
 
 export const PageContainer = styled.div`
   display: flex;
   padding: 5% 20% 0 20%;
   flex-direction: column;
+  @media (max-width: 479px) {
+    padding: 37px 17px 0 17px;
+  }
 `;
 
 export const TotalVoteCount = styled.div<PropsType>`
-  margin: ${(props) => (props.isClosed ? '35px 0 10px 0' : '10px 0 0 0')};
+  margin-top: 60px;
   text-align: center;
   @media (max-width: 479px) {
-    margin: ${(props) => (props.isClosed ? '25px 0 0 0' : '5px 0 0 0')};
+    margin-top: 30px;
   }
 `;
 

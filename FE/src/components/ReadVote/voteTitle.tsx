@@ -15,8 +15,8 @@ type propTypes = {
   createdAt: string | undefined;
   author: string | undefined;
   closedAt: string | undefined;
-  views: number | undefined;
-  likes: number | undefined;
+  views: number | null | undefined;
+  likes: number | null | undefined;
   topidId: string | string[] | undefined;
 };
 

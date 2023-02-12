@@ -2,22 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { SingleTextVote } from './singleTextVote';
 import ButtonModal from '../commons/buttonModal';
 import { CalcPercentage } from '../../utils/calculate';
-import { useDispatch, useSelector } from 'react-redux';
 import { patchSingleVoteItem } from '../../apis/readvote/readvote';
 import { useGetToken } from '../../hooks/userToken/useGetToken';
-import { getCurrent } from '../../redux/slices/currentVoteSlice';
 import ForbidVoteModal from '../commons/forbidVoteModal';
 
 type propTypes = {
   content: string;
-  count: number;
+  count: number | null;
   selectedBtn: number[];
   handleSelectedBtn: React.Dispatch<React.SetStateAction<number[]>>;
   itemId: number;
   totalCount: number;
   setVoteBtns: Function;
-  isTopicVoteItemVoted: boolean;
+  isTopicVoteItemVoted: boolean | null;
   topicId: string | string[] | undefined;
+  isAuthor: boolean | null | undefined;
+  isVoted: boolean | null | undefined;
+  isClosed: boolean | null | undefined;
+  theFirstItemNames: string[] | undefined;
 };
 
 export const SingleVoteContainer = ({
@@ -28,16 +30,36 @@ export const SingleVoteContainer = ({
   totalCount,
   setVoteBtns,
   isTopicVoteItemVoted,
+  isAuthor,
+  isVoted,
+  isClosed,
+  theFirstItemNames,
 }: propTypes) => {
-  const dispatch = useDispatch();
   const [text, setText] = useState('투표할까요?');
   const [openModal, setOpenModal] = useState(false);
   const [calculated, setCalculated] = useState<number>(1);
-  const { isAuthor, isVoted, isClosed } = useSelector(
-    (state: any) => state.currentVote,
-  );
+  const [isTheFirstItem, setIsTheFirstItem] = useState<boolean | undefined>();
+
   useEffect(() => {
-    setCalculated(CalcPercentage(count, totalCount));
+    if (theFirstItemNames?.length !== 0) {
+      const isFirstItem = theFirstItemNames?.map((el) => {
+        if (el === content) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (isFirstItem !== undefined && isFirstItem[0] !== undefined) {
+        console.log(isFirstItem[0], '여기');
+        setIsTheFirstItem(isFirstItem[0]);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (count !== null) {
+      setCalculated(CalcPercentage(count, totalCount));
+    }
   }, [totalCount]);
 
   const handleModal = () => {
@@ -62,13 +84,6 @@ export const SingleVoteContainer = ({
     if (token !== undefined) {
       patchSingleVoteItem(Number(topicId), itemId, token)?.then((res) => {
         setVoteBtns([...res.data]);
-        if (!isVoted) {
-          dispatch(
-            getCurrent({
-              isVoted: true,
-            }),
-          );
-        }
       });
     }
   };
@@ -93,8 +108,12 @@ export const SingleVoteContainer = ({
           <SingleTextVote
             itemId={itemId}
             content={content}
-            count={calculated}
+            count={count}
+            calculated={calculated}
+            isClosed={isClosed}
+            isAuthor={isAuthor}
             isTopicVoteItemVoted={isTopicVoteItemVoted}
+            isTheFirstItem={isTheFirstItem}
           />
         </div>
       </>

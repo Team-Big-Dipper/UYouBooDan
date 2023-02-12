@@ -8,49 +8,38 @@ import { useRouter } from 'next/router';
 import VoteBtn from '../../components/ReadVote/voteBtn';
 import { CalcTotal } from '../../utils/calculate';
 import { getReadVote } from '../../apis/readvote/readvote';
-import { CalcDday } from '../../utils/calculate';
 import { useGetToken } from '../../hooks/userToken/useGetToken';
-import FindTheFirstItem from '../../utils/findtheFirstItem';
-//redux
-import { useDispatch, useSelector } from 'react-redux';
-import { getCurrent } from '../../redux/slices/currentVoteSlice';
 
-interface stateType {
-  id: number | undefined;
-  category: string | undefined;
-  title: string | undefined;
-  createdAt: any;
-  author: string | undefined;
-  content: string | undefined;
-  image: string | undefined;
-  vote: {
-    isAuthor: boolean;
-    isVoted: boolean;
-    bestItem: number;
-    topicVoteItems: { content: string; totalVote: number }[];
-  };
-  closedAt: any;
-  views: number;
+interface responseType {
+  topicId: number;
+  category: string;
+  title: string;
+  content: string;
+  image: string;
+  topicVoteItems: voteType[];
+  closedAt: string;
+  createdAt: string;
+  author: string;
+  isAuthor: boolean;
+  isVoted: boolean;
+  views: number | null;
   likes: number;
-  duplicate: boolean | undefined;
-  voteType: string;
-  closed: boolean;
+  isLiked: boolean;
+  isClosed: boolean;
+  theFirstItemNames: string[];
 }
 
 interface voteType {
   topicVoteItemName: string;
-  totalVote: number;
   topicVoteItemId: number;
-  isTopicVoteItemVoted: boolean;
-  numberOfVotes: number;
+  isTopicVoteItemVoted: boolean | null;
+  numberOfVotes: number | null;
 }
 const ReadVote = () => {
   const router = useRouter();
   const { pid } = router.query;
-  const dispatch = useDispatch();
   const usertoken = useGetToken();
-  const [data, setData] = useState<stateType>();
-  const [theFirstVoteItem, setTheFirstVoteItem] = useState<object>();
+  const [data, setData] = useState<responseType>();
   const [voteBtns, setVoteBtns] = useState<voteType[]>();
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(20);
@@ -58,8 +47,6 @@ const ReadVote = () => {
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
-  // redux
-  const { isClosed, isAuthor } = useSelector((state: any) => state.currentVote);
 
   useEffect(() => {
     if (pid === undefined) {
@@ -68,32 +55,9 @@ const ReadVote = () => {
       setIsLoading(true);
       if (usertoken !== undefined) {
         getReadVote(pid, usertoken)?.then((res) => {
-          const dday = CalcDday(res.data.closedAt);
-          const theFirst = FindTheFirstItem(res.data.topicVoteItems);
-          const dispatchCurrentObj = {
-            isAuthor: res.data.isAuthor,
-            isVoted: res.data.isVoted,
-            // theFirstVoteId: theFirst.numberOfVotes,
-          };
           setData({ ...res.data });
           setVoteBtns([...res.data.topicVoteItems]);
           setTotalCount(CalcTotal(res.data.topicVoteItems));
-          if (dday.length === 0) {
-            dispatch(
-              getCurrent({
-                ...dispatchCurrentObj,
-                isClosed: true,
-              }),
-            );
-          } else {
-            dispatch(
-              getCurrent({
-                ...dispatchCurrentObj,
-                isClosed: false,
-              }),
-            );
-          }
-          setIsLoading(false);
         });
       }
     }
@@ -141,16 +105,20 @@ const ReadVote = () => {
                         handleSelectedBtn={handleSelectedBtn}
                         totalCount={totalCount}
                         isTopicVoteItemVoted={el.isTopicVoteItemVoted}
+                        isAuthor={data?.isAuthor}
+                        isVoted={data?.isVoted}
+                        isClosed={data?.isClosed}
+                        theFirstItemNames={data?.theFirstItemNames}
                       />
                     );
                   })}
                 </div>
-                <S.TotalVoteCount isClosed={isClosed}>
-                  {isClosed && isAuthor
+                <S.TotalVoteCount isClosed={data?.isClosed}>
+                  {data?.isClosed && data?.isAuthor
                     ? '총투표수: ' + totalCount + '표'
                     : null}
                 </S.TotalVoteCount>
-                <VoteBtn />
+                <VoteBtn isAuthor={data?.isAuthor} />
               </S.VoteContentLayout>
               <CommentList topicId={pid} />
             </>

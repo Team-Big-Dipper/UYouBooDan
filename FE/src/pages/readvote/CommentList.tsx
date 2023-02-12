@@ -6,20 +6,21 @@ import { getComments } from '../../apis/comments/comments';
 import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
 
 interface Props {
-  commendId: number;
-  totalLike: number;
   createdAt: string;
   memberId: number;
+  commendId: number;
+  totalLike: number;
   commentStatus: string;
   commentContent: string;
 }
+
 const CommentList = ({ topicId }: any) => {
   const [pageNum, setPageNum] = useState(1);
   const [pageSize, setPageSize] = useState(6);
   const [bestComment, setBestComment] = useState<Props>();
   const [totalComments, setTotalComments] = useState(0);
   const [data, setData] = useState<Props[]>();
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const [commentPageBtn, setCommentPageBtn] = useState<number[]>([1]);
   const [isLoading, setIsLoading] = useState(false);
   const [isPostComment, setIsPostComment] = useState(false);
@@ -57,7 +58,7 @@ const CommentList = ({ topicId }: any) => {
       setTotalComments(res.pageInfo.totalElements);
       setIsLoading(false);
     });
-  }, [pageNum, pageSize, topicId, isPostComment]);
+  }, [pageNum, topicId, isPostComment]);
 
   return (
     <>
