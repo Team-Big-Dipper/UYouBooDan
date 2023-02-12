@@ -58,7 +58,10 @@ const ReadVote = () => {
           setData({ ...res.data });
           setVoteBtns([...res.data.topicVoteItems]);
           setTotalCount(CalcTotal(res.data.topicVoteItems));
+          setIsLoading(false);
         });
+      } else {
+        alert('로그인이 필요한 서비스입니다');
       }
     }
   }, [pid]);
