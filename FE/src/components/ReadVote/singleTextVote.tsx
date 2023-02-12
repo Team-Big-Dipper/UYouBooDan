@@ -1,27 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as S from './style';
 import { useSelector } from 'react-redux';
 import { useChangeTextItems } from '../../hooks/readvote/useChangeVoteItems';
 
 interface propsTypes {
-  id: number;
+  itemId: number;
   content: string;
   count: number;
   isTopicVoteItemVoted: boolean;
 }
 export const SingleTextVote = ({
-  id,
+  itemId,
   content,
   count,
   isTopicVoteItemVoted,
 }: propsTypes) => {
-  const { isAuthor, isVoted, isClosed, bestItem } = useSelector(
+  const { isAuthor, isVoted, isClosed, theFirstVoteId } = useSelector(
     (state: any) => state.currentVote,
   );
   const isChangedComponent = useChangeTextItems(
-    id,
+    itemId,
     isClosed,
-    bestItem,
+    theFirstVoteId,
     isTopicVoteItemVoted,
   );
 

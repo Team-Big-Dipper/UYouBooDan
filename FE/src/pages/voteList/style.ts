@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 
+interface ChangePageNum {
+  isCurrentPage: boolean;
+}
+
 export const pageNum = styled.div`
   display: flex;
   justify-content: center;
@@ -18,8 +22,8 @@ export const pageNum = styled.div`
     font-size: 0.6rem;
   }
 `;
-export const pageNumFont = styled.p`
-  font-size: 1rem;
+export const pageNumFont = styled.p<ChangePageNum>`
+  font-size: ${(props) => (props.isCurrentPage ? '1.2rem' : '0.8rem')};
   margin: 0 10px;
   cursor: default;
   @media (max-width: 479px) {
@@ -61,6 +65,7 @@ export const Pagename = styled.p`
 `;
 export const SidebarLink = styled(Link)`
   text-decoration: none;
+  cursor: default;
   color: black;
 `;
 export const SidebarCategory = styled.p`
@@ -77,6 +82,7 @@ export const CategoryTitle = styled.p`
   margin-top: 0.5rem;
   padding-left: 1rem;
   line-height: 30px;
+  cursor: default;
 `;
 export const PageLink = styled(Link)`
   display: flex;
@@ -87,7 +93,7 @@ export const PageHeader = styled.div`
   display: flex;
   height: 135px;
   justify-content: space-between;
-  padding-top: 68px;
+  padding-top: 71px;
   color: #667085;
   margin-bottom: 100px;
   @media (min-width: 768px) and (max-width: 1040px) {
@@ -134,4 +140,7 @@ export const PageSubTitle = styled.p`
     line-height: 140%;
     margin: 10px 0;
   }
+`;
+export const CurrentCategoty = styled.p`
+  font-size: 1rem;
 `;

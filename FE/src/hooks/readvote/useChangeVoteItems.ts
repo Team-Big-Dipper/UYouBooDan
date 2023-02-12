@@ -1,40 +1,40 @@
 import React, { useEffect, useState } from 'react';
 
-export const useChangeImageItems = (
-  id: number,
-  isClosed: boolean,
-  bestItem: number,
-  isTopicVoteItemVoted: boolean,
-) => {
-  const [isChangedComponent, setIsChangedComponent] = useState(false);
-  useEffect(() => {
-    if (isClosed === true) {
-      if (bestItem === id) {
-        setIsChangedComponent(false);
-      } else {
-        setIsChangedComponent(true);
-      }
-    } else if (isClosed === false) {
-      if (isTopicVoteItemVoted === true) {
-        setIsChangedComponent(true);
-      } else {
-        setIsChangedComponent(false);
-      }
-    }
-  }, []);
-  return isChangedComponent;
-};
+// export const useChangeImageItems = (
+//   itemId: number,
+//   isClosed: boolean,
+//   theFirstVoteId: number,
+//   isTopicVoteItemVoted: boolean,
+// ) => {
+//   const [isChangedComponent, setIsChangedComponent] = useState(false);
+//   useEffect(() => {
+//     if (isClosed === true) {
+//       if (theFirstVoteId === itemId) {
+//         setIsChangedComponent(false);
+//       } else {
+//         setIsChangedComponent(true);
+//       }
+//     } else if (isClosed === false) {
+//       if (isTopicVoteItemVoted === true) {
+//         setIsChangedComponent(true);
+//       } else {
+//         setIsChangedComponent(false);
+//       }
+//     }
+//   }, []);
+//   return isChangedComponent;
+// };
 
 export const useChangeTextItems = (
-  id: number,
+  itemId: number,
   isClosed: boolean,
-  bestItem: number,
+  theFirstVoteId: number,
   isTopicVoteItemVoted: boolean,
 ) => {
   const [isChangedComponent, setIsChangedComponent] = useState(false);
   useEffect(() => {
     if (isClosed === true) {
-      if (bestItem === id) {
+      if (theFirstVoteId === itemId) {
         setIsChangedComponent(true);
       } else {
         setIsChangedComponent(false);
