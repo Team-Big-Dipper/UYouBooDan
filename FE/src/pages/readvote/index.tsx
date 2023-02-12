@@ -107,7 +107,7 @@ const ReadVote = () => {
           {' > '}카테고리{' > '}게시글
         </S.CurrentCategoty>
         <>
-          {!isLoading ? (
+          {isLoading ? (
             <p>로딩중...</p>
           ) : (
             <>
