@@ -27,13 +27,9 @@ const VoteList = () => {
   const { mobileCondition } = useSelector(
     (state: any) => state.getVoteCondition,
   );
-  //console.log(conditions);
   useEffect(() => {
     setCondition(mobileCondition);
     setPage(1);
-    if (mobileCondition === condition) {
-      dispatch(getVoteCondition({ mobileCondition: mobileCondition }));
-    }
   }, [mobileCondition]);
 
   useEffect(() => {
@@ -48,11 +44,7 @@ const VoteList = () => {
   return (
     <>
       <S.PageContainer>
-        <Sidebar
-          condition={condition}
-          setPage={setPage}
-          setCondition={setCondition}
-        />
+        <Sidebar condition={condition} setPage={setPage} />
         <ListPage
           page={page}
           isLoading={isLoading}

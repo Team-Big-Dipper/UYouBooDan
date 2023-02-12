@@ -1,17 +1,19 @@
 import React from 'react';
 import * as S from './style';
 import { conditions } from '../../constants/conditions';
+import { useDispatch } from 'react-redux';
+import { getVoteCondition } from '../../redux/slices/getVoteConditionSlice';
 
 interface propTypes {
   condition: string;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  setCondition: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Sidebar = ({ condition, setPage, setCondition }: propTypes) => {
+const Sidebar = ({ condition, setPage }: propTypes) => {
+  const dispatch = useDispatch();
   const handleApiCondition = (e: any) => {
+    dispatch(getVoteCondition({ mobileCondition: e.target.id }));
     setPage(1);
-    setCondition(e.target.id);
   };
   return (
     <div>
