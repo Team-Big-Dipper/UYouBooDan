@@ -84,15 +84,18 @@ public class TopicController {
     /**
      * 투표 게시글 목록 전체 조회
      * - filter 값을 통해서 진행중, 마감된, 마감 임박 투표 게시글 조회 가능
-     * @param pageable Pageable 객체
+     * - category 값을 통해 해당 카테고리의 투표 게시글 조회 가능
+     * @param pageable Pageable 객체 - size: 가져올 개수 , page : 몇번째 페이지
      * @param filter 투표 게시글 필터 : String 객체
-     * @return 페이지네이션이 적용된 투표 게시글 목록 리스트, Page 관련 정보 HttpStatus
+     * @param category 투표 게시글 카테고리 : String 객체
+     * @return 페이지네이션이 적용된 투표 게시글 목록 리스트, Page 관련 정보, HttpStatus
      */
     @GetMapping
     public ResponseEntity<MultiResDto> getTopics(Pageable pageable,
-                                                 @RequestParam(value = "filter", required = false) String filter) {
-        // TopicService에서 Pageable객체와 filter를 통해 투표 게시글 Topic Page 반환
-        Page<Topic> topicPage = topicService.findTopics(pageable, filter);
+                                                 @RequestParam(value = "filter", required = false) String filter,
+                                                 @RequestParam(value = "category", required = false) String category) {
+        // TopicService에서 Pageable객체와 filter, category를 통해 투표 게시글 Topic Page 반환
+        Page<Topic> topicPage = topicService.findTopics(pageable, filter, category);
 
         // Page Topic을 Response DTO로 변환
         Page<TopicPageResDto> topicPageResDtos = topicPage.map(TopicPageResDto::new);
