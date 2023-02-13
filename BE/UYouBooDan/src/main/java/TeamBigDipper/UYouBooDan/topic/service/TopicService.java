@@ -4,8 +4,10 @@ import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
+import TeamBigDipper.UYouBooDan.topic.entity.TopicLike;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVoteItem;
+import TeamBigDipper.UYouBooDan.topic.repository.TopicLikeRepository;
 import TeamBigDipper.UYouBooDan.topic.repository.TopicRepository;
 import TeamBigDipper.UYouBooDan.topic.repository.TopicVoteItemRepository;
 import TeamBigDipper.UYouBooDan.topic.repository.TopicVoteRepository;
@@ -27,6 +29,8 @@ public class TopicService {
     private final TopicRepository topicRepository;
     private final TopicVoteItemRepository topicVoteItemRepository;
     private final TopicVoteRepository topicVoteRepository;
+
+    private final TopicLikeRepository topicLikeRepository;
 
     /**
      * 투표 게시글 저장
@@ -50,6 +54,8 @@ public class TopicService {
 
         verifiedTopic.findIsAuthor(memberId);           // 조회하는 사람이 투표 게시글 작성자인지 확인
 
+        verifiedTopic.findIsLiked(memberId);            // 조회하는 사람이 좋아요 했는지 여부 확인
+
         return verifiedTopic;       // 투표 게시글 Topic 객체 반환
     }
 
@@ -70,13 +76,15 @@ public class TopicService {
     }
 
     /**
-     * Pagination을 적용하여 투표 게시글 전체 목록조회
+     * Pagination을 적용하여 투표 게시글 전체 목록 조회
      * filter 값을 통해서 진행중, 마감된, 마감 임박 투표 게시글 조회 가능
+     * category 값을 통해서 각 카테고리에 해당하는 투표 게시글 조회 가능
      * @param pageable Pageable 객체
-     * @param topicFilter 투표 게시글 필터 : String 객체
-     * @return Page<Topic> Topic 클래스 타입의 Page
+     * @param topicFilter 투표 게시글 필터: String 객체
+     * @param topicCategory 투표 게시글 필터: String 객체
+     * @return Topic 클래스 타입의 Page 객체
      */
-    public Page<Topic> findTopics(Pageable pageable, String topicFilter) {
+    public Page<Topic> findTopics(Pageable pageable, String topicFilter, String topicCategory) {
 
         // 현재 시간
         LocalDateTime now = LocalDateTime.now();
@@ -98,7 +106,8 @@ public class TopicService {
                 return topicRepository.findAllByClosedAtBetweenOrderByClosedAtAsc(now, end, pageable);
             // 전체 게시글 중 핫토픽 조회
             case HOT:
-                break;
+                // TODO: 전체 게시글 중에서 핫토픽 조회하는 메서드로 바꾸기
+                return topicRepository.findAllByClosedAtIsAfterOrderByCreatedAtDesc(now, pageable);
             // 투표 마감된 투표 게시글 목록 조회
             case CLOSED:
                 return topicRepository.findAllByClosedAtIsBeforeOrderByCreatedAtDesc(now, pageable);
@@ -177,6 +186,49 @@ public class TopicService {
                 .collect(Collectors.toList());
 
         return topicVoteItems;      // 투표 항목 리스트 반환
+    }
+
+    /**
+     * 투표 게시글에 좋아요 하기
+     * @param topicId 투표 게시글 id Long
+     * @param member 사용자 Member
+     * @return 투표 게시글 좋아요 TopicLike 객체
+     */
+    public TopicLike likeTopic(Long topicId, Member member) {
+        TopicLike topicLike;
+
+        Topic verifiedTopic = findVerifiedTopic(topicId);       // 유효한 투표 게시글인지 확인
+
+        // 해당 투표 게시글에 사용자가 추천하기 했는지 확인
+        Optional<TopicLike> optionalTopicLike =
+                topicLikeRepository.findByTopicIdAndMemberId(verifiedTopic.getTopicId(), member.getMemberId());
+
+        if (optionalTopicLike.isPresent()) {                // 해당 투표 게시글에 대해 이전에 사용자가 추천했던 기록이 있으면
+            topicLike = optionalTopicLike.get();            // Optional TopicLike 객체를 TopicLike 객체로 변환
+            if(topicLike.getTopicLikeStatus()) {            // 이전에 좋아요를 했으면
+                topicLike.changeTopicLikeStatusFalse();     // 투표 게시글의 좋아요 비활성화
+            } else {
+                topicLike.changeTopicLikeStatusTrue();      // 투표 게시글 좋아요 활성화
+            }
+        } else {                                        // 이전에 사용자가 추천했던 기록이 없으면
+            topicLike = TopicLike.builder()             // TopicLike 객체 생성
+                    .topic(verifiedTopic)
+                    .member(member)
+                    .build();
+            topicLike.changeTopicLikeStatusTrue();      // 투표 게시글 좋아요 활성화
+        }
+
+        return topicLikeRepository.save(topicLike);     // TopicLike 저장 후 반환
+    }
+
+    /**
+     *투표 게시글에 좋아요 개수 세기
+     * @param topicId  투표게시글 id Long
+     * @return 투표 게시글 좋아요 개수 long
+     */
+    public long findNumberOfTopicLikes(Long topicId) {
+        Topic verifiedTopic = findVerifiedTopic(topicId);       // 유효한 투표 게시글인지 확인
+        return verifiedTopic.countNumberOfTopicLike();          // 투표 게시글의 좋아요 수 확인 후 반환
     }
 
     /**

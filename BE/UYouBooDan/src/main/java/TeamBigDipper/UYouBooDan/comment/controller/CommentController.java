@@ -117,13 +117,14 @@ public class CommentController {
      * @return 200 OK
      */
     @PostMapping("topics/comments/{comment-id}/like")
-    public ResponseEntity<CommentLikeResDto> postCommentLike(@PathVariable(value = "comment-id") Long commentId,
+    public ResponseEntity<SingleResDto<CommentLikeResDto>> postCommentLike(@PathVariable(value = "comment-id") Long commentId,
                                                              HttpServletRequest request){
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         CommentLike commentLike = commentService.likeComment(commentId, memberId);
-        CommentLikeResDto response = new CommentLikeResDto(commentLike);
+        int totalLike = commentService.getTotalLike(commentId);
+        CommentLikeResDto response = new CommentLikeResDto(commentLike, totalLike);
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResDto<>(response), HttpStatus.OK);
 
     }
 

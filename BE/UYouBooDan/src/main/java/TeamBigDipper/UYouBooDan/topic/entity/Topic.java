@@ -40,11 +40,20 @@ public class Topic extends BaseTimeEntity {
     @OneToMany(mappedBy = "topic", cascade = CascadeType.PERSIST)       // 일대다 맵핑, PERSIST로 TopicVoteItem도 같이 저장
     private List<TopicVoteItem> topicVoteItems;      // 투표 항목
 
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.PERSIST)   // 일대다 맵핑
+    private List<TopicLike> topicLikes;                             // 투표 좋아요 리스트
+
     @Transient
     private Boolean isAuthor;       // 조회하는 사람이 작성자인지 여부
 
     @Transient
     private Boolean isVoted;        // 조회하는 사람이 투표했는지 여부
+
+    @Transient
+    private Boolean isLiked;        // 조회하는 사람이 좋아요했는지 여부
+
+    @Transient
+    private List<String> theFirstItemNames;    // 1위 투표 항목
 
     @Builder
     public Topic(String title, String content, String category,
@@ -55,6 +64,7 @@ public class Topic extends BaseTimeEntity {
         this.category = Category.nameOf(category);
         this.member = member;
         topicVoteItems = new ArrayList<>();
+        topicLikes = new ArrayList<>();
     }
 
     /**
@@ -108,6 +118,77 @@ public class Topic extends BaseTimeEntity {
     }
 
     /**
+     * 투표 게시글의 좋아요 개수 세기
+     * @return 좋아요 개수 long
+     */
+    public long countNumberOfTopicLike() {
+        // 좋아요 TopicLike 객체 리스트를 순회하면서 좋아요 상태가 true인 것만 계산
+        return topicLikes.stream()
+                .filter(topicLike -> topicLike.getTopicLikeStatus())
+                .count();
+    }
+
+    /**
+     * 조회하는 사용자가 투표게시글에 좋아요했는지 확인
+     * @param requestedMemberId 조회하는 사용자 id Long
+     * @return 투표 게시글에 좋아요 했는지 여부 Boolean
+     */
+    public Boolean findIsLiked(Long requestedMemberId) {
+        isLiked = false;                                // 게시글에 좋아요가 되지 않은 상태 - 초기 상태
+        for (TopicLike topicLike : topicLikes) {        // 게시글 좋아요 리스트를 순회하면서
+            // 요청한 사람이 좋아요를 했던 기록이 있고
+           if (topicLike.getMember().getMemberId().equals(requestedMemberId)){
+               if (topicLike.getTopicLikeStatus()){     // 좋아요 되어 있는 상태면
+                    isLiked = true;                     // 현재 게시글 좋아요 상태로 변환
+               }
+            }
+        }
+        return isLiked;     // 좋아요했는지 여부 상태 반환
+    }
+
+    /**
+     * 투표 게시글의 투표가 마감됐는지 여부 확인
+     * @param now 현재 시간 LocalDateTime
+     * @return 마감됐으면 true, 마감되지않았으면 false Boolean
+     */
+    public Boolean isTopicClosed(LocalDateTime now) {
+        if (topicStatus == TopicStatus.CLOSED) {        // 투표 게시글 상태가 마감 상태이면
+            return true;
+        } else if (closedAt.isBefore(now)){      // 현재 시간으로부터 마감일이 이전이면
+            topicStatus = TopicStatus.CLOSED;           // 투표 게시글 상태를 마감 상태로 바꿈
+            return true;                                // 투표 게시글이 마감된 상태 반환
+        }
+        return false;                                   // 투표 게시글이 마감되지 않은 상태 반환
+    }
+
+    /**
+     * 투표 게시글에서 1위 투표 항목 이름 리스트 찾기
+     * @return 1위 투표 항목 이름 리스트
+     */
+    public List<String> findTheFirstVoteItemName() {
+        theFirstItemNames = new ArrayList<>();                          // 1위 투표 항목 이름 리스트 초기화
+
+        int max = topicVoteItems.get(0).findNumberOfVoteInItem();               // 최대 투표수를 첫번째 투표 항목의 투표 수로 초기화
+        for (int i = 1; i < topicVoteItems.size(); i++) {                       // 각 투표 항목들을 순회하면서
+            int nowNumber = topicVoteItems.get(i).findNumberOfVoteInItem();     // 투표 수 계산하여 최대 투표 수 찾기
+            if (max < nowNumber){
+                max = nowNumber;
+            }
+        }
+
+        if (max != 0) {     // 최대 투표수가 0이 아니면(투표를 진행했으면) - 최대 투표 수가 0이면 투표 진행 안함.
+            for (TopicVoteItem topicVoteItem : topicVoteItems) {                    // 각 투표 항목들 진행하면서
+                if (topicVoteItem.findNumberOfVoteInItem() == max) {                // 최대 투표 수와 같은 투표 항목이면
+                    theFirstItemNames.add(topicVoteItem.getTopicVoteItemName());    // 1위 투표 항목 이름 리스트에 추가
+                }
+            }
+        }
+
+        // 1위 투표 항목 이름 리스트 반환
+        return theFirstItemNames;
+    }
+
+    /**
      * 카테고리 enum 클래스
      */
     @Getter
@@ -142,7 +223,8 @@ public class Topic extends BaseTimeEntity {
      */
     public enum TopicStatus {
         ACTIVE("활성화"),
-        REMOVED("삭제된 게시글")
+        REMOVED("삭제된 게시글"),
+        CLOSED("마감된 투표 게시글")
         ;
 
         @Getter
