@@ -256,10 +256,4 @@ public class MemberService {
         System.out.println(redisTemplate.opsForValue().get(accessToken).toString());
     }
 
-
-    public String getRefresh(Long memberId) {
-        String refresh = redisTemplate.opsForValue().get("RTKey"+memberId).toString();
-
-        return refresh;
-    }
 }
