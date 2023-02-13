@@ -3,14 +3,13 @@ package TeamBigDipper.UYouBooDan.global.security.util;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
+import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -25,15 +24,21 @@ public class JwtExtractUtil {
 
     private final JwtTokenizer jwtTokenizer;
 
+    private final RedisTemplate redisTemplate;
+
     /**
      * memberId(Entity 식별자)를 얻는 파싱 메소드
       * @param request HttpServlet에 담겨오는 HttpHeader를 받기위함
      * @return 회원 식별자
      */
     public Long extractMemberIdFromJwt (HttpServletRequest request) {
+        if(!isLoginUser(request)) throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED);
 
         try {
             String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+            verifyLoginToken(jws);  // 로그아웃한 유저(Logout된 Authorization이 들어왔을 경우)에 대한 필터링 로직. 레디스 활용
+
             String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
             Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
             Object value = claims.get("memberId");
@@ -51,8 +56,13 @@ public class JwtExtractUtil {
      * @return email
      */
     public String extractEmailFromJwt (HttpServletRequest request) {
+        if(!isLoginUser(request)) throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED);
+
         try {
             String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+            verifyLoginToken(jws);  // 로그아웃한 유저(Logout된 Authorization이 들어왔을 경우)에 대한 필터링 로직. 레디스 활용
+
             String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
             Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
             Object value = claims.get("email");
@@ -76,6 +86,31 @@ public class JwtExtractUtil {
             if(request.getHeader("Authorization")!=null) return true;
             else return false;
         } catch (Exception e) { return false; }
+    }
+
+
+    /**
+     * Authorization에서 AccessToken를 parsing하여 반환하는 메소드
+     * @param request
+     * @return
+     */
+    public String extractAccessTokenFromJwt(HttpServletRequest request) {
+        try { return request.getHeader("Authorization").replace("Bearer ", ""); }
+        catch (Exception e) { throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED); }
+    }
+
+
+    /**
+     * AccessToken에서 만료시간을 얻어, 현재시간부터 언제까지 시간이 남았는지 반환하는 메소드
+     * Redis에 저장된 Logout확인용 AccessToken의 Timeout 지정을 위함
+     * @param accessToken
+     * @return
+     */
+    public Long getExpiration (String accessToken) {
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        Date expiration = Jwts.parserBuilder().setSigningKey(base64EncodedSecretKey).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
     }
 
 
@@ -108,6 +143,13 @@ public class JwtExtractUtil {
             return email;
         }
         catch (Exception e) { throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED); }
+    }
+
+    private void verifyLoginToken(String accessToken) {
+        if(redisTemplate.opsForValue().get(accessToken)!=null
+                && redisTemplate.opsForValue().get(accessToken).toString().equals("Logout")) {
+            throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED);
+        }
     }
 
 }

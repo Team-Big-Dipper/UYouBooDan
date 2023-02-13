@@ -23,7 +23,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils customAuthorityUtils;
-//    private final RedisTemplame redisTemplame; // 레디스 적용 시 활성화 예정
 
 
     @Override
@@ -33,14 +32,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJwt(request); // 토큰 검증
             setSecurityContext(claims);
-            filterChain.doFilter(request, response);
 
-            /**
-             * 레디스 사용사 활성화 예정
-             */
-//            String header = request.getHeader("Authorization");
-//            String jws = header.replace("bearer ", "");
-//                        verifyLoinToken(jws);
+            // JwtExctractUtil을 사용하지 않을 경우, 인가 권한 검증을 위한 로직이 들어가야 할 부분.(with Redis)
+
+            filterChain.doFilter(request, response);
 
         } catch (ExpiredJwtException ee) {
             request.setAttribute("Exception", ee);
@@ -82,33 +77,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
      */
     private void setSecurityContext(Map<String, Object> claims) {
         String username = claims.get("username").toString();
-        List<GrantedAuthority> authorityList = customAuthorityUtils.createAuthorities((List) claims.get("roles")); // ema
-
-        /**
-         * 레디스 사용시 활성화 될 코드
-         * member에 대해 UsernamePasswordAuthenticationToken를 상속한 클래스인 wrapper 클래스 필요.
-         * grantedAuthorities 필요
-         */
-//        Long memberId = (Long) claims.get("memberId");
-//        SecurityContext sc = SecurityContextHolder.getContext();
-//        WrapperUserNamePasswordAuthenticationToken wrapperUserNamePasswordAuthenticationToken
-//                = new WrapperUserNamePasswordAuthenticationToken(username, null, grantedAuthorities, memberId);
-//        sc.setAuthentication(wrapperUserNamePasswordAuthenticationToken);
+        List<GrantedAuthority> authorityList = customAuthorityUtils.createAuthorities((List) claims.get("roles"));
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorityList);
         SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContextHolder에 인증정보(Context) 업데이트해줌
     }
-
-
-    /**
-     * 레디스 사용시 활성화 예정
-     */
-//    private void verifyLoginToken(String jws) {
-//        ValueOperations valueOperations = redisTemplate.opsForValue();
-//        String key = "logout_" + jws;
-//        String username = (String) valueOperations.get(key);
-//
-//        if (!username.equals(null)) throw new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND);
-//    }
 
 }
