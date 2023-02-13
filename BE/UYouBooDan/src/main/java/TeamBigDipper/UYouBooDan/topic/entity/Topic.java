@@ -1,6 +1,8 @@
 package TeamBigDipper.UYouBooDan.topic.entity;
 
 import TeamBigDipper.UYouBooDan.global.auditing.BaseTimeEntity;
+import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
+import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
@@ -189,6 +191,54 @@ public class Topic extends BaseTimeEntity {
     }
 
     /**
+     * 투표 게시글이 삭제됐는지 여부 반환하는 메서드
+     * @return 삭제됐으면 true, 아니면 false Boolean 반환
+     */
+    public Boolean isTopicRemoved(){
+        return topicStatus == TopicStatus.REMOVED;
+    }
+
+    /**
+     * 투표 게시글의 투표가 진행중인지 여부 반환하는 메서드
+     * @return 진행중이면 true, 아니면 false Boolean 반환
+     */
+    public Boolean isTopicInProgress() {
+        return topicStatus == TopicStatus.PROGRESS;
+    }
+
+    /**
+     * 투표 게시글의 카테고리 수정하는 메서드
+     * @param category
+     */
+    public void modifyTopicCategory(Category category) {
+        this.category = category;
+    }
+
+    /**
+     * 투표 게시글의 제목 수정하는 메서드
+     * @param title
+     */
+    public void modifyTopicTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * 투표 게시글의 내용 수정하는 메서드
+     * @param title
+     */
+    public void modifyTopicContent(String title) {
+        this.content = content;
+    }
+
+    /**
+     * 투표 게시글의 마감일 수정하는 메서드
+     * @param closedAt
+     */
+    public void modifyTopicClosedAt(LocalDateTime closedAt) {
+        this.closedAt = closedAt;
+    }
+
+    /**
      * 카테고리 enum 클래스
      */
     @Getter
@@ -214,7 +264,7 @@ public class Topic extends BaseTimeEntity {
                     return category;
                 }
             }
-            return null;
+            throw new BusinessLogicException(ExceptionCode.CATEGORY_NOT_EXIST);
         }
     }
 
@@ -224,7 +274,8 @@ public class Topic extends BaseTimeEntity {
     public enum TopicStatus {
         ACTIVE("활성화"),
         REMOVED("삭제된 게시글"),
-        CLOSED("마감된 투표 게시글")
+        CLOSED("마감된 투표 게시글"),
+        PROGRESS("투표가 진행 중인 게시글")
         ;
 
         @Getter
