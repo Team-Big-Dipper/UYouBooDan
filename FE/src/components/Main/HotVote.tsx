@@ -3,8 +3,6 @@ import * as style from './style';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { DdayCal } from '../../utils/dDay';
 
-// console.log(DdayCal(mockDeadLineList.data[0].closedAt));
-// console.log('dDay :', DdayCal('2023-03-02 22:30:00'))
 interface hotData {
   topicId: number,
   category: string;

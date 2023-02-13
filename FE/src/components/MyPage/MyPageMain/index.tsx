@@ -1,4 +1,6 @@
 import { ContentImgDefaultSvg } from '../../../assets/contentImgDefault';
+import { PageNationLeftSvg } from '../../../assets/pagenationLeft';
+import { PageNationRightSvg } from '../../../assets/pagenationRight';
 import * as S from './style';
 
 const MyPageMain = () => {
@@ -47,9 +49,9 @@ const MyPageMain = () => {
               <S.ContentInfoCreatedDiv>2023.01.06</S.ContentInfoCreatedDiv>
             </S.ContentInfo>
           </S.ContentTextBox>
-          <S.ContentDday>종료</S.ContentDday>
+          <S.ContentDdayEnd>종료</S.ContentDdayEnd>
         </S.ContentBox>
-        <S.ContentRanking>1위 김치찌개</S.ContentRanking>
+        <S.ContentRankingEnd>1위 김치찌개</S.ContentRankingEnd>
       </S.ContentBoxDiv>
 
       <S.ContentBoxDiv>
@@ -101,13 +103,17 @@ const MyPageMain = () => {
       </S.ContentBoxDiv>
 
       <S.PageNationDiv>
-        <div>{'<'}</div>
+        <div>
+          <PageNationLeftSvg />
+        </div>
         <S.PageNationNumberDiv>
           <div>1</div>
           <div>2</div>
           <div>3</div>
         </S.PageNationNumberDiv>
-        <div>{'>'}</div>
+        <div>
+          <PageNationRightSvg />
+        </div>
       </S.PageNationDiv>
     </S.MyPageMainContainer>
   );

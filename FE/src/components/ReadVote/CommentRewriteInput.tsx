@@ -27,7 +27,6 @@ const CommentRewriteInput = ({
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     reset,
   } = useForm<Inputs>({
@@ -38,14 +37,12 @@ const CommentRewriteInput = ({
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     patchComment(commentId, data.answer).then((res) => {
       if (res?.status === 'REWRITED') {
-        console.log(res);
         setCommentContent(res.data.commentContent);
         alert('댓글이 수정되었습니다');
         setIsRewiteComment((prev: boolean) => !prev);
       }
     });
     reset({ answer: '' });
-    console.log(data.answer);
   };
 
   return (

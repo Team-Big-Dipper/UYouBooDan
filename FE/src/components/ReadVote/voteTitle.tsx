@@ -31,7 +31,6 @@ const VoteTitle = ({
   const [copied, setCopied] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const onClickLike = () => {
-    console.log('api call');
     alert('좋아요+1');
   };
   useEffect(() => {

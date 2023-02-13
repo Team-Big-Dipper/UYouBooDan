@@ -35,7 +35,6 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <title>우유부단</title>
-        <link rel="icon" href="/image/favicon.ico" />
       </Head>
       <Provider store={store}>
         <Layout>

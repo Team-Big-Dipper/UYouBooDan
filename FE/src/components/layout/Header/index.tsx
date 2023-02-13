@@ -16,33 +16,6 @@ import { Menu } from '../../MobileNav/Menu';
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
   const [isAuth, setIsAuth] = useState(false);
-  const { authCodeSend } = kakaoAuth();
-  // const api = process.env.NEXT_PUBLIC_SERVER_URL;
-
-  // const router = useRouter();
-  // const nowUrl = router.query;
-  // console.log('nowUrl : ', nowUrl);
-  // useEffect(() => {
-  //   axios
-  //     .get(`${api}/kakao/callback`, {
-  //       headers: {
-  //         'Access-Control-Allow-Origin': '*',
-  //         'ngrok-skip-browser-warning': 'any',
-  //       },
-  //       params: nowUrl,
-  //     })
-  //     .then((res: AxiosResponse) => {
-  //       console.log('인가코드 백으로 보내기 res : ', res);
-  //       const kakao_access: any = res.headers.authorization?.split(' ')[1];
-  //       const kakao_refresh: any = res.headers.refreshtoken;
-  //       LocalStorage.setItem('accesstoken', kakao_access);
-  //       LocalStorage.setItem('refreshtoken', kakao_refresh);
-  //       router.push('/mypage');
-  //     })
-  //     .catch((err: AxiosError) => {
-  //       console.log('err : ', err.message);
-  //     });
-  // }, [nowUrl]);
 
   // storage에 accesstoken이 있을때 useEffect실행
   useEffect(() => {
@@ -65,23 +38,27 @@ const Header = () => {
     SessionStorage.getItem('accesstoken'),
   ]);
 
-
   //모바일화면 햄버거 클릭
   const [isOpen, setIsOpen] = useState(false);
 
   const HandleOpen = () => {
-    setIsOpen(!isOpen)
-  }
+    setIsOpen(!isOpen);
+  };
 
   return (
     <S.HeaderContainer>
-      <S.Logo href="/"><LogoImg /></S.Logo>
+      <S.Logo href="/">
+        <LogoImg />
+      </S.Logo>
       {/* <S.HamburgerIcon onClick={() => setIsOpen(!isOpen)}><Hamburger /></S.HamburgerIcon>
-      */}
-      <S.HamburgerIcon onClick={() => setIsOpen(!isOpen)} className={isOpen ? 'open' : ''}>
-        <div className='top' />
-        <div className='middle' />
-        <div className='bottom' />
+       */}
+      <S.HamburgerIcon
+        onClick={() => setIsOpen(!isOpen)}
+        className={isOpen ? 'open' : ''}
+      >
+        <div className="top" />
+        <div className="middle" />
+        <div className="bottom" />
       </S.HamburgerIcon>
       <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
       <S.Right>

@@ -9,14 +9,12 @@ import {
 import * as S from './style';
 import { TabPanel, useTabs } from 'react-headless-tabs';
 import { TabSelector } from '../../components/CreateVote/TabSelector';
-import { createData } from '../../redux/slices/createVoteSlice';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
 
 //datepicker
 
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
 
@@ -57,10 +55,8 @@ function createvote() {
       console.log();
     }
   };
-  console.log(LocalStorage, SessionStorage);
   //submit
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('data : ', data);
     setSubmitData(data);
     axios
       .post(`${api}/topics`, data, {
@@ -72,33 +68,12 @@ function createvote() {
       })
       .then((res: AxiosResponse) => {
         console.log('요청 성공!', res);
-        console.log(res.data.data.topicId)
-        router.push(`/topics/${res.data.data.topicId}`)
+        router.push(`/readvote?pid=${res.data.data.topicId}`)
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
       });
   };
-  // useEffect(() => {
-  //   axios
-  //     .post(`${api}/topics`, {
-  //       headers: {
-  //         'Access-Control-Allow-Origin': '*',
-  //         'ngrok-skip-browser-warning': 'any',
-  //         Authorization: `${localStorage.getItem("Authorization")}`
-  //       }
-  //     })
-  //     .then((res: AxiosResponse) => {
-  //       console.log('요청 성공!', res);
-  //     })
-  //     .catch((err: AxiosError) => {
-  //       console.log('요청 실패!', err.message);
-  //     });
-    // const response = await axios.post('http://localhost:3000/api/topics');
-    // console.log(response)
-    //   return response.data;
-    // dispatch(createData(sumbmitData));
-  // }, []);
 
   //category
   const [categoryMsg, setCategoryMsg] = useState<string>('');
@@ -414,6 +389,7 @@ function createvote() {
             있습니다.
           </div>
         </S.Warning>
+        {/* 버튼 */}
         <S.Btns>
           <S.Cancle onClick={onHandleCancle}>취소하기</S.Cancle>
           <S.Submit type="submit" disabled={isSubmitting}>
