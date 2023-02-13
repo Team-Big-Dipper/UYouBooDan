@@ -1,8 +1,13 @@
 import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { FaceSvg } from '../../../../assets/face';
+import { NICKNAME_REGEX } from '../../../../constants/regex';
+import { useState } from 'react';
 
 const EditProfile = () => {
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  const [nickClick, setNickClick] = useState<boolean>(false);
+
   const {
     register,
     setValue,
@@ -21,18 +26,41 @@ const EditProfile = () => {
         <S.ImgPreviewDiv>
           <FaceSvg />
         </S.ImgPreviewDiv>
-        <div>
-          <div>닉네임</div>
-          <div>DASONG</div>
-          <button>닉네임 수정</button>
-          <>
-            {'버튼 눌렀을때'}
-            <input type="text" />
-            <button>중복체크</button>
-            <div>사용가능한 닉네임입니다.</div>
-            <div>사용중인 닉네임입니다.</div>
-          </>
-        </div>
+        <S.NickContainer>
+          <S.NickTitle>닉네임</S.NickTitle>
+
+          {nickClick ? (
+            <S.NickBtnCLickAfter>
+              <S.NickInputDiv>
+                <input
+                  type="text"
+                  {...register('nickname', {
+                    required: '닉네임 필수입력',
+                    pattern: {
+                      value: NICKNAME_REGEX,
+                      message: '닉네임형식이 올바르지 않습니다.',
+                    },
+                  })}
+                />
+              </S.NickInputDiv>
+              <button type="button">중복체크</button>
+              <S.NickSuccessMsg>사용가능한 닉네임입니다.</S.NickSuccessMsg>
+              <S.NickFailureMsg>사용중인 닉네임입니다.</S.NickFailureMsg>
+            </S.NickBtnCLickAfter>
+          ) : (
+            <S.NickBtnClickBefore>
+              <S.NickValue>DASONG</S.NickValue>
+              <button
+                type="button"
+                onClick={() => {
+                  setNickClick(true);
+                }}
+              >
+                닉네임 수정
+              </button>
+            </S.NickBtnClickBefore>
+          )}
+        </S.NickContainer>
         <div>
           <div>프로필 이미지 수정</div>
           <button>이미지 수정</button>
@@ -59,7 +87,14 @@ const EditProfile = () => {
           </>
         </div>
         <div>
-          <button>수정취소</button>
+          <button
+            type="button"
+            onClick={() => {
+              setNickClick(false);
+            }}
+          >
+            수정취소
+          </button>
           <button>수정저장</button>
         </div>
       </form>

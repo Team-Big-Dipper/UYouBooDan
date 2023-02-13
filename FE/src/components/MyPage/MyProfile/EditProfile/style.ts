@@ -24,3 +24,17 @@ export const ImgPreviewDiv = styled.div`
   background-color: #d6d9dc;
   margin-bottom: 15px;
 `;
+
+// NickName
+export const NickContainer = styled.div``;
+
+// nickname 버튼 누르기 전
+export const NickBtnClickBefore = styled.div``;
+export const NickTitle = styled.div``;
+export const NickValue = styled.div``;
+
+// nickname 버튼 누른 후
+export const NickBtnCLickAfter = styled.div``;
+export const NickInputDiv = styled.div``;
+export const NickSuccessMsg = styled.div``;
+export const NickFailureMsg = styled.div``;
