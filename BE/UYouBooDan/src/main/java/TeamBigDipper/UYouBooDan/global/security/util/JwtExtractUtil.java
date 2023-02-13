@@ -5,6 +5,7 @@ import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,15 +24,21 @@ public class JwtExtractUtil {
 
     private final JwtTokenizer jwtTokenizer;
 
+    private final RedisTemplate redisTemplate;
+
     /**
      * memberId(Entity 식별자)를 얻는 파싱 메소드
       * @param request HttpServlet에 담겨오는 HttpHeader를 받기위함
      * @return 회원 식별자
      */
     public Long extractMemberIdFromJwt (HttpServletRequest request) {
+        if(!isLoginUser(request)) throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED);
 
         try {
             String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+            verifyLoginToken(jws);  // 로그아웃한 유저(Logout된 Authorization이 들어왔을 경우)에 대한 필터링 로직. 레디스 활용
+
             String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
             Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
             Object value = claims.get("memberId");
@@ -49,8 +56,13 @@ public class JwtExtractUtil {
      * @return email
      */
     public String extractEmailFromJwt (HttpServletRequest request) {
+        if(!isLoginUser(request)) throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED);
+
         try {
             String jws = request.getHeader("Authorization").replace("Bearer ", "");
+
+            verifyLoginToken(jws);  // 로그아웃한 유저(Logout된 Authorization이 들어왔을 경우)에 대한 필터링 로직. 레디스 활용
+
             String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
             Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
             Object value = claims.get("email");
@@ -102,7 +114,6 @@ public class JwtExtractUtil {
     }
 
 
-
     /**
      * extractMemberIdFromJwt 내 로직에서 사용
      * 만약 Claims 안에 담겨있는 Id의 키값이 memberId가 아닌 경우. 즉, member테이블이 아닌 다른 테이블에 존재하는 객체를 조회하길 원하는 경우에 적용
@@ -132,6 +143,13 @@ public class JwtExtractUtil {
             return email;
         }
         catch (Exception e) { throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED); }
+    }
+
+    private void verifyLoginToken(String accessToken) {
+        if(redisTemplate.opsForValue().get(accessToken)!=null
+                && redisTemplate.opsForValue().get(accessToken).toString().equals("Logout")) {
+            throw new BusinessLogicException(ExceptionCode.LOGIN_REQUIRED);
+        }
     }
 
 }

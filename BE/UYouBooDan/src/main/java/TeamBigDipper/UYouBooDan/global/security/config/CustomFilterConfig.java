@@ -36,7 +36,7 @@ public class CustomFilterConfig extends AbstractHttpConfigurer<CustomFilterConfi
         jwtAuthenticationFilter.setAuthenticationFailureHandler(new CustomAuthenticationFailureHandler());
 
         // 검증 처리 필터
-        JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils); // ,redisTemplate); // 레디스 적용시 활성화 예정
+        JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, customAuthorityUtils);
         // 생성한 필터 객체 세팅 후, builder를 이용해 필터 병합
         builder.addFilter(jwtAuthenticationFilter).addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
 
