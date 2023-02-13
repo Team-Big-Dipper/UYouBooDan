@@ -3,6 +3,9 @@ import { useForm } from 'react-hook-form';
 import { FaceSvg } from '../../../../assets/face';
 import { NICKNAME_REGEX } from '../../../../constants/regex';
 import { useState } from 'react';
+import { DeleteSvg } from '../../../../assets/delete';
+import { SuccessSvg } from '../../../../assets/success';
+import { FailureSvg } from '../../../../assets/failure';
 
 const EditProfile = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -23,30 +26,48 @@ const EditProfile = () => {
       <S.EditTitleDiv>개인정보수정</S.EditTitleDiv>
       <S.EditAdditional>변경 후 저장하기 버튼을 눌러주세요.</S.EditAdditional>
       <form>
-        <S.ImgPreviewDiv>
+        <S.ImgPreviewDiv
+          onClick={() => {
+            setNickClick(false);
+          }}
+        >
           <FaceSvg />
         </S.ImgPreviewDiv>
         <S.NickContainer>
           <S.NickTitle>닉네임</S.NickTitle>
 
           {nickClick ? (
-            <S.NickBtnCLickAfter>
-              <S.NickInputDiv>
-                <input
-                  type="text"
-                  {...register('nickname', {
-                    required: '닉네임 필수입력',
-                    pattern: {
-                      value: NICKNAME_REGEX,
-                      message: '닉네임형식이 올바르지 않습니다.',
-                    },
-                  })}
-                />
-              </S.NickInputDiv>
-              <button type="button">중복체크</button>
-              <S.NickSuccessMsg>사용가능한 닉네임입니다.</S.NickSuccessMsg>
-              <S.NickFailureMsg>사용중인 닉네임입니다.</S.NickFailureMsg>
-            </S.NickBtnCLickAfter>
+            <>
+              <S.NickBtnCLickAfter>
+                <S.NickInputDiv>
+                  <input
+                    type="text"
+                    placeholder="닉네임을 입력해주세요."
+                    {...register('nickname', {
+                      required: '닉네임 필수입력',
+                      pattern: {
+                        value: NICKNAME_REGEX,
+                        message: '닉네임형식이 올바르지 않습니다.',
+                      },
+                    })}
+                  />
+                  <S.NickDeleteDiv>
+                    <DeleteSvg />
+                  </S.NickDeleteDiv>
+                </S.NickInputDiv>
+                <button type="button">중복체크</button>
+              </S.NickBtnCLickAfter>
+              <S.NickMsgDiv>
+                <S.NickSuccessMsg>
+                  <SuccessSvg />
+                  사용가능한 닉네임입니다.
+                </S.NickSuccessMsg>
+                <S.NickFailureMsg>
+                  <FailureSvg />
+                  사용중인 닉네임입니다.
+                </S.NickFailureMsg>
+              </S.NickMsgDiv>
+            </>
           ) : (
             <S.NickBtnClickBefore>
               <S.NickValue>DASONG</S.NickValue>
