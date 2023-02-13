@@ -72,6 +72,11 @@ public class TopicService {
         Topic findTopic = optionalTopic.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.TOPIC_NOT_EXIST));
 
+        // repository에 저장되어있는 투표 게시글이 삭제 상태로 되어있으면 예외 처리
+        if (findTopic.isTopicRemoved()){
+            throw new BusinessLogicException(ExceptionCode.TOPIC_NOT_EXIST);
+        }
+
         return findTopic;
     }
 
@@ -217,6 +222,28 @@ public class TopicService {
         }
 
         return topicLikeRepository.save(topicLike);     // TopicLike 저장 후 반환
+    }
+
+    public Topic updateTopic(Topic requestedTopic, Member member) {
+
+        Topic verifiedTopic = findVerifiedTopic(requestedTopic.getTopicId());        // 유효한 투표 게시글인지 확인
+
+        // 요청 받은 TopicEntity 클래스 차례대로 확인하면서 투표 게시글 수정 진행
+        Optional.ofNullable(requestedTopic.getCategory())           // 카테고리 수정
+                .ifPresent(verifiedTopic::modifyTopicCategory);
+        Optional.ofNullable(requestedTopic.getTitle())              // 제목 수정
+                .ifPresent(verifiedTopic::modifyTopicTitle);
+        Optional.ofNullable(requestedTopic.getContent())            // 내용 수정
+                .ifPresent(verifiedTopic::modifyTopicContent);
+        Optional.ofNullable(requestedTopic.getClosedAt())           // 마감일 수정
+                .ifPresent(verifiedTopic::modifyTopicClosedAt);
+
+        // 투표가 이미 진행된 투표 게시글은 투표 항목 수정 불가
+        if (!verifiedTopic.isTopicInProgress()) {
+            Optional.ofNullable(requestedTopic.getTopicVoteItems())     // 투표 항목 수정
+                    .ifPresent();
+        }
+        return topicRepository.save(verifiedTopic);     // 레포지토리에 Topic 객체 저장 후 반환
     }
 
     /**
