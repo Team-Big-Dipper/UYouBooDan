@@ -141,6 +141,8 @@ public class KakaoOauthController {
 
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         Member loginMember = memberService.findMember(memberId);
+        String accessToken = jwtExtractUtil.extractAccessTokenFromJwt(request);
+        Long expiration = jwtExtractUtil.getExpiration(accessToken);
 
         RestTemplate restTemplate = new RestTemplate(); // Http 요청을 보내기 위한 템플릿 클래스
         HttpHeaders userHttpHeaders = new HttpHeaders(); // Http 요청을 위한 Headers
@@ -161,7 +163,7 @@ public class KakaoOauthController {
             );
             System.out.println(LogoutResponse);
 
-            // 자체 서비스 로그아웃 로직 추가하기
+            memberService.verifyMemberFromRedis(memberId, accessToken, expiration);  // 자체 서비스 로그아웃 로직
 
         } catch (Exception e) { throw new BusinessLogicException(ExceptionCode.NOT_FOUND); }
 

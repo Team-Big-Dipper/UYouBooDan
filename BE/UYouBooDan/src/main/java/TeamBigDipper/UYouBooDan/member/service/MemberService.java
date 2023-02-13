@@ -14,12 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -33,6 +35,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils customAuthorityUtils;
     private final PasswordEncoder passwordEncoder;
+    private final RedisTemplate redisTemplate;
 
     @Getter
     @Value("${oauth.kakao.initialKey}")
@@ -231,6 +234,26 @@ public class MemberService {
             return memberRepository.save(member);
         }
         else return optMember.get();
+    }
+
+
+    /**
+     * Redis에 저장된 RefreshToken을 제거 : RefreshToken의 key값이 RTKey + memberId로 되어 있기 때문에 존재하면 지우는 방식
+     * Redis에 들어온 Authorization으로부터 parsing한 AccessToken을 저장
+     * AccessToken을 key, Logout을 value, Expiration은 기존 만료시간 - 현재시간으로 저장하여 시간이 지나면 Redis에서 자동 delete 되게 구현
+     * @param memberId
+     * @param accessToken
+     * @param expiration
+     */
+    public void verifyMemberFromRedis(Long memberId, String accessToken, Long expiration) {
+        // refreshToken 잘 있나 확인 (곧 지워질 refreshToken)
+        System.out.println(redisTemplate.opsForValue().get("RTKey"+memberId).toString());
+
+        if(redisTemplate.opsForValue().get("RTKey"+memberId)!=null) redisTemplate.delete("RTKey" + memberId);
+        redisTemplate.opsForValue().set(accessToken, "Logout", expiration, TimeUnit.MILLISECONDS);
+
+        // 로그아웃 후 AccessToken이 Redis에 잘 저장됬는지 확인
+        System.out.println(redisTemplate.opsForValue().get(accessToken).toString());
     }
 
 }

@@ -23,7 +23,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
 
         /**
-         * 만약 로그인에 따른 클라이언트 응답을 다르게 하고 싶을 경우, 위으 두 줄의 코드를 출력하는 방식에 조건을 걸어 코드를 작성하면 됨.
+         * 만약 로그인에 따른 클라이언트 응답을 다르게 하고 싶을 경우, 위의 두 줄의 코드를 출력하는 방식에 조건을 걸어 코드를 작성하면 됨.
          * 아래는 예시: Admin의 계정이 아래 더미데이터에 한정된다는 전제하에 Admin과 User에 따른 구분
          *
          * Member member = (Member) authentication.getPrincipal(); // principal은 Object 타입이므로, Member타입으로 캐스팅

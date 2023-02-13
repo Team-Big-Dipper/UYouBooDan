@@ -152,4 +152,23 @@ public class MemberController {
         return new ResponseEntity<>(new SingleResDto<>("사용 가능한 닉네임입니다."),HttpStatus.OK);
     }
 
+
+    /**
+     * Authorization을 이용한 Logout
+     * @param request
+     * @return 성공시 : Success Logout: user | 예외 발생시 : Failed Logout: user
+     */
+    @PatchMapping("/auth/logout")
+    public ResponseEntity<?> logoutMember (HttpServletRequest request) {
+        try {
+            Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+            String accessToken  = jwtExtractUtil.extractAccessTokenFromJwt(request);
+            Long expiration = jwtExtractUtil.getExpiration(accessToken);
+            memberService.verifyMemberFromRedis(memberId, accessToken, expiration);
+
+            return new ResponseEntity<>(new SingleResDto<>("Success Logout: user"), HttpStatus.OK);
+        }
+        catch (Exception e) { return new ResponseEntity<>(new SingleResDto<>("Failed Logout: user"), HttpStatus.BAD_REQUEST); }
+    }
+
 }
