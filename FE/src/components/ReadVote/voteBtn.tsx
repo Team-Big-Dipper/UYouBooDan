@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import * as S from './style';
 import ButtonModal from '../commons/buttonModal';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 
-const VoteBtn = () => {
+interface propsType {
+  isAuthor: boolean | undefined;
+}
+
+const VoteBtn = ({ isAuthor }: propsType) => {
   const [login, setIsLogin] = useState(true);
   const [askText, setAskText] = useState('');
   const [apiMethod, setApiMethod] = useState('');
   const router = useRouter();
-  const { isAuthor, isVoted, isClosed } = useSelector(
-    (state: any) => state.currentVote,
-  );
 
   const [openModal, setOpenModal] = useState(false);
   const onClickBtn = (e: any) => {
@@ -35,10 +35,19 @@ const VoteBtn = () => {
   };
   return (
     <S.ReadVoteBtnContainer>
-      {login ? (
-        <>
-          {!isAuthor ? (
+      <>
+        {!isAuthor ? (
+          <>
+            <S.ReadVoteBtn id="votelist" onClick={handleLink} color={'#4285f4'}>
+              목록가기
+            </S.ReadVoteBtn>
+          </>
+        ) : (
+          <>
             <>
+              <S.ReadVoteBtn id="delete" onClick={onClickBtn}>
+                삭제하기
+              </S.ReadVoteBtn>
               <S.ReadVoteBtn
                 id="votelist"
                 onClick={handleLink}
@@ -47,41 +56,20 @@ const VoteBtn = () => {
                 목록가기
               </S.ReadVoteBtn>
             </>
-          ) : (
             <>
-              <>
-                <S.ReadVoteBtn id="delete" onClick={onClickBtn}>
-                  삭제하기
-                </S.ReadVoteBtn>
-                <S.ReadVoteBtn
-                  id="votelist"
-                  onClick={handleLink}
-                  color={'#4285f4'}
-                >
-                  목록가기
-                </S.ReadVoteBtn>
-              </>
-              <>
-                {openModal ? (
-                  <ButtonModal
-                    text={askText}
-                    confirmFunc={
-                      apiMethod === 'patch' ? handlePatch : handleDelete
-                    }
-                    setOpenModal={setOpenModal}
-                  />
-                ) : null}
-              </>
+              {openModal ? (
+                <ButtonModal
+                  text={askText}
+                  confirmFunc={
+                    apiMethod === 'patch' ? handlePatch : handleDelete
+                  }
+                  setOpenModal={setOpenModal}
+                />
+              ) : null}
             </>
-          )}
-        </>
-      ) : (
-        <>
-          <S.ReadVoteBtn id="votelist" onClick={handleLink} color={'#4285f4'}>
-            목록가기
-          </S.ReadVoteBtn>
-        </>
-      )}
+          </>
+        )}
+      </>
     </S.ReadVoteBtnContainer>
   );
 };

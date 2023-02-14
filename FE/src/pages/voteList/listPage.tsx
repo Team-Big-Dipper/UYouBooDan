@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useCallback } from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
 import CardItem from '../../components/VoteList/CardItem';
@@ -31,10 +31,13 @@ const ListPage = ({
   setPage,
   condition,
 }: propsArray) => {
-  const pageArr = Array.from({ length: totalPage }, (_, i) => i + 1);
-  const handlePage = (e: any) => {
+  const pageArr = useMemo(
+    () => Array.from({ length: totalPage }, (_, i) => i + 1),
+    [totalPage],
+  );
+  const handlePage = useCallback((e: any) => {
     setPage(Number(e.target.textContent));
-  };
+  }, []);
   const handlePageButton = (e: any) => {
     if (
       e.target.parentNode.id === 'votelist-right-button' &&
