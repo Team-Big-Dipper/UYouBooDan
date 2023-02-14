@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 interface ImageUrl {
   src: string | undefined | null;
 }

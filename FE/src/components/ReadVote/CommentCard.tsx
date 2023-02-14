@@ -92,7 +92,7 @@ const CommentCard = ({
                 commentContent={commentContent}
                 commentId={commendId}
                 setCommentContent={setCommentContent}
-                setIsRewiteComment={setIsRewiteComment}
+                handleRewiteComment={handleRewiteComment}
                 setIsPostComment={setIsPostComment}
               />
             ) : (

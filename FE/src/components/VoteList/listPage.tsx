@@ -1,9 +1,10 @@
 import React, { useMemo, useCallback } from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
-import CardItem from '../../components/VoteList/CardItem';
+import CardItem from './CardItem';
 import { conditions } from '../../constants/conditions';
 import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
+import LoadingSpinner from '../../assets/loadingspinner.gif';
 
 interface props {
   category: string;
@@ -70,7 +71,7 @@ const ListPage = ({
       </S.PageHeader>
       <>
         {isLoading ? (
-          <p>로딩중...</p>
+          <S.LoadingImage src={LoadingSpinner} alt="gif" />
         ) : (
           <>
             {data?.map((el) => {

@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import Sidebar from './sidebar';
-import ListPage from './listPage';
+import Sidebar from '../../components/VoteList/sidebar';
+import ListPage from '../../components/VoteList/listPage';
 import * as S from './style';
 import { getVoteList } from '../../apis/votelist/votelist';
-import { useDispatch, useSelector } from 'react-redux';
-import { getVoteCondition } from '../../redux/slices/getVoteConditionSlice';
+import { useSelector } from 'react-redux';
 
 interface propData {
   category: string;
@@ -23,12 +22,10 @@ const VoteList = () => {
   const [size, setSize] = useState(6);
   const [totalPage, setTotalPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const dispatch = useDispatch();
   const { mobileCondition } = useSelector(
     (state: any) => state.getVoteCondition,
   );
   useEffect(() => {
-    // setCondition(mobileCondition);
     setPage(1);
   }, [mobileCondition]);
 

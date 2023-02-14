@@ -12,7 +12,7 @@ interface propsType {
   commentContent: any;
   commentId: number | undefined;
   setCommentContent: Function;
-  setIsRewiteComment: Function;
+  handleRewiteComment: Function;
   setIsPostComment: Function;
 }
 
@@ -20,7 +20,7 @@ const CommentRewriteInput = ({
   commentContent,
   commentId,
   setCommentContent,
-  setIsRewiteComment,
+  handleRewiteComment,
   setIsPostComment,
 }: propsType) => {
   const submitButtonStyle = useMemo(() => {
@@ -39,16 +39,23 @@ const CommentRewriteInput = ({
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const usertoken = getToken();
     if (usertoken !== undefined) {
+      if (commentContent === data.answer) {
+        handleRewiteComment();
+        return;
+      }
       patchComment(commentId, data.answer, usertoken).then((res) => {
         if (res?.status === 'REWRITED') {
           setCommentContent(res.data.commentContent);
           alert('댓글이 수정되었습니다');
-          setIsRewiteComment((prev: boolean) => !prev);
+          handleRewiteComment();
           setIsPostComment((prev: boolean) => !prev);
+        } else {
+          handleRewiteComment();
         }
       });
     } else {
       alert('로그인을 해주세요');
+      handleRewiteComment();
     }
   };
 

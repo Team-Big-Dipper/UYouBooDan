@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
+import LoadingSpinner from '../../assets/loadingspinner.gif';
 import VoteTitle from '../../components/ReadVote/voteTitle';
 import VoteContent from '../../components/ReadVote/voteContent';
 import CommentList from '../../components/ReadVote/CommentList';
@@ -52,8 +53,8 @@ const ReadVote = () => {
     if (pid === undefined) {
       return;
     } else {
+      setIsLoading(true);
       if (usertoken !== undefined) {
-        setIsLoading(true);
         getReadVote(pid, usertoken)?.then((res) => {
           if (res === 'Err') {
             router.push('/auth');
@@ -124,7 +125,7 @@ const ReadVote = () => {
         </S.CurrentCategoty>
         <>
           {isLoading ? (
-            <p>로딩중...</p>
+            <S.LoadingImage src={LoadingSpinner} alt="gif" />
           ) : (
             <>
               <VoteTitle

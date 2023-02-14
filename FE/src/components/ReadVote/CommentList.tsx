@@ -3,6 +3,7 @@ import CommentInput from './CommentInput';
 import CommentCard from './CommentCard';
 import * as S from './style';
 import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
+
 interface propTypes {
   topicId: any;
   isCommentLoading: boolean;
