@@ -136,8 +136,10 @@ export const SignUp = styled(Link)`
     color: #4285f4;
   }
 `;
-
-export const AllVote = styled(Link)`
+interface propTypes {
+  onClick: Function;
+}
+export const AllVote = styled.div<propTypes>`
   font-size: 1.25rem;
   text-decoration: none;
   color: black;

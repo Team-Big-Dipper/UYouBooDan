@@ -4,8 +4,6 @@ export const ChangeTextItems = (
   isTheFirstItem: boolean | undefined,
   isTopicVoteItemVoted: boolean | null,
 ) => {
-  console.log(isClosed, isAuthor, isTheFirstItem, isTopicVoteItemVoted);
-
   let result = false;
   if (isClosed === true) {
     if (isTheFirstItem) {

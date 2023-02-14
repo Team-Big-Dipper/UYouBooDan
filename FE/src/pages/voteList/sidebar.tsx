@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import * as S from './style';
 import { conditions } from '../../constants/conditions';
 import { useDispatch } from 'react-redux';
@@ -11,10 +11,10 @@ interface propTypes {
 
 const Sidebar = ({ condition, setPage }: propTypes) => {
   const dispatch = useDispatch();
-  const handleApiCondition = (e: any) => {
+  const handleApiCondition = useCallback((e: any) => {
     dispatch(getVoteCondition({ mobileCondition: e.target.id }));
     setPage(1);
-  };
+  }, []);
   return (
     <div>
       <S.Sidebar>

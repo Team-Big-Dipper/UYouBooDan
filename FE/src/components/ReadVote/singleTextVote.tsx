@@ -13,6 +13,8 @@ interface propsTypes {
   isClosed: boolean | null | undefined;
   isAuthor: boolean | null | undefined;
   isTheFirstItem: boolean | undefined;
+  isChangedComponent: boolean | undefined;
+  setIsChangedComponent: Function;
 }
 export const SingleTextVote = ({
   itemId,
@@ -23,8 +25,9 @@ export const SingleTextVote = ({
   isTopicVoteItemVoted,
   isClosed,
   isTheFirstItem,
+  isChangedComponent,
+  setIsChangedComponent,
 }: propsTypes) => {
-  const [isChangedComponent, setIsChangedComponent] = useState<boolean>();
   useEffect(() => {
     const isChanged = ChangeTextItems(
       isClosed,
@@ -32,10 +35,8 @@ export const SingleTextVote = ({
       isTheFirstItem,
       isTopicVoteItemVoted,
     );
-    console.log(isChanged, '색깔');
     setIsChangedComponent(isChanged);
-  }, [isTheFirstItem]);
-
+  }, [isClosed, isAuthor, isTheFirstItem, isTopicVoteItemVoted]);
   return (
     <S.SelectTextSingle isChangedComponent={isChangedComponent}>
       <S.VoteResultDiv>
@@ -51,7 +52,7 @@ export const SingleTextVote = ({
         </S.VoteResultContent>
       </S.VoteResultDiv>
       <S.VoteResultPercentageDiv isChangedComponent={isChangedComponent}>
-        {isClosed ? calculated + '%' : null}
+        {!isClosed ? null : calculated !== 0 ? calculated + '%' : null}
       </S.VoteResultPercentageDiv>
     </S.SelectTextSingle>
   );

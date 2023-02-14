@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { SingleTextVote } from './singleTextVote';
 import ButtonModal from '../commons/buttonModal';
 import { CalcPercentage } from '../../utils/calculate';
 import { patchSingleVoteItem } from '../../apis/readvote/readvote';
-import { useGetToken } from '../../hooks/userToken/useGetToken';
+import { getToken } from '../../utils/userToken';
 import ForbidVoteModal from '../commons/forbidVoteModal';
 
 type propTypes = {
@@ -39,6 +39,7 @@ export const SingleVoteContainer = ({
   const [openModal, setOpenModal] = useState(false);
   const [calculated, setCalculated] = useState<number>(1);
   const [isTheFirstItem, setIsTheFirstItem] = useState<boolean | undefined>();
+  const [isChangedComponent, setIsChangedComponent] = useState<boolean>();
 
   useEffect(() => {
     if (theFirstItemNames?.length !== 0) {
@@ -50,7 +51,6 @@ export const SingleVoteContainer = ({
         }
       });
       if (isFirstItem !== undefined && isFirstItem[0] !== undefined) {
-        console.log(isFirstItem[0], '여기');
         setIsTheFirstItem(isFirstItem[0]);
       }
     }
@@ -79,14 +79,14 @@ export const SingleVoteContainer = ({
       return setText('본인 게시물에 투표 금지!!');
     }
   };
-  const token = useGetToken();
-  const onVote = () => {
+  const token = getToken();
+  const onVote = useCallback(() => {
     if (token !== undefined) {
       patchSingleVoteItem(Number(topicId), itemId, token)?.then((res) => {
         setVoteBtns([...res.data]);
       });
     }
-  };
+  }, []);
 
   return (
     <>
@@ -114,6 +114,8 @@ export const SingleVoteContainer = ({
             isAuthor={isAuthor}
             isTopicVoteItemVoted={isTopicVoteItemVoted}
             isTheFirstItem={isTheFirstItem}
+            isChangedComponent={isChangedComponent}
+            setIsChangedComponent={setIsChangedComponent}
           />
         </div>
       </>

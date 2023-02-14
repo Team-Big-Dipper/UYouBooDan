@@ -7,7 +7,7 @@ import LinkModal from '../commons/linkModal';
 import { CalcDday } from '../../utils/calculate';
 import { ChangDateFormat } from '../../utils/parseDate';
 import { patchTopicLike } from '../../apis/readvote/readvote';
-import { useGetToken } from '../../hooks/userToken/useGetToken';
+import { getToken } from '../../utils/userToken';
 
 type propTypes = {
   category: string | undefined;
@@ -30,7 +30,7 @@ const VoteTitle = ({
   likes,
   topidId,
 }: propTypes) => {
-  const usertoken = useGetToken();
+  const usertoken = getToken();
   const [likeCount, setLikeCount] = useState(likes);
   const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');

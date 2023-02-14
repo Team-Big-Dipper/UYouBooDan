@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import * as S from './style';
 import { LikeSvg, ClickedLikeSvg } from '../../assets/likeSvg';
 import { ProfileImage } from '../../assets/profileImage';
@@ -7,7 +7,7 @@ import { BestCommentItem } from '../../assets/bestCommentItem';
 import { postCommentLike } from '../../apis/comments/comments';
 import { deleteComment } from '../../apis/comments/comments';
 import CommentRewriteInput from './CommentRewriteInput';
-import { useGetToken } from '../../hooks/userToken/useGetToken';
+import { getToken } from '../../utils/userToken';
 
 interface propTypes {
   username: number | undefined;
@@ -29,7 +29,7 @@ const CommentCard = ({
   index,
   setIsPostComment,
 }: propTypes) => {
-  const usertoken = useGetToken();
+  const usertoken = getToken();
   const [commentlikeCount, setCommentLikeCount] = useState(like);
   const [createdDate, setCreatedDate] = useState('');
   const [commentContent, setCommentContent] = useState(content);
@@ -42,7 +42,7 @@ const CommentCard = ({
     setCreatedDate(changedDate);
   }, []);
 
-  const handleDeleteComment = () => {
+  const handleDeleteComment = useCallback(() => {
     if (usertoken !== undefined) {
       deleteComment(commendId, usertoken).then((res) => {
         if (res === 'REMOVED') {
@@ -51,11 +51,11 @@ const CommentCard = ({
         }
       });
     }
-  };
-  const handleRewiteComment = () => {
+  }, []);
+  const handleRewiteComment = useCallback(() => {
     setIsRewiteComment((prev) => !prev);
-  };
-  const handleCommentLike = () => {
+  }, []);
+  const handleCommentLike = useCallback(() => {
     if (usertoken !== undefined) {
       postCommentLike(commendId, usertoken).then((res) => {
         if (res?.data.commentLikeStatus) {
@@ -67,7 +67,7 @@ const CommentCard = ({
         setCommentLikeCount(res?.data.totalLike);
       });
     }
-  };
+  }, []);
 
   return (
     <>

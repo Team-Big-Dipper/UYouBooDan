@@ -15,9 +15,11 @@ export const getReadVote = (id: string | string[] = '1', token: string) => {
       .then((res) => {
         if (res.status === 200) {
           return res.data;
-        } else {
-          throw new Error();
         }
+      })
+      .catch((err) => {
+        console.log(err);
+        return 'Err';
       });
     return result;
   } catch (error) {
@@ -35,7 +37,7 @@ export const patchSingleVoteItem = (
   token: string,
 ) => {
   try {
-    console.log('api singlevote');
+    console.log('api patchsinglevote');
     const result = voteInstance
       .patch(
         `/topics/${topicId}/vote`,
