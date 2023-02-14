@@ -89,7 +89,9 @@ const ReadVote = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [commentPageBtn, setCommentPageBtn] = useState<number[]>([1]);
   const [isCommentLoading, setIsCommentLoading] = useState(false);
-
+  const handleIsPostComment = useCallback(() => {
+    setIsPostComment((prev): boolean => !prev);
+  }, []);
   useEffect(() => {
     if (usertoken !== undefined) {
       setIsCommentLoading(true);
@@ -181,7 +183,7 @@ const ReadVote = () => {
                 totalPages={totalPages}
                 totalComments={totalComments}
                 setCommentData={setCommentData}
-                setIsPostComment={setIsPostComment}
+                handleIsPostComment={handleIsPostComment}
                 bestComment={bestComment}
                 commentData={commentData}
                 commentPageBtn={commentPageBtn}

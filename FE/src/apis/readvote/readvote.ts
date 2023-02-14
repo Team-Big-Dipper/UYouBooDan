@@ -58,6 +58,9 @@ export const patchSingleVoteItem = (
         } else {
           throw new Error();
         }
+      })
+      .catch((e) => {
+        console.log(e);
       });
     return result;
   } catch (error) {

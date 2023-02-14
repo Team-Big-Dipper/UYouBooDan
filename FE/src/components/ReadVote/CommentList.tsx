@@ -12,7 +12,7 @@ interface propTypes {
   totalPages: number;
   totalComments: number;
   setCommentData: Function;
-  setIsPostComment: Function;
+  handleIsPostComment: Function;
   bestComment: Props | undefined;
   commentData: Props[] | undefined;
   commentPageBtn: number[];
@@ -33,7 +33,7 @@ const CommentList = ({
   totalPages,
   totalComments,
   setCommentData,
-  setIsPostComment,
+  handleIsPostComment,
   bestComment,
   commentData,
   commentPageBtn,
@@ -68,7 +68,7 @@ const CommentList = ({
             <CommentInput
               topicId={topicId}
               setCommentData={setCommentData}
-              setIsPostComment={setIsPostComment}
+              handleIsPostComment={handleIsPostComment}
             />
             <>
               <S.CommentListCondition>최신순</S.CommentListCondition>
@@ -81,7 +81,7 @@ const CommentList = ({
                 username={bestComment?.memberId}
                 content={bestComment?.commentContent}
                 status={bestComment?.commentStatus}
-                setIsPostComment={setIsPostComment}
+                handleIsPostComment={handleIsPostComment}
               />
               {commentData?.map((el, idx) => (
                 <CommentCard
@@ -93,7 +93,7 @@ const CommentList = ({
                   username={el.memberId}
                   content={el.commentContent}
                   status={el.commentStatus}
-                  setIsPostComment={setIsPostComment}
+                  handleIsPostComment={handleIsPostComment}
                 />
               ))}
             </>

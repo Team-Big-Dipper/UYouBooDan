@@ -13,7 +13,7 @@ interface propsType {
   commentId: number | undefined;
   setCommentContent: Function;
   handleRewiteComment: Function;
-  setIsPostComment: Function;
+  handleIsPostComment: Function;
 }
 
 const CommentRewriteInput = ({
@@ -21,7 +21,7 @@ const CommentRewriteInput = ({
   commentId,
   setCommentContent,
   handleRewiteComment,
-  setIsPostComment,
+  handleIsPostComment,
 }: propsType) => {
   const submitButtonStyle = useMemo(() => {
     return { display: 'none' };
@@ -48,7 +48,7 @@ const CommentRewriteInput = ({
           setCommentContent(res.data.commentContent);
           alert('댓글이 수정되었습니다');
           handleRewiteComment();
-          setIsPostComment((prev: boolean) => !prev);
+          handleIsPostComment();
         } else {
           handleRewiteComment();
         }

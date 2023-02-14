@@ -19,8 +19,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
 
 export interface topicVoteItem {
-    topicVoteItemName : string;
-  }
+  topicVoteItemName: string;
+}
 export interface Inputs {
   category: String;
   title: String;
@@ -64,13 +64,13 @@ function createvote() {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU3ODcxNDksImV4cCI6MTY3NTc4NzQ0OX0.jnQ1R6poDYziZYaw3u7c-dyASDiAdH4z_ION-c7dDLQ`
-        }
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU3ODcxNDksImV4cCI6MTY3NTc4NzQ0OX0.jnQ1R6poDYziZYaw3u7c-dyASDiAdH4z_ION-c7dDLQ`,
+        },
       })
       .then((res: AxiosResponse) => {
         console.log('요청 성공!', res);
-        console.log(res.data.data.topicId)
-        router.push(`/topics/${res.data.data.topicId}`)
+        console.log(res.data.data.topicId);
+        router.push(`/topics/${res.data.data.topicId}`);
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
@@ -91,10 +91,10 @@ function createvote() {
   //     .catch((err: AxiosError) => {
   //       console.log('요청 실패!', err.message);
   //     });
-    // const response = await axios.post('http://localhost:3000/api/topics');
-    // console.log(response)
-    //   return response.data;
-    // dispatch(createData(sumbmitData));
+  // const response = await axios.post('http://localhost:3000/api/topics');
+  // console.log(response)
+  //   return response.data;
+  // dispatch(createData(sumbmitData));
   // }, []);
 
   //category
