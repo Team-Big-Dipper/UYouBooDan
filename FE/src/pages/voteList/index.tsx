@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Sidebar from './sidebar';
 import ListPage from './listPage';
 import * as S from './style';
@@ -18,7 +18,7 @@ interface propData {
 
 const VoteList = () => {
   const [data, setData] = useState<propData[]>([]);
-  const [condition, setCondition] = useState('all');
+  //const [condition, setCondition] = useState('all');
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState(6);
   const [totalPage, setTotalPage] = useState(1);
@@ -27,39 +27,31 @@ const VoteList = () => {
   const { mobileCondition } = useSelector(
     (state: any) => state.getVoteCondition,
   );
-  //console.log(conditions);
   useEffect(() => {
-    setCondition(mobileCondition);
+    // setCondition(mobileCondition);
     setPage(1);
-    if (mobileCondition === condition) {
-      dispatch(getVoteCondition({ mobileCondition: mobileCondition }));
-    }
   }, [mobileCondition]);
 
   useEffect(() => {
     setIsLoading(true);
-    getVoteList(page, size, condition)?.then((res) => {
+    getVoteList(page, size, mobileCondition)?.then((res) => {
       setData(res.data);
       setTotalPage(res.pageInfo.totalPages);
       setIsLoading(false);
     });
-  }, [condition, page]);
+  }, [mobileCondition, page]);
 
   return (
     <>
       <S.PageContainer>
-        <Sidebar
-          condition={condition}
-          setPage={setPage}
-          setCondition={setCondition}
-        />
+        <Sidebar condition={mobileCondition} setPage={setPage} />
         <ListPage
           page={page}
           isLoading={isLoading}
           data={data}
           totalPage={totalPage}
           setPage={setPage}
-          condition={condition}
+          condition={mobileCondition}
         />
       </S.PageContainer>
     </>

@@ -56,7 +56,7 @@ export const CardDDay = styled.div<isClosed>`
   font-size: 0.8rem;
 
   @media (max-width: 479px) {
-    padding: 4px;
+    padding: 9px;
   }
 `;
 export const Date = styled.div`

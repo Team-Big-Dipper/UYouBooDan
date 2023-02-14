@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
 import { CommentSubmit } from '../../assets/commentSubmit';
 import { patchComment } from '../../apis/comments/comments';
-import { useGetToken } from '../../hooks/userToken/useGetToken';
+import { getToken } from '../../utils/userToken';
 
 interface Inputs {
   answer: string;
@@ -37,7 +37,7 @@ const CommentRewriteInput = ({
     },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    const usertoken = useGetToken();
+    const usertoken = getToken();
     if (usertoken !== undefined) {
       patchComment(commentId, data.answer, usertoken).then((res) => {
         if (res?.status === 'REWRITED') {
@@ -47,7 +47,8 @@ const CommentRewriteInput = ({
           setIsPostComment((prev: boolean) => !prev);
         }
       });
-      //reset({ answer: '' });
+    } else {
+      alert('로그인을 해주세요');
     }
   };
 
