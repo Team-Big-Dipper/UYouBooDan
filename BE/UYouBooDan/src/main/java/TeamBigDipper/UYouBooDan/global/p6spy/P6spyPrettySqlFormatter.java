@@ -10,6 +10,8 @@ import java.util.Stack;
 
 /**
  * p6spy를 커스터마이징하기 위한 포맷터 클래스
+ * MessageFormattingStrategy 인터페이스를 상속받아, formatMessage 메소드를 오버라이드 하며,
+ * 로그 출력 포맷을 커스터마이징 하는 클래스
  */
 public class P6spyPrettySqlFormatter implements MessageFormattingStrategy {
     @Override
@@ -42,6 +44,7 @@ public class P6spyPrettySqlFormatter implements MessageFormattingStrategy {
         return sqlFormat(sql, category, message);
     }
 
+    // formatMessage메소드를 출력할 때 사용하는 메소드. 출력할 SQL 전략을 선택
     private String sqlFormat(String sql, String category, String message) {
         if (sql.trim() == null || sql.trim().isEmpty()) {
             return "";
