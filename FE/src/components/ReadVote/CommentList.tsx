@@ -52,7 +52,7 @@ const CommentList = ({
     ) {
       setCommentPageNum((prev: number) => prev - 1);
     } else {
-      setCommentPageNum(e);
+      return;
     }
   };
 
