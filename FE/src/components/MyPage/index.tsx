@@ -162,7 +162,7 @@ const MyPage = () => {
         {editClick && !successPw ? (
           <MyProfile setSuccessPw={setSuccessPw} />
         ) : editClick && successPw ? (
-          <EditProfile />
+          <EditProfile photo={photo} />
         ) : (
           <MyPageHeader category={selectCategory} />
         )}

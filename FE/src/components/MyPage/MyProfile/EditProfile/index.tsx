@@ -8,10 +8,13 @@ import { SuccessSvg } from '../../../../assets/success';
 import { FailureSvg } from '../../../../assets/failure';
 import { overLapNickApi } from '../../../../apis/overLap';
 
-const EditProfile = () => {
+const EditProfile = ({ photo }: any) => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  const [avatarPreview, setAvatarPreview] = useState<string>('');
   const [nickClick, setNickClick] = useState<boolean>(false);
+  const [imgClick, setImgClick] = useState<boolean>(false);
   const [nickMsg, setNickMsg] = useState<string>('');
+  const [img, setImg] = useState<string>('');
 
   const {
     register,
@@ -23,6 +26,14 @@ const EditProfile = () => {
     mode: 'onChange',
   });
 
+  const avatar = watch('profile');
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+
   useEffect(() => {
     if (watch('nickname') && errors.nickname?.message) {
       setNickMsg('닉네임형식이 올바르지 않습니다.');
@@ -32,6 +43,12 @@ const EditProfile = () => {
       setNickMsg('');
     }
   }, [watch('nickname')]);
+
+  useEffect(() => {
+    if (watch('profile')) {
+      setImg(watch('profile')[0]['name']);
+    }
+  }, [watch('profile')]);
 
   return (
     <S.EditContainer>
@@ -43,7 +60,13 @@ const EditProfile = () => {
             setNickClick(false);
           }}
         >
-          <FaceSvg />
+          {photo && !watch('profile') ? (
+            <FaceSvg />
+          ) : (
+            <img src={avatarPreview} />
+          )}
+
+          {/* <FaceSvg /> */}
         </S.ImgPreviewDiv>
         <S.NickContainer>
           <S.NickTitle>닉네임</S.NickTitle>
@@ -112,14 +135,55 @@ const EditProfile = () => {
             </S.NickBtnClickBefore>
           )}
         </S.NickContainer>
-        <div>
-          <div>프로필 이미지 수정</div>
-          <button>이미지 수정</button>
-          <>
-            {'버튼 눌렀을때'}
-            <input type="file" />
-          </>
-        </div>
+        <S.ProfileImgContainer>
+          <S.ProfileImgTitle imgClick={imgClick}>
+            프로필 이미지 수정
+          </S.ProfileImgTitle>
+          <>{console.log(watch('profile'))}</>
+          {imgClick ? (
+            <S.ImgEditBtnClickAfter>
+              <S.ImgValueInputDiv>
+                <input
+                  type="text"
+                  placeholder="파일이름.jpg"
+                  defaultValue={watch('profile') ? img : ''}
+                  disabled
+                />
+                {watch('profile') ? (
+                  <S.ImgDeleteDiv
+                    onClick={() => {
+                      setValue('profile', '');
+                      setImg('');
+                    }}
+                  >
+                    <DeleteSvg />
+                  </S.ImgDeleteDiv>
+                ) : (
+                  <></>
+                )}
+              </S.ImgValueInputDiv>
+              <S.ImgInputLabel htmlFor="file">파일업로드</S.ImgInputLabel>
+              <input
+                id="file"
+                type="file"
+                accept="image/*"
+                style={{ display: 'none' }}
+                {...register('profile')}
+              />
+            </S.ImgEditBtnClickAfter>
+          ) : (
+            <S.ImgEditBtnClickBefore>
+              <button
+                type="button"
+                onClick={() => {
+                  setImgClick(!imgClick);
+                }}
+              >
+                이미지 수정
+              </button>
+            </S.ImgEditBtnClickBefore>
+          )}
+        </S.ProfileImgContainer>
         <div>hr</div>
         <div>
           <div>아이디</div>
