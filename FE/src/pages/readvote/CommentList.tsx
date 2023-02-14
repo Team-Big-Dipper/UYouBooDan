@@ -37,7 +37,7 @@ const CommentList = ({
   commentData,
   commentPageBtn,
 }: propTypes) => {
-  const handlePageNum = useCallback((e: any) => {
+  const handleCommnetPageNum = useCallback((e: any) => {
     setCommentPageNum(Number(e.target.textContent));
   }, []);
   const handlePageButton = (e: any) => {
@@ -52,7 +52,7 @@ const CommentList = ({
     ) {
       setCommentPageNum((prev: number) => prev - 1);
     } else {
-      return;
+      setCommentPageNum(e);
     }
   };
 
@@ -104,8 +104,8 @@ const CommentList = ({
                 return (
                   <S.CommentPageNum
                     key={idx}
-                    onClick={handlePageNum}
                     isCurrentPage={commentPageNum === el ? true : false}
+                    onClick={handleCommnetPageNum}
                   >
                     {el}
                   </S.CommentPageNum>

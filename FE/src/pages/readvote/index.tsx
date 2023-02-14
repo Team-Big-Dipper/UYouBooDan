@@ -79,7 +79,6 @@ const ReadVote = () => {
     commentContent: string;
   }
   //댓글
-  // const usertoken = getToken();
   const [commentPageNum, setCommentPageNum] = useState(1);
   const [commentPageSize, setCommentPageSize] = useState(6);
   const [isPostComment, setIsPostComment] = useState(false);

@@ -47,9 +47,8 @@ const CommentInput = ({
     if (usertoken !== undefined) {
       postComment(topicId, data.answer, usertoken).then((res) => {
         if (res?.status === 'CREATED') {
-          console.log(res);
-          const obj = { ...res.data, commentId: res.data.commentId + 10 };
-          setCommentData((prev: object[]) => [obj, ...prev]);
+          console.log(res.data);
+          setCommentData((prev: object[]) => [res.data, ...prev]);
           alert('댓글이 작성되었습니다');
           setIsPostComment((prev: boolean) => !prev);
         }
