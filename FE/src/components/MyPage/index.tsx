@@ -16,8 +16,9 @@ const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
   const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
-  const [profile, setProfile] = useState<string>('');
-  const [photo, setPhoto] = useState<string>('');
+  const [emailData, setEmailData] = useState<string>('');
+  const [nickData, setNickData] = useState<string>('');
+  const [photoData, setPhotoData] = useState<string>('');
   const [editClick, setEditClick] = useState<boolean>(false);
   const [successPw, setSuccessPw] = useState<boolean>(false);
   // 기본 값 내가 쓴 게시글
@@ -41,13 +42,19 @@ const MyPage = () => {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          Authorization: LocalStorage.getItem('accesstoken'),
+          Authorization:
+            `Bearer ${LocalStorage.getItem('accesstoken')}` ||
+            `Bearer ${SessionStorage.getItem('accesstoken')}`,
         },
       })
       .then((res: AxiosResponse) => {
         console.log('mypage 정보요청 res : ', res);
-        setProfile(res.data.data.nickname);
-        setPhoto(res.data.data.profile);
+        const nickname = res.data.data.nickname;
+        const photo = res.data.data.profile;
+        const email = res.data.data.email;
+        setEmailData(email);
+        setNickData(nickname);
+        setPhotoData(photo);
       })
       .catch((err: AxiosError) => {
         console.log('err : ', err.message);
@@ -66,14 +73,14 @@ const MyPage = () => {
             <img
               width={80}
               height={80}
-              src={photo}
+              src={photoData}
               alt="Img"
               onError={handleErrorImg}
             />
             <S.SideBarImgDiv>
               <FaceSvg />
             </S.SideBarImgDiv>
-            <S.UserNickDiv>#{profile}</S.UserNickDiv>
+            <S.UserNickDiv>#{nickData}</S.UserNickDiv>
             <S.EditBtnDiv
               onClick={() => {
                 setEditClick(true);
@@ -162,16 +169,14 @@ const MyPage = () => {
         {editClick && !successPw ? (
           <MyProfile setSuccessPw={setSuccessPw} />
         ) : editClick && successPw ? (
-          <EditProfile photo={photo} />
+          <EditProfile
+            emailData={emailData}
+            nickData={nickData}
+            photoData={photoData}
+          />
         ) : (
           <MyPageHeader category={selectCategory} />
         )}
-        {/* {editClick ? (
-          <MyProfile setSuccessPw={setSuccessPw} />
-        ) : (
-          <MyPageHeader category={selectCategory} />
-        )} */}
-        {/* <MyPageHeader category={selectCategory} /> */}
       </S.MyPageRightContainer>
     </S.MyPageContainer>
   );

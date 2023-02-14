@@ -7,6 +7,8 @@ import { VectorSvg } from '../../../assets/vector';
 import { DeleteSvg } from '../../../assets/delete';
 import { FailureSvg } from '../../../assets/failure';
 import axios, { AxiosError, AxiosResponse } from 'axios';
+import LocalStorage from '../../../constants/localstorage';
+import SessionStorage from '../../../constants/sessionstorage';
 
 const MyProfile = ({ setSuccessPw }: any) => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -30,7 +32,15 @@ const MyProfile = ({ setSuccessPw }: any) => {
   const onValid = (data: any) => {
     console.log('data : ', data);
     axios
-      .post(`${api}/members/verify`, data)
+      .post(`${api}/members/verify`, data, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+          Authorization:
+            `Bearer ${LocalStorage.getItem('accesstoken')}` ||
+            `Bearer ${SessionStorage.getItem('accesstoken')}`,
+        },
+      })
       .then((res: AxiosResponse) => {
         console.log('res : ', res);
         console.log('비밀번호 확인 성공!');

@@ -6,16 +6,16 @@ import { useEffect, useState } from 'react';
 import { DeleteSvg } from '../../../../assets/delete';
 import { SuccessSvg } from '../../../../assets/success';
 import { FailureSvg } from '../../../../assets/failure';
+import { VectorSvg } from '../../../../assets/vector';
+import { NoVectorSvg } from '../../../../assets/noVector';
 import { overLapNickApi } from '../../../../apis/overLap';
+import { PASSWORD_REGEX } from '../../../../constants/regex';
+import useCheckPw from '../../../../hooks/signup/useCheckPw';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import LocalStorage from '../../../../constants/localstorage';
+import SessionStorage from '../../../../constants/sessionstorage';
 
-const EditProfile = ({ photo }: any) => {
-  const api = process.env.NEXT_PUBLIC_SERVER_URL;
-  const [avatarPreview, setAvatarPreview] = useState<string>('');
-  const [nickClick, setNickClick] = useState<boolean>(false);
-  const [imgClick, setImgClick] = useState<boolean>(false);
-  const [nickMsg, setNickMsg] = useState<string>('');
-  const [img, setImg] = useState<string>('');
-
+const EditProfile = ({ emailData, nickData, photoData }: any) => {
   const {
     register,
     setValue,
@@ -25,6 +25,21 @@ const EditProfile = ({ photo }: any) => {
   } = useForm({
     mode: 'onChange',
   });
+  const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  const [avatarPreview, setAvatarPreview] = useState<string>('');
+  const [nickClick, setNickClick] = useState<boolean>(false);
+  const [imgClick, setImgClick] = useState<boolean>(false);
+  const [pwClick, setPwClick] = useState<boolean>(false);
+  const [nickMsg, setNickMsg] = useState<string>('');
+  const [img, setImg] = useState<string>('');
+  const [pwMsg, setPwMsg] = useState<string>('');
+  const [vectorOne, setVectorOne] = useState<boolean>(false);
+  const [vectorTwo, setVectorTwo] = useState<boolean>(false);
+  const { checkPw } = useCheckPw(
+    watch('password'),
+    watch('passwordCheck'),
+    setPwMsg,
+  );
 
   const avatar = watch('profile');
   useEffect(() => {
@@ -50,23 +65,60 @@ const EditProfile = ({ photo }: any) => {
     }
   }, [watch('profile')]);
 
+  useEffect(() => {
+    // console.log('useEffect들어옴');
+    if (watch('passwordCheck')) {
+      // password,passwordCheck 가 변한다고해서 실행되는게 아니라 비밀번호재확인이 존재할때도 조건에 추가!
+      checkPw();
+    } else if (!watch('password') && !watch('passwordCheck')) {
+      setPwMsg('');
+    }
+  }, [watch('passwordCheck'), watch('password')]);
+
+  const onValid = (data: any) => {
+    delete data.passwordCheck;
+    console.log('수정데이터 data : ', data);
+    if (avatar && avatar.length) {
+      const file = avatar[0];
+
+      data.profile = URL.createObjectURL(file).slice(5);
+    } else {
+      data.profile = 'http://asdsadsadsas';
+    }
+    axios
+      .patch(`${api}/members/edit`, data, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+          Authorization:
+            `Bearer ${LocalStorage.getItem('accesstoken')}` ||
+            `Bearer ${SessionStorage.getItem('accesstoken')}`,
+        },
+      })
+      .then((res: AxiosResponse) => {
+        console.log('수정완료');
+      })
+      .catch((err: AxiosError) => {
+        console.log('수정 실패 err : ', err.message);
+      });
+  };
+
   return (
     <S.EditContainer>
       <S.EditTitleDiv>개인정보수정</S.EditTitleDiv>
       <S.EditAdditional>변경 후 저장하기 버튼을 눌러주세요.</S.EditAdditional>
-      <form>
+      <form onSubmit={handleSubmit(onValid)}>
         <S.ImgPreviewDiv
           onClick={() => {
             setNickClick(false);
           }}
         >
-          {photo && !watch('profile') ? (
-            <FaceSvg />
+          {photoData && !watch('profile') ? (
+            <img src={photoData} />
           ) : (
+            // <FaceSvg />
             <img src={avatarPreview} />
           )}
-
-          {/* <FaceSvg /> */}
         </S.ImgPreviewDiv>
         <S.NickContainer>
           <S.NickTitle>닉네임</S.NickTitle>
@@ -123,7 +175,7 @@ const EditProfile = ({ photo }: any) => {
             </>
           ) : (
             <S.NickBtnClickBefore>
-              <S.NickValue>DASONG</S.NickValue>
+              <S.NickValue>{nickData}</S.NickValue>
               <button
                 type="button"
                 onClick={() => {
@@ -145,7 +197,7 @@ const EditProfile = ({ photo }: any) => {
               <S.ImgValueInputDiv>
                 <input
                   type="text"
-                  placeholder="파일이름.jpg"
+                  placeholder={photoData || '파일이름.jpg'}
                   defaultValue={watch('profile') ? img : ''}
                   disabled
                 />
@@ -184,34 +236,138 @@ const EditProfile = ({ photo }: any) => {
             </S.ImgEditBtnClickBefore>
           )}
         </S.ProfileImgContainer>
-        <div>hr</div>
-        <div>
-          <div>아이디</div>
-          <div>test1@gmail.com</div>
-        </div>
-        <div>
-          <div>비밀번호</div>
-          <input type="password" disabled />
-          <button>비밀번호 수정</button>
-          <>
-            {'버튼눌렀을때'}
-            <input type="password" />
-            <input type="password" />
-            <div>대소문자~어쩌구</div>
-            <div>유효성 msg</div>
-          </>
-        </div>
-        <div>
-          <button
-            type="button"
-            onClick={() => {
-              setNickClick(false);
-            }}
-          >
-            수정취소
-          </button>
-          <button>수정저장</button>
-        </div>
+        <S.HorizonDiv></S.HorizonDiv>
+        <S.EmailContainer>
+          <S.EmailTitle>아이디</S.EmailTitle>
+          <S.EmailValue>{emailData}</S.EmailValue>
+        </S.EmailContainer>
+        <S.PwContainer>
+          <S.PwTitle>비밀번호</S.PwTitle>
+          {pwClick ? (
+            <S.PwEditClickAfter>
+              <S.PwInput valid={pwMsg} exist={watch('passwordCheck')}>
+                <input
+                  type={vectorOne ? 'text' : 'password'}
+                  placeholder="비밀번호를 입력해주세요."
+                  {...register('password', {
+                    required: '비밀번호 필수입력.',
+                    pattern: {
+                      value: PASSWORD_REGEX,
+                      message: '비밀번호형식이 올바르지 않습니다.',
+                    },
+                  })}
+                />
+                <S.PwDeleteDiv
+                  onClick={() => {
+                    setValue('password', '');
+                  }}
+                >
+                  {watch('password') ? <DeleteSvg /> : <></>}
+                </S.PwDeleteDiv>
+                <S.PwVectorDiv
+                  onClick={() => {
+                    setVectorOne(!vectorOne);
+                  }}
+                >
+                  {vectorOne ? <VectorSvg /> : <NoVectorSvg />}
+                </S.PwVectorDiv>
+              </S.PwInput>
+              <S.PwCheckInput valid={pwMsg} exist={watch('passwordCheck')}>
+                <input
+                  type={vectorTwo ? 'text' : 'password'}
+                  placeholder="비밀번호를 확인해주세요."
+                  {...register('passwordCheck', {
+                    required: '비밀번호 재확인 필수.',
+                    pattern: {
+                      value: PASSWORD_REGEX,
+                      message: '비밀번호형식이 올바르지 않습니다.',
+                    },
+                  })}
+                />
+                <S.PwCheckDeleteDiv
+                  onClick={() => {
+                    setValue('passwordCheck', '');
+                  }}
+                >
+                  {watch('passwordCheck') ? <DeleteSvg /> : <></>}
+                </S.PwCheckDeleteDiv>
+                <S.PwCheckVectorDiv
+                  onClick={() => {
+                    setVectorTwo(!vectorTwo);
+                  }}
+                >
+                  {vectorTwo ? <VectorSvg /> : <NoVectorSvg />}
+                </S.PwCheckVectorDiv>
+              </S.PwCheckInput>
+              <S.Notice>
+                *대소문자,숫자,특수문자 포함하여 8~15자로 작성해주세요.
+              </S.Notice>
+              {!errors.password?.message &&
+              pwMsg === '비밀번호가 일치합니다.' ? (
+                <S.PwSuccessMsg>
+                  <SuccessSvg />
+                  {pwMsg}
+                </S.PwSuccessMsg>
+              ) : !errors.password?.message &&
+                pwMsg === '비밀번호가 일치하지 않습니다.' ? (
+                <S.PwFailureMsg>
+                  <FailureSvg />
+                  <>{pwMsg}</>
+                </S.PwFailureMsg>
+              ) : errors.password?.message && watch('password') ? (
+                <S.PwFailureMsg>
+                  <FailureSvg />
+                  <>{errors.password?.message}</>
+                </S.PwFailureMsg>
+              ) : (
+                <></>
+              )}
+            </S.PwEditClickAfter>
+          ) : (
+            <S.PwEditClickBefore>
+              <S.PwInputBeforeDiv>
+                <input placeholder="***********" type="password" disabled />
+              </S.PwInputBeforeDiv>
+              <button
+                type="button"
+                onClick={() => {
+                  setPwClick(true);
+                }}
+              >
+                비밀번호 수정
+              </button>
+            </S.PwEditClickBefore>
+          )}
+        </S.PwContainer>
+        <S.BtnContainer>
+          <S.EditCancleBtnDiv>
+            <button
+              type="button"
+              onClick={() => {
+                setValue('nickname', '');
+                setValue('profile', '');
+                setValue('password', '');
+                setValue('passwordCheck', '');
+                setNickClick(false);
+                setImgClick(false);
+                setPwClick(false);
+              }}
+            >
+              수정취소
+            </button>
+          </S.EditCancleBtnDiv>
+          <S.EditSaveBtnDiv>
+            {watch('profile') || watch('nickname') || watch('password') ? (
+              <button type="submit" disabled={isSubmitting}>
+                수정저장
+              </button>
+            ) : (
+              <button type="button" disabled>
+                수정저장
+              </button>
+            )}
+          </S.EditSaveBtnDiv>
+        </S.BtnContainer>
       </form>
     </S.EditContainer>
   );
