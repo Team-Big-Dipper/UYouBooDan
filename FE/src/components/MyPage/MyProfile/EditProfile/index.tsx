@@ -2,14 +2,16 @@ import * as S from './style';
 import { useForm } from 'react-hook-form';
 import { FaceSvg } from '../../../../assets/face';
 import { NICKNAME_REGEX } from '../../../../constants/regex';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DeleteSvg } from '../../../../assets/delete';
 import { SuccessSvg } from '../../../../assets/success';
 import { FailureSvg } from '../../../../assets/failure';
+import { overLapNickApi } from '../../../../apis/overLap';
 
 const EditProfile = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const [nickClick, setNickClick] = useState<boolean>(false);
+  const [nickMsg, setNickMsg] = useState<string>('');
 
   const {
     register,
@@ -20,6 +22,16 @@ const EditProfile = () => {
   } = useForm({
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    if (watch('nickname') && errors.nickname?.message) {
+      setNickMsg('닉네임형식이 올바르지 않습니다.');
+    } else if (watch('nickname') && !errors.nickname?.message) {
+      setNickMsg('');
+    } else if (!watch('nickname')) {
+      setNickMsg('');
+    }
+  }, [watch('nickname')]);
 
   return (
     <S.EditContainer>
@@ -51,22 +63,40 @@ const EditProfile = () => {
                       },
                     })}
                   />
-                  <S.NickDeleteDiv>
-                    <DeleteSvg />
+                  <S.NickDeleteDiv
+                    onClick={() => {
+                      setValue('nickname', '');
+                    }}
+                  >
+                    {watch('nickname') ? <DeleteSvg /> : <></>}
                   </S.NickDeleteDiv>
                 </S.NickInputDiv>
-                <button type="button">중복체크</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    overLapNickApi(watch('nickname'), setNickMsg);
+                  }}
+                >
+                  중복체크
+                </button>
               </S.NickBtnCLickAfter>
-              <S.NickMsgDiv>
-                <S.NickSuccessMsg>
-                  <SuccessSvg />
-                  사용가능한 닉네임입니다.
-                </S.NickSuccessMsg>
+              {(watch('nickname') && errors.nickname?.message && nickMsg) ||
+              nickMsg === '닉네임형식이 올바르지 않습니다.' ||
+              nickMsg === '중복된 닉네임 입니다.' ? (
                 <S.NickFailureMsg>
                   <FailureSvg />
-                  사용중인 닉네임입니다.
+                  {nickMsg}
                 </S.NickFailureMsg>
-              </S.NickMsgDiv>
+              ) : watch('nickname') &&
+                !errors.nickname?.message &&
+                nickMsg === '사용가능한 닉네임 입니다.' ? (
+                <S.NickSuccessMsg>
+                  <SuccessSvg />
+                  {nickMsg}
+                </S.NickSuccessMsg>
+              ) : (
+                <></>
+              )}
             </>
           ) : (
             <S.NickBtnClickBefore>
