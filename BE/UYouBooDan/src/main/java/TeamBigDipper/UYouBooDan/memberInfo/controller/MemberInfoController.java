@@ -5,8 +5,10 @@ import TeamBigDipper.UYouBooDan.comment.entity.Comment;
 import TeamBigDipper.UYouBooDan.global.dto.MultiResDto;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.memberInfo.dto.MemberTopicResDto;
+import TeamBigDipper.UYouBooDan.memberInfo.dto.MemberTopicVoteResDto;
 import TeamBigDipper.UYouBooDan.memberInfo.service.MemberInfoService;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
+import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +32,7 @@ public class MemberInfoController {
 
     /**
      * 내가 쓴 게시글 조회
-     * @param request 로그인 한 memberId를 받기 위함
+     * @param request Authorization
      * @param pageable pageable처리를 위함
      * @return 내가 쓴 게시글 조회
      */
@@ -44,12 +46,36 @@ public class MemberInfoController {
         return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
     }
 
+
+    /**
+     * 내가 쓴 댓글 조회
+     * @param request Authorization
+     * @param pageable pageable처리를 위함
+     * @return 내가 쓴 댓글 조회
+     */
     @GetMapping("/comments")
     public ResponseEntity<MultiResDto> getMemberComments (HttpServletRequest request, Pageable pageable) {
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         Page<Comment> page = memberInfoService.findMemberComment(memberId, pageable);
         Page<CommentResDto> resDto = page.map(CommentResDto::new);
         List<CommentResDto> list = resDto.stream().collect(Collectors.toList());
+
+        return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
+    }
+
+
+    /**
+     * 내가 선택한 투표 조회
+     * @param request Authorization
+     * @param pageable pageable처리를 위함
+     * @return 투표Id, 투표 게시글 Id, 투표 게시글 내용, 투표 항목 Id, 투표 항목 이름, 투표자 Id, 투표자 이름, 생성일자, 종료일자
+     */
+    @GetMapping("/votes")
+    public ResponseEntity<MultiResDto> getMemberVotes (HttpServletRequest request, Pageable pageable) {
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Page<TopicVote> page = memberInfoService.findMemberVotedTopics(memberId, pageable);
+        Page<MemberTopicVoteResDto> resDtos = page.map(MemberTopicVoteResDto::new);
+        List<MemberTopicVoteResDto> list = resDtos.stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
     }
