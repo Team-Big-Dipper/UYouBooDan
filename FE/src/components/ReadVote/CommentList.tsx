@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import CommentInput from '../../components/ReadVote/CommentInput';
-import CommentCard from '../../components/ReadVote/CommentCard';
-import * as S from '../../components/ReadVote/style';
+import React, { useCallback } from 'react';
+import CommentInput from './CommentInput';
+import CommentCard from './CommentCard';
+import * as S from './style';
 import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
 interface propTypes {
   topicId: any;
