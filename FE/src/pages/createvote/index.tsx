@@ -12,6 +12,7 @@ import { TabSelector } from '../../components/CreateVote/TabSelector';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import LocalStorage from '../../constants/localstorage';
 import SessionStorage from '../../constants/sessionstorage';
+import ButtonModal from '../../components/commons/buttonModal';
 
 //datepicker
 
@@ -34,6 +35,7 @@ function createvote() {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   // const initialToken = localStorage.getItem("Authorization");
   const [sumbmitData, setSubmitData] = useState<Inputs>();
+  const [openModal, setOpenModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -55,11 +57,15 @@ function createvote() {
       console.log();
     }
   };
+  const confirmSubmit: SubmitHandler<Inputs> = (data) =>{
+    setSubmitData(data);
+    setOpenModal((prev) => !prev);
+  }
+
   //submit
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
-    setSubmitData(data);
     axios
-      .post(`${api}/topics`, data, {
+      .post(`${api}/topics`, sumbmitData, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
@@ -173,7 +179,7 @@ function createvote() {
     <S.CreateContainer>
       <S.Path>홈 &gt; 나만의 투표 만들기</S.Path>
       <S.Title>#나만의 투표 만들기</S.Title>
-      <form onSubmit={handleSubmit(onHandleSubmit)}>
+      <form onSubmit={handleSubmit(confirmSubmit)}>
         {/* 카테고리 */}
         <S.CategoryTitle>
           카테고리<span>*</span>
@@ -392,11 +398,20 @@ function createvote() {
         {/* 버튼 */}
         <S.Btns>
           <S.Cancle onClick={onHandleCancle}>취소하기</S.Cancle>
-          <S.Submit type="submit" disabled={isSubmitting}>
+          <S.Submit id="post" type="submit" disabled={isSubmitting}>
             등록하기
           </S.Submit>
         </S.Btns>
       </form>
+      <>
+      {openModal ? (
+        <ButtonModal
+          text={'등록할까요?'}
+          confirmFunc={onHandleSubmit}
+          setOpenModal={setOpenModal}
+        />
+      ) : null}
+      </>
     </S.CreateContainer>
   );
 }

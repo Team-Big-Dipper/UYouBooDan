@@ -83,11 +83,12 @@ export const ContinueTitle = styled.div`
   }
 `;
 
-export const ContinueMore = styled(Link)`
+export const ContinueMore = styled.div`
   color: #667085;
   margin-top: 10px;
   font-size: 0.9rem;
   text-decoration: none;
+  cursor: pointer;
   &:hover {
     color: #4285f4;
   }
@@ -233,10 +234,11 @@ export const DeadLineTitle = styled.div`
   }
 `;
 
-export const deadMore = styled(Link)`
+export const deadMore = styled.div`
   color: #667085;
   font-size: 0.9rem;
   text-decoration: none;
+  cursor: pointer;
   &:hover {
     color: #4285f4;
   }

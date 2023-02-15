@@ -20,6 +20,8 @@ export const TotalVoteCount = styled.div<PropsType>`
 `;
 
 export const CurrentCategoty = styled.p`
+  font-size: 1rem;
+  margin: 5px 0;
   @media (max-width: 479px) {
     display: none;
   }
@@ -27,6 +29,7 @@ export const CurrentCategoty = styled.p`
 
 export const LinkButton = styled(Link)`
   text-decoration: none;
+  cursor: default;
   color: black;
 `;
 

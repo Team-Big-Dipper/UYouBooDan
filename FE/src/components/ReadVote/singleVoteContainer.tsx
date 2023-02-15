@@ -1,25 +1,35 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SingleTextVote } from './singleTextVote';
 import ButtonModal from '../commons/buttonModal';
 import { CalcPercentage } from '../../utils/calculate';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { patchSingleVoteItem } from '../../apis/readvote/readvote';
+import { useGetToken } from '../../hooks/userToken/useGetToken';
+import { getCurrent } from '../../redux/slices/currentVoteSlice';
+import ForbidVoteModal from '../commons/forbidVoteModal';
 
 type propTypes = {
   content: string;
   count: number;
   selectedBtn: number[];
   handleSelectedBtn: React.Dispatch<React.SetStateAction<number[]>>;
-  id: number;
+  itemId: number;
   totalCount: number;
+  setVoteBtns: Function;
   isTopicVoteItemVoted: boolean;
+  topicId: string | string[] | undefined;
 };
+
 export const SingleVoteContainer = ({
   content,
   count,
-  id,
+  itemId,
+  topicId,
   totalCount,
+  setVoteBtns,
   isTopicVoteItemVoted,
 }: propTypes) => {
+  const dispatch = useDispatch();
   const [text, setText] = useState('투표할까요?');
   const [openModal, setOpenModal] = useState(false);
   const [calculated, setCalculated] = useState<number>(1);
@@ -47,24 +57,41 @@ export const SingleVoteContainer = ({
       return setText('본인 게시물에 투표 금지!!');
     }
   };
-
+  const token = useGetToken();
   const onVote = () => {
-    console.log('api call');
+    if (token !== undefined) {
+      patchSingleVoteItem(Number(topicId), itemId, token)?.then((res) => {
+        setVoteBtns([...res.data]);
+        if (!isVoted) {
+          dispatch(
+            getCurrent({
+              isVoted: true,
+            }),
+          );
+        }
+      });
+    }
   };
 
   return (
     <>
       {openModal && (
-        <ButtonModal
-          text={text}
-          setOpenModal={setOpenModal}
-          confirmFunc={onVote}
-        />
+        <>
+          {isAuthor ? (
+            <ForbidVoteModal setOpenModal={setOpenModal} />
+          ) : (
+            <ButtonModal
+              text={text}
+              setOpenModal={setOpenModal}
+              confirmFunc={onVote}
+            />
+          )}
+        </>
       )}
       <>
         <div onClick={handleModal}>
           <SingleTextVote
-            id={id}
+            itemId={itemId}
             content={content}
             count={calculated}
             isTopicVoteItemVoted={isTopicVoteItemVoted}

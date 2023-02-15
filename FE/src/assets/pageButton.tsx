@@ -1,4 +1,4 @@
-export const LeftPageButton = ({ id }: any) => {
+export const LeftPageButton = () => {
   return (
     <>
       <svg
@@ -11,8 +11,8 @@ export const LeftPageButton = ({ id }: any) => {
         <path
           d="M26 17L20 23L26 29"
           stroke="#667085"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <rect
           x="0.25"
@@ -21,14 +21,14 @@ export const LeftPageButton = ({ id }: any) => {
           height="45.5"
           rx="22.75"
           stroke="#A2ADC5"
-          stroke-width="0.5"
+          strokeWidth="0.5"
         />
       </svg>
     </>
   );
 };
 
-export const RightPageButton = ({ id }: any) => {
+export const RightPageButton = () => {
   return (
     <>
       <svg
@@ -41,8 +41,8 @@ export const RightPageButton = ({ id }: any) => {
         <path
           d="M20 29L26 23L20 17"
           stroke="#667085"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
         <rect
           x="45.75"
@@ -52,7 +52,7 @@ export const RightPageButton = ({ id }: any) => {
           rx="22.75"
           transform="rotate(-180 45.75 45.75)"
           stroke="#A2ADC5"
-          stroke-width="0.5"
+          strokeWidth="0.5"
         />
       </svg>
     </>

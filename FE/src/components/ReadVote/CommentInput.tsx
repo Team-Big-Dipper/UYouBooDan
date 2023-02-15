@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
 import { CommentSubmit } from '../../assets/commentSubmit';
-import { postComment } from '../../apis/comments';
+import { postComment } from '../../apis/comments/comments';
+import { useGetToken } from '../../hooks/userToken/useGetToken';
 
 interface Inputs {
   answer: string;
@@ -10,17 +11,16 @@ interface Inputs {
 interface propsType {
   topicId: string;
   setData: Function;
+  setIsPostComment: Function;
 }
 
-const CommentInput = ({ topicId, setData }: propsType) => {
-  console.log(topicId);
+const CommentInput = ({ topicId, setData, setIsPostComment }: propsType) => {
   const submitButtonStyle = useMemo(() => {
     return { display: 'none' };
   }, []);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     reset,
   } = useForm<Inputs>({
@@ -29,15 +29,18 @@ const CommentInput = ({ topicId, setData }: propsType) => {
     },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    postComment(topicId, data.answer).then((res) => {
-      if (res?.status === 'CREATED') {
-        console.log(res);
-        setData((prev: object[]) => [res.data, ...prev]);
-        alert('댓글이 작성되었습니다');
-      }
-    });
-    reset({ answer: '' });
-    console.log(data.answer);
+    const usertoken = useGetToken();
+    if (usertoken !== undefined) {
+      postComment(topicId, data.answer, usertoken).then((res) => {
+        if (res?.status === 'CREATED') {
+          console.log(res);
+          setData((prev: object[]) => [res.data, ...prev]);
+          alert('댓글이 작성되었습니다');
+          setIsPostComment((prev: boolean) => !prev);
+        }
+      });
+      reset({ answer: '' });
+    }
   };
 
   return (

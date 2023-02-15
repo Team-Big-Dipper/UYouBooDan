@@ -5,14 +5,14 @@ export interface CurrentVoteState {
   isAuthor: boolean;
   isVoted: boolean;
   isClosed: boolean;
-  bestItem: number | null;
+  theFirstVoteId: number | null;
 }
 
 const initialState: CurrentVoteState = {
   isAuthor: false,
   isVoted: false,
   isClosed: false,
-  bestItem: null,
+  theFirstVoteId: null,
 };
 
 export const currentVoteSlice = createSlice({
@@ -23,8 +23,8 @@ export const currentVoteSlice = createSlice({
       state.isAuthor = action.payload.isAuthor;
       state.isVoted = action.payload.isVoted;
       state.isClosed = action.payload.isClosed;
-      state.bestItem = action.payload.bestItem;
-      console.log(action.payload);
+      state.theFirstVoteId = action.payload.theFirstVoteId;
+      //console.log(action.payload);
     },
   },
 });

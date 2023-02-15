@@ -25,15 +25,21 @@ export const HotVote = () => {
 
   useEffect(()=>{
     axios
-      .get('/api/hot')
+      .get(`${api}/topics?size=10&page=1&filter=hot`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'ngrok-skip-browser-warning': 'any',
+        }
+      })
       .then((res: AxiosResponse) => {
-        console.log('hotList :', res.data.data);
+        console.log('deadLineList :', res.data.data);
         setHotDatas(res.data.data);
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
       });
   },[])
+  console.log(hotDatas)
   const HotVoteArr: any = {
     전체: (
       <style.CardAdd>

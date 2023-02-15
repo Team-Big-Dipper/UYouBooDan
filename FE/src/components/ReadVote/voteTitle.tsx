@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { QuestionIcon } from '../../assets/questionIcon';
 import * as S from './style';
-import { LikeSvg } from '../../assets/likeSvg';
+import { LikeSvg, ClickedLikeSvg } from '../../assets/likeSvg';
 import { ShareLinkSvg } from '../../assets/shareLinkSvg';
 import LinkModal from '../commons/linkModal';
 import { CalcDday } from '../../utils/calculate';
 import { ChangDateFormat } from '../../utils/parseDate';
+import { patchTopicLike } from '../../apis/readvote/readvote';
+import { useGetToken } from '../../hooks/userToken/useGetToken';
 
 type propTypes = {
   category: string | undefined;
@@ -15,6 +17,7 @@ type propTypes = {
   closedAt: string | undefined;
   views: number | undefined;
   likes: number | undefined;
+  topidId: string | string[] | undefined;
 };
 
 const VoteTitle = ({
@@ -25,21 +28,35 @@ const VoteTitle = ({
   closedAt,
   views,
   likes,
+  topidId,
 }: propTypes) => {
+  const usertoken = useGetToken();
+  const [likeCount, setLikeCount] = useState(likes);
   const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');
   const [copied, setCopied] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const onClickLike = () => {
-    alert('좋아요+1');
-  };
+  const [isLikeClicked, setIsLikeClicked] = useState();
+
   useEffect(() => {
     const result = CalcDday(closedAt);
     setDday(result);
     const changedDate = ChangDateFormat(createdAt);
     setCreated(changedDate);
   }, [createdAt, closedAt]);
-
+  const handleTopicLike = async () => {
+    if (usertoken !== undefined) {
+      patchTopicLike(Number(topidId), usertoken)?.then((res) => {
+        if (res.data.topicLikeStatus) {
+          alert('좋아요 + 1');
+        } else {
+          alert('좋아요 취소');
+        }
+        setLikeCount(res.data.numberOfLikes);
+        setIsLikeClicked(res.data.topicLikeStatus);
+      });
+    }
+  };
   const onClickShareLink = () => {
     const saveUrl = new Promise((resolve, reject) => {
       if (typeof window !== undefined) {
@@ -74,12 +91,14 @@ const VoteTitle = ({
         <S.ContentContainer>
           <S.DevideSubtitleDiv>
             <S.ContentInfo>
-              {created} | {author} | 조회수{views} |{' '}
-              <S.LikeButton onClick={onClickLike}>
-                <LikeSvg />
-                {likes}
-              </S.LikeButton>{' '}
-              |{' '}
+              <S.ContentInfoSpan>{created} |</S.ContentInfoSpan>
+              <S.ContentInfoSpan>{author} |</S.ContentInfoSpan>
+              <S.ContentInfoSpan> 조회수{views} |</S.ContentInfoSpan>
+              <S.LikeButton onClick={handleTopicLike}>
+                {isLikeClicked ? <ClickedLikeSvg /> : <LikeSvg />}
+                {likeCount}
+              </S.LikeButton>
+              |
               <span onClick={onClickShareLink}>
                 <ShareLinkSvg />
               </span>

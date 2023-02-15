@@ -8,6 +8,9 @@ interface isVoted {
 interface Rewrite {
   rewrite: boolean;
 }
+interface CurrentPage {
+  isCurrentPage: boolean;
+}
 
 export const VoteTitleOutLine = styled.div`
   margin-top: 5%;
@@ -44,10 +47,15 @@ export const Title = styled.div`
 export const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
+  height: 40px;
+  overflow: hidden;
   @media (min-width: 480px) and (max-width: 767px) {
     flex-direction: column;
     margin: 0;
+    height: fit-content;
+    align-items: flex-start;
   }
   @media (max-width: 479px) {
     display: flex;
@@ -83,12 +91,20 @@ export const ContentInfo = styled.div`
   color: #667085;
   display: flex;
   margin-left: 15px;
+  width: fit-content;
+  height: 20px;
+  justify-content: space-between;
   @media (min-width: 480px) and (max-width: 767px) {
     margin: 0;
   }
   @media (max-width: 479px) {
     margin-left: 0;
   }
+`;
+export const ContentInfoSpan = styled.span`
+  overflow: hidden;
+  height: 17px;
+  width: fit-content;
 `;
 export const LikeButton = styled.div`
   display: flex;
@@ -348,15 +364,13 @@ export const CommentPageBtns = styled.div`
   background-color: white;
   align-items: center;
 
-  @media (min-width: 480px) and (max-width: 767px) {
-  }
   @media (max-width: 479px) {
     font-size: 0.6rem;
   }
 `;
 
-export const CommentPageNum = styled.div`
-  font-size: 1rem;
+export const CommentPageNum = styled.div<CurrentPage>`
+  font-size: ${(props) => (props.isCurrentPage ? '1.2rem' : '0.8rem')};
   margin: 0 10px;
   cursor: default;
   @media (max-width: 479px) {
