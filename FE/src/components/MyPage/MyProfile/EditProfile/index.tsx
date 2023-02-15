@@ -14,8 +14,15 @@ import useCheckPw from '../../../../hooks/signup/useCheckPw';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import LocalStorage from '../../../../constants/localstorage';
 import SessionStorage from '../../../../constants/sessionstorage';
+import { useRouter } from 'next/router';
 
-const EditProfile = ({ emailData, nickData, photoData }: any) => {
+const EditProfile = ({
+  emailData,
+  nickData,
+  photoData,
+  setEditClick,
+  setSuccessPw,
+}: any) => {
   const {
     register,
     setValue,
@@ -26,6 +33,8 @@ const EditProfile = ({ emailData, nickData, photoData }: any) => {
     mode: 'onChange',
   });
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  const defaultImg = process.env.NEXT_PUBLIC_DEFAULT_IMG;
+  const router = useRouter();
   const [avatarPreview, setAvatarPreview] = useState<string>('');
   const [nickClick, setNickClick] = useState<boolean>(false);
   const [imgClick, setImgClick] = useState<boolean>(false);
@@ -66,7 +75,6 @@ const EditProfile = ({ emailData, nickData, photoData }: any) => {
   }, [watch('profile')]);
 
   useEffect(() => {
-    // console.log('useEffect들어옴');
     if (watch('passwordCheck')) {
       // password,passwordCheck 가 변한다고해서 실행되는게 아니라 비밀번호재확인이 존재할때도 조건에 추가!
       checkPw();
@@ -76,31 +84,50 @@ const EditProfile = ({ emailData, nickData, photoData }: any) => {
   }, [watch('passwordCheck'), watch('password')]);
 
   const onValid = (data: any) => {
-    delete data.passwordCheck;
-    console.log('수정데이터 data : ', data);
+    if (data.passwordCheck) {
+      delete data.passwordCheck;
+    }
+    if (!data.nickname) {
+      delete data.nickname;
+    }
+    if (!data.profile) {
+      delete data.profile;
+    }
+    if (!data.password) {
+      delete data.password;
+    }
     if (avatar && avatar.length) {
       const file = avatar[0];
-
       data.profile = URL.createObjectURL(file).slice(5);
-    } else {
-      data.profile = 'http://asdsadsadsas';
     }
+    console.log('수정데이터 data : ', data);
     axios
       .patch(`${api}/members/edit`, data, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
           Authorization:
-            `Bearer ${LocalStorage.getItem('accesstoken')}` ||
-            `Bearer ${SessionStorage.getItem('accesstoken')}`,
+            LocalStorage.getItem('accesstoken') !== null
+              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+              : SessionStorage.getItem('accesstoken') !== null
+              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+              : null,
         },
       })
       .then((res: AxiosResponse) => {
         console.log('수정완료');
+        console.log('수정완료 res : ', res);
+        setEditClick(false);
+        setSuccessPw(false);
+        router.push('main');
       })
       .catch((err: AxiosError) => {
         console.log('수정 실패 err : ', err.message);
       });
+  };
+
+  const errorImgHandler = (e: any) => {
+    e.target.src = defaultImg;
   };
 
   return (
@@ -114,7 +141,7 @@ const EditProfile = ({ emailData, nickData, photoData }: any) => {
           }}
         >
           {photoData && !watch('profile') ? (
-            <img src={photoData} />
+            <img src={`blob:${photoData}`} onError={errorImgHandler} />
           ) : (
             // <FaceSvg />
             <img src={avatarPreview} />

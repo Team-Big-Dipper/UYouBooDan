@@ -25,7 +25,8 @@ const Header = () => {
       LocalStorage.getItem('accesstoken') ||
       SessionStorage.getItem('accesstoken')
     ) {
-      setIsAuth(!isAuth);
+      // setIsAuth(!isAuth);
+      setIsAuth(true);
     } else {
       setIsAuth(false);
     }
@@ -36,6 +37,7 @@ const Header = () => {
     );
     console.log('isAuth : ', isAuth);
   }, [
+    [],
     LocalStorage.getItem('accesstoken'),
     SessionStorage.getItem('accesstoken'),
   ]);

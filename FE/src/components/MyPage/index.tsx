@@ -9,8 +9,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import MyProfile from './MyProfile';
 import EditProfile from './MyProfile/EditProfile';
 import { FaceSvg } from '../../assets/face';
-import { ImgLabel } from '../../pages/createvote/style';
-import Image from 'next/image';
 
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -43,8 +41,11 @@ const MyPage = () => {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
           Authorization:
-            `Bearer ${LocalStorage.getItem('accesstoken')}` ||
-            `Bearer ${SessionStorage.getItem('accesstoken')}`,
+            LocalStorage.getItem('accesstoken') !== null
+              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+              : SessionStorage.getItem('accesstoken') !== null
+              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+              : null,
         },
       })
       .then((res: AxiosResponse) => {
@@ -57,9 +58,9 @@ const MyPage = () => {
         setPhotoData(photo);
       })
       .catch((err: AxiosError) => {
-        console.log('err : ', err.message);
+        console.log('mypage 정보요청 err : ', err.message);
       });
-  }, []);
+  }, [[], successPw, editClick]);
 
   return (
     <S.MyPageContainer>
@@ -73,10 +74,10 @@ const MyPage = () => {
             <img
               width={80}
               height={80}
-              src={photoData}
-              alt="Img"
+              src={`blob:${photoData}`}
               onError={handleErrorImg}
             />
+            <>{console.log('photoData : ', photoData)}</>
             <S.SideBarImgDiv>
               <FaceSvg />
             </S.SideBarImgDiv>
@@ -173,6 +174,8 @@ const MyPage = () => {
             emailData={emailData}
             nickData={nickData}
             photoData={photoData}
+            setEditClick={setEditClick}
+            setSuccessPw={setSuccessPw}
           />
         ) : (
           <MyPageHeader category={selectCategory} />

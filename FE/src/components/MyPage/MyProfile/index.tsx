@@ -30,25 +30,28 @@ const MyProfile = ({ setSuccessPw }: any) => {
   }, [watch('password')]);
 
   const onValid = (data: any) => {
-    console.log('data : ', data);
+    console.log('비밀번호 확인 data : ', data);
     axios
       .post(`${api}/members/verify`, data, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
           Authorization:
-            `Bearer ${LocalStorage.getItem('accesstoken')}` ||
-            `Bearer ${SessionStorage.getItem('accesstoken')}`,
+            LocalStorage.getItem('accesstoken') !== null
+              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+              : SessionStorage.getItem('accesstoken') !== null
+              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+              : null,
         },
       })
       .then((res: AxiosResponse) => {
-        console.log('res : ', res);
+        console.log('비밀번호확인 성공 res : ', res);
         console.log('비밀번호 확인 성공!');
         setSuccessPw(true);
       })
       .catch((err: AxiosError) => {
         setErr(true);
-        console.log('err : ', err.message);
+        console.log('비밀번호확인 실패 err : ', err.message);
         console.log('비밀번호확인 실패!');
       });
   };
