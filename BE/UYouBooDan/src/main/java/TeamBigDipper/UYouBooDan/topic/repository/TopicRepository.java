@@ -34,7 +34,17 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
      */
     Page<Topic> findAllByClosedAtBetweenOrderByClosedAtAsc(LocalDateTime start, LocalDateTime end, Pageable pageable);
 
-    // TODO: 전체 게시글 중 핫토픽 조회
+    /**
+     * 전체 진행 중인 게시글 중에서 추천이 많이 된 게시글 목록을 추천 수 내림차순으로 조회
+     * @param pageable Pagination Pageable 객체
+     * @return Pagination이 적용된 Topic 객체
+     */
+    @Query(value = "SELECT t " +
+            "FROM Topic t, TopicLike l " +
+            "where l.topicLikeStatus = 1 and t.id = l.topic.id and t.topicStatus IN ('ACTIVE', 'PROGRESS') " +
+            "GROUP BY l.topic.id " +
+            "ORDER BY COUNT(l.member.id) desc")
+    Page<Topic> findAllByHot(Pageable pageable);
 
     /**
      * 투표 마감된 투표 게시글 목록을 Pagination 적용해서 작성일 내림차순으로 조회
