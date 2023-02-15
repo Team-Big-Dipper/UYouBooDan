@@ -104,10 +104,9 @@ public class TopicService {
             // 마감 임박 투표 게시글 목록 조회
             case IMMINENT:
                 return topicRepository.findAllByClosedAtBetweenOrderByClosedAtAsc(now, end, pageable);
-            // 전체 게시글 중 핫토픽 조회
+            // 전체 진행 중인 게시글 중 핫토픽 조회
             case HOT:
-                // TODO: 전체 게시글 중에서 핫토픽 조회하는 메서드로 바꾸기
-                return topicRepository.findAllByClosedAtIsAfterOrderByCreatedAtDesc(now, pageable);
+                return topicRepository.findAllByHot(pageable);
             // 투표 마감된 투표 게시글 목록 조회
             case CLOSED:
                 return topicRepository.findAllByClosedAtIsBeforeOrderByCreatedAtDesc(now, pageable);
