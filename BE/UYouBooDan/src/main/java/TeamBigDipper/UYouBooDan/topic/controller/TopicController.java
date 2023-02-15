@@ -141,7 +141,6 @@ public class TopicController {
      */
     @PatchMapping("/{topic-id}/like")
     public ResponseEntity postTopicLike(@PathVariable("topic-id") long topicId,
-                                        @RequestBody TopicPatchReqDto topicPatchReqDto,
                                         HttpServletRequest request) {
 
         // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
@@ -164,11 +163,13 @@ public class TopicController {
     /**
      * 투표 게시글을 수정하는 Patch 핸들러 메서드
      * @param topicId 투표 게시글 id Long
-     * @param request HttpoServletRequest 객체 - 토큰 확인용
+     * @param topicPatchReqDto 투표 게시글 수정용 DTO 클래스 TopicPatchReqDto
+     * @param request HttpServletRequest 객체 - 토큰 확인용
      * @return TopicPostResDto 클래스에 대한 Response Entity, HTTP Status 반환
      */
     @PatchMapping("/{topic-id}")
     public ResponseEntity patchTopic(@PathVariable("topic-id") long topicId,
+                                     @RequestBody TopicPatchReqDto topicPatchReqDto,
                                      HttpServletRequest request) {
 
         // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
@@ -176,7 +177,7 @@ public class TopicController {
         Member member = memberService.findMember(memberId);
 
         // 투표 게시글 저장
-        Topic topic = topicService.updateTopic(topicPatchReqDto.toTopic(member));
+        Topic topic = topicService.updateTopic(topicPatchReqDto.toEntity(member), topicId);
 
         // Topic 클래스를 ResponseDTO로 변환
         TopicPostResDto topicPostResDto = new TopicPostResDto(topic.getTopicId());
