@@ -2,25 +2,29 @@ import React, { useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
 import { CommentSubmit } from '../../assets/commentSubmit';
-import { postComment } from '../../apis/comments';
+import { postComment } from '../../apis/comments/comments';
+import { getToken } from '../../utils/userToken';
 
 interface Inputs {
   answer: string;
 }
 interface propsType {
   topicId: string;
-  setData: Function;
+  setCommentData: Function;
+  setIsPostComment: Function;
 }
 
-const CommentInput = ({ topicId, setData }: propsType) => {
-  console.log(topicId);
+const CommentInput = ({
+  topicId,
+  setCommentData,
+  setIsPostComment,
+}: propsType) => {
   const submitButtonStyle = useMemo(() => {
     return { display: 'none' };
   }, []);
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     reset,
   } = useForm<Inputs>({
@@ -28,16 +32,31 @@ const CommentInput = ({ topicId, setData }: propsType) => {
       answer: '',
     },
   });
+  const obj = useMemo(
+    () => ({
+      required: '글자를 입력하세요',
+      maxLength: {
+        value: 400,
+        message: '400자 이하의 댓글만 작성이 가능합니다',
+      },
+    }),
+    [],
+  );
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    postComment(topicId, data.answer).then((res) => {
-      if (res?.status === 'CREATED') {
-        console.log(res);
-        setData((prev: object[]) => [res.data, ...prev]);
-        alert('댓글이 작성되었습니다');
-      }
-    });
-    reset({ answer: '' });
-    console.log(data.answer);
+    const usertoken = getToken();
+    if (usertoken !== undefined) {
+      postComment(topicId, data.answer, usertoken).then((res) => {
+        if (res?.status === 'CREATED') {
+          console.log(res.data);
+          setCommentData((prev: object[]) => [res.data, ...prev]);
+          alert('댓글이 작성되었습니다');
+          setIsPostComment((prev: boolean) => !prev);
+        }
+      });
+      reset({ answer: '' });
+    } else {
+      alert('로그인을 해주세요');
+    }
   };
 
   return (
@@ -46,16 +65,7 @@ const CommentInput = ({ topicId, setData }: propsType) => {
         rewrite={false}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <S.CommentInput
-          {...register('answer', {
-            required: '글자를 입력하세요',
-            maxLength: {
-              value: 400,
-              message: '400자 이하의 댓글만 작성이 가능합니다',
-            },
-          })}
-          placeholder="댓글"
-        />
+        <S.CommentInput {...register('answer', obj)} placeholder="댓글" />
         <input type="submit" id="btnSubmit" style={submitButtonStyle} />
         <label htmlFor="btnSubmit">
           <CommentSubmit />

@@ -2,7 +2,8 @@ import React, { useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import * as S from './style';
 import { CommentSubmit } from '../../assets/commentSubmit';
-import { patchComment } from '../../apis/comments';
+import { patchComment } from '../../apis/comments/comments';
+import { getToken } from '../../utils/userToken';
 
 interface Inputs {
   answer: string;
@@ -12,6 +13,7 @@ interface propsType {
   commentId: number | undefined;
   setCommentContent: Function;
   setIsRewiteComment: Function;
+  setIsPostComment: Function;
 }
 
 const CommentRewriteInput = ({
@@ -19,8 +21,8 @@ const CommentRewriteInput = ({
   commentId,
   setCommentContent,
   setIsRewiteComment,
+  setIsPostComment,
 }: propsType) => {
-  console.log(commentId);
   const submitButtonStyle = useMemo(() => {
     return { display: 'none' };
   }, []);
@@ -35,14 +37,19 @@ const CommentRewriteInput = ({
     },
   });
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    patchComment(commentId, data.answer).then((res) => {
-      if (res?.status === 'REWRITED') {
-        setCommentContent(res.data.commentContent);
-        alert('댓글이 수정되었습니다');
-        setIsRewiteComment((prev: boolean) => !prev);
-      }
-    });
-    reset({ answer: '' });
+    const usertoken = getToken();
+    if (usertoken !== undefined) {
+      patchComment(commentId, data.answer, usertoken).then((res) => {
+        if (res?.status === 'REWRITED') {
+          setCommentContent(res.data.commentContent);
+          alert('댓글이 수정되었습니다');
+          setIsRewiteComment((prev: boolean) => !prev);
+          setIsPostComment((prev: boolean) => !prev);
+        }
+      });
+    } else {
+      alert('로그인을 해주세요');
+    }
   };
 
   return (
@@ -62,7 +69,6 @@ const CommentRewriteInput = ({
           <CommentSubmit />
         </label>
       </S.CommentInputContainer>
-      {/* <S.CommentInputSubmitButton>취소</S.CommentInputSubmitButton> */}
     </>
   );
 };

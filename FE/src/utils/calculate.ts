@@ -12,7 +12,9 @@ export const CalcTotal = (arr: any) => {
 
 export const CalcPercentage = (count: number, totalCount: number) => {
   let result = 0;
-  result = Math.round((count / totalCount) * 100);
+  if (totalCount > 0) {
+    result = Math.round((count / totalCount) * 100);
+  }
   return result;
 };
 
@@ -25,7 +27,7 @@ export const CalcDday = (end: any): string => {
   if (day >= 0 && day < 1) {
     return 'D-day';
   } else if (day >= 1) {
-    return 'D-' + day;
+    return 'D-' + (day + 1);
   } else {
     return '';
   }

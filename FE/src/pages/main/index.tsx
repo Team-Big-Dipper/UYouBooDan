@@ -4,8 +4,18 @@ import { Fingerprint } from '../../assets/fingerprint';
 import { ContinueVote } from '../../components/Main/ContinueVote'
 import { HotVote } from '../../components/Main/HotVote';
 import { DeadLine } from '../../components/Main/DeadLine';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
+import { getVoteCondition } from '../../redux/slices/getVoteConditionSlice';
 
 function Main() {
+  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const HandleGetVoteCondition = (e: any) => {
+    dispatch(getVoteCondition({ mobileCondition: e.target.id }));
+    router.push({ pathname: '/voteList'});
+  };
   return(
   <S.MainContainer>
     <S.MakeVoteContainer>
@@ -20,14 +30,14 @@ function Main() {
     <S.ContinueVoteContainer>
       <S.ContinueTitle>
         <h2>진행중인 투표에 <br />참여해보세요.</h2>
-        <S.ContinueMore href="/topics?size=6&page=1&filter=progress">더보기 &gt;</S.ContinueMore>
+        <S.ContinueMore id="progress" onClick={HandleGetVoteCondition}>더보기 &gt;</S.ContinueMore>
       </S.ContinueTitle>
       <ContinueVote />
     </S.ContinueVoteContainer>
     {/* 핫한 투표 */}
     <S.HotContainer>
       <S.HotTitle><span>핫한</span>&nbsp;투표를 만나보세요!</S.HotTitle>
-      {/* <HotVote /> */}
+      <HotVote />
     </S.HotContainer>
     {/* 마감임박 투표 */}
     <S.ImageDeadLineContainer>
@@ -38,7 +48,7 @@ function Main() {
       <S.DeadLineContainer>
         <S.DeadLineTitle>
           <div className='title'>마감임박 투표</div>
-          <S.deadMore href="/topics?size=6&page=1&filter=imminent">더보기 &gt;</S.deadMore>
+          <S.deadMore id="imminent" onClick={HandleGetVoteCondition}>더보기 &gt;</S.deadMore>
         </S.DeadLineTitle>
         <DeadLine />
       </S.DeadLineContainer>

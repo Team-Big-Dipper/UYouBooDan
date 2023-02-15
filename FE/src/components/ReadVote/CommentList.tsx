@@ -1,73 +1,74 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import CommentInput from './CommentInput';
 import CommentCard from './CommentCard';
 import * as S from './style';
-import { getComments } from '../../apis/comments';
 import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
-
+interface propTypes {
+  topicId: any;
+  isCommentLoading: boolean;
+  setCommentPageNum: Function;
+  commentPageNum: number;
+  totalPages: number;
+  totalComments: number;
+  setCommentData: Function;
+  setIsPostComment: Function;
+  bestComment: Props | undefined;
+  commentData: Props[] | undefined;
+  commentPageBtn: number[];
+}
 interface Props {
-  commendId: number;
-  totalLike: number;
   createdAt: string;
   memberId: number;
+  commendId: number;
+  totalLike: number;
   commentStatus: string;
   commentContent: string;
 }
-const CommentList = ({ topicId }: any) => {
-  const [pageNum, setPageNum] = useState(1);
-  const [pageSize, setPageSize] = useState(6);
-  const [bestComment, setBestComment] = useState<Props>();
-  const [totalComments, setTotalComments] = useState(0);
-  const [data, setData] = useState<Props[]>();
-  const [totalPages, setTotalPages] = useState(0);
-  const [commentPageBtn, setCommentPageBtn] = useState<number[]>([1]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const handleAnsPageNum = useCallback((e: any) => {
-    let num = Number(e.target.textContent);
-    setPageNum(num);
+const CommentList = ({
+  topicId,
+  isCommentLoading,
+  setCommentPageNum,
+  commentPageNum,
+  totalPages,
+  totalComments,
+  setCommentData,
+  setIsPostComment,
+  bestComment,
+  commentData,
+  commentPageBtn,
+}: propTypes) => {
+  const handleCommnetPageNum = useCallback((e: any) => {
+    setCommentPageNum(Number(e.target.textContent));
   }, []);
-  const handlePageNumButton = (e: any) => {
-    console.log(e.target.parentNode.id);
+  const handlePageButton = (e: any) => {
     if (
       e.target.parentNode.id === 'comment-right-button' &&
-      pageNum < totalPages
+      commentPageNum < totalPages
     ) {
-      setPageNum((prev) => prev + 1);
+      setCommentPageNum((prev: number) => prev + 1);
     } else if (
       e.target.parentNode.id === 'comment-left-button' &&
-      pageNum > 1
+      commentPageNum > 1
     ) {
-      setPageNum((prev) => prev - 1);
+      setCommentPageNum((prev: number) => prev - 1);
     } else {
       return;
     }
   };
-  useEffect(() => {
-    setIsLoading(true);
-    getComments(pageNum, pageSize, topicId)?.then((res) => {
-      const page = Array.from(
-        { length: res.pageInfo.totalPages },
-        (_, i) => i + 1,
-      );
-      setCommentPageBtn(page);
-      setTotalPages(res.pageInfo.totalPages);
-      setData([...res.data]);
-      setBestComment({ ...res.best[0] });
-      setTotalComments(res.pageInfo.totalElements);
-      setIsLoading(false);
-    });
-  }, [pageNum, pageSize, topicId]);
 
   return (
     <>
-      {isLoading ? (
+      {isCommentLoading ? (
         <p>로딩중...</p>
       ) : (
         <>
           <S.CommentListContainer>
             <S.CommentHeader>댓글 ({totalComments})</S.CommentHeader>
-            <CommentInput topicId={topicId} setData={setData} />
+            <CommentInput
+              topicId={topicId}
+              setCommentData={setCommentData}
+              setIsPostComment={setIsPostComment}
+            />
             <>
               <S.CommentListCondition>최신순</S.CommentListCondition>
               <CommentCard
@@ -79,8 +80,9 @@ const CommentList = ({ topicId }: any) => {
                 username={bestComment?.memberId}
                 content={bestComment?.commentContent}
                 status={bestComment?.commentStatus}
+                setIsPostComment={setIsPostComment}
               />
-              {data?.map((el, idx) => (
+              {commentData?.map((el, idx) => (
                 <CommentCard
                   index={idx}
                   key={el.commendId}
@@ -90,21 +92,26 @@ const CommentList = ({ topicId }: any) => {
                   username={el.memberId}
                   content={el.commentContent}
                   status={el.commentStatus}
+                  setIsPostComment={setIsPostComment}
                 />
               ))}
             </>
             <S.CommentPageBtns>
-              <div id="comment-left-button" onClick={handlePageNumButton}>
+              <div id="comment-left-button" onClick={handlePageButton}>
                 <LeftPageButton />
               </div>
-              {commentPageBtn.map((el, idx) => {
+              {commentPageBtn.map((el: number, idx: number) => {
                 return (
-                  <S.CommentPageNum key={idx} onClick={handleAnsPageNum}>
+                  <S.CommentPageNum
+                    key={idx}
+                    isCurrentPage={commentPageNum === el ? true : false}
+                    onClick={handleCommnetPageNum}
+                  >
                     {el}
                   </S.CommentPageNum>
                 );
               })}
-              <div id="comment-right-button" onClick={handlePageNumButton}>
+              <div id="comment-right-button" onClick={handlePageButton}>
                 <RightPageButton />
               </div>
             </S.CommentPageBtns>

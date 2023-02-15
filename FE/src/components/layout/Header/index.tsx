@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { SearchSvg } from '../../../assets/search';
 import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
@@ -8,6 +8,8 @@ import SessionStorage from '../../../constants/sessionstorage';
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
+import { useDispatch } from 'react-redux';
+import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
 
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
@@ -48,7 +50,12 @@ const Header = () => {
   const HandleOpen = () => {
     setIsOpen(!isOpen);
   };
-
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const handleApiCondition = useCallback(() => {
+    dispatch(getVoteCondition({ mobileCondition: 'all' }));
+    router.push({ pathname: '/voteList' });
+  }, []);
   return (
     <S.HeaderContainer>
       <S.Logo href="/">
@@ -88,7 +95,7 @@ const Header = () => {
           </S.LoginSignUpDiv>
         )}
         <S.Vote>
-          <S.AllVote href="/voteList">전체 투표</S.AllVote>
+          <S.AllVote onClick={handleApiCondition}>전체 투표</S.AllVote>
           <S.MakeVote href="/createvote">나만의 투표 만들기</S.MakeVote>
           <S.SearchDiv>
             <S.Search placeholder="검색어를 입력해주세요"></S.Search>

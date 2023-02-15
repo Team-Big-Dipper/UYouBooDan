@@ -3,10 +3,13 @@ interface ImageUrl {
   src: string | undefined | null;
 }
 interface isVoted {
-  isChangedComponent: boolean;
+  isChangedComponent: boolean | undefined;
 }
 interface Rewrite {
   rewrite: boolean;
+}
+interface CurrentPage {
+  isCurrentPage: boolean;
 }
 
 export const VoteTitleOutLine = styled.div`
@@ -44,15 +47,22 @@ export const Title = styled.div`
 export const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 10px;
+  height: 45px;
+  overflow: hidden;
   @media (min-width: 480px) and (max-width: 767px) {
     flex-direction: column;
     margin: 0;
+    height: fit-content;
+    align-items: flex-start;
   }
   @media (max-width: 479px) {
     display: flex;
     flex-direction: column;
     margin: 5px auto;
+    height: fit-content;
+    align-items: flex-start;
   }
 `;
 export const DevideSubtitleDiv = styled.div`
@@ -64,13 +74,13 @@ export const DevideSubtitleDiv = styled.div`
   }
   @media (max-width: 479px) {
     line-height: 150%;
-    margin-left: 4px;
+    //margin-left: 4px;
+    margin-left: 0;
   }
 `;
 export const DevideIconDiv = styled.div`
   display: flex;
-  margin-left: 8%;
-  margin-top: 2%;
+  margin-left: 10px;
   @media (min-width: 480px) and (max-width: 767px) {
     margin: 15px 0;
   }
@@ -83,11 +93,27 @@ export const ContentInfo = styled.div`
   color: #667085;
   display: flex;
   margin-left: 15px;
+  width: fit-content;
+  height: 20px;
+  justify-content: space-between;
   @media (min-width: 480px) and (max-width: 767px) {
     margin: 0;
+    height: fit-content;
   }
   @media (max-width: 479px) {
     margin-left: 0;
+    height: fit-content;
+  }
+`;
+export const ContentInfoSpan = styled.span`
+  overflow: hidden;
+  height: 17px;
+  width: fit-content;
+  @media (min-width: 480px) and (max-width: 767px) {
+    height: fit-content;
+  }
+  @media (max-width: 479px) {
+    height: fit-content;
   }
 `;
 export const LikeButton = styled.div`
@@ -96,11 +122,11 @@ export const LikeButton = styled.div`
 `;
 export const CategoryIcon = styled.div`
   border-radius: 15px;
-  width: 5rem;
-  height: 1.4rem;
+  width: 80px;
+  height: 26px;
   background: ${(props) => props.color};
   text-align: center;
-  padding: 4px;
+  padding: 7px;
   color: white;
   margin-right: 3px;
   font-size: 0.9rem;
@@ -108,10 +134,10 @@ export const CategoryIcon = styled.div`
 export const DdayIcon = styled.div`
   font-size: 0.9rem;
   border-radius: 15px;
-  width: 5rem;
-  height: 1.4rem;
+  width: 80px;
+  height: 26px;
   background: #4285f4;
-  padding: 4px;
+  padding: 7px;
   text-align: center;
   color: white;
 `;
@@ -136,6 +162,7 @@ export const VoteContentContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 30px 0;
   @media (max-width: 479px) {
     padding: 10px;
   }
@@ -165,19 +192,40 @@ export const SelectTextSingle = styled.button<isVoted>`
   border: 1px solid #e2e6ee;
   font-weight: bold;
   font-size: 1rem;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 20px;
-  text-align: center;
-  margin-bottom: 0.5rem;
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
   background-color: ${(props) =>
     props.isChangedComponent ? '#4285f4' : 'white'};
   color: ${(props) => (props.isChangedComponent ? 'white' : 'black')};
 `;
+
+export const VoteResultDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+export const VoteResultContent = styled.div`
+  margin-left: 10px;
+`;
+export const VoteResultPercentageDiv = styled.div<isVoted>`
+  position: absolute;
+  right: 20px;
+  color: ${(props) => (props.isChangedComponent ? 'white' : ' #a2adc5')};
+`;
+
 export const ReadVoteBtnContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 10px;
+  margin: 50px 10px 10px 10px;
+  @media (max-width: 479px) {
+    margin: 30px 0;
+  }
 `;
 export const ReadVoteBtn = styled.div`
   border-color: ${(props) => (props.color ? props.color : 'gray')};
@@ -187,12 +235,13 @@ export const ReadVoteBtn = styled.div`
   color: ${(props) => (props.color ? 'white' : 'gray')};
   background-color: ${(props) => props.color};
   padding: 1rem 1.5rem;
-  margin: 15px 5px 30px 5px;
+  margin: 15px 5px 50px 5px;
   cursor: default;
 
   @media (max-width: 479px) {
-    width: 110px;
+    width: 100px;
     text-align: center;
+    padding: 20px;
     margin: 20px 5px 35px 5px;
   }
 `;
@@ -348,15 +397,13 @@ export const CommentPageBtns = styled.div`
   background-color: white;
   align-items: center;
 
-  @media (min-width: 480px) and (max-width: 767px) {
-  }
   @media (max-width: 479px) {
     font-size: 0.6rem;
   }
 `;
 
-export const CommentPageNum = styled.div`
-  font-size: 1rem;
+export const CommentPageNum = styled.div<CurrentPage>`
+  font-size: ${(props) => (props.isCurrentPage ? '1.2rem' : '0.8rem')};
   margin: 0 10px;
   cursor: default;
   @media (max-width: 479px) {

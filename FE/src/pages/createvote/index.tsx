@@ -9,12 +9,13 @@ import {
 import * as S from './style';
 import { TabPanel, useTabs } from 'react-headless-tabs';
 import { TabSelector } from '../../components/CreateVote/TabSelector';
-import { createData } from '../../redux/slices/createVoteSlice';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import LocalStorage from '../../constants/localstorage';
+import SessionStorage from '../../constants/sessionstorage';
+import ButtonModal from '../../components/commons/buttonModal';
 
 //datepicker
 
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
 
@@ -34,6 +35,7 @@ function createvote() {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   // const initialToken = localStorage.getItem("Authorization");
   const [sumbmitData, setSubmitData] = useState<Inputs>();
+  const [openModal, setOpenModal] = useState(false);
   const {
     register,
     handleSubmit,
@@ -55,47 +57,29 @@ function createvote() {
       console.log();
     }
   };
+  const confirmSubmit: SubmitHandler<Inputs> = (data) =>{
+    setSubmitData(data);
+    setOpenModal((prev) => !prev);
+  }
+
   //submit
   const onHandleSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log('data : ', data);
-    setSubmitData(data);
     axios
-      .post(`${api}/topics`, data, {
+      .post(`${api}/topics`, sumbmitData, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbIlVTRVIiXSwiaWQiOjYsInVzZXJuYW1lIjoidXNlcjEyQGdtYWlsLmNvbSIsInN1YiI6IjYiLCJpYXQiOjE2NzU3ODcxNDksImV4cCI6MTY3NTc4NzQ0OX0.jnQ1R6poDYziZYaw3u7c-dyASDiAdH4z_ION-c7dDLQ`
+          authorization: `Bearer ${LocalStorage.getItem('accesstoken')}`
         }
       })
       .then((res: AxiosResponse) => {
         console.log('요청 성공!', res);
-        console.log(res.data.data.topicId)
-        router.push(`/topics/${res.data.data.topicId}`)
+        router.push(`/readvote?pid=${res.data.data.topicId}`)
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
       });
   };
-  // useEffect(() => {
-  //   axios
-  //     .post(`${api}/topics`, {
-  //       headers: {
-  //         'Access-Control-Allow-Origin': '*',
-  //         'ngrok-skip-browser-warning': 'any',
-  //         Authorization: `${localStorage.getItem("Authorization")}`
-  //       }
-  //     })
-  //     .then((res: AxiosResponse) => {
-  //       console.log('요청 성공!', res);
-  //     })
-  //     .catch((err: AxiosError) => {
-  //       console.log('요청 실패!', err.message);
-  //     });
-    // const response = await axios.post('http://localhost:3000/api/topics');
-    // console.log(response)
-    //   return response.data;
-    // dispatch(createData(sumbmitData));
-  // }, []);
 
   //category
   const [categoryMsg, setCategoryMsg] = useState<string>('');
@@ -195,7 +179,7 @@ function createvote() {
     <S.CreateContainer>
       <S.Path>홈 &gt; 나만의 투표 만들기</S.Path>
       <S.Title>#나만의 투표 만들기</S.Title>
-      <form onSubmit={handleSubmit(onHandleSubmit)}>
+      <form onSubmit={handleSubmit(confirmSubmit)}>
         {/* 카테고리 */}
         <S.CategoryTitle>
           카테고리<span>*</span>
@@ -411,13 +395,23 @@ function createvote() {
             있습니다.
           </div>
         </S.Warning>
+        {/* 버튼 */}
         <S.Btns>
           <S.Cancle onClick={onHandleCancle}>취소하기</S.Cancle>
-          <S.Submit type="submit" disabled={isSubmitting}>
+          <S.Submit id="post" type="submit" disabled={isSubmitting}>
             등록하기
           </S.Submit>
         </S.Btns>
       </form>
+      <>
+      {openModal ? (
+        <ButtonModal
+          text={'등록할까요?'}
+          confirmFunc={onHandleSubmit}
+          setOpenModal={setOpenModal}
+        />
+      ) : null}
+      </>
     </S.CreateContainer>
   );
 }
