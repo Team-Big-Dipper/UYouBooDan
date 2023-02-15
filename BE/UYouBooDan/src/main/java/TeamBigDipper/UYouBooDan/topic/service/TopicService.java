@@ -224,9 +224,11 @@ public class TopicService {
         return topicLikeRepository.save(topicLike);     // TopicLike 저장 후 반환
     }
 
-    public Topic updateTopic(Topic requestedTopic, Member member) {
+    public Topic updateTopic(Topic requestedTopic, Long topicId) {
 
-        Topic verifiedTopic = findVerifiedTopic(requestedTopic.getTopicId());        // 유효한 투표 게시글인지 확인
+        Topic verifiedTopic = findVerifiedTopic(topicId);                           // 유효한 투표 게시글인지 확인
+
+        verifyTopicAuthor(verifiedTopic, requestedTopic.getMember());               // 투표 게시글의 작성자인지 확인
 
         // 요청 받은 TopicEntity 클래스 차례대로 확인하면서 투표 게시글 수정 진행
         Optional.ofNullable(requestedTopic.getCategory())           // 카테고리 수정
@@ -239,10 +241,30 @@ public class TopicService {
                 .ifPresent(verifiedTopic::modifyTopicClosedAt);
 
         // 투표가 이미 진행된 투표 게시글은 투표 항목 수정 불가
-        if (!verifiedTopic.isTopicInProgress()) {
-            Optional.ofNullable(requestedTopic.getTopicVoteItems())     // 투표 항목 수정
-                    .ifPresent();
+        if (!verifiedTopic.isTopicInProgress()) {     // 투표가 진행 중인 게시글이 아니라면 투표 항목 수정 가능
+            Optional<List<TopicVoteItem>> optionalTopicVoteItems =
+                    Optional.ofNullable(requestedTopic.getTopicVoteItems());      // 요청 받은 투표 항목 Optional 리스트
+            if(optionalTopicVoteItems.isPresent()) {                                    // 요청 받은 투표 항목 Optional 리스트가 존재하면
+                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // 요청 받은 투표 항목 Optional 리스트를 엔티티 리스트로 변환
+
+                // 투표 항목 엔티티 리스트 순회하면서 투표 항목 존재 여부 확인 및 값 수정
+                for (TopicVoteItem topicVoteItem: topicVoteItems) {
+                    Long topicVoteItemId = topicVoteItem.getTopicVoteItemId();
+//                    if (Object.isNull(topicVoteItemId)) {
+//
+//                    }
+                    TopicVoteItem verifiedTopicVoteItem = findVerifiedTopicVoteItem(topicVoteItem.getTopicVoteItemId());
+
+                }
+
+//                deleteTopicVoteItemInTopic(verifiedTopic);      // 기존의 투표 항목들 Repository 에서 삭제
+//                verifiedTopic.clearTopicVoteItems();            // 투표 게시글의 투표 항목 삭제
+
+//                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // Optional 리스트를 TopicVoteItem 리스트로 변환
+                topicVoteItems.forEach(verifiedTopic::addTopicVoteItem);        // 투표 게시글에 투표 항목 넣음
+            }
         }
+
         return topicRepository.save(verifiedTopic);     // 레포지토리에 Topic 객체 저장 후 반환
     }
 
@@ -271,6 +293,22 @@ public class TopicService {
 
         return findTopicVoteItem;   // 유효한 투표항목 반환
     }
+
+    /**
+     * 요청한 사용자가 투표 게시글의 작성자인지 확인하는 메서드
+     * @param verifiedTopic 투표 게시글 Topic 객체
+     * @param member 사용자 Member 객체
+     */
+    private void verifyTopicAuthor(Topic verifiedTopic, Member member) {
+        if (!verifiedTopic.findIsAuthor(member.getMemberId())) {        // 요청한 사용자가 작성자가 아니면 예외처리
+            throw new BusinessLogicException(ExceptionCode.NON_ACCESS_MODIFY);
+        }
+    }
+
+//    // 투표 게시글의 투표 항목 전체 삭제
+//    private void deleteTopicVoteItemInTopic(Topic topic) {
+//        topicVoteItemRepository.deleteAllInBatch(topic.getTopicVoteItems());
+//    }
 
     /**
      * TopicFilter Enum 클래스
