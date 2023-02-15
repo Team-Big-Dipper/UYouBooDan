@@ -203,7 +203,13 @@ public class Topic extends BaseTimeEntity {
      * @return 진행중이면 true, 아니면 false Boolean 반환
      */
     public Boolean isTopicInProgress() {
-        return topicStatus == TopicStatus.PROGRESS;
+        topicVoteItems.forEach(topicVoteItem -> {               // 투표 항목 리스트 순회하면서
+            if (topicVoteItem.getTopicVotes().size() > 0) {     // 투표 기록이 있으면
+                topicStatus = TopicStatus.PROGRESS;             // 투표 게시글의 상태를 진행중으로 전환
+            }
+        });
+
+        return topicStatus == TopicStatus.PROGRESS;             // 투표 게시글 상태가 진행중인지 여부 반환
     }
 
     /**
