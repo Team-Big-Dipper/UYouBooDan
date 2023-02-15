@@ -4,7 +4,7 @@ import voteInstance from '../voteInstance';
 export const getComments = async (
   pageNm: number = 1,
   size: number = 6,
-  topicId: string = '1',
+  topicId: string | string[] | undefined,
 ) => {
   try {
     console.log('get comment');
@@ -17,8 +17,12 @@ export const getComments = async (
       })
       .then((res) => {
         return res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+        return 'Err';
       });
-    return { ...data };
+    return data;
   } catch (error) {
     const err = error as AxiosError;
     if (axios.isAxiosError(err)) {
@@ -127,6 +131,10 @@ export const deleteComment = async (
           if (res.status === 200) {
             return 'REMOVED';
           }
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+          alert(err.response.data.message);
         });
       return result;
     }
@@ -147,15 +155,19 @@ export const postCommentLike = async (
       return;
     } else {
       console.log('post like comment');
-      const result = voteInstance.post(
-        `/topics/comments/${commendId}/like`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
+      const result = voteInstance
+        .post(
+          `/topics/comments/${commendId}/like`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           },
-        },
-      );
+        )
+        .then((res) => {
+          return res.data;
+        });
       return result;
     }
   } catch (error) {

@@ -22,7 +22,7 @@ export const Menu: React.FunctionComponent<HambugerNav> = ({
   const HandleGetVoteCondition = (e: any) => {
     dispatch(getVoteCondition({ mobileCondition: e.target.id }));
     setIsOpen(false);
-    router.push({ pathname: '/voteList', query: { conditions: e.target.id } });
+    router.push({ pathname: '/voteList' });
   };
   return (
     <style.MenuContainer className={isOpen ? 'open' : ''}>

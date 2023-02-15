@@ -12,7 +12,9 @@ export const CalcTotal = (arr: any) => {
 
 export const CalcPercentage = (count: number, totalCount: number) => {
   let result = 0;
-  result = Math.round((count / totalCount) * 100);
+  if (totalCount > 0) {
+    result = Math.round((count / totalCount) * 100);
+  }
   return result;
 };
 
