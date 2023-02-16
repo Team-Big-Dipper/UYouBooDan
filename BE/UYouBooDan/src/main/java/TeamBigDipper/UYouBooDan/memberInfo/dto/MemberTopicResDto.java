@@ -23,7 +23,7 @@ public class MemberTopicResDto extends BaseTimeEntity {
         this.title = topic.getTitle();
         this.content = topic.getContent();
         this.nickname = topic.getMember().getNickname().getName();
-//        this.bestVote = getBestVote(topic.getTopicVoteItems()).getTopicVoteItemName(); // 1위 투표 항목을 주입해주기 위한 생성자 필드
+        this.bestVote = getBestVote(topic.getTopicVoteItems()); // 1위 투표 항목을 주입해주기 위한 생성자 필드
 
         super.setCreatedAt(topic.getCreatedAt());
         super.setModifiedAt(topic.getModifiedAt());
@@ -33,9 +33,15 @@ public class MemberTopicResDto extends BaseTimeEntity {
     /**
      * @return 1위 투표(TopicVoteItem)
      */
-//    private static TopicVoteItem getBestVote(List<TopicVoteItem> list) {
-//        int temp = list.stream().mapToInt(a -> a.getTopicVote()).max().getAsInt();
-//
-//        return list.get(temp);
-//    }
+    private static String getBestVote(List<TopicVoteItem> list) {
+        TopicVoteItem topicVoteItem = new TopicVoteItem();
+        int count = -1;
+        for(TopicVoteItem item : list) {
+            if(item.getTopicVotes().size()>count) {
+                count = item.getTopicVotes().size();
+                topicVoteItem = item;
+            }
+        }
+        return topicVoteItem.getTopicVoteItemName();
+    }
 }

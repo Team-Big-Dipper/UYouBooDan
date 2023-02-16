@@ -87,16 +87,10 @@ public class Member extends BaseTimeEntity {
     }
 
     public void modifyEmail(String email) {this.email = email;}
-    public void modifyPassword(String password){ this.password = password; }
-    public void modifyNickname(Name nickname){
-        this.nickname = nickname;
-    }
-    public void modifyProfile(Photo profile){
-        this.profile = profile;
-    }
-    public void modifyMemberStatus(MemberStatus status){
-        this.memberStatus = status;
-    }
+    public void modifyPassword(String password){ if(password != null) this.password = password; }
+    public void modifyNickname(Name nickname){ if(nickname.getName()!=null) this.nickname = nickname; }
+    public void modifyProfile(Photo profile){ if(profile.getPhoto()!=null) this.profile = profile; }
+    public void modifyMemberStatus(MemberStatus status){ this.memberStatus = status; }
     public void withdrawMember(){ this.memberStatus = MemberStatus.MEMBER_QUIT; }
     public void modifyOauthToken(String oauthAccessToken){ this.oauthAccessToken = oauthAccessToken; }
 }
