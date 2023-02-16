@@ -28,7 +28,8 @@ public class MemberInfoService {
      * @return 로그인 한 회원에 관련한 게시글을 페이지로 조회 (Id 참조 방식)
      */
     public Page<Topic> findMemberTopics(Long memberId, Pageable pageable) {
-        return topicRepository.findAllByMemberIdOrderByCreatedAtDesc(memberId, pageable);
+        Page<Topic> page = topicRepository.findAllByMemberIdOrderByCreatedAtDesc(memberId, pageable);
+        return page;
     }
 
     /**
