@@ -8,4 +8,8 @@ export const conditions: ObjType = {
   progress: '진행중 투표',
   closed: '종료된 투표',
   imminent: '마감임박순 투표',
+  matjeap: '맛집추천',
+  it: 'IT',
+  working: '직장생활',
+  lifestyle: '라이프스타일',
 };

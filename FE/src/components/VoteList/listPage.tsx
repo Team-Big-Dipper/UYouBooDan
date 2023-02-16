@@ -60,9 +60,8 @@ const ListPage = ({
             #{condition === null ? conditions['all'] : conditions[condition]}
           </S.PageTitle>
           <S.PageSubTitle>
-            다양한{' '}
-            {condition === null ? conditions['all'] : conditions[condition]}가
-            진행되고 있습니다.
+            {condition === null ? conditions['all'] : conditions[condition]}에
+            관한 다양한 투표가 진행되고 있습니다.
           </S.PageSubTitle>
         </div>
         <S.PageLink href="/createvote">

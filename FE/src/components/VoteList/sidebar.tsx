@@ -42,10 +42,18 @@ const Sidebar = ({ condition, setPage }: propTypes) => {
           마감임박순 투표
         </S.CategoryTitle>
         <S.SidebarCategory>카테고리</S.SidebarCategory>
-        <S.CategoryTitle>맛집추천</S.CategoryTitle>
-        <S.CategoryTitle>IT</S.CategoryTitle>
-        <S.CategoryTitle>직장생활</S.CategoryTitle>
-        <S.CategoryTitle>라이프스타일</S.CategoryTitle>
+        <S.CategoryTitle id="matjeap" onClick={handleApiCondition}>
+          맛집추천
+        </S.CategoryTitle>
+        <S.CategoryTitle id="it" onClick={handleApiCondition}>
+          IT
+        </S.CategoryTitle>
+        <S.CategoryTitle id="working" onClick={handleApiCondition}>
+          직장생활
+        </S.CategoryTitle>
+        <S.CategoryTitle id="lifestyle" onClick={handleApiCondition}>
+          라이프스타일
+        </S.CategoryTitle>
       </S.Sidebar>
     </div>
   );
