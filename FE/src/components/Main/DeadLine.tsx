@@ -14,10 +14,10 @@ interface deadLineData {
 export const DeadLine = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const [deadlineDatas, setDeadlineDatas] = useState<deadLineData[]>([]);
-  ///api/topics?size=4&page=1&filter=imminent
+
   useEffect(()=>{
     axios
-      .get(`${api}/topics?size=4&page=1&filter=progress`, {
+      .get(`${api}/topics?size=4&page=1&filter=imminent`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
