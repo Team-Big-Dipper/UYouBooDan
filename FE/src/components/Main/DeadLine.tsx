@@ -17,7 +17,7 @@ export const DeadLine = () => {
 
   useEffect(()=>{
     axios
-      .get(`${api}/topics?size=4&page=1&filter=progress`, {
+      .get(`${api}/topics?size=4&page=1&filter=imminent`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
