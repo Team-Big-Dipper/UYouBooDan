@@ -14,15 +14,11 @@ const googleredirect = () => {
 
   console.log('nowUrl : ', nowUrl);
   useEffect(() => {
-    // delete nowUrl.scope;
-    // delete nowUrl.authuser;
-    // delete nowUrl.prompt;
     axios
       .get(`${api}/google/callback`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          // 'content-type': 'application/x-www-form-urlencoded',
         },
         params: {
           code: nowUrl,

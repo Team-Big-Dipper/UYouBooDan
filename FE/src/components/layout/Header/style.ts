@@ -87,7 +87,27 @@ export const Vote = styled.div`
   display: flex;
   align-items: center;
 `;
-
+export const MyPageLogoutDiv = styled.div`
+  display: flex;
+  justify-content: end;
+  padding-right: 15px;
+  gap: 10px;
+`;
+export const Logout = styled(Link)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: black;
+  &:hover {
+    color: #4285f4;
+  }
+  &:focus {
+    color: #4285f4;
+  }
+`;
 export const Mypage = styled(Link)`
   display: flex;
   justify-content: flex-end;
@@ -97,7 +117,7 @@ export const Mypage = styled(Link)`
   margin-right: 1vw;
   text-decoration: none;
   color: black;
-  gap: 0.3vw;
+  gap: 2px;
 `;
 export const LoginSignUpDiv = styled.div`
   display: flex;
