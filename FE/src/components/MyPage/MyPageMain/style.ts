@@ -13,15 +13,14 @@ export const ContentBoxDiv = styled.div`
   justify-content: space-between;
   overflow: hidden;
   cursor: pointer;
-  :hover {
+  /* :hover {
     border-color: #4285f4;
-  }
+  } */
 `;
 export const ContentBox = styled.div`
   display: flex;
   align-items: center;
   gap: 60px;
-  /* border: 1px solid blue; */
   height: 100%;
 `;
 
@@ -31,7 +30,6 @@ export const ContentTextBox = styled.div`
   justify-content: space-between;
   padding: 25px 0 10px 20px;
   height: 100%;
-  /* border: 1px solid red; */
 `;
 export const ContentCategory = styled.div`
   margin-bottom: 8px;
@@ -103,7 +101,6 @@ export const ContentRanking = styled.div`
 `;
 export const ContentRankingEnd = styled.div`
   height: 25px;
-  /* background-color: #a2adc5; */
   background-color: #e2e6ee;
   color: #667085;
   font-size: 0.8rem;
@@ -117,11 +114,23 @@ export const PageNationDiv = styled.div`
   margin-top: 100px;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
+  /* div {
+    border: 1px solid red;
+  } */
+`;
+export const LeftDiv = styled.div`
+  cursor: pointer;
+`;
+export const RightDiv = styled.div`
+  cursor: pointer;
 `;
 export const PageNationNumberDiv = styled.div`
   display: flex;
   font-size: 1.3rem;
   color: #667085;
-  gap: 30px;
+  gap: 40px;
+  div {
+    cursor: pointer;
+  }
 `;
