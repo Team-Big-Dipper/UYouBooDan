@@ -75,7 +75,8 @@ public class MemberService {
         Member existMember = new Member().verifyMember(memberRepository.findById(memberId));
 //        Optional.ofNullable(member.getPassword()).ifPresent(pw -> existMember.modifyPassword(passwordEncoder.encode(pw))); // 해제시, 수정중 비밀번호를 필수항목으로 지정 가능
 
-        String encodedPassword = passwordEncoder.encode(member.getPassword());
+        String encodedPassword = null;
+        if (member.getPassword() != null) encodedPassword = passwordEncoder.encode(member.getPassword());
         Optional.ofNullable(encodedPassword).ifPresent(existMember::modifyPassword);
         Optional.ofNullable(member.getNickname()).ifPresent(existMember::modifyNickname);
         Optional.ofNullable(member.getProfile()).ifPresent(existMember::modifyProfile);  // 현재 profile의 경우 단순 URI상태. 추후 파일로 변경 예정
@@ -137,6 +138,7 @@ public class MemberService {
         if(passwordEncoder.matches(password, member.getPassword())) {
             String updatedPassword = passwordEncoder.encode(password);
             member.modifyPassword(updatedPassword);
+            memberRepository.save(member);
         } else throw new BusinessLogicException(ExceptionCode.NOT_EXACT_PASSWORD);
     }
 

@@ -60,7 +60,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
      * @param pageable Pagination 파라미터
      * @return
      */
-    @Query(value = "SELECT * FROM Topic topic WHERE topic.MEMBER_ID =:memberId Order By createdAt Desc", nativeQuery = true)
+    @Query(value = "SELECT * FROM Topic WHERE MEMBER_ID =:memberId ORDER BY createdAt DESC", nativeQuery = true)
     Page<Topic> findAllByMemberIdOrderByCreatedAtDesc(@Param("memberId") Long memberId, Pageable pageable);
 
 }

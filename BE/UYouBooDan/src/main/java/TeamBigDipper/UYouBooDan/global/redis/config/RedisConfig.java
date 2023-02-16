@@ -19,6 +19,7 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
+//        redisStandaloneConfiguration.setPassword(redisPwd); // 패스워드 필요시
         return new LettuceConnectionFactory(host, port);
     }
 
