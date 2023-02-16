@@ -203,7 +203,7 @@ const SignUp = () => {
                 setVectorOne(!vectorOne);
               }}
             >
-              {vectorOne ? <NoVectorSvg /> : <VectorSvg />}
+              {vectorOne ? <VectorSvg /> : <NoVectorSvg />}
               {/* <VectorSvg /> */}
             </S.PwVectorDiv>
           </S.PwInput>
@@ -232,7 +232,7 @@ const SignUp = () => {
                 setVectorTwo(!vectorTwo);
               }}
             >
-              {vectorTwo ? <NoVectorSvg /> : <VectorSvg />}
+              {vectorTwo ? <VectorSvg /> : <NoVectorSvg />}
             </S.PwCheckVectorDiv>
           </S.PwCheckInput>
           <S.Notice>
@@ -288,7 +288,7 @@ const SignUp = () => {
           <S.Notice>
             *닉네임은 한글, 영문, 숫자만 가능하며 2-10자리로 작성해주세요.
           </S.Notice>
-          {(watch('nickname') && errors.nick?.message && nickMsg) ||
+          {(watch('nickname') && errors.nickname?.message && nickMsg) ||
           nickMsg === '닉네임형식이 올바르지 않습니다.' ||
           nickMsg === '중복된 닉네임 입니다.' ? (
             <S.NickFailureMsg>
@@ -296,7 +296,7 @@ const SignUp = () => {
               {nickMsg}
             </S.NickFailureMsg>
           ) : watch('nickname') &&
-            !errors.Nick?.message &&
+            !errors.nickname?.message &&
             nickMsg === '사용가능한 닉네임 입니다.' ? (
             <S.NickSuccessMsg>
               <SuccessSvg />

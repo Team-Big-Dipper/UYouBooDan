@@ -35,7 +35,16 @@ export const SideBarUserInfoDiv = styled.div`
     margin-bottom: 15px;
   }
 `;
-
+export const SideBarImgDiv = styled.div`
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #d6d9dc;
+  margin-bottom: 15px;
+`;
 export const UserNickDiv = styled.div`
   font-size: 1.3rem;
   font-weight: bold;
