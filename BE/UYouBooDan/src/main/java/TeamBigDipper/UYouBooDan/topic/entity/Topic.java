@@ -214,15 +214,24 @@ public class Topic extends BaseTimeEntity {
 
     /**
      * 투표 게시글의 카테고리 수정하는 메서드
-     * @param category
+     * @param category 카테고리 Enum
      */
     public void modifyTopicCategory(Category category) {
         this.category = category;
     }
 
     /**
+     * 투표 게시글의 카테고리 수정하는 메서드
+     * @param category 카테고리 문자열 String
+     */
+    public void modifyTopicCategory(String category) {
+        this.category = Category.nameOf(category);
+
+    }
+
+    /**
      * 투표 게시글의 제목 수정하는 메서드
-     * @param title
+     * @param title 제목 String
      */
     public void modifyTopicTitle(String title) {
         this.title = title;
@@ -230,19 +239,20 @@ public class Topic extends BaseTimeEntity {
 
     /**
      * 투표 게시글의 내용 수정하는 메서드
-     * @param title
+     * @param content 내용 String
      */
-    public void modifyTopicContent(String title) {
+    public void modifyTopicContent(String content) {
         this.content = content;
     }
 
     /**
      * 투표 게시글의 마감일 수정하는 메서드
+     * 마감일은 일단 수정 불가로 정함 - 나중에 기능 추가시 대비하여 코드 주석 처리
      * @param closedAt
      */
-    public void modifyTopicClosedAt(LocalDateTime closedAt) {
-        this.closedAt = closedAt;
-    }
+//    public void modifyTopicClosedAt(LocalDateTime closedAt) {
+//        this.closedAt = closedAt;
+//    }
 
     /**
      * 카테고리 enum 클래스
