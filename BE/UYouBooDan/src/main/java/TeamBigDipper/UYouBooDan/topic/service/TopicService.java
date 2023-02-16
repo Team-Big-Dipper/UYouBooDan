@@ -3,6 +3,7 @@ package TeamBigDipper.UYouBooDan.topic.service;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
+import TeamBigDipper.UYouBooDan.topic.dto.TopicPatchReqDto;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicLike;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
@@ -224,46 +225,47 @@ public class TopicService {
         return topicLikeRepository.save(topicLike);     // TopicLike 저장 후 반환
     }
 
-    public Topic updateTopic(Topic requestedTopic, Long topicId) {
+    /**
+     * 투표 게시글 수정하는 메서드
+     * @param topicPatchReqDto 투표 게시글 수정 Patch Dto 클래스
+     * @param topicId 투표 게시글 Id Long
+     * @param member 사용자 Member
+     * @return 수정된 투표 게시글 Topic
+     */
+    public Topic updateTopic(TopicPatchReqDto topicPatchReqDto, Long topicId, Member member) {
 
         Topic verifiedTopic = findVerifiedTopic(topicId);                           // 유효한 투표 게시글인지 확인
 
-        verifyTopicAuthor(verifiedTopic, requestedTopic.getMember());               // 투표 게시글의 작성자인지 확인
+        verifyTopicAuthor(verifiedTopic, member);               // 투표 게시글의 작성자인지 확인
 
         // 요청 받은 TopicEntity 클래스 차례대로 확인하면서 투표 게시글 수정 진행
-        Optional.ofNullable(requestedTopic.getCategory())           // 카테고리 수정
+        Optional.ofNullable(topicPatchReqDto.getCategory())           // 카테고리 수정
                 .ifPresent(verifiedTopic::modifyTopicCategory);
-        Optional.ofNullable(requestedTopic.getTitle())              // 제목 수정
+        Optional.ofNullable(topicPatchReqDto.getTitle())              // 제목 수정
                 .ifPresent(verifiedTopic::modifyTopicTitle);
-        Optional.ofNullable(requestedTopic.getContent())            // 내용 수정
+        Optional.ofNullable(topicPatchReqDto.getContent())            // 내용 수정
                 .ifPresent(verifiedTopic::modifyTopicContent);
-        Optional.ofNullable(requestedTopic.getClosedAt())           // 마감일 수정
-                .ifPresent(verifiedTopic::modifyTopicClosedAt);
 
-        // 투표가 이미 진행된 투표 게시글은 투표 항목 수정 불가
-        if (!verifiedTopic.isTopicInProgress()) {     // 투표가 진행 중인 게시글이 아니라면 투표 항목 수정 가능
-            Optional<List<TopicVoteItem>> optionalTopicVoteItems =
-                    Optional.ofNullable(requestedTopic.getTopicVoteItems());      // 요청 받은 투표 항목 Optional 리스트
-            if(optionalTopicVoteItems.isPresent()) {                                    // 요청 받은 투표 항목 Optional 리스트가 존재하면
-                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // 요청 받은 투표 항목 Optional 리스트를 엔티티 리스트로 변환
-
-                // 투표 항목 엔티티 리스트 순회하면서 투표 항목 존재 여부 확인 및 값 수정
-                for (TopicVoteItem topicVoteItem: topicVoteItems) {
-                    Long topicVoteItemId = topicVoteItem.getTopicVoteItemId();
-//                    if (Object.isNull(topicVoteItemId)) {
+        // 투표 항목 수정 불가 - 투표 항목 수정 부분은 일단 주석 처리. 나중에 기능 추가시 대비하여 주석 처리
+//        // 투표가 이미 진행된 투표 게시글은 투표 항목 수정 불가
+//        if (!verifiedTopic.isTopicInProgress()) {     // 투표가 진행 중인 게시글이 아니라면 투표 항목 수정 가능
+//            Optional<List<TopicVoteItem>> optionalTopicVoteItems =
+//                    Optional.ofNullable(requestedTopic.getTopicVoteItems());      // 요청 받은 투표 항목 Optional 리스트
+//            if(optionalTopicVoteItems.isPresent()) {                                    // 요청 받은 투표 항목 Optional 리스트가 존재하면
+//                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // 요청 받은 투표 항목 Optional 리스트를 엔티티 리스트로 변환
 //
-//                    }
-                    TopicVoteItem verifiedTopicVoteItem = findVerifiedTopicVoteItem(topicVoteItem.getTopicVoteItemId());
-
-                }
-
+//                // 투표 항목 엔티티 리스트 순회하면서 투표 항목 존재 여부 확인 및 값 수정
+//                for (TopicVoteItem topicVoteItem: topicVoteItems) {
+//                    Long topicVoteItemId = topicVoteItem.getTopicVoteItemId();
+//                    TopicVoteItem verifiedTopicVoteItem = findVerifiedTopicVoteItem(topicVoteItem.getTopicVoteItemId());
+//
+//                }
 //                deleteTopicVoteItemInTopic(verifiedTopic);      // 기존의 투표 항목들 Repository 에서 삭제
 //                verifiedTopic.clearTopicVoteItems();            // 투표 게시글의 투표 항목 삭제
-
 //                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // Optional 리스트를 TopicVoteItem 리스트로 변환
-                topicVoteItems.forEach(verifiedTopic::addTopicVoteItem);        // 투표 게시글에 투표 항목 넣음
-            }
-        }
+//                topicVoteItems.forEach(verifiedTopic::addTopicVoteItem);        // 투표 게시글에 투표 항목 넣음
+//            }
+//        }
 
         return topicRepository.save(verifiedTopic);     // 레포지토리에 Topic 객체 저장 후 반환
     }
