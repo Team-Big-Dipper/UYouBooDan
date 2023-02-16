@@ -177,7 +177,7 @@ public class TopicController {
         Member member = memberService.findMember(memberId);
 
         // 투표 게시글 저장
-        Topic topic = topicService.updateTopic(topicPatchReqDto.toEntity(member), topicId);
+        Topic topic = topicService.updateTopic(topicPatchReqDto, topicId, member);
 
         // Topic 클래스를 ResponseDTO로 변환
         TopicPostResDto topicPostResDto = new TopicPostResDto(topic.getTopicId());
