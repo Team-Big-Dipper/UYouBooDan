@@ -24,10 +24,7 @@ export const getComments = async (
       });
     return data;
   } catch (error) {
-    const err = error as AxiosError;
-    if (axios.isAxiosError(err)) {
-      console.error(err);
-    }
+    console.log(error);
     return;
   }
 };
@@ -62,10 +59,7 @@ export const postComment = async (
       });
     return result;
   } catch (error) {
-    const err = error as AxiosError;
-    if (axios.isAxiosError(err)) {
-      console.error(err);
-    }
+    console.log(error);
     return;
   }
 };
@@ -100,10 +94,7 @@ export const patchComment = async (
       });
     return result;
   } catch (error) {
-    const err = error as AxiosError;
-    if (axios.isAxiosError(err)) {
-      console.error(err);
-    }
+    console.log(error);
     return;
   }
 };
@@ -139,10 +130,7 @@ export const deleteComment = async (
       return result;
     }
   } catch (error) {
-    const err = error as AxiosError;
-    if (axios.isAxiosError(err)) {
-      console.error(err);
-    }
+    console.error(error);
     return;
   }
 };
@@ -171,10 +159,7 @@ export const postCommentLike = async (
       return result;
     }
   } catch (error) {
-    const err = error as AxiosError;
-    if (axios.isAxiosError(err)) {
-      console.error(err);
-    }
+    console.log(error);
     return;
   }
 };
