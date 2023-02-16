@@ -7,6 +7,7 @@ import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.memberInfo.dto.MemberTopicResDto;
 import TeamBigDipper.UYouBooDan.memberInfo.dto.MemberTopicVoteResDto;
 import TeamBigDipper.UYouBooDan.memberInfo.service.MemberInfoService;
+import TeamBigDipper.UYouBooDan.topic.dto.TopicPageResDto;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +41,8 @@ public class MemberInfoController {
     public ResponseEntity<MultiResDto> getMemberTopics (HttpServletRequest request, Pageable pageable) {
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
         Page<Topic> page = memberInfoService.findMemberTopics(memberId, pageable);
-        Page<MemberTopicResDto> resDto = page.map(MemberTopicResDto::new);
-        List<MemberTopicResDto> list = resDto.stream().collect(Collectors.toList());
+        Page<TopicPageResDto> resDto = page.map(TopicPageResDto::new);
+        List<TopicPageResDto> list = resDto.stream().collect(Collectors.toList());
 
         return new ResponseEntity<>(new MultiResDto(list, page), HttpStatus.OK);
     }
