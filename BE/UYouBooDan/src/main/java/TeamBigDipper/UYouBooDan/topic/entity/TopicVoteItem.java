@@ -37,12 +37,14 @@ public class TopicVoteItem extends BaseTimeEntity {
     /**
      * TopicVoteItem 객체 생성자
      * @param topic 투표 게시글 Topic 객체
-     * @param topicVoteItemName 투표 항목이름 String 객체
+     * @param topicVoteItemName 투표 항목 이름 String 객체
+     * @param topicVoteItemId 투표 항목 Id Long 객체
      */
     @Builder
-    public TopicVoteItem(Topic topic, String topicVoteItemName) {
+    public TopicVoteItem(Topic topic, String topicVoteItemName, Long topicVoteItemId) {
         this.topic = topic;
         this.topicVoteItemName = topicVoteItemName;
+        this.topicVoteItemId = topicVoteItemId;
         topicVotes = new ArrayList<>();
     }
 
