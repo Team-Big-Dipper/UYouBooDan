@@ -3,6 +3,7 @@ package TeamBigDipper.UYouBooDan.topic.service;
 import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
+import TeamBigDipper.UYouBooDan.topic.dto.TopicPatchReqDto;
 import TeamBigDipper.UYouBooDan.topic.entity.Topic;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicLike;
 import TeamBigDipper.UYouBooDan.topic.entity.TopicVote;
@@ -71,6 +72,11 @@ public class TopicService {
         // topic id에 해당하는 Topic이 존재하지 않으면(topic이 null이면) 예외처리
         Topic findTopic = optionalTopic.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.TOPIC_NOT_EXIST));
+
+        // repository에 저장되어있는 투표 게시글이 삭제 상태로 되어있으면 예외 처리
+        if (findTopic.isTopicRemoved()){
+            throw new BusinessLogicException(ExceptionCode.TOPIC_NOT_EXIST);
+        }
 
         return findTopic;
     }
@@ -221,6 +227,51 @@ public class TopicService {
     }
 
     /**
+     * 투표 게시글 수정하는 메서드
+     * @param topicPatchReqDto 투표 게시글 수정 Patch Dto 클래스
+     * @param topicId 투표 게시글 Id Long
+     * @param member 사용자 Member
+     * @return 수정된 투표 게시글 Topic
+     */
+    public Topic updateTopic(TopicPatchReqDto topicPatchReqDto, Long topicId, Member member) {
+
+        Topic verifiedTopic = findVerifiedTopic(topicId);                           // 유효한 투표 게시글인지 확인
+
+        verifyTopicAuthor(verifiedTopic, member);               // 투표 게시글의 작성자인지 확인
+
+        // 요청 받은 TopicEntity 클래스 차례대로 확인하면서 투표 게시글 수정 진행
+        Optional.ofNullable(topicPatchReqDto.getCategory())           // 카테고리 수정
+                .ifPresent(verifiedTopic::modifyTopicCategory);
+        Optional.ofNullable(topicPatchReqDto.getTitle())              // 제목 수정
+                .ifPresent(verifiedTopic::modifyTopicTitle);
+        Optional.ofNullable(topicPatchReqDto.getContent())            // 내용 수정
+                .ifPresent(verifiedTopic::modifyTopicContent);
+
+        // 투표 항목 수정 불가 - 투표 항목 수정 부분은 일단 주석 처리. 나중에 기능 추가시 대비하여 주석 처리
+//        // 투표가 이미 진행된 투표 게시글은 투표 항목 수정 불가
+//        if (!verifiedTopic.isTopicInProgress()) {     // 투표가 진행 중인 게시글이 아니라면 투표 항목 수정 가능
+//            Optional<List<TopicVoteItem>> optionalTopicVoteItems =
+//                    Optional.ofNullable(requestedTopic.getTopicVoteItems());      // 요청 받은 투표 항목 Optional 리스트
+//            if(optionalTopicVoteItems.isPresent()) {                                    // 요청 받은 투표 항목 Optional 리스트가 존재하면
+//                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // 요청 받은 투표 항목 Optional 리스트를 엔티티 리스트로 변환
+//
+//                // 투표 항목 엔티티 리스트 순회하면서 투표 항목 존재 여부 확인 및 값 수정
+//                for (TopicVoteItem topicVoteItem: topicVoteItems) {
+//                    Long topicVoteItemId = topicVoteItem.getTopicVoteItemId();
+//                    TopicVoteItem verifiedTopicVoteItem = findVerifiedTopicVoteItem(topicVoteItem.getTopicVoteItemId());
+//
+//                }
+//                deleteTopicVoteItemInTopic(verifiedTopic);      // 기존의 투표 항목들 Repository 에서 삭제
+//                verifiedTopic.clearTopicVoteItems();            // 투표 게시글의 투표 항목 삭제
+//                List<TopicVoteItem> topicVoteItems = optionalTopicVoteItems.get();      // Optional 리스트를 TopicVoteItem 리스트로 변환
+//                topicVoteItems.forEach(verifiedTopic::addTopicVoteItem);        // 투표 게시글에 투표 항목 넣음
+//            }
+//        }
+
+        return topicRepository.save(verifiedTopic);     // 레포지토리에 Topic 객체 저장 후 반환
+    }
+
+    /**
      *투표 게시글에 좋아요 개수 세기
      * @param topicId  투표게시글 id Long
      * @return 투표 게시글 좋아요 개수 long
@@ -245,6 +296,22 @@ public class TopicService {
 
         return findTopicVoteItem;   // 유효한 투표항목 반환
     }
+
+    /**
+     * 요청한 사용자가 투표 게시글의 작성자인지 확인하는 메서드
+     * @param verifiedTopic 투표 게시글 Topic 객체
+     * @param member 사용자 Member 객체
+     */
+    private void verifyTopicAuthor(Topic verifiedTopic, Member member) {
+        if (!verifiedTopic.findIsAuthor(member.getMemberId())) {        // 요청한 사용자가 작성자가 아니면 예외처리
+            throw new BusinessLogicException(ExceptionCode.NON_ACCESS_MODIFY);
+        }
+    }
+
+//    // 투표 게시글의 투표 항목 전체 삭제
+//    private void deleteTopicVoteItemInTopic(Topic topic) {
+//        topicVoteItemRepository.deleteAllInBatch(topic.getTopicVoteItems());
+//    }
 
     /**
      * TopicFilter Enum 클래스
