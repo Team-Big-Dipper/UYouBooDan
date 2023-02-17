@@ -162,4 +162,29 @@ public class TopicController {
         // Topic Like Response DTO 객체와 HTTPStatus 반환
         return new ResponseEntity<>(new SingleResDto<>(topicLikeResDto), HttpStatus.OK);
     }
+
+    /**
+     * 투표 게시글을 수정하는 Patch 핸들러 메서드
+     * @param topicId 투표 게시글 id Long
+     * @param topicPatchReqDto 투표 게시글 수정용 DTO 클래스 TopicPatchReqDto
+     * @param request HttpServletRequest 객체 - 토큰 확인용
+     * @return TopicPostResDto 클래스에 대한 Response Entity, HTTP Status 반환
+     */
+    @PatchMapping("/{topic-id}")
+    public ResponseEntity patchTopic(@PathVariable("topic-id") long topicId,
+                                     @RequestBody TopicPatchReqDto topicPatchReqDto,
+                                     HttpServletRequest request) {
+
+        // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Member member = memberService.findMember(memberId);
+
+        // 투표 게시글 저장
+        Topic topic = topicService.updateTopic(topicPatchReqDto, topicId, member);
+
+        // Topic 클래스를 ResponseDTO로 변환
+        TopicPostResDto topicPostResDto = new TopicPostResDto(topic.getTopicId());
+
+        return new ResponseEntity<> (new SingleResDto<>(topicPostResDto), HttpStatus.OK);
+    }
 }

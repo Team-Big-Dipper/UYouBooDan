@@ -22,6 +22,7 @@ public enum ExceptionCode {
     TOPIC_NOT_EXIST(404, "존재하지 않는 게시글 입니다."),
     FILTER_NOT_EXIST(400, "잘못된 조회 필터 입니다"),
     VOTE_ITEM_NOT_EXIST(404, "존재하지 않는 투표 항목입니다"),
+    CATEGORY_NOT_EXIST(404, "존재하지 않는 카테고리입니다")
 //    NOT_EXACT_PASSWORD(400, "비밀번호가 올바르지 않습니다.")
     ;
 
