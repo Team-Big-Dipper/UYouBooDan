@@ -1,9 +1,10 @@
 import React, { useMemo, useCallback } from 'react';
 import * as S from './style';
 import { MakeVote } from '../../assets/makeVote';
-import CardItem from '../../components/VoteList/CardItem';
+import CardItem from './CardItem';
 import { conditions } from '../../constants/conditions';
 import { RightPageButton, LeftPageButton } from '../../assets/pageButton';
+import LoadingSpinner from '../../assets/loadingspinner.gif';
 
 interface props {
   category: string;
@@ -59,9 +60,8 @@ const ListPage = ({
             #{condition === null ? conditions['all'] : conditions[condition]}
           </S.PageTitle>
           <S.PageSubTitle>
-            다양한{' '}
-            {condition === null ? conditions['all'] : conditions[condition]}가
-            진행되고 있습니다.
+            {condition === null ? conditions['all'] : conditions[condition]}에
+            관한 다양한 투표가 진행되고 있습니다.
           </S.PageSubTitle>
         </div>
         <S.PageLink href="/createvote">
@@ -70,7 +70,7 @@ const ListPage = ({
       </S.PageHeader>
       <>
         {isLoading ? (
-          <p>로딩중...</p>
+          <S.LoadingImage src={LoadingSpinner} alt="gif" />
         ) : (
           <>
             {data?.map((el) => {

@@ -68,7 +68,7 @@ export const SingleVoteContainer = ({
     }
     setOpenModal((prev) => !prev);
     if (!isAuthor) {
-      if (!!isTopicVoteItemVoted && isVoted) {
+      if (!!isTopicVoteItemVoted) {
         return setText('투표를 취소할까요?');
       } else if (!isTopicVoteItemVoted && isVoted) {
         return setText('투표를 변경할까요?');
@@ -76,12 +76,12 @@ export const SingleVoteContainer = ({
         return setText('투표할까요?');
       }
     } else {
-      return setText('본인 게시물에 투표 금지!!');
+      return setText('본인 글에 투표할 수 없어요');
     }
   };
   const token = getToken();
   const onVote = useCallback(() => {
-    if (token !== undefined) {
+    if (token !== undefined && isAuthor === false) {
       patchSingleVoteItem(Number(topicId), itemId, token)?.then((res) => {
         setVoteBtns([...res.data]);
       });

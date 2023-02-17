@@ -11,13 +11,13 @@ interface Inputs {
 interface propsType {
   topicId: string;
   setCommentData: Function;
-  setIsPostComment: Function;
+  handleIsPostComment: Function;
 }
 
 const CommentInput = ({
   topicId,
   setCommentData,
-  setIsPostComment,
+  handleIsPostComment,
 }: propsType) => {
   const submitButtonStyle = useMemo(() => {
     return { display: 'none' };
@@ -47,10 +47,9 @@ const CommentInput = ({
     if (usertoken !== undefined) {
       postComment(topicId, data.answer, usertoken).then((res) => {
         if (res?.status === 'CREATED') {
-          console.log(res.data);
           setCommentData((prev: object[]) => [res.data, ...prev]);
           alert('댓글이 작성되었습니다');
-          setIsPostComment((prev: boolean) => !prev);
+          handleIsPostComment();
         }
       });
       reset({ answer: '' });
