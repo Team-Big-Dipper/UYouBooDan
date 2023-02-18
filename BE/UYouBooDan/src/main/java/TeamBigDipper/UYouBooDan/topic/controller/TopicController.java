@@ -187,4 +187,22 @@ public class TopicController {
 
         return new ResponseEntity<> (new SingleResDto<>(topicPostResDto), HttpStatus.OK);
     }
+
+    /**
+     * 투표 게시글 삭제하는 핸들러 메서드
+     * @param topicId 삭제할 투표 게시글 id long
+     * @param request HttpServletReqeust 객체 - 토큰 확인용
+     * @return 성공적으로 삭제됐다는 메세지를 포함한 Response Entity, HTTP Status 반환
+     */
+    @DeleteMapping("/{topic-id}")
+    public ResponseEntity deleteTopic(@PathVariable("topic-id") long topicId,
+                                      HttpServletRequest request) {
+        // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Member member = memberService.findMember(memberId);
+
+        topicService.deleteTopic(topicId, member);      // Service 클래스에서 투표 게시글 삭제
+
+        return new ResponseEntity<>(new SingleResDto<>("투표 게시글이 성공적으로 삭제 되었습니다."), HttpStatus.OK);
+    }
 }
