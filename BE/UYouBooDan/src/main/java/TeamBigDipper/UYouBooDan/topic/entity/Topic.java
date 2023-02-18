@@ -259,7 +259,12 @@ public class Topic extends BaseTimeEntity {
      */
     @Getter
     public enum Category {
-        Food("음식")
+        Food("음식"),
+        GENERAL("일반"),
+        FASHIONBEAUTY("패션뷰티"),
+        SHOPPING("쇼핑"),
+        PET("반려동물"),
+        HOBBYEXERCISE("취미운동")
         ;
 
         @Getter
