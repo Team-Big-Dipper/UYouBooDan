@@ -272,6 +272,21 @@ public class TopicService {
     }
 
     /**
+     * 투표 게시글 삭제하는 메서드
+     * @param topicId 삭제할 투표 게시글 id long
+     * @param member 삭제를 요청하는 사용자 member
+     */
+    public void deleteTopic(long topicId, Member member) {
+        Topic verifiedTopic = findVerifiedTopic(topicId);       // 유효한 투표 게시글인지 확인
+
+        verifyTopicAuthor(verifiedTopic, member);               // 요청하는 사용자가 작성자인지 확인
+
+        verifiedTopic.changeTopicStatusRemoved();               // 투표 게시글의 상태를 삭제 상태로 변환
+
+        topicRepository.save(verifiedTopic);             // 투표 게시글을 Repository에 저장
+    }
+
+    /**
      *투표 게시글에 좋아요 개수 세기
      * @param topicId  투표게시글 id Long
      * @return 투표 게시글 좋아요 개수 long
