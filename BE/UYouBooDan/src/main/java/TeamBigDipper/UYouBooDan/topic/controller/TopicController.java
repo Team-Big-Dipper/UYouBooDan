@@ -16,15 +16,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/topics")
 @RequiredArgsConstructor
+@Validated
 public class TopicController {
 
     private final TopicService topicService;
@@ -39,7 +43,7 @@ public class TopicController {
      * @return 투표게시글 ID, HTTP Status
      */
     @PostMapping
-    public ResponseEntity<SingleResDto<TopicPostResDto>> postTopic(@RequestBody TopicPostReqDto topicPostReqDto,
+    public ResponseEntity<SingleResDto<TopicPostResDto>> postTopic(@Valid @RequestBody TopicPostReqDto topicPostReqDto,
                                                                    HttpServletRequest request) {
         // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
         Member member = memberService.findMember(jwtExtractUtil.extractMemberIdFromJwt(request));
@@ -61,7 +65,7 @@ public class TopicController {
      * @return 조회된 투표 게시글 상세 내용, HTTP Status
      */
     @GetMapping("/{topic-id}")
-    public ResponseEntity getTopic(@PathVariable("topic-id") long topicId,
+    public ResponseEntity getTopic(@PathVariable("topic-id") @Min(1) long topicId,
                                    HttpServletRequest request) {
 
         Long memberId;                                                      // 사용자 id
@@ -116,8 +120,8 @@ public class TopicController {
      * @return 투표 게시글의 투표 항목 DTO 리스트, HTTP Status
      */
     @PatchMapping("/{topic-id}/vote")
-    public ResponseEntity patchTopicVote(@PathVariable("topic-id") long topicId,
-                                         @RequestBody TopicVoteReqDto topicVoteReqDto,
+    public ResponseEntity patchTopicVote(@PathVariable("topic-id") @Min(1) long topicId,
+                                         @Valid @RequestBody TopicVoteReqDto topicVoteReqDto,
                                          HttpServletRequest request) {
 
         // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
@@ -143,7 +147,7 @@ public class TopicController {
      * @return TopicLike Response DTO 클래스, HTTP Status 반환
      */
     @PatchMapping("/{topic-id}/like")
-    public ResponseEntity postTopicLike(@PathVariable("topic-id") long topicId,
+    public ResponseEntity postTopicLike(@PathVariable("topic-id") @Min(1) long topicId,
                                         HttpServletRequest request) {
 
         // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
@@ -171,7 +175,7 @@ public class TopicController {
      * @return TopicPostResDto 클래스에 대한 Response Entity, HTTP Status 반환
      */
     @PatchMapping("/{topic-id}")
-    public ResponseEntity patchTopic(@PathVariable("topic-id") long topicId,
+    public ResponseEntity patchTopic(@PathVariable("topic-id") @Min(1) long topicId,
                                      @RequestBody TopicPatchReqDto topicPatchReqDto,
                                      HttpServletRequest request) {
 
@@ -195,7 +199,7 @@ public class TopicController {
      * @return 성공적으로 삭제됐다는 메세지를 포함한 Response Entity, HTTP Status 반환
      */
     @DeleteMapping("/{topic-id}")
-    public ResponseEntity deleteTopic(@PathVariable("topic-id") long topicId,
+    public ResponseEntity deleteTopic(@PathVariable("topic-id") @Min(1) long topicId,
                                       HttpServletRequest request) {
         // 요청의 token으로부터 memberId 추출해 Member 클래스 생성
         Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
