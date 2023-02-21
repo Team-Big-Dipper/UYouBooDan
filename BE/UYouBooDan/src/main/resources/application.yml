@@ -26,7 +26,9 @@ spring:
   data:
     web:
       pageable:
+        default-page-size: 20
         one-indexed-parameters: true
+
   redis:
     host: localhost
     port: 6379

@@ -15,7 +15,7 @@ public class MemberTopicResDto extends BaseTimeEntity {
     private String title;
     private String content;
     private String nickname;
-    private String bestVote;  // 현재는 null반환, 추후 TopicVote구현 완료 후 값이 할당될 예정
+    private String bestVote;
 
     public MemberTopicResDto(Topic topic) {
         this.topicId = topic.getTopicId();

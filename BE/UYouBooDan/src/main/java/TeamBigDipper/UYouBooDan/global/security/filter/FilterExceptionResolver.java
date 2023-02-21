@@ -16,8 +16,6 @@ public class FilterExceptionResolver {
 
     /**
      * 인증에러 발생 시 예외 핸들러 메소드. 만약 인증에러가 아니면, 다른 에러에 대한 메세지를 로그와 예외로 던짐
-     * @param e
-     * @param response
      */
     @SneakyThrows
     public void handleException (RuntimeException e, HttpServletResponse response) {
@@ -39,8 +37,6 @@ public class FilterExceptionResolver {
 
     /**
      * 에러 상태 반환 메소드
-     * @param response
-     * @param exceptionCode
      */
     @SneakyThrows
     private void sendErrorResponse (HttpServletResponse response, ExceptionCode exceptionCode) {

@@ -24,9 +24,6 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
-/**
- * Entity 타입을 확인하기위해 서비스 로직을 작성했습니다.
- */
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -41,13 +38,7 @@ public class MemberService {
     @Value("${oauth.kakao.initialKey}")
     private String initialKey;
 
-    /**
-     * 예시 코드
-     * memberId는 DB 연동 후 조회가 가능합니다.
-     *
-     * @param member : 객체명
-     * @return : 객체명 (식별자 반환을 위함)
-     */
+
     @Transactional
     public Member createMember(Member member) {
         verifyNotExistEmail(member.getEmail());
@@ -94,6 +85,7 @@ public class MemberService {
         Member verifyMember = new Member().verifyMember(memberRepository.findById(memberId));
         memberRepository.delete(verifyMember);
     }
+
 
     /**
      * Member Entity클래스 내 구현한 회원탈퇴 메소드(withdrawMember 호출)
@@ -145,8 +137,6 @@ public class MemberService {
 
     /**
      * 이메일 중복 확인 메소드. 이메일 존재시 예외 발생
-     *
-     * @param email
      */
     public void verifyNotExistEmail(String email) {
         Optional<Member> optionalEmail = memberRepository.findByEmail(email);
@@ -154,10 +144,8 @@ public class MemberService {
     }
 
 
-    // 수정이 필요한 메소드 입니다.
     /**
      * 닉네임 중복확인 메소드. 닉네임 존재시 예외 발생
-     *
      * @param nickname
      */
     public void verifyNotExistNickname(String nickname) {
@@ -224,7 +212,7 @@ public class MemberService {
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();
 
-            if(googleProfile.getEmail()==null) member.modifyEmail(googleProfile.getSub()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
+            if(googleProfile.getEmail()==null) member.modifyEmail(googleProfile.getSub()+"@uyouboodan.com");
             else member.modifyEmail(googleProfile.getEmail());
 
             if(googleProfile.getPicture()!=null) member.modifyProfile(new Photo(googleProfile.getPicture()));

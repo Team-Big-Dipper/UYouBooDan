@@ -10,7 +10,6 @@ public class webConfig implements WebMvcConfigurer {
     /**
      * "http://localhost:3000" : 브라우저용 (www붙이면 CORS 발생)
      * "http://www.localhost:3000" : 카카오 리다이렉션용 (WWW 안붙이면 카카오에서 등록이 안됨)
-     *
      */
     @Override
     public void addCorsMappings (CorsRegistry registry) {

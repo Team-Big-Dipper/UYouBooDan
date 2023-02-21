@@ -75,7 +75,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String refreshToken = jwtTokenizer.delegateRefreshToken(authenticatedMember);
         response.setHeader("Authorization", "Bearer " + accessToken);
 
-        // refreshToken responseCookie builder 방식
         ResponseCookie cookie = ResponseCookie.from("refreshToken",refreshToken)
 //                .maxAge(7*24*60*60)
                 .path("/")

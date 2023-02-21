@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
  *             으로 필드를 구현해 주시면 됩니다.
  *
  */
-
 @Getter
 @Setter
 @MappedSuperclass
