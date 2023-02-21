@@ -11,6 +11,7 @@ import { Menu } from '../../MobileNav/Menu';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
+import { useRouter } from 'next/router';
 
 const Header = () => {
   // 로그인 여부 확인 하는 변수!

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as Style from './daedlineStyle';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { DdayCal } from '../../utils/dDay';
+import { FileNone } from '../../assets/fileNone';
 interface deadLineData {
   topicId: number,
   category: string;
@@ -31,8 +32,15 @@ export const DeadLine = () => {
         console.log('요청 실패!', err.message);
       });
   },[])
+  console.log(deadlineDatas)
   return(
     <Style.DeadLineTable>
+      {deadlineDatas.length === 0 ?
+        <Style.NoneContainer>
+          <FileNone />
+          <Style.NoneTitle>마감임박 투표가 없습니다.</Style.NoneTitle>
+        </Style.NoneContainer>
+        :
             <Style.DeadLineCards>
               <tbody>
                 {deadlineDatas?.map((data,idx)=>{
@@ -55,6 +63,7 @@ export const DeadLine = () => {
                 })}
               </tbody>
             </Style.DeadLineCards>
+        }
           </Style.DeadLineTable>
   )
 }

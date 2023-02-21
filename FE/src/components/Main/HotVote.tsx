@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import * as style from './style';
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { DdayCal } from '../../utils/dDay';
-
+import { Card } from './Card';
 interface hotData {
   topicId: number,
   category: string;
@@ -39,25 +39,18 @@ export const HotVote = () => {
         console.log('요청 실패!', err.message);
       });
   },[])
-  console.log(hotDatas)
+  // console.log(hotDatas)
   const HotVoteArr: any = {
     전체: (
       <style.CardAdd>
         <style.Crads>
           {hotDatas?.filter((data,idx) => idx < 3).map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#음식&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
@@ -71,18 +64,11 @@ export const HotVote = () => {
         <style.Crads>
           {hotDatas?.filter(data =>data.category === '음식').map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#음식&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
@@ -96,18 +82,11 @@ export const HotVote = () => {
         <style.Crads>
           {hotDatas?.filter(data =>data.category === '일반').map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#일반&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
@@ -121,18 +100,11 @@ export const HotVote = () => {
         <style.Crads>
           {hotDatas?.filter(data =>data.category === '쇼핑').map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#쇼핑&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
@@ -146,18 +118,11 @@ export const HotVote = () => {
         <style.Crads>
           {hotDatas?.filter(data =>data.category === '패션뷰티').map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#패션뷰티&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
@@ -171,18 +136,11 @@ export const HotVote = () => {
         <style.Crads>
           {hotDatas?.filter(data =>data.category === '반려동물').map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#반려동물&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
@@ -196,18 +154,11 @@ export const HotVote = () => {
         <style.Crads>
           {hotDatas?.filter(data =>data.category === '취미운동').map((data,idx)=>{
             return(
-              <style.Card key={idx}>
-                <div>
-                  <style.CardTitle>#취미운동&nbsp;<span>D-{DdayCal(data.closedAt)}</span></style.CardTitle>
-                  <style.CardContent>
-                    {data.title}
-                  </style.CardContent>
-                </div>
-                <style.AuthorDay>
-                  {data.nickName}
-                  <span>{data.closedAt.slice(0,4)}.{data.closedAt.slice(5,7)}.{data.closedAt.slice(8,10)}</span>
-                </style.AuthorDay>
-              </style.Card>
+              <Card
+                name={"hot"}
+                idx={idx}
+                data={data}
+                />
             )
           })}
         </style.Crads>
