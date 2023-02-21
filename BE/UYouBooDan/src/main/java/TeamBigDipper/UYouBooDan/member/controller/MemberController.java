@@ -35,9 +35,6 @@ public class MemberController {
      */
     @PostMapping
     public ResponseEntity<SingleResDto<Long>> postMember (@RequestBody MemberPostReqDto memberPostReqDto) {
-        /**
-         * 추후 시큐리티 구현 후 member password 암호화 예정
-         */
         Member savedMember = memberService.createMember(memberPostReqDto.toEntity());
 
         return new ResponseEntity<>(new SingleResDto<>(savedMember.getMemberId()), HttpStatus.CREATED);

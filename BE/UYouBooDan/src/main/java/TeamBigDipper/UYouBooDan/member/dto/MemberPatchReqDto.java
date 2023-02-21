@@ -12,7 +12,7 @@ public class MemberPatchReqDto {
     private String password;
     private String nickname;
     private String profile;
-    private Member.MemberStatus memberStatus; // MemberStatus의 에러 해결 후 활성화 예정입니다.
+    private Member.MemberStatus memberStatus;
 
     /**
      * 밸류지정방식
@@ -22,7 +22,7 @@ public class MemberPatchReqDto {
                 .password(this.password)
                 .nickname(new Name(this.nickname))
                 .profile(new Photo(this.profile))
-                .memberStatus(this.memberStatus) // MemberStatus의 에러 해결 후 활성화 예정입니다.
+                .memberStatus(this.memberStatus)
                 .build();
         return member;
     }

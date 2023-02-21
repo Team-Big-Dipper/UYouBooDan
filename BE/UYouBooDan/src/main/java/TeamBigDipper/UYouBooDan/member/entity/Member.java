@@ -28,7 +28,7 @@ public class Member extends BaseTimeEntity {
     private String email;
 
     @Setter
-    private String password; // 컨트롤러에서 암호화 할 예정
+    private String password;
 
     @Embedded
     private Name nickname;
