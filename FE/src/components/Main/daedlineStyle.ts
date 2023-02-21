@@ -60,3 +60,18 @@ export const AuthorDay = styled.div`
   font-size: 0.8rem;
 `;
 export const Date = styled.span``;
+
+export const NoneContainer = styled.div`
+  border: 1px solid #E2E6EE;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+`;
+export const NoneTitle = styled.div`
+  padding: 10px 0;
+  color: #667085;
+  font-weight: 600;
+`;

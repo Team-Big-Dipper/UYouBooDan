@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import * as Style from './continueStyle';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-import { DdayCal } from '../../utils/dDay';
-
+import { Card } from './Card';
 interface continueData {
   topicId: number;
   category: string;
@@ -37,24 +36,12 @@ export const ContinueVote = () => {
     <Style.CarouselContainer>
       <Style.Cards>
         {datas?.map((data, idx) => {
-          const today = new Date().toISOString;
-          const deadLine = data.closedAt;
           return (
-            <Style.Card key={idx}>
-              <div>
-                <Style.CardTitle>
-                  #{data.category}&nbsp;<span>D-{DdayCal(data.closedAt)}</span>
-                </Style.CardTitle>
-                <Style.CardContent>{data.title}</Style.CardContent>
-              </div>
-              <Style.AuthorDay>
-                {data.nickName}
-                <Style.Date>
-                  {data.closedAt.slice(0, 4)}.{data.closedAt.slice(5, 7)}.
-                  {data.closedAt.slice(8, 10)}
-                </Style.Date>
-              </Style.AuthorDay>
-            </Style.Card>
+            <Card
+              name={"continue"}
+              idx={idx} 
+              data={data}
+            />
           );
         })}
       </Style.Cards>
