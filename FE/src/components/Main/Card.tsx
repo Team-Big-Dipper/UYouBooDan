@@ -9,7 +9,6 @@ interface proptypes {
   name: string;
 }
 export const Card = ({idx, data, name}: proptypes) => {
-  console.log(data, name)
   const router = useRouter();
   const handleCardClick = () => {
     router.push(`/readvote?pid=${data.topicId}`)
