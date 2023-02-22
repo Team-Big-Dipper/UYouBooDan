@@ -25,14 +25,14 @@ export const DeadLine = () => {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log('deadLineList :', res.data.data);
+        // console.log('deadLineList :', res.data.data);
         setDeadlineDatas(res.data.data);
       })
       .catch((err: AxiosError) => {
         console.log('요청 실패!', err.message);
       });
   },[])
-  console.log(deadlineDatas)
+  // console.log(deadlineDatas)
   return(
     <Style.DeadLineTable>
       {deadlineDatas.length === 0 ?

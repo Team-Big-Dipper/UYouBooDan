@@ -13,7 +13,7 @@ interface continueData {
 
 export const ContinueVote = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
-  console.log(api)
+  // console.log(api)
   const [datas, setDatas] = useState<continueData[]>([]);
   useEffect(() => {
     axios
@@ -24,7 +24,7 @@ export const ContinueVote = () => {
         }
       })
       .then((res: AxiosResponse) => {
-        console.log('요청 성공!', res);
+        // console.log('요청 성공!', res);
         setDatas(res.data.data);
       })
       .catch((err: AxiosError) => {
@@ -38,6 +38,7 @@ export const ContinueVote = () => {
         {datas?.map((data, idx) => {
           return (
             <Card
+              key={idx}
               name={"continue"}
               idx={idx} 
               data={data}
