@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./BE/UYouBooDan
+        working-directory: ./UYouBooDan/BE/UYouBooDan
 
     steps:
     - uses: actions/checkout@v3
