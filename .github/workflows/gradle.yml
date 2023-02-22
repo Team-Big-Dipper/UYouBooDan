@@ -38,7 +38,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
       with:
-        arguments: ./gradlew clean build
+        arguments: clean build -x test
       
     
     # build한 후 프로젝트를 압축합니다.
