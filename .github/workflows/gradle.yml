@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./UYouBooDan
+        working-directory: ./BE/UYouBooDan
 
 
     steps:
