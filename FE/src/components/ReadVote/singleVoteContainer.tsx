@@ -1,0 +1,124 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { SingleTextVote } from './singleTextVote';
+import ButtonModal from '../commons/buttonModal';
+import { CalcPercentage } from '../../utils/calculate';
+import { patchSingleVoteItem } from '../../apis/readvote/readvote';
+import { getToken } from '../../utils/userToken';
+import ForbidVoteModal from '../commons/forbidVoteModal';
+
+type propTypes = {
+  content: string;
+  count: number | null;
+  selectedBtn: number[];
+  handleSelectedBtn: React.Dispatch<React.SetStateAction<number[]>>;
+  itemId: number;
+  totalCount: number;
+  setVoteBtns: Function;
+  isTopicVoteItemVoted: boolean | null;
+  topicId: string | string[] | undefined;
+  isAuthor: boolean | null | undefined;
+  isVoted: boolean | null | undefined;
+  isClosed: boolean | null | undefined;
+  theFirstItemNames: string[] | undefined;
+};
+
+export const SingleVoteContainer = ({
+  content,
+  count,
+  itemId,
+  topicId,
+  totalCount,
+  setVoteBtns,
+  isTopicVoteItemVoted,
+  isAuthor,
+  isVoted,
+  isClosed,
+  theFirstItemNames,
+}: propTypes) => {
+  const [text, setText] = useState('투표할까요?');
+  const [openModal, setOpenModal] = useState(false);
+  const [calculated, setCalculated] = useState<number>(1);
+  const [isTheFirstItem, setIsTheFirstItem] = useState<boolean | undefined>();
+  const [isChangedComponent, setIsChangedComponent] = useState<boolean>();
+
+  useEffect(() => {
+    if (theFirstItemNames?.length !== 0) {
+      const isFirstItem = theFirstItemNames?.map((el) => {
+        if (el === content) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (isFirstItem !== undefined && isFirstItem[0] !== undefined) {
+        setIsTheFirstItem(isFirstItem[0]);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (count !== null) {
+      setCalculated(CalcPercentage(count, totalCount));
+    }
+  }, [totalCount]);
+
+  const handleModal = () => {
+    if (!!isClosed) {
+      return;
+    }
+    setOpenModal((prev) => !prev);
+    if (!isAuthor) {
+      if (!!isTopicVoteItemVoted) {
+        return setText('투표를 취소할까요?');
+      } else if (!isTopicVoteItemVoted && isVoted) {
+        return setText('투표를 변경할까요?');
+      } else {
+        return setText('투표할까요?');
+      }
+    } else {
+      return setText('본인 글에 투표할 수 없어요');
+    }
+  };
+  const token = getToken();
+  const onVote = useCallback(() => {
+    if (token !== undefined && isAuthor === false) {
+      patchSingleVoteItem(Number(topicId), itemId, token)?.then((res) => {
+        setVoteBtns([...res.data]);
+      });
+    }
+  }, []);
+
+  return (
+    <>
+      {openModal && (
+        <>
+          {isAuthor ? (
+            <ForbidVoteModal setOpenModal={setOpenModal} />
+          ) : (
+            <ButtonModal
+              text={text}
+              setOpenModal={setOpenModal}
+              confirmFunc={onVote}
+            />
+          )}
+        </>
+      )}
+      <>
+        <div onClick={handleModal}>
+          <SingleTextVote
+            itemId={itemId}
+            content={content}
+            count={count}
+            calculated={calculated}
+            isClosed={isClosed}
+            isAuthor={isAuthor}
+            isTopicVoteItemVoted={isTopicVoteItemVoted}
+            isTheFirstItem={isTheFirstItem}
+            isChangedComponent={isChangedComponent}
+            setIsChangedComponent={setIsChangedComponent}
+          />
+        </div>
+      </>
+    </>
+  );
+};

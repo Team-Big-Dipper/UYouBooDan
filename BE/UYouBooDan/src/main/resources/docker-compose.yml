@@ -1,0 +1,22 @@
+volumes:
+  data:
+
+services:
+  redis:
+    image: redis:latest
+    volumes:
+      - data:/data
+    hostname: localhost
+    ports:
+      - 6379:6379
+  myapp:
+    image: 2f66aad5324a  # 도커 Image Id를 넣음
+
+# 현재 로컬주소로 도커가 적용 되어있습니다. 만약 에러가 발생할 시, Docker에서 redis Image와 container를 만들고,
+# 인텔리제이 내 터미널에서 아래의 명령어를 실행해보시기 바랍니다.
+
+# 경로로 이동
+# $ cd src/main/resources
+#
+# 연결 실행 코드
+# $ docker-compose up -d
