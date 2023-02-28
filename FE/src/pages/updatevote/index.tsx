@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
-import VoteTitle from '../../components/ReadVote/voteTitle';
+import VoteTitle from '../../components/UpdateVote/voteTitle';
 import VoteContent from '../../components/ReadVote/voteContent';
 import { SingleVoteContainer } from '../../components/ReadVote/singleVoteContainer';
 import { useRouter } from 'next/router';
@@ -42,6 +42,8 @@ const UpdateVote = () => {
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(20);
   const [isLoading, setIsLoading] = useState(false);
+  const [updateTitle, setUpdateTitle] = useState('');
+
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
@@ -81,9 +83,9 @@ const UpdateVote = () => {
           ) : (
             <>
               <VoteTitle
-                topidId={pid}
                 category={data?.category}
-                title={data?.title}
+                title={updateTitle}
+                setUpdateTitle={setUpdateTitle}
                 createdAt={data?.createdAt}
                 author={data?.author}
                 closedAt={data?.closedAt}
