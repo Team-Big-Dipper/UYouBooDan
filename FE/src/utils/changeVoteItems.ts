@@ -1,6 +1,6 @@
 export const ChangeTextItems = (
   isClosed: boolean | null | undefined,
-  isAuthor: boolean | null | undefined,
+  //isAuthor: boolean | null | undefined,
   isTheFirstItem: boolean | undefined,
   isTopicVoteItemVoted: boolean | null,
 ) => {
@@ -21,27 +21,25 @@ export const ChangeTextItems = (
   return result;
 };
 
-// export const useChangeImageItems = (
-//   itemId: number,
-//   isClosed: boolean,
-//   theFirstVoteId: number,
-//   isTopicVoteItemVoted: boolean,
-// ) => {
-//   const [isChangedComponent, setIsChangedComponent] = useState(false);
-//   useEffect(() => {
-//     if (isClosed === true) {
-//       if (theFirstVoteId === itemId) {
-//         setIsChangedComponent(false);
-//       } else {
-//         setIsChangedComponent(true);
-//       }
-//     } else if (isClosed === false) {
-//       if (isTopicVoteItemVoted === true) {
-//         setIsChangedComponent(true);
-//       } else {
-//         setIsChangedComponent(false);
-//       }
-//     }
-//   }, []);
-//   return isChangedComponent;
-// };
+export const ChangeImageItems = (
+  isClosed: boolean | null | undefined,
+  //isAuthor: boolean | null | undefined,
+  isTheFirstItem: boolean | undefined,
+  isTopicVoteItemVoted: boolean | null,
+) => {
+  let result = false;
+  if (isClosed === true) {
+    if (isTheFirstItem) {
+      result = false;
+    } else {
+      result = true;
+    }
+  } else if (isClosed === false) {
+    if (isTopicVoteItemVoted === true) {
+      result = true;
+    } else {
+      result = false;
+    }
+  }
+  return result;
+};

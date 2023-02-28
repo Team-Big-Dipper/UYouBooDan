@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import * as S from './style';
 import { ChangeTextItems } from '../../utils/changeVoteItems';
 import { SmileIcon } from '../../assets/smileIcon';
@@ -31,7 +31,7 @@ export const SingleTextVote = ({
   useEffect(() => {
     const isChanged = ChangeTextItems(
       isClosed,
-      isAuthor,
+      //isAuthor,
       isTheFirstItem,
       isTopicVoteItemVoted,
     );

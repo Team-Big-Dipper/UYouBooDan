@@ -173,7 +173,11 @@ const ReadVote = () => {
                     ? '총투표수: ' + totalCount + '표'
                     : null}
                 </S.TotalVoteCount>
-                <VoteBtn isAuthor={data?.isAuthor} />
+                <VoteBtn
+                  isAuthor={data?.isAuthor}
+                  topicId={pid}
+                  isClosed={data?.isClosed}
+                />
               </S.VoteContentLayout>
               <CommentList
                 topicId={pid}
