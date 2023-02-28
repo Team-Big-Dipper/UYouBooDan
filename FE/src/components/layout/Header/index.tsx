@@ -9,6 +9,7 @@ import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
 import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/router';
 import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
 import { useRouter } from 'next/router';
 
