@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+interface ImageUrl {
+  src: string | undefined | null;
+}
 
 export const ReadVoteBtnContainer = styled.div`
   display: flex;
@@ -162,4 +165,52 @@ export const DdayIcon = styled.div`
   padding: 7px;
   text-align: center;
   color: white;
+`;
+
+//UpdateContent
+export const VoteContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+  @media (max-width: 479px) {
+    padding: 10px;
+  }
+`;
+
+export const AddedImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const AddedImage = styled.div<ImageUrl>`
+  background-image: url(${(props) => props?.src});
+  border-radius: 10px;
+  background-position: center;
+  margin: 10px 0;
+  width: 347px;
+  height: 347px;
+  background-size: cover;
+  @media (max-width: 479px) {
+    margin: 10px;
+    width: 165px;
+    height: 165px;
+  }
+`;
+export const VoteContent = styled.div`
+  width: 100%;
+  font-size: 1rem;
+  padding: 30px;
+  line-height: 2rem;
+  color: #667085;
+  background-color: #fafafa;
+  margin-bottom: 30px;
+  @media (max-width: 479px) {
+    padding: 15px 10px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    margin-bottom: 0px;
+    font-size: 0.9rem;
+  }
 `;

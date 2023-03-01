@@ -17,7 +17,7 @@ type propTypes = {
   closedAt: string | undefined;
   views: number | null | undefined;
   likes: number | null | undefined;
-  setUpdateTitle: React.Dispatch<React.SetStateAction<string>>;
+  setUpdateTitle: React.Dispatch<React.SetStateAction<string|undefined>>;
 };
 
 const VoteTitle = ({
@@ -35,7 +35,7 @@ const VoteTitle = ({
   const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');
 
-  const onChangeTitle = (e: any) => {
+  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUpdateTitle(e.target.value);
   }
 
