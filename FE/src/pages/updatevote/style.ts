@@ -30,6 +30,11 @@ export const CurrentCategoty = styled.p`
   }
 `;
 
+export const Sign = styled.div`
+  color: red;
+  font-size: 0.7rem;
+`;
+
 export const LinkButton = styled(Link)`
   text-decoration: none;
   cursor: default;
