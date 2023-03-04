@@ -9,6 +9,10 @@ interface proptypes {
   name: string;
 }
 export const Card = ({idx, data, name}: proptypes) => {
+<<<<<<< HEAD
+=======
+  console.log(data, name)
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
   const router = useRouter();
   const handleCardClick = () => {
     router.push(`/readvote?pid=${data.topicId}`)

@@ -1,6 +1,10 @@
 import React, { useState, useCallback, useEffect } from "react";
 import * as style from './style';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+<<<<<<< HEAD
+=======
+import { DdayCal } from '../../utils/dDay';
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
 import { Card } from './Card';
 interface hotData {
   topicId: number,
@@ -38,6 +42,10 @@ export const HotVote = () => {
         console.log('요청 실패!', err.message);
       });
   },[])
+<<<<<<< HEAD
+=======
+  // console.log(hotDatas)
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
   const HotVoteArr: any = {
     전체: (
       <style.CardAdd>
@@ -45,7 +53,10 @@ export const HotVote = () => {
           {hotDatas?.filter((data,idx) => idx < 3).map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}
@@ -64,7 +75,10 @@ export const HotVote = () => {
           {hotDatas?.filter((data,idx) =>data.category === '음식' && idx < 3).map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}
@@ -83,7 +97,10 @@ export const HotVote = () => {
           {hotDatas?.filter(data =>data.category === '일반').map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}
@@ -102,7 +119,10 @@ export const HotVote = () => {
           {hotDatas?.filter(data =>data.category === '쇼핑').map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}
@@ -121,7 +141,10 @@ export const HotVote = () => {
           {hotDatas?.filter(data =>data.category === '패션뷰티').map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}
@@ -140,7 +163,10 @@ export const HotVote = () => {
           {hotDatas?.filter(data =>data.category === '반려동물').map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}
@@ -159,7 +185,10 @@ export const HotVote = () => {
           {hotDatas?.filter(data =>data.category === '취미운동').map((data,idx)=>{
             return(
               <Card
+<<<<<<< HEAD
                 key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
                 name={"hot"}
                 idx={idx}
                 data={data}

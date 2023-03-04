@@ -32,7 +32,11 @@ export const DeadLine = () => {
         console.log('요청 실패!', err.message);
       });
   },[])
+<<<<<<< HEAD
   // console.log(deadlineDatas)
+=======
+  console.log(deadlineDatas)
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
   return(
     <Style.DeadLineTable>
       {deadlineDatas.length === 0 ?

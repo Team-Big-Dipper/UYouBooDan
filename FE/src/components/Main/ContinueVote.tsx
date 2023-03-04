@@ -38,7 +38,10 @@ export const ContinueVote = () => {
         {datas?.map((data, idx) => {
           return (
             <Card
+<<<<<<< HEAD
               key={idx}
+=======
+>>>>>>> de54862 (:sparkles: feat: 마감임박 투표 없을때 div 생성)
               name={"continue"}
               idx={idx} 
               data={data}
