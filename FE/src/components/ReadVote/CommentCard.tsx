@@ -17,7 +17,7 @@ interface propTypes {
   createdAt: string | undefined;
   status: string | undefined;
   index: number | null;
-  setIsPostComment: Function;
+  handleIsPostComment: Function;
 }
 const CommentCard = ({
   commendId,
@@ -27,7 +27,7 @@ const CommentCard = ({
   createdAt,
   status,
   index,
-  setIsPostComment,
+  handleIsPostComment,
 }: propTypes) => {
   const usertoken = getToken();
   const [commentlikeCount, setCommentLikeCount] = useState(like);
@@ -92,8 +92,8 @@ const CommentCard = ({
                 commentContent={commentContent}
                 commentId={commendId}
                 setCommentContent={setCommentContent}
-                setIsRewiteComment={setIsRewiteComment}
-                setIsPostComment={setIsPostComment}
+                handleRewiteComment={handleRewiteComment}
+                handleIsPostComment={handleIsPostComment}
               />
             ) : (
               <S.CommentContent>{commentContent}</S.CommentContent>

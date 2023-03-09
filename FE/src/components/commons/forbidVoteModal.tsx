@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import * as S from './style';
 import { XmarkSvg } from '../../assets/XmarkSvg';
 
@@ -6,9 +6,9 @@ interface propTypes {
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 const ForbidVoteModal = ({ setOpenModal }: propTypes) => {
-  const handleModal = () => {
+  const handleModal = useCallback(() => {
     setOpenModal((prev: boolean) => !prev);
-  };
+  }, []);
 
   return (
     <S.ModalBackground onClick={handleModal}>

@@ -1,15 +1,12 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
-import LoadingSpinner from '../../assets/loadingspinner.gif';
 import VoteTitle from '../../components/ReadVote/voteTitle';
 import VoteContent from '../../components/ReadVote/voteContent';
-import CommentList from '../../components/ReadVote/CommentList';
 import { SingleVoteContainer } from '../../components/ReadVote/singleVoteContainer';
 import { useRouter } from 'next/router';
-import VoteBtn from '../../components/ReadVote/voteBtn';
+import VoteBtn from '../../components/UpdateVote/voteBtn';
 import { CalcTotal } from '../../utils/calculate';
 import { getReadVote } from '../../apis/readvote/readvote';
-import { getComments } from '../../apis/comments/comments';
 import { getToken } from '../../utils/userToken';
 
 interface responseType {
@@ -37,7 +34,7 @@ interface voteType {
   isTopicVoteItemVoted: boolean | null;
   numberOfVotes: number | null;
 }
-const ReadVote = () => {
+const UpdateVote = () => {
   const router = useRouter();
   const { pid } = router.query;
   const [data, setData] = useState<responseType>();
@@ -53,8 +50,8 @@ const ReadVote = () => {
     if (pid === undefined) {
       return;
     } else {
-      setIsLoading(true);
       if (usertoken !== undefined) {
+        setIsLoading(true);
         getReadVote(pid, usertoken)?.then((res) => {
           if (res === 'Err') {
             router.push('/auth');
@@ -71,63 +68,16 @@ const ReadVote = () => {
     }
   }, [pid]);
 
-  interface Props {
-    createdAt: string;
-    memberId: number;
-    commendId: number;
-    totalLike: number;
-    commentStatus: string;
-    commentContent: string;
-  }
-  //댓글
-  const [commentPageNum, setCommentPageNum] = useState(1);
-  const [commentPageSize, setCommentPageSize] = useState(6);
-  const [isPostComment, setIsPostComment] = useState(false);
-  const [bestComment, setBestComment] = useState<Props>();
-  const [totalComments, setTotalComments] = useState(0);
-  const [commentData, setCommentData] = useState<Props[]>();
-  const [totalPages, setTotalPages] = useState(1);
-  const [commentPageBtn, setCommentPageBtn] = useState<number[]>([1]);
-  const [isCommentLoading, setIsCommentLoading] = useState(false);
-  const handleIsPostComment = useCallback(() => {
-    setIsPostComment((prev): boolean => !prev);
-  }, []);
-  useEffect(() => {
-    if (usertoken !== undefined) {
-      setIsCommentLoading(true);
-      if (pid !== undefined) {
-        getComments(commentPageNum, commentPageSize, pid)?.then((res) => {
-          if (res === 'Err') {
-            return;
-          }
-          const page = Array.from(
-            { length: res?.pageInfo.totalPages },
-            (_, i) => i + 1,
-          );
-          setCommentPageBtn(page);
-          setTotalPages(res.pageInfo.totalPages);
-          setCommentData(res.data);
-          setBestComment(res.best[0]);
-          setTotalComments(res.pageInfo.totalElements);
-          setIsCommentLoading(false);
-        });
-      }
-      return;
-    } else {
-      router.push('/auth');
-    }
-  }, [pid, commentPageNum, isPostComment]);
-
   return (
     <>
       <S.PageContainer>
         <S.CurrentCategoty>
           <S.LinkButton href="/">홈</S.LinkButton>
-          {' > '}카테고리{' > '}게시글
+          {' > '}카테고리{' > '}게시글 수정
         </S.CurrentCategoty>
         <>
           {isLoading ? (
-            <S.LoadingImage src={LoadingSpinner} alt="gif" />
+            <p>로딩중...</p>
           ) : (
             <>
               <VoteTitle
@@ -173,25 +123,8 @@ const ReadVote = () => {
                     ? '총투표수: ' + totalCount + '표'
                     : null}
                 </S.TotalVoteCount>
-                <VoteBtn
-                  isAuthor={data?.isAuthor}
-                  topicId={pid}
-                  isClosed={data?.isClosed}
-                />
+                <VoteBtn isAuthor={data?.isAuthor} />
               </S.VoteContentLayout>
-              <CommentList
-                topicId={pid}
-                isCommentLoading={isCommentLoading}
-                setCommentPageNum={setCommentPageNum}
-                commentPageNum={commentPageNum}
-                totalPages={totalPages}
-                totalComments={totalComments}
-                setCommentData={setCommentData}
-                handleIsPostComment={handleIsPostComment}
-                bestComment={bestComment}
-                commentData={commentData}
-                commentPageBtn={commentPageBtn}
-              />
             </>
           )}
         </>
@@ -200,4 +133,4 @@ const ReadVote = () => {
   );
 };
 
-export default ReadVote;
+export default UpdateVote;

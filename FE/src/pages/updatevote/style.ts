@@ -1,14 +1,10 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import styled from 'styled-components';
 
 interface PropsType {
   isClosed: boolean | undefined;
 }
 
-export const LoadingImage = styled(Image)`
-  margin: 30px auto 130px auto;
-`;
 export const PageContainer = styled.div`
   display: flex;
   padding: 5% 20% 0 20%;

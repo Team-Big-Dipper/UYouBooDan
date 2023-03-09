@@ -10,6 +10,7 @@ import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
 import { useDispatch } from 'react-redux';
 import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
+import { useRouter } from 'next/router';
 
 const Header = () => {
   // 로그인 여부 확인 하는 변수!

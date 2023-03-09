@@ -203,6 +203,9 @@ export const ImageContainer = styled.div`
 `;
 export const DeadLineContainer = styled.div`
   width: 45%;
+  display: flex;
+  flex-direction: column;
+  height: 80%;
   @media screen and (max-width: 768px) {
     margin-top: 20px;
     width: 100%;
@@ -230,7 +233,6 @@ export const DeadLineTitle = styled.div`
     color: #242424;
     font-family: 'yg-jalnan' !important;
     font-size: 1.2rem;
-
   }
 `;
 

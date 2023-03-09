@@ -20,8 +20,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useRouter } from 'next/router';
 
 export interface topicVoteItem {
-    topicVoteItemName : string;
-  }
+  topicVoteItemName: string;
+}
 export interface Inputs {
   category: String;
   title: String;
