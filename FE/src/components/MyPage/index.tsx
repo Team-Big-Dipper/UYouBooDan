@@ -60,7 +60,7 @@ const MyPage = () => {
       .catch((err: AxiosError) => {
         console.log('mypage 정보요청 err : ', err.message);
       });
-  }, [[], successPw, editClick]);
+  }, []);
 
   return (
     <S.MyPageContainer>
