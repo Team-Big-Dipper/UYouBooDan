@@ -100,8 +100,6 @@ const SignUp = () => {
     }
   }, [watch(), checkedOne, checkedTwo]);
 
-  // console.log('isOk : ', isOk);
-
   console.log('watch() : ', watch());
   // submit 버튼 눌렀을때 실행되는 함수
   const onValid = (data: any) => {
@@ -204,7 +202,6 @@ const SignUp = () => {
               }}
             >
               {vectorOne ? <VectorSvg /> : <NoVectorSvg />}
-              {/* <VectorSvg /> */}
             </S.PwVectorDiv>
           </S.PwInput>
           <S.PwCheckInput valid={pwMsg} exist={watch('passwordCheck')}>
@@ -226,7 +223,6 @@ const SignUp = () => {
             >
               {watch('passwordCheck') ? <DeleteSvg /> : <></>}
             </S.PwCheckDeleteDiv>
-            {/* {vectorTwo ?  : } */}
             <S.PwCheckVectorDiv
               onClick={() => {
                 setVectorTwo(!vectorTwo);
