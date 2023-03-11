@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
 import VoteTitle from '../../components/UpdateVote/voteTitle';
 import UpdateContent from '../../components/UpdateVote/updateContent';
+import UpdateCategory from '../../components/UpdateVote/updateCategory';
 import { SingleVoteContainer } from '../../components/ReadVote/singleVoteContainer';
 import { useRouter } from 'next/router';
 import VoteBtn from '../../components/UpdateVote/voteBtn';
@@ -49,10 +50,16 @@ const UpdateVote = () => {
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(20);
   const [isLoading, setIsLoading] = useState(false);
-  const [updateTitle, setUpdateTitle] = useState(data?.title);
+  const [updateTitle, setUpdateTitle] = useState<string | undefined>('');
+  const [updateContent, setUpdateContent] = useState<string | undefined>('');
+  const [updatecategory, setUpdateCategory] = useState<string | undefined>('');
+  
+  useEffect(()=>{
+    setUpdateTitle(data?.title)
+    setUpdateContent(data?.content)
+    setUpdateCategory(data?.category)
+  },[data])
 
-  console.log(data?.title)
-  console.log(updateTitle)
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
@@ -103,10 +110,20 @@ const UpdateVote = () => {
                 likes={data?.likes}
               />
               <S.VoteContentLayout>
+                <UpdateCategory
+                  updatecategory={updatecategory}
+                  setUpdateCategory={setUpdateCategory}
+                   />
                 {!data?.image ? (
-                  <UpdateContent content={data?.content} image={null} />
+                  <UpdateContent
+                    image={null}
+                    updateContent={updateContent}
+                    setUpdateContent={setUpdateContent} />
                 ) : (
-                  <UpdateContent content={data?.content} image={data?.image} />
+                  <UpdateContent
+                    image={data?.image}
+                    updateContent={updateContent}
+                    setUpdateContent={setUpdateContent} />
                 )}
                 <div>
                   {voteBtns?.map((el) => {
@@ -137,8 +154,10 @@ const UpdateVote = () => {
                 </S.TotalVoteCount>
                 <VoteBtn 
                   pid={pid} 
+                  usertoken={usertoken}
                   updateTitle={updateTitle} 
-                  isAuthor={data?.isAuthor} 
+                  updateContent={updateContent}
+                  updatecategory={updatecategory}
                 />
               </S.VoteContentLayout>
             </>

@@ -40,7 +40,8 @@ export const ModalLeftButton = styled.span`
   border-right: lightgray 1px solid;
   color: black;
   padding: 2rem;
-  cursor: default;
+  /* cursor: default; */
+  cursor: pointer;
   flex: 1;
   z-index: 2;
 
@@ -57,7 +58,8 @@ export const ModalRightButton = styled.span`
   border-top: lightgray 1px solid;
   color: black;
   padding: 2rem;
-  cursor: default;
+  /* cursor: default; */
+  cursor: pointer;
   flex: 1;
   z-index: 2;
 

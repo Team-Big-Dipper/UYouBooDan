@@ -198,7 +198,7 @@ export const AddedImage = styled.div<ImageUrl>`
     height: 165px;
   }
 `;
-export const VoteContent = styled.div`
+export const VoteContent = styled.input`
   width: 100%;
   font-size: 1rem;
   padding: 30px;
@@ -206,6 +206,7 @@ export const VoteContent = styled.div`
   color: #667085;
   background-color: #fafafa;
   margin-bottom: 30px;
+  border: none;
   @media (max-width: 479px) {
     padding: 15px 10px;
     background-color: #fafafa;
@@ -213,4 +214,15 @@ export const VoteContent = styled.div`
     margin-bottom: 0px;
     font-size: 0.9rem;
   }
+`;
+
+export const Select = styled.select`
+  width: fit-content;
+  padding: 5px 7px;
+  border: 1px solid #d6d9dc;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  color: #667085;
+  margin-bottom: 10px;
 `;

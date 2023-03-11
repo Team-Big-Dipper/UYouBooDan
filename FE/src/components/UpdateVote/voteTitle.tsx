@@ -52,7 +52,7 @@ const VoteTitle = ({
         <S.TitleContainer>
           <QuestionIcon />
           <S.Title
-            value={title}
+            value={title || ''}
             onChange={(e)=>onChangeTitle(e)}
            />
         </S.TitleContainer>

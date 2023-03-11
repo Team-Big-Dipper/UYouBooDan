@@ -1,13 +1,19 @@
 import React from 'react';
 import * as S from './style';
 type propTypes = {
-  content: string | undefined;
   image: string | undefined | null;
+  updateContent: string | undefined;
+  setUpdateContent: React.Dispatch<React.SetStateAction<string | undefined>>
 };
-const UpdateContent = ({ content, image }: propTypes) => {
+const UpdateContent = ({ image, updateContent, setUpdateContent }: propTypes) => {
+   const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUpdateContent(e.target.value);
+  }
   return (
     <S.VoteContentContainer>
-      <S.VoteContent>{content}</S.VoteContent>
+      <S.VoteContent
+        value={updateContent || ""}
+        onChange={onChangeContent} />
       {!image ? null : (
         <S.AddedImageContainer>
           <S.AddedImage src={image} />
