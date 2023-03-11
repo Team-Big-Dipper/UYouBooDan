@@ -40,6 +40,7 @@ const EditProfile = ({
   const [imgClick, setImgClick] = useState<boolean>(false);
   const [pwClick, setPwClick] = useState<boolean>(false);
   const [nickMsg, setNickMsg] = useState<string>('');
+  const [nickPass, setNickPass] = useState<boolean>(false);
   const [img, setImg] = useState<string>('');
   const [pwMsg, setPwMsg] = useState<string>('');
   const [vectorOne, setVectorOne] = useState<boolean>(false);
@@ -83,47 +84,57 @@ const EditProfile = ({
     }
   }, [watch('passwordCheck'), watch('password')]);
 
-  const onValid = (data: any) => {
-    if (data.passwordCheck) {
-      delete data.passwordCheck;
+  const onValid = async (data: any) => {
+    delete data.passwordCheck;
+    if (watch('nickname')) {
+      overLapNickApi(watch('nickname'), setNickMsg);
     }
-    if (!data.nickname) {
+    if (nickMsg === '중복된 닉네임 입니다.') {
+      console.log('중복된 닉네임때매 수정 안됨.');
+      return;
+    }
+    if (!data.nickname || !watch('nickname')) {
       delete data.nickname;
     }
-    if (!data.profile) {
-      delete data.profile;
-    }
-    if (!data.password) {
+    if (!data.password && !watch('password')) {
       delete data.password;
+    }
+    if (!data.profile && !watch('profile')) {
+      delete data.profile;
     }
     if (avatar && avatar.length) {
       const file = avatar[0];
       data.profile = URL.createObjectURL(file).slice(5);
     }
-    console.log('수정데이터 data : ', data);
-    axios
-      .patch(`${api}/members/edit`, data, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'ngrok-skip-browser-warning': 'any',
-          Authorization:
-            LocalStorage.getItem('accesstoken') !== null
-              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
-              : SessionStorage.getItem('accesstoken') !== null
-              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
-              : null,
-        },
-      })
-      .then((res: AxiosResponse) => {
-        console.log('수정완료');
-        console.log('수정완료 res : ', res);
-        setEditClick(false);
-        setSuccessPw(false);
-        router.push('main');
-      })
-      .catch((err: AxiosError) => {
-        console.log('수정 실패 err : ', err.message);
-      });
+    if (
+      (data.nickname && nickMsg === '사용가능한 닉네임 입니다.') ||
+      data.profile ||
+      data.password
+    ) {
+      await axios
+        .patch(`${api}/members/edit`, data, {
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'ngrok-skip-browser-warning': 'any',
+            Authorization:
+              LocalStorage.getItem('accesstoken') !== null
+                ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+                : SessionStorage.getItem('accesstoken') !== null
+                ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+                : null,
+          },
+        })
+        .then((res: AxiosResponse) => {
+          console.log('수정완료');
+          console.log('수정완료 res : ', res);
+          setEditClick(false);
+          setSuccessPw(false);
+          router.push('main');
+        })
+        .catch((err: AxiosError) => {
+          console.log('수정 실패 err : ', err.message);
+        });
+    }
   };
 
   const errorImgHandler = (e: any) => {
@@ -158,7 +169,6 @@ const EditProfile = ({
                     type="text"
                     placeholder="닉네임을 입력해주세요."
                     {...register('nickname', {
-                      required: '닉네임 필수입력',
                       pattern: {
                         value: NICKNAME_REGEX,
                         message: '닉네임형식이 올바르지 않습니다.',
@@ -277,7 +287,6 @@ const EditProfile = ({
                   type={vectorOne ? 'text' : 'password'}
                   placeholder="비밀번호를 입력해주세요."
                   {...register('password', {
-                    required: '비밀번호 필수입력.',
                     pattern: {
                       value: PASSWORD_REGEX,
                       message: '비밀번호형식이 올바르지 않습니다.',
@@ -304,7 +313,6 @@ const EditProfile = ({
                   type={vectorTwo ? 'text' : 'password'}
                   placeholder="비밀번호를 확인해주세요."
                   {...register('passwordCheck', {
-                    required: '비밀번호 재확인 필수.',
                     pattern: {
                       value: PASSWORD_REGEX,
                       message: '비밀번호형식이 올바르지 않습니다.',
@@ -384,14 +392,15 @@ const EditProfile = ({
             </button>
           </S.EditCancleBtnDiv>
           <S.EditSaveBtnDiv>
-            {watch('profile') || watch('nickname') || watch('password') ? (
+            {watch('profile') ||
+            watch('nickname') ||
+            (watch('password') &&
+              watch('password') === watch('passwordCheck')) ? (
               <button type="submit" disabled={isSubmitting}>
                 수정저장
               </button>
             ) : (
-              <button type="button" disabled>
-                수정저장
-              </button>
+              <button type="button">수정저장</button>
             )}
           </S.EditSaveBtnDiv>
         </S.BtnContainer>

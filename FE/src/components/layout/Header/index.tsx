@@ -4,13 +4,12 @@ import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
 import LocalStorage from '../../../constants/localstorage';
 import SessionStorage from '../../../constants/sessionstorage';
-
+import { useRouter } from 'next/router';
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
 import { useDispatch } from 'react-redux';
 import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
-import { useRouter } from 'next/router';
 
 const Header = () => {
   // 로그인 여부 확인 하는 변수!
@@ -33,12 +32,12 @@ const Header = () => {
     } else {
       setIsAuth(false);
     }
-    console.log('LocalStorage.getItem : ', LocalStorage.getItem('accesstoken'));
-    console.log(
-      'SessionStorage.getItem : ',
-      SessionStorage.getItem('accesstoken'),
-    );
-    console.log('isAuth : ', isAuth);
+    // console.log('LocalStorage.getItem : ', LocalStorage.getItem('accesstoken'));
+    // console.log(
+    //   'SessionStorage.getItem : ',
+    //   SessionStorage.getItem('accesstoken'),
+    // );
+    // console.log('isAuth : ', isAuth);
   }, [
     [],
     LocalStorage.getItem('accesstoken'),

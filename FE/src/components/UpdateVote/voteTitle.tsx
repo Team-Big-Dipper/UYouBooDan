@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { QuestionIcon } from '../../assets/questionIcon';
 import * as S from './style';
-import { LikeSvg, ClickedLikeSvg } from '../../assets/likeSvg';
+import { LikeSvg } from '../../assets/likeSvg';
 import { ShareLinkSvg } from '../../assets/shareLinkSvg';
-import LinkModal from '../commons/linkModal';
 import { CalcDday } from '../../utils/calculate';
 import { ChangDateFormat } from '../../utils/parseDate';
-import { patchTopicLike } from '../../apis/readvote/readvote';
-import { getToken } from '../../utils/userToken';
 
 type propTypes = {
   category: string | undefined;
@@ -21,7 +18,6 @@ type propTypes = {
 };
 
 const VoteTitle = ({
-  category,
   title,
   setUpdateTitle,
   createdAt,
@@ -30,7 +26,6 @@ const VoteTitle = ({
   views,
   likes,
 }: propTypes) => {
-  const usertoken = getToken();
   const [likeCount, setLikeCount] = useState(likes);
   const [Dday, setDday] = useState<string>('');
   const [created, setCreated] = useState('');
@@ -77,7 +72,6 @@ const VoteTitle = ({
             </S.ContentInfo>
           </S.DevideSubtitleDiv>
           <S.DevideIconDiv>
-            {/* <S.CategoryIcon color={'black'}>#{category}</S.CategoryIcon> */}
             <S.CategoryIcon color={'#89b7cb'}>단일 투표</S.CategoryIcon>
             <S.DdayIcon>{Dday.length === 0 ? '투표 종료' : Dday}</S.DdayIcon>
           </S.DevideIconDiv>
