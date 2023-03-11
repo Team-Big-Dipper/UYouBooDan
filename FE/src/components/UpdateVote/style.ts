@@ -21,7 +21,7 @@ export const ReadVoteBtn = styled.div`
   background-color: ${(props) => props.color};
   padding: 1rem 1.5rem;
   margin: 15px 5px 50px 5px;
-  cursor: default;
+  cursor: pointer;
 
   @media (max-width: 479px) {
     width: 100px;
