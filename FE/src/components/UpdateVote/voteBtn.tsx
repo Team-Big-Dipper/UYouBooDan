@@ -2,13 +2,17 @@ import React, { useState } from 'react';
 import * as S from './style';
 import ButtonModal from '../commons/buttonModal';
 import { useRouter } from 'next/router';
+import { updateVoteAPI } from '../../apis/updatevote/updateVote';
 
 interface propsType {
-  isAuthor: boolean | undefined;
+  usertoken: string | undefined;
+  updateTitle: string | undefined;
+  updateContent: string | undefined;
+  updatecategory: string | undefined;
+  pid: string | string[] | undefined;
 }
 
-const VoteBtn = ({ isAuthor }: propsType) => {
-  const [login, setIsLogin] = useState(true);
+const VoteBtn = ({ usertoken, updateTitle, updateContent, updatecategory, pid }: propsType) => {
   const [askText, setAskText] = useState('');
   const [apiMethod, setApiMethod] = useState('');
   const router = useRouter();
@@ -24,14 +28,13 @@ const VoteBtn = ({ isAuthor }: propsType) => {
       setAskText('수정할까요?');
     }
   };
-  const handleLink = () => {
-    router.push(`/readVote?pid=${5}`);
-  };
   const handleCancle = () => {
-    router.push(`/readVote?pid=${5}`);
+    router.push(`/readvote?pid=${pid}`);
   };
   const handlePatch = () => {
     console.log('patch');
+    updateVoteAPI(Number(pid), usertoken, updateTitle, updateContent,updatecategory);
+    router.push(`/readvote?pid=${pid}`);
   };
   return (
     <S.ReadVoteBtnContainer>
@@ -41,11 +44,11 @@ const VoteBtn = ({ isAuthor }: propsType) => {
             취소하기
           </S.ReadVoteBtn>
           <S.ReadVoteBtn
-            id="votelist"
-            onClick={handleLink}
+            id="patch"
+            onClick={onClickBtn}
             color={'#4285f4'}
           >
-            저장하기
+            수정하기
           </S.ReadVoteBtn>
         </>
         <>
