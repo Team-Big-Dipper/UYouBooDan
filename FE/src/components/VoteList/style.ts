@@ -81,7 +81,7 @@ export const CategoryTitle = styled.p`
   margin-top: 0.5rem;
   padding-left: 1rem;
   line-height: 30px;
-  cursor: default;
+  cursor: pointer;
 `;
 export const PageLink = styled(Link)`
   display: flex;
