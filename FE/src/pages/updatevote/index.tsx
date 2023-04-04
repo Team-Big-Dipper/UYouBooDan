@@ -77,7 +77,6 @@ const UpdateVote = () => {
           }
           setData({ ...res.data });
           setVoteBtns([...res.data.topicVoteItems]);
-          setTotalCount(CalcTotal(res.data.topicVoteItems));
           setIsLoading(false);
         });
       } else {
@@ -147,11 +146,6 @@ const UpdateVote = () => {
                     );
                   })}
                 </div>
-                <S.TotalVoteCount isClosed={data?.isClosed}>
-                  {data?.isClosed && data?.isAuthor
-                    ? '총투표수: ' + totalCount + '표'
-                    : null}
-                </S.TotalVoteCount>
                 <VoteBtn 
                   pid={pid} 
                   usertoken={usertoken}
