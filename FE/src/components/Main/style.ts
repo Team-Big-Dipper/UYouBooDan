@@ -42,7 +42,7 @@ export const CardAdd = styled.div`
   display: flex;
   flex-direction: column;
 `;
-export const Crads = styled.ul`
+export const Cards = styled.ul`
   display: grid;
   grid-column-gap: 10px;
   grid-auto-flow: column;
