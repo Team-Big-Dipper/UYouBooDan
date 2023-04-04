@@ -27,9 +27,9 @@ export const HotVoteArr = (category: string[], hotDatas: hotData[]) => {
             )
           })}
         </style.Crads>
-        <style.AddContainer>
+        {/* <style.AddContainer>
           <style.Add href="/topics?size=6&page=1&filter=hot">+  더보기</style.Add>
-        </style.AddContainer>
+        </style.AddContainer> */}
       </style.CardAdd>)
     })
     return object;
