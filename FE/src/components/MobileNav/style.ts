@@ -57,11 +57,12 @@ export const LoginContainer = styled.div`
   justify-content: center;
   padding-left: 15px;
   padding-top: 50px;
-  div {
+  a {
     &.goLogin {
       font-size: 1.3rem;
       font-family: 'yg-jalnan' !important;
       padding-bottom: 10px;
+      text-decoration: none;
       color: #242424;
       cursor: pointer;
     }
