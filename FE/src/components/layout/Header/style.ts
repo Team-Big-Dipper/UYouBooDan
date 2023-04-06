@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import Link from 'next/link';
+import { SearchSvg } from '../../../assets/search';
 
 export const HeaderContainer = styled.div`
   display: flex;
@@ -164,6 +165,7 @@ export const AllVote = styled.div<propTypes>`
   text-decoration: none;
   color: black;
   white-space: nowrap;
+  cursor: pointer;
   &:focus {
     color: #4285f4;
   }
@@ -178,6 +180,7 @@ export const MakeVote = styled(Link)`
   text-decoration: none;
   white-space: nowrap;
   color: black;
+  cursor: pointer;
   &:focus {
     color: #4285f4;
   }
@@ -204,4 +207,8 @@ export const Search = styled.input`
     color: #667085;
   }
   outline: none;
+`;
+
+export const SearchSvgButton = styled(SearchSvg)`
+  cursor: pointer;
 `;
