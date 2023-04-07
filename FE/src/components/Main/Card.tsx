@@ -18,7 +18,7 @@ export const Card = ({idx, data, name}: proptypes) => {
       <Style.Card key={idx} onClick={handleCardClick} className={name === 'hot' ? 'hot' : 'continue'}>
         <div>
           <Style.CardTitle>
-            #{data.category}&nbsp;<span>D-{DdayCal(data.closedAt)}</span>
+            #{data.category}&nbsp;<span>D{DdayCal(data.closedAt)}</span>
           </Style.CardTitle>
           <Style.CardContent>{data.title}</Style.CardContent>
         </div>

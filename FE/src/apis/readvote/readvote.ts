@@ -1,7 +1,6 @@
 import voteInstance from '../voteInstance';
 
 export const getReadVote = (id: string | string[] = '1', token: string) => {
-  console.log('api readvote');
   const result = voteInstance
     .get(`/topics/${id}`, {
       headers: {
@@ -10,12 +9,12 @@ export const getReadVote = (id: string | string[] = '1', token: string) => {
         'ngrok-skip-browser-warning': 'any',
       },
     })
-    .then((res) => {
+    .then((res: any) => {
       if (res.status === 200) {
         return res.data;
       }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.log(err);
       return 'Err';
     });
@@ -27,7 +26,6 @@ export const patchSingleVoteItem = (
   itemId: number,
   token: string,
 ) => {
-  console.log('api patchsinglevote', topicId, itemId, token);
   const result = voteInstance
     .patch(
       `/topics/${topicId}/vote`,
@@ -42,7 +40,7 @@ export const patchSingleVoteItem = (
         },
       },
     )
-    .then((res) => {
+    .then((res: any) => {
       console.log(res);
       if (res.status === 200) {
         return res.data;
@@ -50,14 +48,13 @@ export const patchSingleVoteItem = (
         throw new Error();
       }
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.log(err);
     });
   return result;
 };
 
 export const patchTopicLike = (topicId: number, token: string) => {
-  console.log('api likevote');
   const result = voteInstance
     .patch(
       `/topics/${topicId}/like`,
@@ -70,21 +67,20 @@ export const patchTopicLike = (topicId: number, token: string) => {
         },
       },
     )
-    .then((res) => {
+    .then((res: any) => {
       if (res.status === 200) {
         return res.data;
       } else {
         throw new Error();
       }
     })
-    .catch((err) => {
+    .catch((err:any) => {
       console.log(err);
     });
   return result;
 };
 
 export const deletevote = async (topicId: number, token: string) => {
-  console.log('delete');
   try {
     await voteInstance.delete(`/topics/${topicId}`, {
       headers: {

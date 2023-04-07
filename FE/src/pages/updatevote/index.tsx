@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import * as S from './style';
-import VoteTitle from '../../components/ReadVote/voteTitle';
-import VoteContent from '../../components/ReadVote/voteContent';
+import VoteTitle from '../../components/UpdateVote/voteTitle';
+import UpdateContent from '../../components/UpdateVote/updateContent';
+import UpdateCategory from '../../components/UpdateVote/updateCategory';
 import { SingleVoteContainer } from '../../components/ReadVote/singleVoteContainer';
 import { useRouter } from 'next/router';
 import VoteBtn from '../../components/UpdateVote/voteBtn';
@@ -34,6 +35,13 @@ interface voteType {
   isTopicVoteItemVoted: boolean | null;
   numberOfVotes: number | null;
 }
+
+export interface Update {
+  category?: String;
+  title?: String;
+  content?: String;
+}
+
 const UpdateVote = () => {
   const router = useRouter();
   const { pid } = router.query;
@@ -42,6 +50,16 @@ const UpdateVote = () => {
   const [selectedBtn, setSelectedBtn] = useState<number[]>([]);
   const [totalCount, setTotalCount] = useState<number>(20);
   const [isLoading, setIsLoading] = useState(false);
+  const [updateTitle, setUpdateTitle] = useState<string | undefined>('');
+  const [updateContent, setUpdateContent] = useState<string | undefined>('');
+  const [updatecategory, setUpdateCategory] = useState<string | undefined>('');
+  
+  useEffect(()=>{
+    setUpdateTitle(data?.title)
+    setUpdateContent(data?.content)
+    setUpdateCategory(data?.category)
+  },[data])
+
   const handleSelectedBtn = useCallback((array: any) => {
     setSelectedBtn(array);
   }, []);
@@ -59,7 +77,6 @@ const UpdateVote = () => {
           }
           setData({ ...res.data });
           setVoteBtns([...res.data.topicVoteItems]);
-          setTotalCount(CalcTotal(res.data.topicVoteItems));
           setIsLoading(false);
         });
       } else {
@@ -75,15 +92,16 @@ const UpdateVote = () => {
           <S.LinkButton href="/">홈</S.LinkButton>
           {' > '}카테고리{' > '}게시글 수정
         </S.CurrentCategoty>
+        <S.Sign>* 제목, 내용, 카테고리만 수정가능합니다.</S.Sign>
         <>
           {isLoading ? (
             <p>로딩중...</p>
           ) : (
             <>
               <VoteTitle
-                topidId={pid}
                 category={data?.category}
-                title={data?.title}
+                title={updateTitle}
+                setUpdateTitle={setUpdateTitle}
                 createdAt={data?.createdAt}
                 author={data?.author}
                 closedAt={data?.closedAt}
@@ -91,10 +109,20 @@ const UpdateVote = () => {
                 likes={data?.likes}
               />
               <S.VoteContentLayout>
+                <UpdateCategory
+                  updatecategory={updatecategory}
+                  setUpdateCategory={setUpdateCategory}
+                   />
                 {!data?.image ? (
-                  <VoteContent content={data?.content} image={null} />
+                  <UpdateContent
+                    image={null}
+                    updateContent={updateContent}
+                    setUpdateContent={setUpdateContent} />
                 ) : (
-                  <VoteContent content={data?.content} image={data?.image} />
+                  <UpdateContent
+                    image={data?.image}
+                    updateContent={updateContent}
+                    setUpdateContent={setUpdateContent} />
                 )}
                 <div>
                   {voteBtns?.map((el) => {
@@ -118,12 +146,13 @@ const UpdateVote = () => {
                     );
                   })}
                 </div>
-                <S.TotalVoteCount isClosed={data?.isClosed}>
-                  {data?.isClosed && data?.isAuthor
-                    ? '총투표수: ' + totalCount + '표'
-                    : null}
-                </S.TotalVoteCount>
-                <VoteBtn isAuthor={data?.isAuthor} />
+                <VoteBtn 
+                  pid={pid} 
+                  usertoken={usertoken}
+                  updateTitle={updateTitle} 
+                  updateContent={updateContent}
+                  updatecategory={updatecategory}
+                />
               </S.VoteContentLayout>
             </>
           )}

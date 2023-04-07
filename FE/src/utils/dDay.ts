@@ -12,5 +12,5 @@ export const DdayCal= (closedAt: string):number | string => {
   const m = Math.floor((dis % (min1 * 60)) / min1);
   const s = Math.floor((dis % min1) / 1000);
 
-  return (d === 0) ? 'day' : d
+  return d === 0 ? 'day' : d < 0 ? `+${Math.abs(d)}` : `-${d}`;
 };

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { SearchSvg } from '../../../assets/search';
 import * as S from './style';
 import { MypageSvg } from '../../../assets/mypage';
 import LocalStorage from '../../../constants/localstorage';
@@ -10,7 +9,9 @@ import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
 import { useDispatch, useSelector } from 'react-redux';
 import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
+
 import { isAuthTrue } from '../../../redux/slices/isAuthSlice';
+
 
 const Header = () => {
   const router = useRouter();
@@ -100,7 +101,7 @@ const Header = () => {
           <S.MakeVote href="/createvote">나만의 투표 만들기</S.MakeVote>
           <S.SearchDiv>
             <S.Search placeholder="검색어를 입력해주세요"></S.Search>
-            <SearchSvg />
+            <S.SearchSvgButton />
           </S.SearchDiv>
         </S.Vote>
       </S.Right>

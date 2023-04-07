@@ -32,10 +32,15 @@ const ListPage = ({
   setPage,
   condition,
 }: propsArray) => {
-  const pageArr = useMemo(
-    () => Array.from({ length: totalPage }, (_, i) => i + 1),
-    [totalPage],
-  );
+  const pageArr = useMemo(() => {
+    if (totalPage >= 10 && page <= 10) {
+      return Array.from({ length: 10 }, (_, i) => i + 1);
+    } else if (totalPage >= 10 && page > 10) {
+      return Array.from({ length: totalPage - 10 }, (_, i) => i + 1 + 10);
+    } else if (totalPage < 10 && page < 10) {
+      return Array.from({ length: totalPage }, (_, i) => i + 1);
+    }
+  }, [totalPage, page]);
   const handlePage = useCallback((e: any) => {
     setPage(Number(e.target.textContent));
   }, []);
@@ -80,7 +85,7 @@ const ListPage = ({
               <div id="votelist-left-button" onClick={handlePageButton}>
                 <LeftPageButton />
               </div>
-              {pageArr.map((el) => (
+              {pageArr?.map((el) => (
                 <S.pageNumFont
                   onClick={handlePage}
                   isCurrentPage={page === el ? true : false}
