@@ -33,7 +33,7 @@ const EditProfile = ({
     mode: 'onChange',
   });
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
-  const defaultImg = process.env.NEXT_PUBLIC_DEFAULT_IMG;
+  // const defaultImg = process.env.NEXT_PUBLIC_DEFAULT_IMG;
   const router = useRouter();
   const [avatarPreview, setAvatarPreview] = useState<string>('');
   const [nickClick, setNickClick] = useState<boolean>(false);
@@ -137,9 +137,9 @@ const EditProfile = ({
     }
   };
 
-  const errorImgHandler = (e: any) => {
-    e.target.src = defaultImg;
-  };
+  // const errorImgHandler = (e: any) => {
+  //   e.target.src = defaultImg;
+  // };
 
   return (
     <S.EditContainer>
@@ -152,7 +152,7 @@ const EditProfile = ({
           }}
         >
           {photoData && !watch('profile') ? (
-            <img src={`blob:${photoData}`} onError={errorImgHandler} />
+            <img src={`blob:${photoData}`} onError={() => {}} />
           ) : (
             // <FaceSvg />
             <img src={avatarPreview} />
