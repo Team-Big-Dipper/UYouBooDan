@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import GetVoteConditionSlice from './slices/getVoteConditionSlice';
+import isAuthSlice from './slices/isAuthSlice';
 
 export const store = configureStore({
   reducer: {
     getVoteCondition: GetVoteConditionSlice,
+    isAuthTrue: isAuthSlice,
   },
 });
 

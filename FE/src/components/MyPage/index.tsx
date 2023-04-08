@@ -13,7 +13,7 @@ import { FaceSvg } from '../../assets/face';
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
-  const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
+  // const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
   const [emailData, setEmailData] = useState<string>('');
   const [nickData, setNickData] = useState<string>('');
   const [photoData, setPhotoData] = useState<string>('');
@@ -30,22 +30,31 @@ const MyPage = () => {
     router.push('/main', '/main');
   };
 
-  const handleErrorImg = (e: any) => {
-    e.target.src = defaultImg;
-  };
+  // const handleErrorImg = (e: any) => {
+  //   e.target.src = defaultImg;
+  // };
+
+  const [token, setToken] = useState<any>('');
+  console.log('token : ', token);
+  console.log('Authorization : ', token !== null ? `Bearer ${token}` : null);
 
   useEffect(() => {
+    setToken(
+      LocalStorage.getItem('accesstoken') ||
+        SessionStorage.getItem('accesstoken') ||
+        null,
+    );
     axios
       .get(`${api}/members/find`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          Authorization:
-            LocalStorage.getItem('accesstoken') !== null
-              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
-              : SessionStorage.getItem('accesstoken') !== null
-              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
-              : null,
+          Authorization: token !== null ? `Bearer ${token}` : null,
+          // LocalStorage.getItem('accesstoken') !== null
+          //   ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+          //   : SessionStorage.getItem('accesstoken') !== null
+          //   ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+          //   : null,
         },
       })
       .then((res: AxiosResponse) => {
@@ -75,7 +84,7 @@ const MyPage = () => {
               width={80}
               height={80}
               src={`blob:${photoData}`}
-              onError={handleErrorImg}
+              onError={() => {}}
             />
             <>{console.log('photoData : ', photoData)}</>
             <S.SideBarImgDiv>

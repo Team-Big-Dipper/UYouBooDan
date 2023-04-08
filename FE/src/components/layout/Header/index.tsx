@@ -7,17 +7,23 @@ import { useRouter } from 'next/router';
 import { LogoImg } from '../../../assets/logo';
 import { Hamburger } from '../../../assets/hamburger';
 import { Menu } from '../../MobileNav/Menu';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
 
+import { isAuthTrue } from '../../../redux/slices/isAuthSlice';
+
+
 const Header = () => {
-  // 로그인 여부 확인 하는 변수!
-  const [isAuth, setIsAuth] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const state = useSelector((state: any) => state.isAuthTrue.isAuth);
+  console.log('Header -> isAuth 전역상태 state : ', state);
 
   const logoutHandler = () => {
     LocalStorage.removeItem('accesstoken');
     LocalStorage.removeItem('refreshtoken');
     SessionStorage.removeItem('accesstoken');
+    dispatch(isAuthTrue({ isAuth: false }));
   };
 
   // storage에 accesstoken이 있을때 useEffect실행
@@ -26,17 +32,15 @@ const Header = () => {
       LocalStorage.getItem('accesstoken') ||
       SessionStorage.getItem('accesstoken')
     ) {
-      // setIsAuth(!isAuth);
-      setIsAuth(true);
+      dispatch(isAuthTrue({ isAuth: true }));
     } else {
-      setIsAuth(false);
+      dispatch(isAuthTrue({ isAuth: false }));
     }
-    // console.log('LocalStorage.getItem : ', LocalStorage.getItem('accesstoken'));
-    // console.log(
-    //   'SessionStorage.getItem : ',
-    //   SessionStorage.getItem('accesstoken'),
-    // );
-    // console.log('isAuth : ', isAuth);
+    console.log('LocalStorage.getItem : ', LocalStorage.getItem('accesstoken'));
+    console.log(
+      'SessionStorage.getItem : ',
+      SessionStorage.getItem('accesstoken'),
+    );
   }, [
     [],
     LocalStorage.getItem('accesstoken'),
@@ -49,8 +53,7 @@ const Header = () => {
   const HandleOpen = () => {
     setIsOpen(!isOpen);
   };
-  const router = useRouter();
-  const dispatch = useDispatch();
+
   const handleApiCondition = useCallback(() => {
     dispatch(getVoteCondition({ mobileCondition: 'all' }));
     router.push({ pathname: '/voteList' });
@@ -72,7 +75,7 @@ const Header = () => {
       </S.HamburgerIcon>
       <Menu isOpen={isOpen} setIsOpen={setIsOpen} />
       <S.Right>
-        {isAuth ? (
+        {state ? (
           <S.MyPageLogoutDiv>
             <S.Mypage href="/mypage">
               <MypageSvg />

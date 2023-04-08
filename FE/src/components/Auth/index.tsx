@@ -15,9 +15,14 @@ import kakaoAuth from '../../apis/oauth/kakaoLogin';
 import useLogin from '../../hooks/login/useLogin';
 import { useRouter } from 'next/router';
 import { EMAIL_REGEX, PASSWORD_REGEX } from '../../constants/regex';
+import { useDispatch, useSelector } from 'react-redux';
+import { isAuthTrue } from '../../redux/slices/isAuthSlice';
 
 const Auth = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
+  const dispatch = useDispatch();
+  const state = useSelector((state: any) => state.isAuthTrue);
+  console.log('로그인화면에서 state : ', state);
   const { authCodeRequest } = kakaoAuth();
   const {
     register,
@@ -52,6 +57,7 @@ const Auth = () => {
             'Authorization'
           ] = `Bearer ${access_token}`;
           checkedLogin(access_token, refresh_token, checked);
+          dispatch(isAuthTrue({ isAuth: true }));
 
           console.log('res.data', res.data);
           router.push('/main');
