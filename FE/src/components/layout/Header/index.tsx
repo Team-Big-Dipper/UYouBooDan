@@ -12,7 +12,6 @@ import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
 
 import { isAuthTrue } from '../../../redux/slices/isAuthSlice';
 
-
 const Header = () => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -98,7 +97,9 @@ const Header = () => {
         )}
         <S.Vote>
           <S.AllVote onClick={handleApiCondition}>전체 투표</S.AllVote>
-          <S.MakeVote href="/createvote">나만의 투표 만들기</S.MakeVote>
+          <S.MakeVote href={state ? '/createvote' : '/auth'}>
+            나만의 투표 만들기
+          </S.MakeVote>
           <S.SearchDiv>
             <S.Search placeholder="검색어를 입력해주세요"></S.Search>
             <S.SearchSvgButton />
