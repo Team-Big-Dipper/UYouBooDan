@@ -1,18 +1,7 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-//    {
-//       headers: {
-//         'Access-Control-Allow-Origin': '*',
-//         'ngrok-skip-browser-warning': 'any',
-//       },
-//     }
-
 const overLapAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'ngrok-skip-browser-warning': 'any',
-  },
 });
 
 // 이메일 중복확인 요청
@@ -27,7 +16,6 @@ const overLapEmailApi = (
       },
     })
     .then((res: AxiosResponse) => {
-      console.log('res : ', res);
       callback('사용가능한 이메일 입니다.');
     })
     .catch((err: AxiosError) => {
@@ -48,7 +36,6 @@ const overLapNickApi = (
       },
     })
     .then((res: AxiosResponse) => {
-      console.log('res : ', res);
       callback('사용가능한 닉네임 입니다.');
     })
     .catch((err: AxiosError) => {

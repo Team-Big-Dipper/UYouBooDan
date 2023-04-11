@@ -16,7 +16,6 @@ const Header = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state.isAuthTrue.isAuth);
-  console.log('Header -> isAuth 전역상태 state : ', state);
 
   const logoutHandler = () => {
     LocalStorage.removeItem('accesstoken');
@@ -35,11 +34,6 @@ const Header = () => {
     } else {
       dispatch(isAuthTrue({ isAuth: false }));
     }
-    console.log('LocalStorage.getItem : ', LocalStorage.getItem('accesstoken'));
-    console.log(
-      'SessionStorage.getItem : ',
-      SessionStorage.getItem('accesstoken'),
-    );
   }, [
     [],
     LocalStorage.getItem('accesstoken'),

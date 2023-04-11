@@ -41,7 +41,6 @@ const EditProfile = ({
   const [newPhotoData, setNewPhotoData] = useState<string>(photoData);
   const [pwClick, setPwClick] = useState<boolean>(false);
   const [nickMsg, setNickMsg] = useState<string>('');
-  const [nickPass, setNickPass] = useState<boolean>(false);
   const [img, setImg] = useState<string>('');
   const [pwMsg, setPwMsg] = useState<string>('');
   const [vectorOne, setVectorOne] = useState<boolean>(false);
@@ -122,8 +121,6 @@ const EditProfile = ({
       await axios
         .patch(`${api}/members/edit`, data, {
           headers: {
-            'Access-Control-Allow-Origin': '*',
-            'ngrok-skip-browser-warning': 'any',
             Authorization:
               LocalStorage.getItem('accesstoken') !== null
                 ? `Bearer ${LocalStorage.getItem('accesstoken')}`
