@@ -8,7 +8,6 @@ const MyPageHeader = ({ category }: any) => {
   const [all, setAll] = useState<boolean>(true);
   const [ing, setIng] = useState<boolean>(false);
   const [end, setEnd] = useState<boolean>(false);
-  console.log('category : ', category);
   return (
     <S.MypageHeaderContainer>
       <S.HeaderTitleDiv>{category}</S.HeaderTitleDiv>

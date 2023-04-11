@@ -13,10 +13,10 @@ import { FaceSvg } from '../../assets/face';
 const MyPage = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const router = useRouter();
-  // const defaultImg: string | undefined = process.env.NEXT_PUBLIC_DEFAULT_IMG;
   const [emailData, setEmailData] = useState<string>('');
   const [nickData, setNickData] = useState<string>('');
   const [photoData, setPhotoData] = useState<string>('');
+  const [photoErr, setPhotoErr] = useState<boolean>(false);
   const [editClick, setEditClick] = useState<boolean>(false);
   const [successPw, setSuccessPw] = useState<boolean>(false);
   // 기본 값 내가 쓴 게시글
@@ -30,35 +30,19 @@ const MyPage = () => {
     router.push('/main', '/main');
   };
 
-  // const handleErrorImg = (e: any) => {
-  //   e.target.src = defaultImg;
-  // };
-
-  const [token, setToken] = useState<any>('');
-  console.log('token : ', token);
-  console.log('Authorization : ', token !== null ? `Bearer ${token}` : null);
-
   useEffect(() => {
-    setToken(
-      LocalStorage.getItem('accesstoken') ||
-        SessionStorage.getItem('accesstoken') ||
-        null,
-    );
     axios
       .get(`${api}/members/find`, {
         headers: {
-          'Access-Control-Allow-Origin': '*',
-          'ngrok-skip-browser-warning': 'any',
-          Authorization: token !== null ? `Bearer ${token}` : null,
-          // LocalStorage.getItem('accesstoken') !== null
-          //   ? `Bearer ${LocalStorage.getItem('accesstoken')}`
-          //   : SessionStorage.getItem('accesstoken') !== null
-          //   ? `Bearer ${SessionStorage.getItem('accesstoken')}`
-          //   : null,
+          Authorization:
+            LocalStorage.getItem('accesstoken') !== null
+              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+              : SessionStorage.getItem('accesstoken') !== null
+              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+              : null,
         },
       })
       .then((res: AxiosResponse) => {
-        console.log('mypage 정보요청 res : ', res);
         const nickname = res.data.data.nickname;
         const photo = res.data.data.profile;
         const email = res.data.data.email;
@@ -80,16 +64,22 @@ const MyPage = () => {
         </S.SideBarRouteText>
         <S.SibeBarCategotyDiv>
           <S.SideBarUserInfoDiv>
-            <img
-              width={80}
-              height={80}
-              src={`blob:${photoData}`}
-              onError={() => {}}
-            />
-            <>{console.log('photoData : ', photoData)}</>
-            <S.SideBarImgDiv>
-              <FaceSvg />
-            </S.SideBarImgDiv>
+            {photoData && !photoErr ? (
+              <>
+                <img
+                  width={80}
+                  height={80}
+                  src={`blob:${photoData}`}
+                  onError={() => {
+                    setPhotoErr(true);
+                  }}
+                />
+              </>
+            ) : (
+              <S.SideBarImgDiv>
+                <FaceSvg />
+              </S.SideBarImgDiv>
+            )}
             <S.UserNickDiv>#{nickData}</S.UserNickDiv>
             <S.EditBtnDiv
               onClick={() => {
@@ -114,16 +104,15 @@ const MyPage = () => {
                   axios
                     .get(`${api}/member-info/topics?page=1&size=10`, {
                       headers: {
-                        'Access-Control-Allow-Origin': '*',
-                        'ngrok-skip-browser-warning': 'any',
-                        Authorization: `Bearer ${LocalStorage.getItem(
-                          'accesstoken',
-                        )}`,
+                        Authorization:
+                          LocalStorage.getItem('accesstoken') !== null
+                            ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+                            : SessionStorage.getItem('accesstoken') !== null
+                            ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+                            : null,
                       },
                     })
-                    .then((res: AxiosResponse) => {
-                      console.log('내가 쓴 게시글 res : ', res);
-                    })
+                    .then((res: AxiosResponse) => {})
                     .catch((err: AxiosError) => {
                       console.log('err : ', err.message);
                     });

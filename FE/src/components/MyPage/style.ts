@@ -20,7 +20,7 @@ export const SideBarRouteText = styled.div`
   font-size: 0.8rem;
 `;
 export const SibeBarCategotyDiv = styled.div`
-  padding-top: 120px;
+  padding-top: 40px;
 `;
 export const SideBarUserInfoDiv = styled.div`
   display: flex;

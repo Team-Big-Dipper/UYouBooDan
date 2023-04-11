@@ -12,12 +12,10 @@ import { getVoteCondition } from '../../../redux/slices/getVoteConditionSlice';
 
 import { isAuthTrue } from '../../../redux/slices/isAuthSlice';
 
-
 const Header = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state.isAuthTrue.isAuth);
-  console.log('Header -> isAuth 전역상태 state : ', state);
 
   const logoutHandler = () => {
     LocalStorage.removeItem('accesstoken');
@@ -36,11 +34,6 @@ const Header = () => {
     } else {
       dispatch(isAuthTrue({ isAuth: false }));
     }
-    console.log('LocalStorage.getItem : ', LocalStorage.getItem('accesstoken'));
-    console.log(
-      'SessionStorage.getItem : ',
-      SessionStorage.getItem('accesstoken'),
-    );
   }, [
     [],
     LocalStorage.getItem('accesstoken'),
@@ -98,7 +91,9 @@ const Header = () => {
         )}
         <S.Vote>
           <S.AllVote onClick={handleApiCondition}>전체 투표</S.AllVote>
-          <S.MakeVote href="/createvote">나만의 투표 만들기</S.MakeVote>
+          <S.MakeVote href={state ? '/createvote' : '/auth'}>
+            나만의 투표 만들기
+          </S.MakeVote>
           <S.SearchDiv>
             <S.Search placeholder="검색어를 입력해주세요"></S.Search>
             <S.SearchSvgButton />

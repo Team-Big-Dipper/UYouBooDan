@@ -22,7 +22,6 @@ const Auth = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state.isAuthTrue);
-  console.log('로그인화면에서 state : ', state);
   const { authCodeRequest } = kakaoAuth();
   const {
     register,
@@ -45,12 +44,6 @@ const Auth = () => {
       axios
         .post(`${api}/auth/login`, data)
         .then((res: AxiosResponse) => {
-          console.log('로그인 성공!');
-          console.log('로그인 버튼 눌렀을때 res : ', res);
-          console.log(
-            'res.headers.authorization : ',
-            res.headers.authorization,
-          );
           const access_token: any = res.headers.authorization?.split(' ')[1];
           const refresh_token: any = res.headers.refreshtoken;
           axios.defaults.headers.common[
@@ -59,13 +52,9 @@ const Auth = () => {
           checkedLogin(access_token, refresh_token, checked);
           dispatch(isAuthTrue({ isAuth: true }));
 
-          console.log('res.data', res.data);
           router.push('/main');
         })
         .catch((err: AxiosError) => {
-          console.log('로그인 실패!');
-          console.log('err : ', err);
-          console.log('err.response.data : ', err.response?.data);
           const errMsg: any = err.response?.data;
           console.log('err.message : ', err.message);
           loginMsgFunc(errMsg, setLoginMsg);
@@ -186,16 +175,11 @@ const Auth = () => {
       <S.SnsLoginContainer>
         <S.KaKaoLoginDiv
           onClick={() => {
-            // authCodeRequest();
             axios
               .get(`${api}/kakao/oauth`, {
-                headers: {
-                  'Access-Control-Allow-Origin': '*',
-                  'ngrok-skip-browser-warning': 'any',
-                },
+                headers: {},
               })
               .then((res: AxiosResponse) => {
-                console.log('res.data : ', res.data);
                 router.push(res.data);
               })
               .catch((err: AxiosError) => {
@@ -212,13 +196,9 @@ const Auth = () => {
           onClick={() => {
             axios
               .get(`${api}/google/oauth`, {
-                headers: {
-                  'Access-Control-Allow-Origin': '*',
-                  'ngrok-skip-browser-warning': 'any',
-                },
+                headers: {},
               })
               .then((res: AxiosResponse) => {
-                console.log('res', res);
                 router.push(res.data);
               })
               .catch((err: AxiosError) => {
