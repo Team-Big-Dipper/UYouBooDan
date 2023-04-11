@@ -33,11 +33,12 @@ const EditProfile = ({
     mode: 'onChange',
   });
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
-  // const defaultImg = process.env.NEXT_PUBLIC_DEFAULT_IMG;
   const router = useRouter();
   const [avatarPreview, setAvatarPreview] = useState<string>('');
   const [nickClick, setNickClick] = useState<boolean>(false);
   const [imgClick, setImgClick] = useState<boolean>(false);
+  const [photoErr, setPhotoErr] = useState<boolean>(false);
+  const [newPhotoData, setNewPhotoData] = useState<string>(photoData);
   const [pwClick, setPwClick] = useState<boolean>(false);
   const [nickMsg, setNickMsg] = useState<string>('');
   const [nickPass, setNickPass] = useState<boolean>(false);
@@ -83,14 +84,12 @@ const EditProfile = ({
       setPwMsg('');
     }
   }, [watch('passwordCheck'), watch('password')]);
-
   const onValid = async (data: any) => {
     delete data.passwordCheck;
     if (watch('nickname')) {
       overLapNickApi(watch('nickname'), setNickMsg);
     }
     if (nickMsg === '중복된 닉네임 입니다.') {
-      console.log('중복된 닉네임때매 수정 안됨.');
       return;
     }
     if (!data.nickname || !watch('nickname')) {
@@ -99,8 +98,16 @@ const EditProfile = ({
     if (!data.password && !watch('password')) {
       delete data.password;
     }
-    if (!data.profile && !watch('profile')) {
+    if (!photoData && !data.profile && !watch('profile')) {
       delete data.profile;
+    }
+    if (
+      photoData &&
+      !newPhotoData &&
+      data.profile === '' &&
+      !watch('profile')
+    ) {
+      data.profile = '';
     }
     if (avatar && avatar.length) {
       const file = avatar[0];
@@ -109,6 +116,7 @@ const EditProfile = ({
     if (
       (data.nickname && nickMsg === '사용가능한 닉네임 입니다.') ||
       data.profile ||
+      data.profile === '' ||
       data.password
     ) {
       await axios
@@ -125,8 +133,6 @@ const EditProfile = ({
           },
         })
         .then((res: AxiosResponse) => {
-          console.log('수정완료');
-          console.log('수정완료 res : ', res);
           setEditClick(false);
           setSuccessPw(false);
           router.push('main');
@@ -137,30 +143,32 @@ const EditProfile = ({
     }
   };
 
-  // const errorImgHandler = (e: any) => {
-  //   e.target.src = defaultImg;
-  // };
-
   return (
     <S.EditContainer>
       <S.EditTitleDiv>개인정보수정</S.EditTitleDiv>
       <S.EditAdditional>변경 후 저장하기 버튼을 눌러주세요.</S.EditAdditional>
       <form onSubmit={handleSubmit(onValid)}>
-        <S.ImgPreviewDiv
-          onClick={() => {
-            setNickClick(false);
-          }}
-        >
-          {photoData && !watch('profile') ? (
-            <img src={`blob:${photoData}`} onError={() => {}} />
+        <S.ImgPreviewDiv>
+          {newPhotoData && !watch('profile') && !photoErr ? (
+            <img
+              src={`blob:${newPhotoData}`}
+              onError={() => {
+                setPhotoErr(true);
+              }}
+            />
+          ) : photoErr && !watch('profile') ? (
+            <FaceSvg />
           ) : (
-            // <FaceSvg />
-            <img src={avatarPreview} />
+            <img
+              src={avatarPreview}
+              onError={() => {
+                setPhotoErr(true);
+              }}
+            />
           )}
         </S.ImgPreviewDiv>
         <S.NickContainer>
           <S.NickTitle>닉네임</S.NickTitle>
-
           {nickClick ? (
             <>
               <S.NickBtnCLickAfter>
@@ -234,22 +242,19 @@ const EditProfile = ({
               <S.ImgValueInputDiv>
                 <input
                   type="text"
-                  placeholder={photoData || '파일이름.jpg'}
+                  placeholder={newPhotoData ? newPhotoData : '파일이름.jpg'}
                   defaultValue={watch('profile') ? img : ''}
                   disabled
                 />
-                {watch('profile') ? (
-                  <S.ImgDeleteDiv
-                    onClick={() => {
-                      setValue('profile', '');
-                      setImg('');
-                    }}
-                  >
-                    <DeleteSvg />
-                  </S.ImgDeleteDiv>
-                ) : (
-                  <></>
-                )}
+                <S.ImgDeleteDiv
+                  onClick={() => {
+                    setValue('profile', '');
+                    setNewPhotoData('');
+                    setImg('');
+                  }}
+                >
+                  <DeleteSvg />
+                </S.ImgDeleteDiv>
               </S.ImgValueInputDiv>
               <S.ImgInputLabel htmlFor="file">파일업로드</S.ImgInputLabel>
               <input
@@ -395,7 +400,8 @@ const EditProfile = ({
             {watch('profile') ||
             watch('nickname') ||
             (watch('password') &&
-              watch('password') === watch('passwordCheck')) ? (
+              watch('password') === watch('passwordCheck')) ||
+            (photoData && !newPhotoData) ? (
               <button type="submit" disabled={isSubmitting}>
                 수정저장
               </button>

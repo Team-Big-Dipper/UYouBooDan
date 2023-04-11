@@ -17,6 +17,7 @@ const MyPage = () => {
   const [emailData, setEmailData] = useState<string>('');
   const [nickData, setNickData] = useState<string>('');
   const [photoData, setPhotoData] = useState<string>('');
+  const [photoErr, setPhotoErr] = useState<boolean>(false);
   const [editClick, setEditClick] = useState<boolean>(false);
   const [successPw, setSuccessPw] = useState<boolean>(false);
   // 기본 값 내가 쓴 게시글
@@ -49,12 +50,13 @@ const MyPage = () => {
         headers: {
           'Access-Control-Allow-Origin': '*',
           'ngrok-skip-browser-warning': 'any',
-          Authorization: token !== null ? `Bearer ${token}` : null,
-          // LocalStorage.getItem('accesstoken') !== null
-          //   ? `Bearer ${LocalStorage.getItem('accesstoken')}`
-          //   : SessionStorage.getItem('accesstoken') !== null
-          //   ? `Bearer ${SessionStorage.getItem('accesstoken')}`
-          //   : null,
+          Authorization:
+            // token !== null ? `Bearer ${token}` : null,
+            LocalStorage.getItem('accesstoken') !== null
+              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+              : SessionStorage.getItem('accesstoken') !== null
+              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+              : null,
         },
       })
       .then((res: AxiosResponse) => {
@@ -80,16 +82,23 @@ const MyPage = () => {
         </S.SideBarRouteText>
         <S.SibeBarCategotyDiv>
           <S.SideBarUserInfoDiv>
-            <img
-              width={80}
-              height={80}
-              src={`blob:${photoData}`}
-              onError={() => {}}
-            />
+            {photoData && !photoErr ? (
+              <>
+                <img
+                  width={80}
+                  height={80}
+                  src={`blob:${photoData}`}
+                  onError={() => {
+                    setPhotoErr(true);
+                  }}
+                />
+              </>
+            ) : (
+              <S.SideBarImgDiv>
+                <FaceSvg />
+              </S.SideBarImgDiv>
+            )}
             <>{console.log('photoData : ', photoData)}</>
-            <S.SideBarImgDiv>
-              <FaceSvg />
-            </S.SideBarImgDiv>
             <S.UserNickDiv>#{nickData}</S.UserNickDiv>
             <S.EditBtnDiv
               onClick={() => {
@@ -116,9 +125,13 @@ const MyPage = () => {
                       headers: {
                         'Access-Control-Allow-Origin': '*',
                         'ngrok-skip-browser-warning': 'any',
-                        Authorization: `Bearer ${LocalStorage.getItem(
-                          'accesstoken',
-                        )}`,
+                        Authorization:
+                          // token !== null ? `Bearer ${token}` : null,
+                          LocalStorage.getItem('accesstoken') !== null
+                            ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+                            : SessionStorage.getItem('accesstoken') !== null
+                            ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+                            : null,
                       },
                     })
                     .then((res: AxiosResponse) => {
