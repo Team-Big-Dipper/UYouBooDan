@@ -259,33 +259,38 @@ public class Topic extends BaseTimeEntity {
      */
     @Getter
     public enum Category {
-        Food("음식"),
-        GENERAL("일반"),
-        FASHIONBEAUTY("패션뷰티"),
-        SHOPPING("쇼핑"),
-        PET("반려동물"),
-        HOBBYEXERCISE("취미운동")
+        Food("음식", "FOOD"),
+        GENERAL("일반", "GENERAL"),
+        FASHIONBEAUTY("패션뷰티", "FASHIONBEAUTY"),
+        SHOPPING("쇼핑", "SHOPPING"),
+        PET("반려동물", "PET"),
+        HOBBYEXERCISE("취미운동", "HOBBYEXERCISE")
         ;
 
         @Getter
-        private String categoryName;
+        private String categoryName;        // 카테고리 한글 이름
 
-        Category(String categoryName) {
+        @Getter
+        private String categoryEngName;     // 카테고리 영어 이름
+
+        Category(String categoryName, String categoryEngName) {
             this.categoryName = categoryName;
+            this.categoryEngName = categoryEngName;
         }
 
         /**
-         * 한글로된 카테고리 이름을 Category Enum 으로 변경
-         * @param categoryName 한글로된 카테고리 이름
-         * @return Category Enum
+         * 한글 또는 영어 문자열의 카테고리 이름을 Category Enum 으로 변경
+         * @param categoryName 한글 또는 영어로된 카테고리 이름 문자열
+         * @return 카테고리 Category Enum 객체
          */
         public static Category nameOf(String categoryName) {
             for (Category category : Category.values()) {
-                if (category.getCategoryName().equals(categoryName)){
+                // 카테고리 enum의 한글 이름 값 또는 영어 이름값과 같으면
+                if (category.getCategoryName().equals(categoryName) || category.getCategoryEngName().equals(categoryName)){
                     return category;
                 }
             }
-            throw new BusinessLogicException(ExceptionCode.CATEGORY_NOT_EXIST);
+            throw new BusinessLogicException(ExceptionCode.CATEGORY_NOT_EXIST);     // 유효한 카테고리가 아니라는 Exception 반환
         }
     }
 
