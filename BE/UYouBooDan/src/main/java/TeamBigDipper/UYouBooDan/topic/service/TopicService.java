@@ -99,25 +99,43 @@ public class TopicService {
         // 투표 게시글 마감 시간 - 현재 시간으로부터 투표 게시글 마감 임박까지 시간을 더함
         LocalDateTime end = LocalDateTime.now().plusHours(imminentHour);
 
-        // 문자열로 된 topicFilter를 enum으로 변경 후 해당 Filter enum에 맞게 리턴
-        switch(TopicFilter.nameOf(topicFilter)) {
-            // 투표 게시글 전체 목록 조회
-            case ALL:
-                break;
-            // 진행 중인 투표 게시글 목록 조회 - 작성일 기준 내림차순, 페이지네이션 적용
-            case PROGRESS:
-                return topicRepository.findAllByClosedAtIsAfterOrderByCreatedAtDesc(now, pageable);
-            // 마감 임박 투표 게시글 목록 조회
-            case IMMINENT:
-                return topicRepository.findAllByClosedAtBetweenOrderByClosedAtAsc(now, end, pageable);
-            // 전체 진행 중인 게시글 중 핫토픽 조회
-            case HOT:
-                return topicRepository.findAllByHot(pageable);
-            // 투표 마감된 투표 게시글 목록 조회
-            case CLOSED:
-                return topicRepository.findAllByClosedAtIsBeforeOrderByCreatedAtDesc(now, pageable);
-        }
+        if (topicCategory != null) {    // 카테고리 문자열이 null 아니면 - 카테고리가 존재한다면
+            // Category Enum 클래스내 카테고리 이름 확인하는 메서드로 확인 후 해당 카테고리 문자열 반환
+            Topic.Category verifiedTopicCategory = Topic.Category.nameOf(topicCategory.toUpperCase());
 
+            // 문자열로 된 topicFilter를 enum으로 변경 후 해당 Filter enum에 맞게 리턴
+            switch(TopicFilter.nameOf(topicFilter)) {
+                case ALL:           // 유효한 카테고리의 투표 게시글 전체 목록 조회
+                    return topicRepository.findByCategoryOrderByCreatedAtDesc(verifiedTopicCategory, pageable);
+                case PROGRESS:      // 카테고리별로 진행 중인 투표 게시글 목록 조회 - 작성일 기준 내림차순, 페이지네이션 적용
+                    return topicRepository.findByCategoryAndClosedAtIsAfterOrderByCreatedAtDesc(verifiedTopicCategory, now, pageable);
+                case IMMINENT:      // 카테고리별로 마감 임박 투표 게시글 목록 조회
+                    return topicRepository.findByCategoryAndClosedAtBetweenOrderByClosedAtAsc(verifiedTopicCategory, now, end, pageable);
+                case HOT:           // 카테고리별로 전체 진행 중인 게시글 중 핫토픽 조회
+                    return topicRepository.findByCategoryAndHot(verifiedTopicCategory, pageable);
+                case CLOSED:        // 카테고리별로 투표 마감된 투표 게시글 목록 조회
+                    return topicRepository.findByCategoryAndClosedAtIsBeforeOrderByCreatedAtDesc(verifiedTopicCategory, now, pageable);
+            }
+        } else {
+            // 문자열로 된 topicFilter를 enum으로 변경 후 해당 Filter enum에 맞게 리턴
+            switch(TopicFilter.nameOf(topicFilter)) {
+                // 투표 게시글 전체 목록 조회
+                case ALL:
+                    break;
+                // 진행 중인 투표 게시글 목록 조회 - 작성일 기준 내림차순, 페이지네이션 적용
+                case PROGRESS:
+                    return topicRepository.findAllByClosedAtIsAfterOrderByCreatedAtDesc(now, pageable);
+                // 마감 임박 투표 게시글 목록 조회
+                case IMMINENT:
+                    return topicRepository.findAllByClosedAtBetweenOrderByClosedAtAsc(now, end, pageable);
+                // 전체 진행 중인 게시글 중 핫토픽 조회
+                case HOT:
+                    return topicRepository.findAllByHot(pageable);
+                // 투표 마감된 투표 게시글 목록 조회
+                case CLOSED:
+                    return topicRepository.findAllByClosedAtIsBeforeOrderByCreatedAtDesc(now, pageable);
+            }
+        }
         // 페이지네이션 처리된 투표 게시글 전체 목록을 작성일 내림차순으로 정렬한 Tage<Topic> 반환
         return topicRepository.findAllByOrderByCreatedAtDesc(pageable);
     }
