@@ -63,4 +63,53 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
     @Query(value = "SELECT * FROM Topic WHERE MEMBER_ID =:memberId ORDER BY createdAt DESC", nativeQuery = true)
     Page<Topic> findAllByMemberIdOrderByCreatedAtDesc(@Param("memberId") Long memberId, Pageable pageable);
 
+    /**
+     * 카테고리에 해당하는 투표 게시글 목록을 pagination을 이용해여 작성날짜 역순으로 조회
+     * @param category Topic엔티티의 Category Enum 객체 : 조회하고자 하는 투표게시글의 카테고리
+     * @param pageable Pageable 객체
+     * @return Pagiantion 적용된 Page Topic 객체 : 카테고리에 해당하는 투표 게시글 목록
+     */
+    Page<Topic> findByCategoryOrderByCreatedAtDesc(Topic.Category category, Pageable pageable);
+
+    /**
+     * 카테고리에 해당하는 진행 중인 투표 게시글 목록을 Pagination을 적용해서 작성일 내림차순으로 조회
+     * @param category Topic엔티티의 Category Enum 객체 : 조회하고자 하는 투표 게시글의 카테고리
+     * @param now 현재날짜 : LocalDateTime 객체
+     * @param pageable Pagination 객체
+     * @return Pagination 적용된 Page Topic 객체 : 카테고리에 해당하는 투표 게시글 목록
+     */
+    Page<Topic> findByCategoryAndClosedAtIsAfterOrderByCreatedAtDesc(Topic.Category category, LocalDateTime now, Pageable pageable);
+
+    /**
+     * 카테고리에 해당하는 마감 임박 투표 게시글 목록을 Pagination을 적용해서 현재날짜와 마감임박까지 마감일 오름차순으로 조회
+     * @param category Topic엔티티의 Category Enum 객체 : 조회하고자 하는 투표 게시글의 카테고리
+     * @param start 현재 날짜 : LocalDateTime 객체
+     * @param end 현재 날짜로부터 마감임박 제한 날짜 : LocalDateTime 객체
+     * @param pageable Pagination 객체
+     * @return Pagination 적용된 Page Topic 객체 : 카테고리에 해당하는 투표 게시글 목록
+     */
+    Page<Topic> findByCategoryAndClosedAtBetweenOrderByClosedAtAsc(Topic.Category category, LocalDateTime start, LocalDateTime end, Pageable pageable);
+
+    /**
+     * 카테고리에 해당하는 진행 중인 투표 게시글 중에서 추천이 많이 된 게시글 목록을 추천 수 내림차순으로 조회
+     * @param category Topic엔티티의 Category Enum 객체 : 조회하고자 하는 투표 게시글의 카테고리
+     * @param pageable Pagination 객체
+     * @return Pagination이 적용된 Page Topic 객체 : 카테고리에 해당하는 투표 게시글 목록
+     */
+    @Query(value = "SELECT t " +
+            "FROM Topic t, TopicLike l " +
+            "where l.topicLikeStatus = 1 and t.id = l.topic.id and t.topicStatus IN ('ACTIVE', 'PROGRESS') and t.category = :category " +
+            "GROUP BY l.topic.id " +
+            "ORDER BY COUNT(l.member.id) desc")
+    Page<Topic> findByCategoryAndHot(@Param("category") Topic.Category category, Pageable pageable);
+
+    /**
+     * 카테고리별로 투표 마감된 투표 게시글 목록을 Pagination을 적용해서 작성일 내림차순으로 조회
+     * @param category Topic엔티티의 Category Enum 객체 : 조회하고자 하는 투표 게시글의 카테고리
+     * @param now 현재 날짜 : LocalDateTime 객체
+     * @param pageable Pagination 객체
+     * @return Pagination이 적용된 Page Topic 객체 : 카테고리에 해당하는 투표 게시글 목록
+     */
+    Page<Topic> findByCategoryAndClosedAtIsBeforeOrderByCreatedAtDesc(Topic.Category category, LocalDateTime now, Pageable pageable);
+
 }
