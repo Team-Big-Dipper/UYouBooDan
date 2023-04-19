@@ -90,7 +90,7 @@ export const Vote = styled.div`
 `;
 export const MyPageLogoutDiv = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   padding-right: 15px;
   gap: 10px;
 `;
@@ -123,7 +123,7 @@ export const Mypage = styled(Link)`
 export const LoginSignUpDiv = styled.div`
   display: flex;
   /* border: 1px solid red; */
-  justify-content: end;
+  justify-content: flex-end;
   padding-right: 1vw;
   gap: 2vw;
 `;

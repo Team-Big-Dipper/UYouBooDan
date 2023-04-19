@@ -4,10 +4,11 @@ import { OnCheckSvg } from '../../../assets/onCheck';
 import { useState } from 'react';
 import MyPageMain from '../MyPageMain';
 
-const MyPageHeader = ({ category }: any) => {
+const MyPageHeader = ({ category, data }: any) => {
   const [all, setAll] = useState<boolean>(true);
   const [ing, setIng] = useState<boolean>(false);
   const [end, setEnd] = useState<boolean>(false);
+  console.log('MyPageHeader -> data : ', data);
   return (
     <S.MypageHeaderContainer>
       <S.HeaderTitleDiv>{category}</S.HeaderTitleDiv>
@@ -43,7 +44,7 @@ const MyPageHeader = ({ category }: any) => {
           <div>종료된 투표</div>
         </S.RadioListDiv>
       </S.RadioContainer>
-      <MyPageMain />
+      <MyPageMain data={data} />
     </S.MypageHeaderContainer>
   );
 };

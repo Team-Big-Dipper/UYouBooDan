@@ -22,6 +22,7 @@ const MyPage = () => {
   // 기본 값 내가 쓴 게시글
   const [selectCategory, setSelectCategory] =
     useState<string>('내가 쓴 게시글');
+  const [postData, setPostData] = useState([]);
 
   const logoutHandler = () => {
     LocalStorage.removeItem('accesstoken');
@@ -54,7 +55,27 @@ const MyPage = () => {
         console.log('mypage 정보요청 err : ', err.message);
       });
   }, []);
-
+  useEffect(() => {
+    axios
+      .get(`${api}/member-info/topics?page=1&size=4`, {
+        headers: {
+          Authorization:
+            LocalStorage.getItem('accesstoken') !== null
+              ? `Bearer ${LocalStorage.getItem('accesstoken')}`
+              : SessionStorage.getItem('accesstoken') !== null
+              ? `Bearer ${SessionStorage.getItem('accesstoken')}`
+              : null,
+        },
+      })
+      .then((res: AxiosResponse) => {
+        console.log('내가 쓴 게시글 res : ', res);
+        setPostData(res.data.data);
+      })
+      .catch((err: AxiosError) => {
+        console.log('err : ', err.message);
+      });
+  }, []);
+  console.log('MyPage -> postData : ', postData);
   return (
     <S.MyPageContainer>
       <S.SideBarContainer>
@@ -102,7 +123,7 @@ const MyPage = () => {
                   setSuccessPw(false);
                   setSelectCategory('내가 쓴 게시글');
                   axios
-                    .get(`${api}/member-info/topics?page=1&size=10`, {
+                    .get(`${api}/member-info/topics?page=1&size=4`, {
                       headers: {
                         Authorization:
                           LocalStorage.getItem('accesstoken') !== null
@@ -112,7 +133,10 @@ const MyPage = () => {
                             : null,
                       },
                     })
-                    .then((res: AxiosResponse) => {})
+                    .then((res: AxiosResponse) => {
+                      console.log('내가 쓴 게시글 res : ', res);
+                      setPostData(res.data.data);
+                    })
                     .catch((err: AxiosError) => {
                       console.log('err : ', err.message);
                     });
@@ -176,7 +200,7 @@ const MyPage = () => {
             setSuccessPw={setSuccessPw}
           />
         ) : (
-          <MyPageHeader category={selectCategory} />
+          <MyPageHeader category={selectCategory} data={postData} />
         )}
       </S.MyPageRightContainer>
     </S.MyPageContainer>

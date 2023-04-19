@@ -3,10 +3,62 @@ import { PageNationLeftSvg } from '../../../assets/pagenationLeft';
 import { PageNationRightSvg } from '../../../assets/pagenationRight';
 import * as S from './style';
 
-const MyPageMain = () => {
+const MyPageMain = ({ data }: any) => {
+  console.log('MyPageMain -> data : ', data);
   return (
     <S.MyPageMainContainer>
-      <S.ContentBoxDiv>
+      {data &&
+        data.map((el: any) => {
+          if (el.isClosed) {
+            return (
+              <S.ContentBoxDiv key={el.topicId}>
+                <S.ContentBox>
+                  <S.ContentTextBox>
+                    <S.ContentCategory>#{el.category}</S.ContentCategory>
+                    <S.ContentDetail>{el.title}</S.ContentDetail>
+                    <S.ContentInfo>
+                      <S.ContentDefaultImgDiv>
+                        <ContentImgDefaultSvg />
+                      </S.ContentDefaultImgDiv>
+                      <S.ContentInfoNickDiv>{el.nickName}</S.ContentInfoNickDiv>
+                      <S.ContentInfoLineDiv></S.ContentInfoLineDiv>
+                      <S.ContentInfoCreatedDiv>
+                        {el.createdAt.split(' ')[0].replace(/-/g, '.')}
+                      </S.ContentInfoCreatedDiv>
+                    </S.ContentInfo>
+                  </S.ContentTextBox>
+                  <S.ContentDdayEnd>종료</S.ContentDdayEnd>
+                </S.ContentBox>
+                <S.ContentRankingEnd>1위 김치찌개</S.ContentRankingEnd>
+              </S.ContentBoxDiv>
+            );
+          }
+          return (
+            <S.ContentBoxDiv key={el.topicId}>
+              <S.ContentBox>
+                <S.ContentTextBox>
+                  <S.ContentCategory>#{el.category}</S.ContentCategory>
+                  <S.ContentDetail>{el.title}</S.ContentDetail>
+                  <S.ContentInfo>
+                    <S.ContentDefaultImgDiv>
+                      <ContentImgDefaultSvg />
+                    </S.ContentDefaultImgDiv>
+                    <S.ContentInfoNickDiv>{el.nickName}</S.ContentInfoNickDiv>
+                    <S.ContentInfoLineDiv></S.ContentInfoLineDiv>
+                    <S.ContentInfoCreatedDiv>
+                      {el.createdAt.split(' ')[0].replace(/-/g, '.')}
+                    </S.ContentInfoCreatedDiv>
+                  </S.ContentInfo>
+                </S.ContentTextBox>
+                <S.ContentDday>D - 3</S.ContentDday>
+              </S.ContentBox>
+              <S.ContentRanking>
+                {el.createdAt.split(' ')[0].replace(/-/g, '.')} 까지
+              </S.ContentRanking>
+            </S.ContentBoxDiv>
+          );
+        })}
+      {/* <S.ContentBoxDiv>
         <S.ContentBox>
           <S.ContentTextBox>
             <S.ContentCategory>#카테고리</S.ContentCategory>
@@ -100,7 +152,7 @@ const MyPageMain = () => {
           <S.ContentDday>D - 3</S.ContentDday>
         </S.ContentBox>
         <S.ContentRanking>1위 김치찌개</S.ContentRanking>
-      </S.ContentBoxDiv>
+      </S.ContentBoxDiv> */}
 
       <S.PageNationDiv>
         <S.LeftDiv>
