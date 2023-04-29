@@ -21,7 +21,7 @@ import { isAuthTrue } from '../../redux/slices/isAuthSlice';
 const Auth = () => {
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const dispatch = useDispatch();
-  const state = useSelector((state: any) => state.isAuthTrue);
+  const state = useSelector((state: any) => state.isAuthTrue.isAuth);
   const { authCodeRequest } = kakaoAuth();
   const {
     register,
@@ -38,6 +38,14 @@ const Auth = () => {
   const [vector, setVector] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
   const [isValid, setIsValid] = useState<boolean>(true);
+
+  console.log('state : ', state);
+  // 로그인 된 상태에서 뒤로가기 버튼 누르다가 다시 로그인 화면으로 렌더링 막기
+  useEffect(() => {
+    if (state) {
+      router.push('/main');
+    }
+  }, []);
 
   const onValid = (data: any): void => {
     if (isValid) {
