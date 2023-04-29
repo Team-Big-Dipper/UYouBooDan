@@ -2,43 +2,88 @@ import { style } from '@mui/system';
 import styled from 'styled-components';
 
 export const SignUpContainer = styled.div`
-  padding: 10% 7%;
+  /* padding: 10% 7%; */
   border: 1px solid #d6d9dc;
   border-radius: 10px;
+  //
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 500px;
+  height: 100%;
+  padding: 50px 0 50px 0;
+  @media (max-width: 500px) {
+    width: 350px;
+    padding: 20px 0 20px 0;
+  }
 `;
 export const SignUpLogo = styled.div`
   font-weight: 800;
-  font-size: 2.4rem;
+  /* font-size: 2.4rem; */
   color: #4285f4;
   display: inline-block;
-  padding: 0.5vh 0.5vh 0.2vh 0.5vh;
+  /* padding: 0.5vh 0.5vh 0.2vh 0.5vh; */
   background-color: #f3f3f3;
-  margin-bottom: 3vh;
+  /* margin-bottom: 3vh; */
+  //
+  font-size: 38px;
+  padding: 3px;
+  margin-bottom: 20px;
+  @media (max-width: 500px) {
+    font-size: 27px;
+    margin-bottom: 15px;
+  }
 `;
 export const SignUpTitle = styled.div`
   font-weight: 600;
-  font-size: 1.5rem;
-  margin-bottom: 4vh;
+  /* font-size: 1.5rem; */
+  /* margin-bottom: 4vh; */
+  //
+  font-size: 24px;
+  margin-bottom: 33px;
+  @media (max-width: 500px) {
+    font-size: 20px;
+    margin-bottom: 27px;
+  }
 `;
 
 // email
 export const EmailContainer = styled.div`
-  margin-bottom: 3.5vh;
+  /* margin-bottom: 3.5vh; */
+  //
+  margin-bottom: 28px;
+  @media (max-width: 500px) {
+    margin-bottom: 23px;
+  }
 `;
 export const EmailTitle = styled.div`
   font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 1vh;
+  /* font-size: 1rem; */
+  /* margin-bottom: 1vh; */
+  //
+  font-size: 17px;
+  margin-bottom: 8px;
+  @media (max-width: 500px) {
+    font-size: 15px;
+  }
 `;
 export const EmailInputBtnDiv = styled.div`
   display: flex;
   justify-content: space-between;
-  /* height: 5.5vh; */
-  height: 6.5vh;
-  margin-bottom: 1vh;
+  /* height: 6.5vh; */
+  width: 375px;
+  height: 53px;
+  /* margin-bottom: 1vh; */
+  margin-bottom: 8px;
+  gap: 5px;
+  @media (max-width: 500px) {
+    width: 300px;
+  }
   button {
-    width: 6vw;
-    font-size: 1rem;
+    /* width: 6vw; */
+    width: 90px;
+    /* font-size: 1rem; */
+    font-size: 17px;
     color: #4285f4;
     font-weight: 350;
     border: 1px solid #4285f4;
@@ -47,7 +92,12 @@ export const EmailInputBtnDiv = styled.div`
     cursor: pointer;
     transition-duration: 0.3s;
     :active {
-      background-color: #d6d9dc;
+      background-color: #4285f4;
+      color: white;
+    }
+    @media (max-width: 500px) {
+      width: 70px;
+      font-size: 14px;
     }
   }
 `;
@@ -55,14 +105,24 @@ export const EmailInputDiv = styled.div`
   border: 1px solid #d6d9dc;
   display: flex;
   justify-content: space-between;
-  width: 19vw;
+  /* width: 19vw; */
+  width: 275px;
   border-radius: 9px;
-  padding: 0 2%;
+  /* padding: 0 2%; */
+  padding: 0 8px 0 8px;
+  @media (max-width: 500px) {
+    width: 230px;
+  }
   input {
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    /* width: 80%; */
     width: 80%;
+    font-size: 17px;
     border: none;
     outline: none;
+    @media (max-width: 500px) {
+      font-size: 15px;
+    }
   }
 `;
 export const EmailDeleteDiv = styled.div`
@@ -71,16 +131,24 @@ export const EmailDeleteDiv = styled.div`
   cursor: pointer;
 `;
 export const EmailSuccessMsg = styled.div`
-  font-size: 0.86rem;
+  /* font-size: 0.86rem; */
+  font-size: 13px;
   color: #00c988;
   display: flex;
   align-items: center;
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 export const EmailFailureMsg = styled.div`
-  font-size: 0.86rem;
+  /* font-size: 0.86rem; */
+  font-size: 13px;
   color: #ff2f2f;
   display: flex;
   align-items: center;
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 // password
@@ -90,12 +158,22 @@ interface ValidAndExist {
   exist: string;
 }
 export const PwContainer = styled.div`
-  margin-bottom: 3.5vh;
+  /* margin-bottom: 3.5vh; */
+  margin-bottom: 28px;
+  @media (max-width: 500px) {
+    margin-bottom: 23px;
+  }
 `;
 export const PwTitle = styled.div`
   font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 1vh;
+  /* font-size: 1rem;
+  margin-bottom: 1vh; */
+  //
+  font-size: 17px;
+  margin-bottom: 8px;
+  @media (max-width: 500px) {
+    font-size: 15px;
+  }
 `;
 export const PwInput = styled.div<ValidAndExist>`
   border: ${(props) =>
@@ -108,12 +186,16 @@ export const PwInput = styled.div<ValidAndExist>`
       : 'white'};
   display: flex;
   justify-content: space-between;
-  height: 6.5vh;
+  /* height: 6.5vh; */
+  height: 53px;
   border-radius: 9px;
-  padding: 0 2%;
-  margin-bottom: 1vh;
+  /* padding: 0 2%; */
+  padding: 0 8px 0 8px;
+  /* margin-bottom: 1vh; */
+  margin-bottom: 8px;
   input {
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    font-size: 17px;
     color: ${(props) =>
       props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
         ? '#FF2F2F'
@@ -125,6 +207,9 @@ export const PwInput = styled.div<ValidAndExist>`
     width: 80%;
     border: none;
     outline: none;
+    @media (max-width: 500px) {
+      font-size: 15px;
+    }
   }
 `;
 export const PwDeleteDiv = styled.div`
@@ -149,12 +234,16 @@ export const PwCheckInput = styled.div<ValidAndExist>`
       : 'white'};
   display: flex;
   justify-content: space-between;
-  height: 6.5vh;
+  /* height: 6.5vh; */
+  height: 53px;
   border-radius: 9px;
-  padding: 0 2%;
-  margin-bottom: 1vh;
+  /* padding: 0 2%; */
+  padding: 0 8px 0 8px;
+  /* margin-bottom: 1vh; */
+  margin-bottom: 8px;
   input {
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    font-size: 17px;
     color: ${(props) =>
       props.valid === '비밀번호가 일치하지 않습니다.' && props.exist
         ? '#FF2F2F'
@@ -166,6 +255,9 @@ export const PwCheckInput = styled.div<ValidAndExist>`
     width: 80%;
     border: none;
     outline: none;
+    @media (max-width: 500px) {
+      font-size: 15px;
+    }
   }
 `;
 export const PwCheckDeleteDiv = styled.div`
@@ -179,41 +271,72 @@ export const PwCheckVectorDiv = styled.div`
   cursor: pointer;
 `;
 export const Notice = styled.div`
-  font-size: 0.8rem;
+  /* font-size: 0.8rem; */
+  font-size: 13px;
   color: #667085;
-  margin-bottom: 1vh;
+  /* margin-bottom: 1vh; */
+  margin-bottom: 8px;
+  @media (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 export const PwSuccessMsg = styled.div`
-  font-size: 0.86rem;
+  /* font-size: 0.86rem; */
+  font-size: 14px;
   color: #00c988;
   display: flex;
   align-items: center;
+  @media (max-width: 500px) {
+    font-size: 13px;
+  }
 `;
 export const PwFailureMsg = styled.div`
-  font-size: 0.86rem;
+  /* font-size: 0.86rem; */
+  font-size: 14px;
   color: #ff2f2f;
   display: flex;
   align-items: center;
+  @media (max-width: 500px) {
+    font-size: 13px;
+  }
 `;
 
 // NickName
 
 export const NickContainer = styled.div`
-  margin-bottom: 3.5vh;
+  /* margin-bottom: 3.5vh; */
+  margin-bottom: 28px;
+  @media (max-width: 500px) {
+    margin-bottom: 23px;
+  }
 `;
 export const NickTitle = styled.div`
   font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 1vh;
+  /* font-size: 1rem;
+  margin-bottom: 1vh; */
+  //
+  font-size: 17px;
+  margin-bottom: 8px;
+  @media (max-width: 500px) {
+    font-size: 15px;
+  }
 `;
 export const NickInputAndBtn = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 6.5vh;
-  margin-bottom: 1vh;
+  /* height: 6.5vh; */
+  height: 53px;
+  width: 375px;
+  /* margin-bottom: 1vh; */
+  margin-bottom: 8px;
+  gap: 5px;
+  @media (max-width: 500px) {
+    width: 305px;
+  }
   button {
-    width: 6vw;
-    font-size: 1rem;
+    width: 90px;
+    /* font-size: 1rem; */
+    font-size: 17px;
     color: #4285f4;
     font-weight: 350;
     border: 1px solid #4285f4;
@@ -222,7 +345,12 @@ export const NickInputAndBtn = styled.div`
     cursor: pointer;
     transition-duration: 0.3s;
     :active {
-      background-color: #d6d9dc;
+      background-color: #4285f4;
+      color: white;
+    }
+    @media (max-width: 500px) {
+      width: 70px;
+      font-size: 14px;
     }
   }
 `;
@@ -230,80 +358,133 @@ export const NickInputDiv = styled.div`
   border: 1px solid #d6d9dc;
   display: flex;
   justify-content: space-between;
-  width: 19vw;
+  /* width: 19vw; */
+  width: 275px;
   border-radius: 9px;
-  padding: 0 2%;
+  /* padding: 0 2%; */
+  padding: 0 8px 0 8px;
+  @media (max-width: 500px) {
+    width: 230px;
+  }
   input {
-    font-size: 1rem;
+    /* font-size: 1rem; */
+    /* width: 80%; */
     width: 80%;
+    font-size: 17px;
     border: none;
     outline: none;
+    @media (max-width: 500px) {
+      font-size: 15px;
+    }
   }
 `;
 export const NickSuccessMsg = styled.div`
-  font-size: 0.86rem;
+  /* font-size: 0.86rem; */
+  font-size: 14px;
   color: #00c988;
   display: flex;
   align-items: center;
+  @media (max-width: 500px) {
+    font-size: 13px;
+  }
 `;
 export const NickFailureMsg = styled.div`
-  font-size: 0.86rem;
+  /* font-size: 0.86rem; */
+  font-size: 14px;
   color: #ff2f2f;
   display: flex;
   align-items: center;
+  @media (max-width: 500px) {
+    font-size: 13px;
+  }
 `;
 
 // terms 약관동의
 
 export const TermsContainer = styled.div`
   border-top: 1px solid #d6d9dc;
-  margin-bottom: 5vh;
-  padding-top: 3.5vh;
+  /* margin-bottom: 5vh; */
+  margin-bottom: 45px;
+  /* padding-top: 3.5vh; */
+  padding-top: 30px;
+  @media (max-width: 500px) {
+    margin-bottom: 40px;
+    padding-top: 25px;
+  }
 `;
 export const TermsTitle = styled.div`
   font-weight: bold;
-  font-size: 1rem;
-  margin-bottom: 2.5vh;
+  /* font-size: 1rem;
+  margin-bottom: 2.5vh; */
+  //
+  font-size: 17px;
+  margin-bottom: 20px;
+  @media (max-width: 500px) {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
 `;
 export const TermsContentOne = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 5.5vh;
+  /* height: 5.5vh; */
+  height: 47px;
 `;
 export const TermsOneRadioAndText = styled.div`
   display: flex;
-  font-size: 1rem;
-  gap: 0.5vw;
+  /* font-size: 1rem; */
+  font-size: 17px;
+  /* gap: 0.5vw; */
+  gap: 10px;
+  @media (max-width: 500px) {
+    font-size: 15px;
+    gap: 8px;
+  }
   div {
     display: flex;
     align-items: center;
   }
 `;
 export const TermsOneInfo = styled.div`
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
+  font-size: 15px;
   color: #667085;
   cursor: pointer;
+  @media (max-width: 500px) {
+    font-size: 14px;
+  }
 `;
 export const TermsContentTwo = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 5.5vh;
+  /* height: 5.5vh; */
+  height: 47px;
 `;
 export const TermsTwoRadioAndText = styled.div`
   display: flex;
-  font-size: 1rem;
-  gap: 0.5vw;
+  /* font-size: 1rem; */
+  font-size: 17px;
+  /* gap: 0.5vw; */
+  gap: 10px;
+  @media (max-width: 500px) {
+    font-size: 15px;
+    gap: 8px;
+  }
   div {
     display: flex;
     align-items: center;
   }
 `;
 export const TermsTwoInfo = styled.div`
-  font-size: 0.9rem;
+  /* font-size: 0.9rem; */
+  font-size: 15px;
   color: #667085;
   cursor: pointer;
+  @media (max-width: 500px) {
+    font-size: 14px;
+  }
 `;
 
 // signup Btn
@@ -314,16 +495,21 @@ interface Ok {
 export const SignUpBtnContainer = styled.div<Ok>`
   button {
     width: 100%;
-    height: 7vh;
+    /* height: 7vh; */
+    height: 56px;
     border: none;
     border-radius: 9px;
     background-color: ${(props) => (props.isOk ? '#4285f4' : '#7b8c9f')};
-    font-size: 1.2rem;
+    /* font-size: 1.2rem; */
+    font-size: 20px;
     color: white;
     cursor: pointer;
     transition-duration: 0.3s;
     :active {
       background-color: ${(props) => (props.isOk ? '#d6d9dc' : '#7b8c9f')};
+    }
+    @media (max-width: 500px) {
+      font-size: 18px;
     }
   }
 `;
