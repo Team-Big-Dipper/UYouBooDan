@@ -128,7 +128,7 @@ const MyPageMain = ({ data }: any) => {
           <S.ContentDdayEnd>종료</S.ContentDdayEnd>
         </S.ContentBox>
         <S.ContentRankingEnd>1위 김치찌개</S.ContentRankingEnd>
-      </S.ContentBoxDiv>
+      </S.ContentBoxDiv> */}
 
       <S.ContentBoxDiv>
         <S.ContentBox>
@@ -149,11 +149,13 @@ const MyPageMain = ({ data }: any) => {
               <S.ContentInfoCreatedDiv>2023.01.06</S.ContentInfoCreatedDiv>
             </S.ContentInfo>
           </S.ContentTextBox>
-          <S.ContentDday>D - 3</S.ContentDday>
+          <S.ContentDdayDiv>
+            <S.ContentDday>D - 3</S.ContentDday>
+          </S.ContentDdayDiv>
         </S.ContentBox>
         <S.ContentRanking>1위 김치찌개</S.ContentRanking>
-      </S.ContentBoxDiv> */}
-
+      </S.ContentBoxDiv>
+      {/* {768} */}
       <S.PageNationDiv>
         <S.LeftDiv>
           <PageNationLeftSvg />
