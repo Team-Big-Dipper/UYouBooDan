@@ -130,7 +130,7 @@ const MyPageMain = ({ data }: any) => {
         <S.ContentRankingEnd>1위 김치찌개</S.ContentRankingEnd>
       </S.ContentBoxDiv> */}
 
-      <S.ContentBoxDiv>
+      {/* <S.ContentBoxDiv>
         <S.ContentBox>
           <S.ContentTextBox>
             <S.ContentCategory>#카테고리</S.ContentCategory>
@@ -154,7 +154,7 @@ const MyPageMain = ({ data }: any) => {
           </S.ContentDdayDiv>
         </S.ContentBox>
         <S.ContentRanking>1위 김치찌개</S.ContentRanking>
-      </S.ContentBoxDiv>
+      </S.ContentBoxDiv> */}
       {/* {768} */}
       <S.PageNationDiv>
         <S.LeftDiv>
