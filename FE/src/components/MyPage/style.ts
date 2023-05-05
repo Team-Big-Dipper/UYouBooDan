@@ -3,18 +3,17 @@ import Link from 'next/link';
 
 export const MyPageContainer = styled.div`
   display: flex;
-  /* border: 1px solid blue; */
 `;
 export const MyPageRightContainer = styled.div`
-  width: 85%;
-  /* width: 1200px; */
+  width: 100%;
   padding-top: 50px;
   margin-left: 30px;
-  /* border: 1px solid green; */
 `;
 
 export const SideBarContainer = styled.div`
-  /* border: 1px solid red; */
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 export const SideBarRouteText = styled.div`
   font-size: 0.8rem;
@@ -68,21 +67,21 @@ export const CategoryTitle = styled.div`
   font-size: 1.3rem;
   font-weight: bold;
   color: #667085;
-  padding-left: 0.5vw;
-  margin-bottom: 1vh;
+  padding-left: 6px;
+  margin-bottom: 8px;
 `;
 export const UnderlineDiv = styled.div`
   border: 0.5px solid #d6d9dc;
-  margin-bottom: 2.5vh;
+  margin-bottom: 20px;
 `;
 export const CategoryListDiv = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: 0.5vw;
+  padding-left: 6px;
   font-size: 1rem;
   color: #667085;
   gap: 15px;
-  margin-bottom: 7vh;
+  margin-bottom: 55px;
   cursor: pointer;
   div {
     &:hover {

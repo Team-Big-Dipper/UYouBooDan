@@ -1,36 +1,53 @@
 import styled from 'styled-components';
 
 export const MyProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 120vh;
-  padding: 5% 7%;
+  padding: 25px 35px 25px 35px;
+  @media (max-width: 768px) {
+    align-items: center;
+  }
 `;
 
 export const MyProfileTitleDiv = styled.div`
   font-size: 1.9rem;
   font-family: 'yg-jalnan' !important;
   margin-bottom: 110px;
+  @media (max-width: 500px) {
+    font-size: 25px;
+  }
 `;
 export const PwContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin-bottom: 50px;
+  width: 375px;
+  padding-left: 40px;
+  @media (max-width: 768px) {
+    padding-left: 0;
+  }
+  @media (max-width: 500px) {
+    width: 300px;
+  }
 `;
 export const PwTitle = styled.div`
-  width: 365px;
   font-weight: bold;
   font-size: 1rem;
-  margin-bottom: 1vh;
+  margin-bottom: 8px;
 `;
 export const PwInputDiv = styled.div`
   border: 1px solid #d6d9dc;
   display: flex;
   justify-content: space-between;
-  width: 370px;
-  height: 51.5px;
+  width: 375px;
+  height: 53px;
   border-radius: 9px;
-  padding: 0 2%;
-  margin-bottom: 1vh;
+  padding: 0 8px 0 8px;
+  margin-bottom: 8px;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
   input {
     font-size: 1rem;
     color: black;
@@ -64,13 +81,20 @@ export const BtnDiv = styled.div`
   justify-content: center;
   button {
     width: 220px;
-    height: 7vh;
+    height: 56px;
     border: none;
     border-radius: 9px;
     background-color: #4285f4;
-    font-size: 1.2rem;
+    font-size: 19px;
     color: white;
     cursor: pointer;
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+    @media (max-width: 500px) {
+      width: 100%;
+      font-size: 17px;
+    }
     transition-duration: 0.3s;
     :active {
       background-color: #d6d9dc;

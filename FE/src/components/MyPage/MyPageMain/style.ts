@@ -1,10 +1,16 @@
 import styled from 'styled-components';
 
 export const MyPageMainContainer = styled.div`
-  height: 103vh;
+  width: 100%;
+  @media (max-width: 768px) {
+    width: 78vw;
+  }
+  @media (max-width: 500px) {
+    width: 400px;
+  }
 `;
 export const ContentBoxDiv = styled.div`
-  height: 20vh;
+  height: 160px;
   margin-bottom: 15px;
   border: 1px solid #d6d9dc;
   border-radius: 10px;
@@ -13,28 +19,28 @@ export const ContentBoxDiv = styled.div`
   justify-content: space-between;
   overflow: hidden;
   cursor: pointer;
-  /* :hover {
-    border-color: #4285f4;
-  } */
 `;
 export const ContentBox = styled.div`
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 60px;
-  height: 100%;
+  gap: 50px;
+  padding: 25px 20px 10px 20px;
+  width: 100%;
 `;
 
 export const ContentTextBox = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 25px 0 10px 20px;
   height: 100%;
 `;
 export const ContentCategory = styled.div`
   margin-bottom: 8px;
-  font-size: 0.8rem;
+  font-size: 13px;
   color: #667085;
+  @media (max-width: 1000px) {
+    font-size: 12px;
+  }
 `;
 export const ContentDetail = styled.div`
   overflow: hidden;
@@ -43,13 +49,20 @@ export const ContentDetail = styled.div`
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   margin-bottom: 20px;
+  font-size: 16px;
+  @media (max-width: 1000px) {
+    font-size: 15px;
+  }
 `;
 export const ContentInfo = styled.div`
   display: flex;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 14px;
   color: #667085;
   gap: 7px;
+  @media (max-width: 1000px) {
+    font-size: 13px;
+  }
 `;
 export const ContentDefaultImgDiv = styled.div`
   display: flex;
@@ -66,12 +79,12 @@ export const ContentInfoLineDiv = styled.div`
   border: 0.5px solid #667085;
   height: 14px;
 `;
+export const ContentDdayDiv = styled.div``;
 export const ContentDday = styled.div`
-  margin: 45px 30px 0 0;
-  width: 230px;
+  width: 70px;
   height: 30px;
   border-radius: 15px;
-  font-size: 0.8rem;
+  font-size: 13px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -115,9 +128,6 @@ export const PageNationDiv = styled.div`
   justify-content: center;
   align-items: center;
   gap: 30px;
-  /* div {
-    border: 1px solid red;
-  } */
 `;
 export const LeftDiv = styled.div`
   cursor: pointer;
