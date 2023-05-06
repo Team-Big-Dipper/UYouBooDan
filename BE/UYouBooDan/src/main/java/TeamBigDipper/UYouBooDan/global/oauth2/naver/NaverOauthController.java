@@ -26,7 +26,6 @@ import java.security.SecureRandom;
 @RequestMapping("/naver")
 public class NaverOauthController {
 
-    // application-local.yml 파일에 관련 프로퍼티를 입력해야 정상 동작하므로, 우선 주석처리해둠
     @Getter
     @Value("${oauth.naver.clientId}")
     private String naverClientId;
