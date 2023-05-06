@@ -3,6 +3,7 @@ package TeamBigDipper.UYouBooDan.global.oauth2.naver;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,9 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.URLEncoder;
@@ -24,9 +27,9 @@ import java.security.SecureRandom;
 public class NaverOauthController {
 
     // application-local.yml 파일에 관련 프로퍼티를 입력해야 정상 동작하므로, 우선 주석처리해둠
-//    @Getter
-//    @Value("${oauth.naver.clientId}")
-//    private String naverClientId;
+    @Getter
+    @Value("${oauth.naver.clientId}")
+    private String naverClientId;
 
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
@@ -43,14 +46,14 @@ public class NaverOauthController {
         StringBuffer url = new StringBuffer();
 
         // 카카오 API 명세에 맞춰서 작성
-        String redirectURI = URLEncoder.encode("http://www.localhost:8080", "UTF-8"); // redirectURI 설정 부분
+        String redirectURI = URLEncoder.encode("http://www.localhost:8080/naver/callback", "UTF-8"); // redirectURI 설정 부분
         SecureRandom random = new SecureRandom();
         String state = new BigInteger(130, random).toString();
 
         url.append("https://nid.naver.com/oauth2.0/authorize?response_type=code");
-//        url.append("&client_id=" + getNaverClientId());
-        url.append("&redirect_uri=" + redirectURI); // getRedirectUri());
+        url.append("&client_id=" + getNaverClientId());
         url.append("&state=" + state);
+        url.append("&redirect_uri=" + redirectURI);
 
         return new ResponseEntity<>(url.toString(), HttpStatus.OK); // 프론트 브라우저로 보내는 주소
     }
@@ -61,8 +64,8 @@ public class NaverOauthController {
      * @return
      */
     @GetMapping("/callback")
-    public String naverLogin() {
-
+    public String naverLogin(@RequestParam("code") String code, @RequestParam("state") String state, HttpServletResponse response) throws JsonProcessingException {
+        System.out.println("Check");
         // 네이버 로그인 콜백 로직
 
         return "Success Logout: User";
