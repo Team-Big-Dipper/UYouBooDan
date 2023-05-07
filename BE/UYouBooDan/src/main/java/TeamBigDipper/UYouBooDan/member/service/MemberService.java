@@ -4,6 +4,7 @@ import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
 import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.oauth2.google.GoogleLoginDto;
 import TeamBigDipper.UYouBooDan.global.oauth2.kakao.KakaoProfileVo;
+import TeamBigDipper.UYouBooDan.global.oauth2.naver.NaverProfileVo;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
@@ -246,4 +247,42 @@ public class MemberService {
         System.out.println(redisTemplate.opsForValue().get(accessToken).toString());
     }
 
+
+    /**
+     * 네이버 외부 로그인 전용 멤버 생성 및 검증 메소드
+     * @param naverProfile, naverAccessToken
+     * @return
+     */
+    @Transactional
+    public Member createNaverMember (NaverProfileVo naverProfile, String naverAccessToken) {
+        // 중복 가입 방지 로직 추가
+        Optional<Member> optMember;
+        if(naverProfile.getResponse().getEmail()==null) optMember = memberRepository.findByEmail(naverProfile.getResponse().getId().toString()+"@uyouboodan.com");
+        else optMember = memberRepository.findByEmail(naverProfile.getResponse().getEmail());
+
+        if(optMember.isEmpty()) {
+            Member member = Member.builder()
+                    .memberId(Long.valueOf(naverProfile.getResponse().getId()))
+                    .nickname(new Name("Mock"+ naverProfile.getResponse().getId()))
+                    .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수 default값 설정해둠
+                    .oauthId(Long.valueOf(naverProfile.getResponse().getId()))
+                    .oauthAccessToken(naverAccessToken)
+                    .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
+                    .build();
+            if (naverProfile.getResponse().getEmail()==null) member.modifyEmail(naverProfile.getResponse().getId().toString()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
+            else member.modifyEmail(naverProfile.getResponse().getEmail());
+
+            member.defaultProfile();
+            List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
+            member.setRoles(roles);
+
+            return memberRepository.save(member);
+        }
+        else {
+            // 기존 회원으로 가입되어 있을 경우, 저장된 AccessToken 을 최신화 해줌 (로그아웃을 위함)
+            Member member = optMember.get();
+            member.modifyOauthToken(naverAccessToken);
+            return memberRepository.save(member);
+        }
+    }
 }
