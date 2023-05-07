@@ -97,10 +97,14 @@ public class NaverOauthController {
                 String.class
         );
 
-        // 이제 우리가 사용할 적용하는 로직 작성
+        // body로 access_token, refresh_token, token_type:bearer, expires_in:3600 온 상태
+        System.out.println(oauthTokenResponse);
+
+        // 토큰을 이용해 정보를 받아올 API 요청을 보낼 로직 작성하기
         ObjectMapper objectMapper = new ObjectMapper();
 
 
+        // 받아온 정보로 서비스 로직에 적용하기
 
         return "Success Logout: User";
     }
