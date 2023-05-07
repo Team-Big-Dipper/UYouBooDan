@@ -2,13 +2,18 @@ package TeamBigDipper.UYouBooDan.global.oauth2.naver;
 
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -72,7 +77,7 @@ public class NaverOauthController {
     @GetMapping("/callback")
     public String naverLogin(@RequestParam("code") String code, @RequestParam("state") String state, HttpServletResponse response) throws JsonProcessingException {
         // 네이버 로그인 Token 발급 API 요청을 위한 header/parameters 설정 부분
-        RestTemplate restTemplate = new RestTemplate(); // REST API 요청용 Template
+        RestTemplate token_rt = new RestTemplate(); // REST API 요청용 Template
 
         HttpHeaders naverTokenRequestHeadres = new HttpHeaders();  // Http 요청을 위한 헤더 생성
         naverTokenRequestHeadres.add("Content-type", "application/x-www-form-urlencoded"); // application/json 했다가 grant_type missing 오류남 (출력포맷만 json이라는 거엿음)
@@ -90,7 +95,7 @@ public class NaverOauthController {
                 new HttpEntity<>(params, naverTokenRequestHeadres);
 
         // 서비스 서버에서 네이버 인증 서버로 요청 전송(POST 또는 GET이라고 공식문서에 있음), 응답은 Json으로 제공됨
-        ResponseEntity<String> oauthTokenResponse = restTemplate.exchange(
+        ResponseEntity<String> oauthTokenResponse = token_rt.exchange(
                 "https://nid.naver.com/oauth2.0/token",
                 HttpMethod.POST,
                 naverTokenRequest,
@@ -100,13 +105,52 @@ public class NaverOauthController {
         // body로 access_token, refresh_token, token_type:bearer, expires_in:3600 온 상태
         System.out.println(oauthTokenResponse);
 
-        // 토큰을 이용해 정보를 받아올 API 요청을 보낼 로직 작성하기
-        ObjectMapper objectMapper = new ObjectMapper();
+        // oauthTokenResponse로 받은 토큰정보 객체화
+        ObjectMapper token_om = new ObjectMapper();
+        NaverTokenVo naverToken = null;
+        try { naverToken = token_om.readValue(oauthTokenResponse.getBody(), NaverTokenVo.class); }
+        catch (JsonMappingException je) { je.printStackTrace(); }
 
+        // 토큰을 이용해 정보를 받아올 API 요청을 보낼 로직 작성하기
+        RestTemplate profile_rt = new RestTemplate();
+        HttpHeaders userDetailReqHeaders = new HttpHeaders();
+        userDetailReqHeaders.add("Authorization", "Bearer " + naverToken.getAccess_token());
+        userDetailReqHeaders.add("Content-type",  "application/x-www-form-urlencoded;charset=UTF-8");
+        HttpEntity<MultiValueMap<String, String>> naverProfileRequest = new HttpEntity<>(userDetailReqHeaders);
+
+        // 서비스서버 - 네이버 인증서버 : 유저 정보 받아오는 API 요청
+        ResponseEntity<String> userDetailResponse = profile_rt.exchange(
+                "https://openapi.naver.com/v1/nid/me",
+                HttpMethod.POST,
+                naverProfileRequest,
+                String.class
+        );
+
+        // 요청 응답 확인
+        System.out.println(userDetailResponse);
+
+        // 네이버로부터 받은 정보를 객체화
+        // *이때, 공식문서에는 응답 파라미터에 mobile 밖에없지만, 국제전화 표기로 된 mobile_e164도 같이 옴. 따라서 NaverProfileVo에 mobile_e164 필드도 있어야 정상적으로 객체가 생성됨
+        ObjectMapper profile_om = new ObjectMapper();
+        NaverProfileVo naverProfile = null;
+        try { naverProfile = profile_om.readValue(userDetailResponse.getBody(), NaverProfileVo.class); }
+        catch (JsonMappingException je) { je.printStackTrace(); }
 
         // 받아온 정보로 서비스 로직에 적용하기
+        Member naverMember = memberService.createNaverMember(naverProfile, naverToken.getAccess_token());
 
-        return "Success Logout: User";
+        // 시큐리티 영역
+        // Authentication 을 Security Context Holder 에 저장
+        Authentication authentication = new UsernamePasswordAuthenticationToken(naverMember.getEmail(), naverMember.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // 자체 JWT 생성 및 HttpServletResponse 의 Header 에 저장 (클라이언트 응답용)
+        String accessToken = jwtTokenizer.delegateAccessToken(naverMember);
+        String refreshToken = jwtTokenizer.delegateRefreshToken(naverMember);
+        response.setHeader("Authorization", "Bearer " + accessToken);
+        response.setHeader("RefreshToken", refreshToken);
+
+        return "Success Login: User";
     }
 
 
