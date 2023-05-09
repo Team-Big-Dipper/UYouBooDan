@@ -19,6 +19,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { isAuthTrue } from '../../redux/slices/isAuthSlice';
 
 const Auth = () => {
+  const NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
+  const NAVER_REDIRECT_URL = process.env.NEXT_PUBLIC_NAVER_REDIRECT_URL;
+  const naverState = Math.random();
+  console.log('naverState : ', naverState);
+  console.log('네이버리다이렉트 : ', NAVER_REDIRECT_URL);
+  console.log(
+    `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=7&redirect_uri=${NAVER_REDIRECT_URL}`,
+  );
   const api = process.env.NEXT_PUBLIC_SERVER_URL;
   const dispatch = useDispatch();
   const state = useSelector((state: any) => state.isAuthTrue.isAuth);
@@ -197,7 +205,11 @@ const Auth = () => {
         >
           <KakaoSvg />
         </S.KaKaoLoginDiv>
-        <S.NaverLoginDiv>
+        <S.NaverLoginDiv
+          onClick={() => {
+            window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${naverState}&redirect_uri=${NAVER_REDIRECT_URL}`;
+          }}
+        >
           <NaverSvg />
         </S.NaverLoginDiv>
         <S.GoogleLoginDiv
@@ -207,6 +219,7 @@ const Auth = () => {
                 headers: {},
               })
               .then((res: AxiosResponse) => {
+                console.log('res.data', res.data);
                 router.push(res.data);
               })
               .catch((err: AxiosError) => {
