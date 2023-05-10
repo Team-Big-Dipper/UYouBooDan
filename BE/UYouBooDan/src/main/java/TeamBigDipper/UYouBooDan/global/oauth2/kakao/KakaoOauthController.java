@@ -152,7 +152,7 @@ public class KakaoOauthController {
         userHttpHeaders.add("Authorization", "Bearer " + loginMember.getOauthAccessToken());  // "KakaoAk " + getKakaoAppKey());
         userHttpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         params.add("target_id_type", "user_id");
-        params.add("target_id", loginMember.getOauthId().toString());
+        params.add("target_id", loginMember.getOauthId());
 
         try {
             ResponseEntity<String> LogoutResponse = restTemplate.exchange(
