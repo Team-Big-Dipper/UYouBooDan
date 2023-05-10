@@ -180,14 +180,12 @@ public class NaverOauthController {
         userHttpHeaders.add("Authorization", "Bearer " + loginMember.getOauthAccessToken());
         userHttpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
         params.add("target_id_type", "user_id");
-        params.add("target_id", loginMember.getOauthId().toString());  // 여기서 nullpointer발생
-
-        System.out.println("null?");
+        params.add("target_id", loginMember.getOauthId());  // 여기서 nullpointer발생
 
         // Naver인증센터에 REST API 요청
         try {
             ResponseEntity<String> LogoutResponse = restTemplate.exchange(
-                    "http://nid.naver.com/nidlogin.logout",
+                    "http://nid.naver.com/nidlogin.logout", // 네이버 developer에 따로 네이버 로그아웃이 없으므로 본 경로를 사용. 단, 이 경로를 사용할 경우 HTML 로그가 나옵니다.
                     HttpMethod.POST,
                     naverLogoutRequest,
                     String.class
