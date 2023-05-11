@@ -1,5 +1,7 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.naver;
 
+import TeamBigDipper.UYouBooDan.global.exception.dto.BusinessLogicException;
+import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.global.security.util.JwtExtractUtil;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
@@ -150,6 +152,7 @@ public class NaverOauthController {
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
+        System.out.println(accessToken);
         return "Success Login: User";
     }
 
@@ -162,7 +165,36 @@ public class NaverOauthController {
     @GetMapping("/logout")
     public ResponseEntity<?> naverLogout(HttpServletRequest request) {
 
-        // 로그아웃 로직 작성
+        // DI를 이용해 파라미터 및 객체를 구하는 구간
+        Long memberId = jwtExtractUtil.extractMemberIdFromJwt(request);
+        Member loginMember = memberService.findMember(memberId);
+        String accessToken = jwtExtractUtil.extractAccessTokenFromJwt(request);
+        Long expiration = jwtExtractUtil.getExpiration(accessToken);
+
+        // REST API 요청을 전송하기 위한 준비 구간
+        RestTemplate restTemplate = new RestTemplate(); // Http 요청을 보내기 위한 템플릿 클래스
+        HttpHeaders userHttpHeaders = new HttpHeaders(); // Http 요청을 위한 Headers
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>(); // Http 요청을 위한 parameters를 설정해주기 위한 클래스
+        HttpEntity<MultiValueMap<String, String>> naverLogoutRequest = new HttpEntity<>(params, userHttpHeaders); // http 요청을 위한 엔티티 클래스 (Header와 Parans를 담아줌)
+
+        userHttpHeaders.add("Authorization", "Bearer " + loginMember.getOauthAccessToken());
+        userHttpHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        params.add("target_id_type", "user_id");
+        params.add("target_id", loginMember.getOauthId());  // 여기서 nullpointer발생
+
+        // Naver인증센터에 REST API 요청
+        try {
+            ResponseEntity<String> LogoutResponse = restTemplate.exchange(
+                    "http://nid.naver.com/nidlogin.logout", // 네이버 developer에 따로 네이버 로그아웃이 없으므로 본 경로를 사용. 단, 이 경로를 사용할 경우 HTML 로그가 나옵니다.
+                    HttpMethod.POST,
+                    naverLogoutRequest,
+                    String.class
+            );
+            System.out.println(LogoutResponse);
+
+            memberService.verifyMemberFromRedis(memberId, accessToken, expiration);  // 자체 서비스 로그아웃 로직
+
+        } catch (Exception e) { throw new BusinessLogicException(ExceptionCode.NOT_FOUND); }
 
         return new ResponseEntity<>("Success Logout: User", HttpStatus.OK);
     }

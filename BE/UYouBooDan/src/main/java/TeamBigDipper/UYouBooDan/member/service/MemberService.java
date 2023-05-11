@@ -172,7 +172,7 @@ public class MemberService {
                     .memberId(kakaoProfile.getId())
                     .nickname(new Name("Mock"+ kakaoProfile.getId()))
                     .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수 default값 설정해둠
-                    .oauthId(kakaoProfile.getId())
+                    .oauthId(String.valueOf(kakaoProfile.getId()))
                     .oauthAccessToken(kakaoAccessToken)
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();
@@ -261,11 +261,10 @@ public class MemberService {
         else optMember = memberRepository.findByEmail(naverProfile.getResponse().getEmail());
 
         if(optMember.isEmpty()) {
-            Member member = Member.builder()
-                    .memberId(Long.valueOf(naverProfile.getResponse().getId()))
+            Member member = Member.builder()  // 네이버의 경우 Id값이 임의의 문자열이므로, 서비스에선 자체 생성하는 방식으로 사용
                     .nickname(new Name("Mock"+ naverProfile.getResponse().getId()))
                     .password(passwordEncoder.encode(getInitialKey())) // yml을 통해 시스템 변수 default값 설정해둠
-                    .oauthId(Long.valueOf(naverProfile.getResponse().getId()))
+                    .oauthId(naverProfile.getResponse().getId())
                     .oauthAccessToken(naverAccessToken)
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();

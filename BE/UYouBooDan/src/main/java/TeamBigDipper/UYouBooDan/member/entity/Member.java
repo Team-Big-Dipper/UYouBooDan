@@ -36,7 +36,7 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Photo profile;
 
-    private Long oauthId;
+    private String oauthId;
 
     private String oauthAccessToken;
 
