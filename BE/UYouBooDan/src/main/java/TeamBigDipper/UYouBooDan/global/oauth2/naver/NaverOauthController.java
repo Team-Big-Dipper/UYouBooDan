@@ -27,53 +27,41 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.net.URLEncoder;
-import java.security.SecureRandom;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/naver")
 public class NaverOauthController {
 
+    private final NaverService naverService;
+    private final MemberService memberService;
+    private final JwtTokenizer jwtTokenizer;
+    private final JwtExtractUtil jwtExtractUtil;
     @Getter
     @Value("${oauth.naver.clientId}")
     private String naverClientId;
-
     @Getter
     @Value("${oauth.naver.clientSecret}")
     private String naverClientSecret;
 
-    private final MemberService memberService;
-    private final JwtTokenizer jwtTokenizer;
-    private final JwtExtractUtil jwtExtractUtil;
-
     /**
      * 프론트에 Redirect URI를 제공하기 위한 메소드
      * 프론트에서 네이버 인증 센터로 요청을 주기위한 URI를 제공하며, 이를통해 인증코드를 받아 자체 서비스 callback API 호출시 전달
+     *
      * @return redirect URI
      * @throws UnsupportedEncodingException
      */
     @GetMapping("/oauth")
     public ResponseEntity<?> naverConnect() throws UnsupportedEncodingException {
-        StringBuffer url = new StringBuffer();
+        String url = naverService.createNaverURL();
 
-        // 카카오 API 명세에 맞춰서 작성
-        String redirectURI = URLEncoder.encode("http://www.localhost:8080/naver/callback", "UTF-8"); // redirectURI 설정 부분
-        SecureRandom random = new SecureRandom();
-        String state = new BigInteger(130, random).toString();
-
-        url.append("https://nid.naver.com/oauth2.0/authorize?response_type=code");
-        url.append("&client_id=" + getNaverClientId());
-        url.append("&state=" + state);
-        url.append("&redirect_uri=" + redirectURI);
-
-        return new ResponseEntity<>(url.toString(), HttpStatus.OK); // 프론트 브라우저로 보내는 주소
+        return new ResponseEntity<>(url, HttpStatus.OK); // 프론트 브라우저로 보내는 주소
     }
 
 
     /**
      * 실제 로그인 로직을 수행할 메소드
+     *
      * @return
      */
     @GetMapping("/callback")
@@ -110,14 +98,17 @@ public class NaverOauthController {
         // oauthTokenResponse로 받은 토큰정보 객체화
         ObjectMapper token_om = new ObjectMapper();
         NaverTokenVo naverToken = null;
-        try { naverToken = token_om.readValue(oauthTokenResponse.getBody(), NaverTokenVo.class); }
-        catch (JsonMappingException je) { je.printStackTrace(); }
+        try {
+            naverToken = token_om.readValue(oauthTokenResponse.getBody(), NaverTokenVo.class);
+        } catch (JsonMappingException je) {
+            je.printStackTrace();
+        }
 
         // 토큰을 이용해 정보를 받아올 API 요청을 보낼 로직 작성하기
         RestTemplate profile_rt = new RestTemplate();
         HttpHeaders userDetailReqHeaders = new HttpHeaders();
         userDetailReqHeaders.add("Authorization", "Bearer " + naverToken.getAccess_token());
-        userDetailReqHeaders.add("Content-type",  "application/x-www-form-urlencoded;charset=UTF-8");
+        userDetailReqHeaders.add("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
         HttpEntity<MultiValueMap<String, String>> naverProfileRequest = new HttpEntity<>(userDetailReqHeaders);
 
         // 서비스서버 - 네이버 인증서버 : 유저 정보 받아오는 API 요청
@@ -135,8 +126,11 @@ public class NaverOauthController {
         // *이때, 공식문서에는 응답 파라미터에 mobile 밖에없지만, 국제전화 표기로 된 mobile_e164도 같이 옴. 따라서 NaverProfileVo에 mobile_e164 필드도 있어야 정상적으로 객체가 생성됨
         ObjectMapper profile_om = new ObjectMapper();
         NaverProfileVo naverProfile = null;
-        try { naverProfile = profile_om.readValue(userDetailResponse.getBody(), NaverProfileVo.class); }
-        catch (JsonMappingException je) { je.printStackTrace(); }
+        try {
+            naverProfile = profile_om.readValue(userDetailResponse.getBody(), NaverProfileVo.class);
+        } catch (JsonMappingException je) {
+            je.printStackTrace();
+        }
 
         // 받아온 정보로 서비스 로직에 적용하기
         Member naverMember = memberService.createNaverMember(naverProfile, naverToken.getAccess_token());
@@ -159,6 +153,7 @@ public class NaverOauthController {
 
     /**
      * 로그아웃 API
+     *
      * @param request
      * @return
      */
@@ -194,7 +189,9 @@ public class NaverOauthController {
 
             memberService.verifyMemberFromRedis(memberId, accessToken, expiration);  // 자체 서비스 로그아웃 로직
 
-        } catch (Exception e) { throw new BusinessLogicException(ExceptionCode.NOT_FOUND); }
+        } catch (Exception e) {
+            throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
+        }
 
         return new ResponseEntity<>("Success Logout: User", HttpStatus.OK);
     }
