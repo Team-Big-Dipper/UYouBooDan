@@ -56,6 +56,7 @@ public class NaverOauthController {
         String url = naverService.createNaverURL();
 
         return new ResponseEntity<>(url, HttpStatus.OK); // 프론트 브라우저로 보내는 주소
+        // Push 확인
     }
 
 
