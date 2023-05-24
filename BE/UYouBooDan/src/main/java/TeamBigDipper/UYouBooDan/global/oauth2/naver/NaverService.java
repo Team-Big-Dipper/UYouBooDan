@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -40,6 +42,7 @@ public class NaverService {
     private String naverClientSecret;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
+    private final RedisTemplate redisTemplate;
 
     public String createNaverURL () throws UnsupportedEncodingException {
         StringBuffer url = new StringBuffer();
@@ -144,7 +147,9 @@ public class NaverService {
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
-        /* RefreshToken을 Redis에 넣어주는 과정 필요  */
+        // RefreshToken을 Redis에 넣어주는 과정
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("RTKey"+naverMember.getMemberId(), refreshToken);
 
         System.out.println(accessToken);
     }
