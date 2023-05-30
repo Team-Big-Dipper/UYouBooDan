@@ -23,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 
 @RequiredArgsConstructor
 @RestController
@@ -39,6 +40,7 @@ public class KakaoOauthController {
     private final JwtTokenizer jwtTokenizer;
 
     private final JwtExtractUtil jwtExtractUtil;
+    private final KakaoService kakaoService;
 
 
     /**
@@ -46,14 +48,10 @@ public class KakaoOauthController {
      * @return redirect url for kakao Authorization
      */
     @GetMapping("/oauth")
-    public ResponseEntity<?> kakaoConnect() {
-        StringBuffer url = new StringBuffer();
-        url.append("https://kauth.kakao.com/oauth/authorize?");
-        url.append("client_id=" + getKakaoAppKey()); // App Key
-        url.append("&redirect_uri=http://www.localhost:3000/auth/kakaoredirect"); // 프론트쪽에서 인가 코드를 받을 리다이렉트 URL(카카오 리다이렉트에 등록 필요)
-        url.append("&response_type=code");
+    public ResponseEntity<?> kakaoConnect() throws UnsupportedEncodingException {
+        String url = kakaoService.createKakaoURL();
 
-        return new ResponseEntity<>(url.toString(), HttpStatus.OK); // 프론트 브라우저로 보내는 주소(프론트에서 받아서 리다이렉트 시키면, 인가코드를 받을 수 있다.)
+        return new ResponseEntity<>(url, HttpStatus.OK); // 프론트 브라우저로 보내는 주소(프론트에서 받아서 리다이렉트 시키면, 인가코드를 받을 수 있다.)
     }
 
 
