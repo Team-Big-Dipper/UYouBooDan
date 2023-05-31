@@ -120,6 +120,10 @@ public class KakaoService {
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
+        // RefreshToken을 Redis에 넣어주는 과정
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("RTKey"+kakaoMember.getMemberId(), refreshToken);
+
         System.out.println(accessToken);
     }
 }
