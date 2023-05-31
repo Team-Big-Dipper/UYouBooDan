@@ -66,6 +66,13 @@ public class NaverService {
         return url.toString();
     }
 
+    /**
+     *
+     * @param code : 네이버로부터 받아 네이버 인증센터에 검증요청을 하기 위한 code
+     * @param state
+     * @param response
+     * @throws JsonProcessingException
+     */
     public void loginNaver (String code, String state, HttpServletResponse response) throws JsonProcessingException {
         // 네이버 로그인 Token 발급 API 요청을 위한 header/parameters 설정 부분
         RestTemplate token_rt = new RestTemplate(); // REST API 요청용 Template
