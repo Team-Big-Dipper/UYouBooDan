@@ -26,11 +26,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/google")
 public class GoogleOauthController {
+
     @Getter
     @Value("${oauth.google.clientId}")
     private String googleClientId;
@@ -42,7 +44,7 @@ public class GoogleOauthController {
     private String googleRedirectUrl;
     @Value("${oauth.google.scope}")
     private String scopes;
-
+    private final GoogleService googleService;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
     private final JwtExtractUtil jwtExtractUtil;
@@ -53,14 +55,8 @@ public class GoogleOauthController {
      */
     @GetMapping("/oauth")
     public ResponseEntity<?> googleConnect() {
-        StringBuffer url = new StringBuffer();
-        url.append("https://accounts.google.com/o/oauth2/v2/auth?");
-        url.append("client_id=" + getGoogleClientId());
-        url.append("&redirect_uri=" + getGoogleRedirectUrl());
-        url.append("&response_type=code");
-        url.append("&scope="+ getScopeUrl());
 
-        return new ResponseEntity<>(url.toString(), HttpStatus.OK);
+        return new ResponseEntity<>(googleService.createGoogleURL(), HttpStatus.OK);
     }
 
 
@@ -169,14 +165,5 @@ public class GoogleOauthController {
 
 
         return new ResponseEntity<>("Success Logout: User", HttpStatus.OK);
-    }
-
-
-    /**
-     * scope 설정용 get 메소드
-     * @return scopes
-     */
-    private String getScopeUrl() {
-        return scopes.replaceAll(",", "%20");
     }
 }

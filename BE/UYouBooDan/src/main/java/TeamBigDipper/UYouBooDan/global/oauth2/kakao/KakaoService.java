@@ -42,7 +42,7 @@ public class KakaoService {
     /**
      * @return 카카오 인증서버로 클라이언트가 요청을 보내기위한 Redirect Url
      */
-    public String createKakaoURL () throws UnsupportedEncodingException {
+    public String createKakaoURL () {
         StringBuffer url = new StringBuffer();
         url.append("https://kauth.kakao.com/oauth/authorize?");
         url.append("client_id=" + getKakaoAppKey()); // App Key
