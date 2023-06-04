@@ -135,6 +135,10 @@ public class GoogleService {
         response.setHeader("Authorization", "Bearer " + accessToken);
         response.setHeader("RefreshToken", refreshToken);
 
+        // RefreshToken을 Redis에 넣어주는 과정
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("RTKey"+googleMember.getMemberId(), refreshToken);
+
         System.out.println(accessToken);
     }
 }
