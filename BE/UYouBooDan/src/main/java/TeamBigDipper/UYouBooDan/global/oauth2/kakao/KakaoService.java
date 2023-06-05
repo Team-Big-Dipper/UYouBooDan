@@ -35,6 +35,9 @@ public class KakaoService {
     @Getter
     @Value("${oauth.kakao.clientId}")
     private String kakaoClientId;
+    @Getter
+    @Value("${jwt.refresh-token-prefix}")
+    private String refreshPrefix;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
     private final RedisTemplate redisTemplate;
@@ -122,7 +125,7 @@ public class KakaoService {
 
         // RefreshToken을 Redis에 넣어주는 과정
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("RTKey"+kakaoMember.getMemberId(), refreshToken);
+        valueOperations.set(getRefreshPrefix()+kakaoMember.getMemberId(), refreshToken);
 
         System.out.println(accessToken);
     }

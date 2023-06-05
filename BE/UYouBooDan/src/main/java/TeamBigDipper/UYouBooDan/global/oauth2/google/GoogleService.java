@@ -35,6 +35,9 @@ public class GoogleService {
     @Getter
     @Value("${oauth.google.redirectUrl}")
     private String googleRedirectUrl;
+    @Getter
+    @Value("${jwt.refresh-token-prefix}")
+    private String refreshPrefix;
     @Value("${oauth.google.scope}")
     private String scopes;
     private final JwtTokenizer jwtTokenizer;
@@ -137,7 +140,7 @@ public class GoogleService {
 
         // RefreshToken을 Redis에 넣어주는 과정
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("RTKey"+googleMember.getMemberId(), refreshToken);
+        valueOperations.set(getRefreshPrefix()+googleMember.getMemberId(), refreshToken);
 
         System.out.println(accessToken);
     }

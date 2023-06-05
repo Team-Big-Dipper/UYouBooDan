@@ -1,5 +1,6 @@
 package TeamBigDipper.UYouBooDan.global.oauth2.naver;
 
+import TeamBigDipper.UYouBooDan.global.security.filter.JwtVerificationFilter;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.service.MemberService;
@@ -40,9 +41,13 @@ public class NaverService {
     @Getter
     @Value("${oauth.naver.clientSecret}")
     private String naverClientSecret;
+    @Getter
+    @Value("${jwt.refresh-token-prefix}")
+    private String refreshPrefix;
     private final MemberService memberService;
     private final JwtTokenizer jwtTokenizer;
     private final RedisTemplate redisTemplate;
+    private final JwtVerificationFilter jwtVerificationFilter;
 
     public String createNaverURL () throws UnsupportedEncodingException {
         StringBuffer url = new StringBuffer();
@@ -143,6 +148,9 @@ public class NaverService {
         // 받아온 정보로 서비스 로직에 적용하기
         Member naverMember = memberService.createNaverMember(naverProfile, naverToken.getAccess_token());
 
+        /**
+         * Refactor : 아래의 Authentication 부여 영역과 OAuth 2.0 멤버 Role부여 로직은 JwtVerificationFilter 내 메소드로 통합 이전 할 예정입니다.
+         */
         // 시큐리티 영역
         // Authentication 을 Security Context Holder 에 저장
         Authentication authentication = new UsernamePasswordAuthenticationToken(naverMember.getEmail(), naverMember.getPassword());
@@ -156,7 +164,7 @@ public class NaverService {
 
         // RefreshToken을 Redis에 넣어주는 과정
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("RTKey"+naverMember.getMemberId(), refreshToken);
+        valueOperations.set(getRefreshPrefix()+naverMember.getMemberId(), refreshToken);
 
         System.out.println(accessToken);
     }
