@@ -58,7 +58,7 @@ public class GoogleOauthController {
     public String redirectGoogleLogin(@RequestParam("code") String code, HttpServletResponse response) {
         googleService.loginGoogle(code, response);
 
-        return response.getHeader("Authorization") == null ? "Fail Login: User" :  "Success Login: User";
+        return response.getHeader("Authorization") == null ? "Fail Login: User" : "Success Login: User";
     }
 
 
