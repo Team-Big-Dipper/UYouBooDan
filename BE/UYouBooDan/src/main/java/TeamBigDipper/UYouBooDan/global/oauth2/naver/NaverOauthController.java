@@ -46,9 +46,8 @@ public class NaverOauthController {
      */
     @GetMapping("/oauth")
     public ResponseEntity<?> naverConnect() throws UnsupportedEncodingException {
-        String url = naverService.createNaverURL();
 
-        return new ResponseEntity<>(url, HttpStatus.OK); // 프론트 브라우저로 보내는 주소
+        return new ResponseEntity<>(naverService.createNaverURL(), HttpStatus.OK); // 프론트 브라우저로 보내는 주소
     }
 
 

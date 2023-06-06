@@ -4,9 +4,11 @@ import TeamBigDipper.UYouBooDan.global.security.dto.LoginDto;
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseCookie;
@@ -25,6 +27,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
+    @Getter
+    @Value("${jwt.refresh-token-prefix}")
+    private String refreshPrefix;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
     private final RedisTemplate redisTemplate;
@@ -53,7 +58,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken;
         // 게스트 로그인을 위한 부분
         if(loginDto.getEmail().equals("") && loginDto.getPassword().equals(""))
-            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("asdf1234@gmail.com","asd123!@#asd123"); // configuration으로 관리하기(@Value 어노테이션으로 받아 올 수 없기 때문)
+            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken("asdf1234@gmail.com","asd123!@#asd123"); // 파라미터 스토어로 옮기기 (민구님과 협의)
         else usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
 
         return authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -86,8 +91,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // 로그인시, Redis 캐시 서버에 Refresh 토큰을 저장하는 로직 ( key:value 형식의 set방식으로 저장되며, key는 RTkey+회원 식별자, value는 refreshToken으로 저장)
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("RTKey"+authenticatedMember.getMemberId(), refreshToken);
-        log.info("redis RT : {}", valueOperations.get("RTKey"+authenticatedMember.getMemberId()));
+        valueOperations.set(getRefreshPrefix()+authenticatedMember.getMemberId(), refreshToken);
+//        log.info("redis RT : {}", valueOperations.get(getRefreshPrefix()+authenticatedMember.getMemberId()));
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult);
     }

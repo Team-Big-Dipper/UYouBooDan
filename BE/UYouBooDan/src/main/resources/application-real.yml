@@ -46,6 +46,7 @@ jwt:
     secret: ${JWT_SECRET_KEY}
     access-token-expiration-minutes: 30
     refresh-token-expiration-minutes: 1440
+  refresh-token-prefix: RTKey
 oauth:
   kakao:
     appKey:
@@ -57,3 +58,6 @@ oauth:
     clientSecret: ${GOOGLE_CLIENT_SECRET}
     scope: profile,email,openid
     redirectUrl: http://localhost:3000/auth/googleredirect
+  naver:
+    clientId: ${NAVER_CLIENT_ID}
+    clientSecret: ${NAVER_CLIENT_SECRET}

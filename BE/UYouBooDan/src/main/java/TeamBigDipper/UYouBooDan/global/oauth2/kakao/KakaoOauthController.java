@@ -40,9 +40,8 @@ public class KakaoOauthController {
      */
     @GetMapping("/oauth")
     public ResponseEntity<?> kakaoConnect() throws UnsupportedEncodingException {
-        String url = kakaoService.createKakaoURL();
 
-        return new ResponseEntity<>(url, HttpStatus.OK); // 프론트 브라우저로 보내는 주소(프론트에서 받아서 리다이렉트 시키면, 인가코드를 받을 수 있다.)
+        return new ResponseEntity<>(kakaoService.createKakaoURL(), HttpStatus.OK); // 프론트 브라우저로 보내는 주소(프론트에서 받아서 리다이렉트 시키면, 인가코드를 받을 수 있다.)
     }
 
 
