@@ -16,9 +16,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -147,14 +144,6 @@ public class NaverService {
 
         // 받아온 정보로 서비스 로직에 적용하기
         Member naverMember = memberService.createNaverMember(naverProfile, naverToken.getAccess_token());
-
-        /**
-         * Refactor : 아래의 Authentication 부여 영역과 OAuth 2.0 멤버 Role부여 로직은 JwtVerificationFilter 내 메소드로 통합 이전 할 예정입니다.
-         */
-        // 시큐리티 영역
-        // Authentication 을 Security Context Holder 에 저장
-        Authentication authentication = new UsernamePasswordAuthenticationToken(naverMember.getEmail(), naverMember.getPassword());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 자체 JWT 생성 및 HttpServletResponse 의 Header 에 저장 (클라이언트 응답용)
         String accessToken = jwtTokenizer.delegateAccessToken(naverMember);
