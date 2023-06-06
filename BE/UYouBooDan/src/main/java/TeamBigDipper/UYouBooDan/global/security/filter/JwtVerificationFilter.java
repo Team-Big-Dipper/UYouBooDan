@@ -2,6 +2,7 @@ package TeamBigDipper.UYouBooDan.global.security.filter;
 
 import TeamBigDipper.UYouBooDan.global.security.jwt.JwtTokenizer;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
+import TeamBigDipper.UYouBooDan.member.entity.Member;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
+@Component  // 일부 메소드 사용을 위한 DI를 위해 Bean 등록
 @RequiredArgsConstructor
 public class JwtVerificationFilter extends OncePerRequestFilter {
 
@@ -81,6 +84,16 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorityList);
         SecurityContextHolder.getContext().setAuthentication(authentication); // SecurityContextHolder에 인증정보(Context) 업데이트해줌
+    }
+
+    /**
+     * OAuth 2.0 로그인 시, 유저와 역할을 SecurituContextHolder에 넣어주는 메소드 (MemberService 내 호출)
+     * @param member
+     */
+    public void setOauthSecurityContext(Member member) {
+        List<GrantedAuthority> authorityList = customAuthorityUtils.createAuthorities(member.getRoles());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(member.getEmail(), member.getPassword(),authorityList);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 }
