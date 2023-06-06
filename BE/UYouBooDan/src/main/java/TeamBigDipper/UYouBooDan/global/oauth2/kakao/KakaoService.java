@@ -15,15 +15,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
-import java.io.UnsupportedEncodingException;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +46,7 @@ public class KakaoService {
         url.append("https://kauth.kakao.com/oauth/authorize?");
         url.append("client_id=" + getKakaoAppKey()); // App Key
         url.append("&redirect_uri=http://www.localhost:3000/auth/kakaoredirect"); // 프론트쪽에서 인가 코드를 받을 리다이렉트 URL(카카오 리다이렉트에 등록 필요)
+//        url.append("&redirect_uri=http://www.localhost:8080/kakao/callback"); // 백엔드 로그인 테스트용 리다이렉트 URL(카카오 리다이렉트에 등록 필요)
         url.append("&response_type=code");
 
         return url.toString();
@@ -111,11 +108,6 @@ public class KakaoService {
 
         // 서비스 회원 등록 위임
         Member kakaoMember = memberService.createKakaoMember(kakaoProfile, kakaoToken.getAccess_token());
-
-        // 시큐리티 영역
-        // Authentication 을 Security Context Holder 에 저장
-        Authentication authentication = new UsernamePasswordAuthenticationToken(kakaoMember.getEmail(), kakaoMember.getPassword()); // password 확인
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 자체 JWT 생성 및 HttpServletResponse 의 Header 에 저장 (클라이언트 응답용)
         String accessToken = jwtTokenizer.delegateAccessToken(kakaoMember);
