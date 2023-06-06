@@ -13,9 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -126,11 +123,6 @@ public class GoogleService {
         // 서비스 회원 등록 위임
         googleProfile = userDetailsResponse.getBody();
         Member googleMember = memberService.createGoogleMember(googleProfile, loginResponse.getAccessToken());
-
-        // 시큐리티 영역
-        // Authentication 을 Security Context Holder 에 저장
-        Authentication authentication = new UsernamePasswordAuthenticationToken(googleMember.getEmail(), googleMember.getPassword()); // password 확인
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // 자체 JWT 생성 및 HttpServletResponse 의 Header 에 저장 (클라이언트 응답용)
         String accessToken = jwtTokenizer.delegateAccessToken(googleMember);
