@@ -5,6 +5,7 @@ import TeamBigDipper.UYouBooDan.global.exception.exceptionCode.ExceptionCode;
 import TeamBigDipper.UYouBooDan.global.oauth2.google.GoogleLoginDto;
 import TeamBigDipper.UYouBooDan.global.oauth2.kakao.KakaoProfileVo;
 import TeamBigDipper.UYouBooDan.global.oauth2.naver.NaverProfileVo;
+import TeamBigDipper.UYouBooDan.global.security.filter.JwtVerificationFilter;
 import TeamBigDipper.UYouBooDan.global.security.util.CustomAuthorityUtils;
 import TeamBigDipper.UYouBooDan.member.entity.Member;
 import TeamBigDipper.UYouBooDan.member.repository.MemberRepository;
@@ -34,6 +35,7 @@ public class MemberService {
     private final CustomAuthorityUtils customAuthorityUtils;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate redisTemplate;
+    private final JwtVerificationFilter jwtVerificationFilter;
 
     @Getter
     @Value("${oauth.kakao.initialKey}")
@@ -183,6 +185,8 @@ public class MemberService {
             List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
             member.setRoles(roles);
 
+            jwtVerificationFilter.setOauthSecurityContext(member);
+
             return memberRepository.save(member);
         }
         else {
@@ -221,6 +225,8 @@ public class MemberService {
 
             List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
             member.setRoles(roles);
+
+            jwtVerificationFilter.setOauthSecurityContext(member);
 
             return memberRepository.save(member);
         }
@@ -268,12 +274,19 @@ public class MemberService {
                     .oauthAccessToken(naverAccessToken)
                     .memberStatus(Member.MemberStatus.MEMBER_ACTIVE)
                     .build();
-            if (naverProfile.getResponse().getEmail()==null) member.modifyEmail(naverProfile.getResponse().getId().toString()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
+            if (naverProfile.getResponse().getEmail()==null) member.modifyEmail(naverProfile.getResponse().getId()+"@uyouboodan.com"); // email 수집 미동의시, 자사 email로 가입됨
             else member.modifyEmail(naverProfile.getResponse().getEmail());
 
             member.defaultProfile();
+
+            /**
+             * JwtVerificationFilter내 setOauthSecurityContext메소드로 대체했습니다.
+             * 다만, 연결구조 및 접근권한 우려로 추후 Security FilterChain에 위임하는 코드로 변경할 예정입니다.
+             */
             List<String> roles = customAuthorityUtils.createRoles(member.getEmail());
             member.setRoles(roles);
+
+            jwtVerificationFilter.setOauthSecurityContext(member);
 
             return memberRepository.save(member);
         }
